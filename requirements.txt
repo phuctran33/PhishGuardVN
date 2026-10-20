@@ -1,0 +1,4 @@
+# Pin versions after validating the shared environment.
+-e .
+jupyterlab
+ipykernel

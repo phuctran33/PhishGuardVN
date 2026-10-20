@@ -1,0 +1,40 @@
+# Python, virtual environments, caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Local settings and credentials
+.env
+.env.*
+!.env.example
+.aws/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Original dataset: obtain separately from the shared location.
+/data/*.csv
+/data/splits/*.csv
+/data/attacks/*.csv
+
+# Generated data/models; keep directory placeholders.
+/data/interim/*
+!/data/interim/.gitkeep
+/data/processed/*
+!/data/processed/.gitkeep
+/models/*
+!/models/README.md
+!/models/.gitkeep
+
+# Local previews
+**/_preview/
+*.log

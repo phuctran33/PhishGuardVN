@@ -1,0 +1,17 @@
+* text=auto
+*.py text eol=lf
+*.ipynb text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+
+# Preserve original dataset bytes if explicitly added later.
+/data/*.csv -text
+/data/splits/*.csv -text
+/data/attacks/*.csv -text
+/docs/dataset_README.md -text
+/docs/datasheet.md -text
+/docs/schema.md -text
+/docs/data_sources.md -text
+/LICENSE -text
+/CITATION.cff -text
+/MANIFEST.txt -text

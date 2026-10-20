@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phishguard-vn"
+version = "0.1.0"
+description = "Week-4 templates for PhishVN EDA and URL ML baselines"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "scikit-learn",
+    "tldextract",
+    "joblib",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

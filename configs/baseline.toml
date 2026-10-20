@@ -1,0 +1,35 @@
+# Proposed settings, not an executed experiment.
+[experiment]
+name = "week4_e1_core_lr"
+seed = 42
+
+[data]
+dataset_file = "dataset_url.csv"
+core_tiers = ["gold", "silver"]
+id_column = "id"
+url_column = "url"
+label_column = "label"
+split_column = "split"
+positive_label = "phishing"
+negative_label = "benign"
+
+[evaluation]
+strategy = "group_cv_on_official_train"
+group_column = "registrable_domain"
+n_splits = 3
+require_both_classes_per_fold = true
+validation_role = "supplementary"
+use_test = false
+decision_threshold = 0.5
+
+[features]
+reference_schema = "PhishVN CompPhish-aligned 21 lexical features"
+excluded_columns = ["is_https", "source", "tier", "split", "status", "scenario", "abuse_type", "id"]
+# TODO(Hy): define formulas and actual accepted columns in features.py.
+
+[model]
+baseline = "logistic_regression"
+reference = "dummy_most_frequent"
+scaling = "standard_scaler_within_fold"
+class_weight = "none"
+# Optional comparison: balanced, with the same folds and a separate result row.
