@@ -35,7 +35,7 @@ Tên/vai có thể hoán đổi theo thống nhất. Xem
 PhishGuardVN/
 ├── configs/baseline.toml          # Cấu hình đề xuất, chưa phải kết quả
 ├── data/
-│   ├── dataset_url.csv            # PhishVN gốc; giữ nguyên, không đưa lên Git
+│   ├── dataset_url.csv            # PhishVN gốc; giữ nguyên, có sẵn trong repo
 │   ├── vn_compphish.csv           # Bảng features tham khảo
 │   ├── abuse_type.csv             # Thông tin phụ cho EDA
 │   ├── splits/                   # Split chính thức
@@ -75,8 +75,9 @@ git clone https://github.com/phuctran33/PhishGuardVN.git
 cd PhishGuardVN
 ```
 
-Nếu đã có thư mục dự án, mở chính thư mục đó trong VS Code. Chuẩn bị PhishVN
-v3.1.0 theo [`data/README.md`](data/README.md); máy hiện tại đã có dataset.
+Dataset PhishVN v3.1.0 gốc đã có trong repo: clone về là có dữ liệu ở `data/`.
+Nếu đã có thư mục dự án, cập nhật bằng `git pull --ff-only` rồi mở chính thư mục
+đó trong VS Code. Xem [`data/README.md`](data/README.md) để biết các file dữ liệu.
 
 ### 2. Tạo môi trường Python riêng
 
@@ -139,9 +140,9 @@ Kiểm tra file trước khi đưa vào repo; thay đường dẫn editable củ
 ## Google Colab — tùy chọn cho từng thành viên
 
 Nếu một thành viên chọn Colab: clone repo vào runtime, chuyển working directory
-vào repo, cài `requirements.txt` rồi chuẩn bị cùng bản dataset ở `data/` hoặc đặt
-`PHISHGUARD_DATA_DIR`. Có thể tải dataset từ máy lên runtime; Drive là một lựa chọn
-lưu trữ thêm. Trước khi đóng runtime, tải kết quả cần giữ về máy hoặc nơi lưu nhóm
+vào repo và cài `requirements.txt`. Dataset gốc đã có ở `data/`; chỉ cần đặt
+`PHISHGUARD_DATA_DIR` nếu chủ động dùng bản dữ liệu ở nơi khác. Drive là tùy chọn
+lưu kết quả. Trước khi đóng runtime, tải kết quả cần giữ về máy hoặc nơi lưu nhóm
 đã thống nhất. Code/parser/features và cấu hình dùng chung với luồng local.
 
 Xem [`docs/project/workflow.md`](docs/project/workflow.md) để phối hợp trong nhóm.
@@ -162,10 +163,11 @@ Xem [`docs/project/workflow.md`](docs/project/workflow.md) để phối hợp tr
 
 ## Trước khi đưa lên repo
 
-`.gitignore` loại CSV gốc, dữ liệu trung gian, model, môi trường ảo và cache.
-File vẫn giữ trên máy; thành viên khác lấy dataset theo hướng dẫn. Không điền
-số liệu minh họa vào bảng kết quả thực. Chỉ commit code/tài liệu/kết quả nhỏ đã
-kiểm tra; dataset và model được bàn giao riêng theo cách nhóm thống nhất.
+CSV gốc của PhishVN được quản lý phiên bản cùng code để cả nhóm dùng đúng một bản.
+Giữ nguyên byte của dataset và thông tin nguồn; đối chiếu `MANIFEST.txt` khi cần.
+`.gitignore` tiếp tục loại dữ liệu trung gian, model, môi trường ảo và cache.
+Các file sinh ra được bàn giao riêng theo cách nhóm thống nhất. Không điền số liệu
+minh họa vào bảng kết quả thực; chỉ commit kết quả nhỏ đã kiểm tra.
 
 ## Ghi nguồn
 

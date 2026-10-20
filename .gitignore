@@ -21,10 +21,7 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Original dataset: obtain separately from the shared location.
-/data/*.csv
-/data/splits/*.csv
-/data/attacks/*.csv
+# Original PhishVN CSV files are tracked; keep generated files ignored below.
 
 # Generated data/models; keep directory placeholders.
 /data/interim/*

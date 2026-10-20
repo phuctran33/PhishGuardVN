@@ -1,8 +1,8 @@
 # Dữ liệu
 
-CSV gốc giữ nguyên trên máy, được `.gitignore` bỏ qua để repo chứa code/tài liệu.
-Thành viên khác lấy đúng PhishVN v3.1.0 từ bản ZIP/thư mục dùng chung hoặc nguồn
-đã được nhóm xác nhận, rồi giải nén/sao chép đúng vị trí trên máy mình. Không cần Drive.
+CSV gốc của PhishVN v3.1.0 được lưu cùng repo, không cần tải riêng hoặc dùng Drive.
+Clone repo mới là có dữ liệu; với bản clone cũ, cập nhật bằng `git pull --ff-only`.
+Giữ nguyên file nguồn; dữ liệu do nhóm xử lý lưu tại interim/ hoặc processed/.
 
 ```text
 data/

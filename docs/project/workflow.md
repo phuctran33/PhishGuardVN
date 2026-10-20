@@ -2,17 +2,17 @@
 
 ## Nơi làm việc
 
-- Repo: source, notebook, cấu hình, tài liệu và báo cáo nhỏ đã kiểm tra.
+- Repo: source, notebook, cấu hình, dataset PhishVN gốc, tài liệu và báo cáo nhỏ đã kiểm tra.
 - Local là luồng mặc định: mỗi người có Python `.venv`, VS Code/Jupyter và notebook riêng.
 - Repo chung: https://github.com/phuctran33/PhishGuardVN.git.
 - Mỗi thành viên có thể chọn Colab thay cho local; code/config và quy tắc đánh giá vẫn chung.
-- Dataset, bảng lớn và model bàn giao bằng file/thư mục nhóm đã thống nhất;
+- Dataset gốc có sẵn khi clone repo. Các bảng sinh ra lớn và model bàn giao riêng;
   có thể gửi bản ZIP, dùng ổ chia sẻ hoặc Drive. Drive không phải yêu cầu bắt buộc.
 
 ## Thiết lập local
 
-Mỗi người clone repo, đặt đúng dataset tại data/ (hoặc đặt PHISHGUARD_DATA_DIR),
-tạo `.venv` và cài requirements.txt. Trong VS Code chọn kernel/interpreter của
+Mỗi người clone repo (dataset gốc đã có tại data/), tạo `.venv` và cài requirements.txt.
+Chỉ đặt PHISHGUARD_DATA_DIR khi dùng dữ liệu ở nơi khác. Trong VS Code chọn kernel/interpreter của
 `.venv`; chạy script và notebook bằng cùng môi trường. Không dùng chung thư mục
 môi trường ảo giữa các máy. Hướng dẫn lệnh cụ thể có trong README ở root repo.
 
