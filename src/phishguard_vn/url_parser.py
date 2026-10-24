@@ -8,62 +8,60 @@ import ipaddress
 class ParsedURL:
     raw_url: str
     hostname: str
-    registrable_domain: str
+    registrable_domain: str | None
     subdomain: str
     path: str
     query: str
     port: int | None
     scheme_was_added: bool
     is_ip: bool
+    is_valid: bool
+    error_reason: str | None
 
 def parse_url(raw_url: str) -> ParsedURL:
-    """Xử lý URL thiếu scheme, bóc tách bằng PSL, bắt IPv4/IPv6 chuẩn và chống rỗng key."""
-    if not isinstance(raw_url, str):
-        raw_url = ""
-    raw_url_stripped = raw_url.strip()
+    """Xử lý URL, trả về trạng thái hợp lệ và loại bỏ grouping key với IP/lỗi."""
+    if not isinstance(raw_url, str) or not raw_url.strip():
+        return ParsedURL(str(raw_url), "", None, "", "", "", None, False, False, False, "empty_url")
     
+    raw_url_stripped = raw_url.strip()
     has_scheme = bool(re.match(r"^[a-zA-Z][a-zA-Z0-9+-.]*://", raw_url_stripped))
     working_url = raw_url_stripped if has_scheme else "http://" + raw_url_stripped
     
     try:
         parsed = urlparse(working_url)
-        # urlparse tự động xử lý ngoặc vuông của IPv6 và chuyển hostname thành chữ thường
         hostname = parsed.hostname or ""
         
-        # 1. Nhận diện IP hợp lệ (IPv4 & IPv6)
+        # Bắt lỗi Port dị (vd: example.com:99999)
+        port = None
+        try:
+            port = parsed.port
+        except ValueError:
+            return ParsedURL(raw_url_stripped, hostname, None, "", parsed.path, parsed.query, None, not has_scheme, False, False, "invalid_port")
+
+        if not hostname or " " in hostname:
+            return ParsedURL(raw_url_stripped, hostname, None, "", parsed.path, parsed.query, port, not has_scheme, False, False, "invalid_hostname")
+
+        # Bắt IPv4/IPv6
         is_ip = False
         try:
             ip_str = hostname.strip("[]")
-            ipaddress.ip_address(ip_str)
-            is_ip = True
+            if ip_str:
+                ipaddress.ip_address(ip_str)
+                is_ip = True
         except ValueError:
             pass
 
-        # 2. Bóc tách bằng tldextract
         ext = tldextract.extract(working_url)
-        reg_domain = ext.registered_domain.lower()
-        subdomain = ext.subdomain.lower()
+        reg_domain = ext.registered_domain.lower() if ext.registered_domain else None
+        subdomain = ext.subdomain.lower() if ext.subdomain else ""
         
-        # 3. Chống rỗng grouping key (Phòng ngừa Data Leakage khi Group CV)
+        # Chốt hạ Grouping Key (P0)
         if is_ip:
-            reg_domain = hostname  # Dùng luôn IP làm key chia nhóm
+            return ParsedURL(raw_url_stripped, hostname, None, subdomain, parsed.path, parsed.query, port, not has_scheme, True, True, "is_ip_no_domain")
         elif not reg_domain:
-            # Fallback cho các domain nội bộ (vd: .example) hoặc lỗi
-            reg_domain = hostname if hostname else "UNKNOWN_DOMAIN"
+            return ParsedURL(raw_url_stripped, hostname, None, subdomain, parsed.path, parsed.query, port, not has_scheme, False, False, "unresolved_domain")
             
-        return ParsedURL(
-            raw_url=raw_url_stripped,
-            hostname=hostname,
-            registrable_domain=reg_domain,
-            subdomain=subdomain,
-            path=parsed.path,
-            query=parsed.query,
-            port=parsed.port,
-            scheme_was_added=not has_scheme,
-            is_ip=is_ip
-        )
-    except Exception:
-        return ParsedURL(
-            raw_url=raw_url_stripped, hostname="", registrable_domain="ERROR_DOMAIN", 
-            subdomain="", path="", query="", port=None, scheme_was_added=not has_scheme, is_ip=False
-        )
+        return ParsedURL(raw_url_stripped, hostname, reg_domain, subdomain, parsed.path, parsed.query, port, not has_scheme, is_ip, True, None)
+
+    except Exception as e:
+        return ParsedURL(raw_url_stripped, "", None, "", "", "", None, not has_scheme, False, False, f"parsing_error: {str(e)}")
