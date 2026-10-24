@@ -1,4 +1,6 @@
 # Pin versions after validating the shared environment.
 -e .
+tldextract==5.4.0
+idna==3.20
 jupyterlab
 ipykernel
