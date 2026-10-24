@@ -45,7 +45,6 @@ def build_feature_table(frame: pd.DataFrame) -> pd.DataFrame:
         feats['id'] = row['id']
         
         parsed = parse_url(url_str)
-        # Ép về None/pd.NA để splits.py nhận diện rõ ràng dòng nào có thể làm group key
         feats['registrable_domain'] = parsed.registrable_domain if parsed.registrable_domain else pd.NA
         feats['error_reason'] = parsed.error_reason 
         

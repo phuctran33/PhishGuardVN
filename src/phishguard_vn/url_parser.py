@@ -18,9 +18,8 @@ class ParsedURL:
     is_valid: bool
     error_reason: str | None
 
-def parse_url(raw_url: str) -> ParsedURL:
-    """Xử lý URL, trả về trạng thái hợp lệ và loại bỏ grouping key với IP/lỗi."""
-    if not isinstance(raw_url, str) or not raw_url.strip():
+def parse_url(raw_url: str | None) -> ParsedURL:
+    if not raw_url or not isinstance(raw_url, str) or not raw_url.strip():
         return ParsedURL(str(raw_url), "", None, "", "", "", None, False, False, False, "empty_url")
     
     raw_url_stripped = raw_url.strip()
@@ -31,7 +30,6 @@ def parse_url(raw_url: str) -> ParsedURL:
         parsed = urlparse(working_url)
         hostname = parsed.hostname or ""
         
-        # Bắt lỗi Port dị (vd: example.com:99999)
         port = None
         try:
             port = parsed.port
@@ -41,7 +39,6 @@ def parse_url(raw_url: str) -> ParsedURL:
         if not hostname or " " in hostname:
             return ParsedURL(raw_url_stripped, hostname, None, "", parsed.path, parsed.query, port, not has_scheme, False, False, "invalid_hostname")
 
-        # Bắt IPv4/IPv6
         is_ip = False
         try:
             ip_str = hostname.strip("[]")
@@ -55,7 +52,6 @@ def parse_url(raw_url: str) -> ParsedURL:
         reg_domain = ext.registered_domain.lower() if ext.registered_domain else None
         subdomain = ext.subdomain.lower() if ext.subdomain else ""
         
-        # Chốt hạ Grouping Key (P0)
         if is_ip:
             return ParsedURL(raw_url_stripped, hostname, None, subdomain, parsed.path, parsed.query, port, not has_scheme, True, True, "is_ip_no_domain")
         elif not reg_domain:
@@ -64,4 +60,4 @@ def parse_url(raw_url: str) -> ParsedURL:
         return ParsedURL(raw_url_stripped, hostname, reg_domain, subdomain, parsed.path, parsed.query, port, not has_scheme, is_ip, True, None)
 
     except Exception as e:
-        return ParsedURL(raw_url_stripped, "", None, "", "", "", None, not has_scheme, False, False, f"parsing_error: {str(e)}")
+        return ParsedURL(raw_url_stripped, "", None, "", "", "", None, not has_scheme, False, False, f"parsing_error")
