@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import re
 from urllib.parse import urlparse
 import tldextract
+import ipaddress
 
 @dataclass(frozen=True)
 class ParsedURL:
@@ -13,38 +14,56 @@ class ParsedURL:
     query: str
     port: int | None
     scheme_was_added: bool
+    is_ip: bool
 
 def parse_url(raw_url: str) -> ParsedURL:
-    """Xử lý URL thiếu scheme, bóc tách bằng Public Suffix List, lấy port và IP."""
+    """Xử lý URL thiếu scheme, bóc tách bằng PSL, bắt IPv4/IPv6 chuẩn và chống rỗng key."""
     if not isinstance(raw_url, str):
         raw_url = ""
     raw_url_stripped = raw_url.strip()
     
-    # Kiểm tra scheme
     has_scheme = bool(re.match(r"^[a-zA-Z][a-zA-Z0-9+-.]*://", raw_url_stripped))
     working_url = raw_url_stripped if has_scheme else "http://" + raw_url_stripped
     
     try:
         parsed = urlparse(working_url)
-        ext = tldextract.extract(working_url)
+        # urlparse tự động xử lý ngoặc vuông của IPv6 và chuyển hostname thành chữ thường
+        hostname = parsed.hostname or ""
         
-        hostname = (f"{ext.subdomain}.{ext.registered_domain}" if ext.subdomain else ext.registered_domain).lower()
-        if not hostname: 
-            hostname = parsed.netloc.split(":")[0].lower()
+        # 1. Nhận diện IP hợp lệ (IPv4 & IPv6)
+        is_ip = False
+        try:
+            ip_str = hostname.strip("[]")
+            ipaddress.ip_address(ip_str)
+            is_ip = True
+        except ValueError:
+            pass
+
+        # 2. Bóc tách bằng tldextract
+        ext = tldextract.extract(working_url)
+        reg_domain = ext.registered_domain.lower()
+        subdomain = ext.subdomain.lower()
+        
+        # 3. Chống rỗng grouping key (Phòng ngừa Data Leakage khi Group CV)
+        if is_ip:
+            reg_domain = hostname  # Dùng luôn IP làm key chia nhóm
+        elif not reg_domain:
+            # Fallback cho các domain nội bộ (vd: .example) hoặc lỗi
+            reg_domain = hostname if hostname else "UNKNOWN_DOMAIN"
             
         return ParsedURL(
             raw_url=raw_url_stripped,
             hostname=hostname,
-            registrable_domain=ext.registered_domain.lower(),
-            subdomain=ext.subdomain.lower(),
+            registrable_domain=reg_domain,
+            subdomain=subdomain,
             path=parsed.path,
             query=parsed.query,
             port=parsed.port,
-            scheme_was_added=not has_scheme
+            scheme_was_added=not has_scheme,
+            is_ip=is_ip
         )
     except Exception:
-        # Trường hợp input không hợp lệ
         return ParsedURL(
-            raw_url=raw_url_stripped, hostname="", registrable_domain="", 
-            subdomain="", path="", query="", port=None, scheme_was_added=not has_scheme
+            raw_url=raw_url_stripped, hostname="", registrable_domain="ERROR_DOMAIN", 
+            subdomain="", path="", query="", port=None, scheme_was_added=not has_scheme, is_ip=False
         )
