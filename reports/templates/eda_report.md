@@ -7,10 +7,42 @@ Notebook: `notebooks/02_eda_and_splits.ipynb`, giữ 12 cell và các section te
 
 - PhishVN v3.1.0: dữ liệu gốc 53,116 URL; core Gold/Silver 18,997 URL, gồm 16,410 benign và 2,587 phishing.
 - Parser/features/dictionary của Hy: commit `65b1054bbc014bb2e434d722acb12073608220b4` (PR #2 đã merge); tldextract 5.4.0, PSL snapshot đóng gói, private suffix=False, IDNA 3.20.
-- Local HEAD và origin/main hiện ở `65b1054`. Các CSV được tái tạo bằng nguyên notebook 03 từ snapshot bất biến của đúng commit này; parser/features/dictionary local đã đối chiếu và khớp cùng commit. Notebook 02 đọc dictionary local chính thức, không sửa mã của Hy.
+- `65b1054` là merge/base commit cung cấp parser/features/dictionary của Hy, không phải HEAD của branch Hưng. Phần EDA/CV nằm trên branch `week4/hung-eda-domain-cv`; xác định revision đang review bằng `git rev-parse --short HEAD`, không cố định HEAD động trong báo cáo.
+- Các CSV được tái tạo bằng nguyên notebook 03 từ mã Hy tại base commit trên; parser/features/dictionary đã đối chiếu và khớp cùng phiên bản. Notebook 02 đọc dictionary local chính thức, không sửa mã của Hy.
 - Python 3.14.0, pandas 3.1.0, NumPy 2.5.4, scikit-learn 1.9.1, matplotlib 3.11.2.
 - Khiêm: core được đối chiếu với `prepare_core()` theo ID, mọi cột/giá trị khớp. Không thay dataset, nhãn hoặc official splits.
-- Run All bằng kernel mới trong `.venv`; unit/integration tests: **49 PASS**. Test integration có thể skip trên clone sạch nếu chưa tạo các CSV local bị Git bỏ qua.
+- Lần chạy EDA đã lưu dùng kernel mới trong `.venv`. Với đầy đủ CSV local: **48 unit tests + 1 integration test PASS**. Integration test SKIP khi thiếu CSV không có nghĩa đã kiểm chứng Group CV trên dữ liệu thật.
+
+## Tái tạo CSV local và chạy kiểm thử
+
+Checkout revision branch Hưng cần tái lập, mở **root repository** và thiết lập `.venv` theo README. Chọn cùng interpreter `.venv` cho cả ba notebook. Môi trường đã xác nhận là Python 3.14.0 và các phiên bản ghi phía trên; `requirements.txt` chỉ ghim tldextract/IDNA, chưa khóa toàn bộ thư viện. Muốn tái lập đúng mapping folds cần giữ cả phiên bản scikit-learn, không chỉ seed.
+
+```sh
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m jupyterlab
+```
+
+Trên Windows dùng `.venv\Scripts\python.exe` thay cho `.venv/bin/python`. Không cần tạo lại môi trường đã có đủ dependencies.
+CSV gốc mặc định nằm trong `data/`; nếu ở nơi khác, đặt `PHISHGUARD_DATA_DIR` tới thư mục chứa `dataset_url.csv`, `abuse_type.csv` và `splits/` trước khi khởi động kernel. `PHISHGUARD_ROOT` chỉ cần khi không tự tìm được root. Các CSV bàn giao vẫn được ghi vào `<repo>/data/interim/`.
+
+Thực hiện **Restart Kernel → Run All** lần lượt, không chỉ xem saved outputs:
+
+1. `notebooks/01_data_quality.ipynb`: từ CSV gốc tạo `core_gold_silver.csv`, `bronze_separate.csv`, `core_exclusions.csv`.
+2. `notebooks/03_url_features.ipynb`: đọc core, tạo `03_registrable_domains.csv`, `03_matrix_X_features.csv`, `03_excluded_rows.csv` bằng parser/features của Hy.
+3. `notebooks/02_eda_and_splits.ipynb`: đọc CSV gốc, core, ba handoff của notebook 03 và `reports/templates/feature_dictionary.csv`; kiểm định và tạo `02_group_folds_train.csv`.
+
+Tất cả CSV trên nằm trong `data/interim/` và bị Git bỏ qua. File folds có schema **`id,fold_id`**, **13,078 ID train đủ điều kiện**, không có official Validation/Test. Nếu file folds đã tồn tại, notebook kiểm tra equality và báo lỗi khi khác; không tự ghi đè hoặc sửa seed để ép khớp. Khi handoff, gửi cùng revision source và thông tin môi trường; không force-add CSV hoặc sửa `.gitignore`.
+
+`pytest` chưa được khai báo trong `pyproject.toml` hoặc `requirements.txt`, dù môi trường kiểm chứng đã có pytest 9.1.1. Khi cần, người tái lập có thể cài riêng test dependency trong `.venv`:
+
+```sh
+.venv/bin/python -m pip install pytest==9.1.1
+.venv/bin/python -m pytest -q tests/test_splits.py
+```
+
+Đề xuất tối thiểu để nhóm duyệt: thêm optional dependency `[project.optional-dependencies]` với `test = ["pytest"]`. Review này chưa thay cấu hình dependency hoặc cài thêm gói.
+
+48 unit tests synthetic không cần dataset. Integration test cần `core_gold_silver.csv`, `03_registrable_domains.csv` và `02_group_folds_train.csv`; nếu thiếu một file thì SKIP. Hai tình huống đã kiểm tra: đủ CSV **49 PASS, 0 SKIP**; bản sao code không có CSV **48 PASS, 1 SKIP**. Dùng thêm `-rs` để xem lý do skip; trường hợp SKIP cần chạy chuỗi 01 → 03 → 02 rồi kiểm thử lại trước khi bàn giao kết quả thật.
 
 ## Phát hiện chính
 
