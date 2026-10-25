@@ -1,1 +1,23 @@
 feature,formula,count_scope,rationale,train_check,decision,reason,owner
+url_len,len(url_no_scheme),URL bỏ scheme,Độ dài URL: URL phishing thường dài/lạ hơn,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema CompPhish,Nguyễn Khang Hy
+dom_len,len(registrable_domain); URL là IP thì len(hostname),"Registrable domain (PSL, không tính private suffix)","Độ dài domain đăng ký, không tính subdomain","chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Khớp vn_compphish.csv (dvc.bcavn.cc -> bcavn.cc = 8). Bản cũ dùng len(hostname)=12 nên lệch tham chiếu,Nguyễn Khang Hy
+is_ip,hostname là IPv4/IPv6 literal (0/1),Hostname,Phishing hay dùng IP thay domain,"url_train.csv: 0 URL dạng IPv4, 0 có '[' -> hằng 0",keep,"Giữ cho schema nhất quán; là cột hằng trên dữ liệu hiện tại, Phúc cân nhắc bỏ khi chọn feature",Nguyễn Khang Hy
+tld_len,len(tld),TLD,Độ dài TLD,"chưa đo: điền từ train core (core_gold_silver, phần train)",drop,"Ít thông tin; TLD cần xử lý dạng categorical (suspicious_tld) ở vòng sau, không đưa độ dài thô vào baseline",Nguyễn Khang Hy
+subdom_cnt,số nhãn trong subdomain (0 nếu không có),Subdomain theo PSL,Chuỗi subdomain dài thường gặp ở phishing,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+letter_cnt,số ký tự isalpha(),URL bỏ scheme,Thành phần ký tự của URL,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+digit_cnt,số ký tự isdigit(),URL bỏ scheme,Thành phần ký tự của URL,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+special_cnt,url_len - letter_cnt - digit_cnt,URL bỏ scheme,Số ký tự còn lại,Đúng trên 8/8 dòng mẫu của vn_compphish.csv (cần kiểm toàn bộ file),drop,Dư thừa tuyến tính: url_len = letter_cnt + digit_cnt + special_cnt,Nguyễn Khang Hy
+eq_cnt,count('='),URL bỏ scheme,Tham số query,"url_train.csv (n=36909): 31 URL có '?' (0,08%), 28 có '=' (0,08%), 5 có '&' (0,01%) -> gần như hằng",drop,Gần như hằng trên train nên không đủ tín hiệu cho baseline; xem lại nếu dữ liệu có nhiều query hơn,Nguyễn Khang Hy
+qm_cnt,count('?'),URL bỏ scheme,Có query hay không,"url_train.csv (n=36909): 31 URL có '?' (0,08%), 28 có '=' (0,08%), 5 có '&' (0,01%) -> gần như hằng",drop,Như eq_cnt,Nguyễn Khang Hy
+amp_cnt,count('&'),URL bỏ scheme,Số tham số query,"url_train.csv (n=36909): 31 URL có '?' (0,08%), 28 có '=' (0,08%), 5 có '&' (0,01%) -> gần như hằng",drop,Như eq_cnt,Nguyễn Khang Hy
+dot_cnt,count('.'),URL bỏ scheme,Số dấu chấm: nhiều cấp subdomain/đường dẫn,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+dash_cnt,count('-'),URL bỏ scheme,Dấu gạch nối thường dùng để giả tên thương hiệu,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+under_cnt,count('_'),URL bỏ scheme,Dấu gạch dưới,"url_train.csv (n=36909): 11 URL có '_' (0,03%) -> rất thưa",keep,Giữ để schema nhất quán; có thể bị loại ở bước chọn feature trong fold,Nguyễn Khang Hy
+letter_ratio,letter_cnt / url_len,URL bỏ scheme,Tỷ lệ chữ cái,"chưa đo: điền từ train core (core_gold_silver, phần train)",drop,"Suy ra được từ letter_cnt và url_len đã giữ (hàm xác định, không phải tổ hợp tuyến tính)",Nguyễn Khang Hy
+digit_ratio,digit_cnt / url_len,URL bỏ scheme,Tỷ lệ chữ số,"chưa đo: điền từ train core (core_gold_silver, phần train)",drop,Suy ra được từ digit_cnt và url_len đã giữ,Nguyễn Khang Hy
+spec_ratio,special_cnt / url_len,URL bỏ scheme,Tỷ lệ ký tự đặc biệt,"chưa đo: điền từ train core (core_gold_silver, phần train)",drop,Suy ra được từ cột đã giữ (special_cnt đã bị loại),Nguyễn Khang Hy
+slash_cnt,count('/'),URL bỏ scheme,Độ sâu đường dẫn,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+entropy,Shannon entropy log2 theo ký tự,URL bỏ scheme,URL ngẫu nhiên/sinh tự động có entropy cao,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+path_len,"len(path) từ urlsplit (gồm ';params', không gồm query/fragment)",Path,Độ dài đường dẫn,"chưa đo: điền từ train core (core_gold_silver, phần train)",keep,Cột cơ bản của schema,Nguyễn Khang Hy
+query_len,len(query),Query,Độ dài query,"url_train.csv (n=36909): 31 URL có '?' (0,08%), 28 có '=' (0,08%), 5 có '&' (0,01%) -> gần như hằng",drop,Như eq_cnt,Nguyễn Khang Hy
+is_https,scheme == https (0/1),Scheme,Giữ trong vn_compphish.csv để tương thích,n/a,exclude,Collection artefact theo schema.md: loại khỏi X để tránh rò rỉ/nhiễu thu thập,Nguyễn Khang Hy
