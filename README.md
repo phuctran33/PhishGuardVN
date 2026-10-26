@@ -3,8 +3,9 @@
 Đồ án CSC14005 — phát hiện nguy cơ từ URL và nghiên cứu đặc trưng thương hiệu
 trong bối cảnh Việt Nam.
 
-**Trạng thái: template tuần 4, chưa thực hiện EDA hay huấn luyện mô hình.**
-Các hàm nghiệp vụ có `TODO`/`NotImplementedError`; notebook là dàn ý để nhóm điền.
+**Trạng thái tuần 4: đã có kiểm định dữ liệu, parser/features, EDA/Group CV và baseline Dummy/LR.**
+Baseline là kết quả ban đầu; chưa đánh giá official test và chưa chọn mô hình cuối kỳ.
+Xem [báo cáo baseline](reports/week4_baseline.md) và notebook `04_baseline_ml.ipynb`.
 
 **Mặc định chạy hoàn toàn local** bằng VS Code/Jupyter và môi trường `.venv` riêng.
 GitHub dùng để quản lý code; từng thành viên có thể chọn môi trường chạy khác nhau.
@@ -42,10 +43,10 @@ PhishGuardVN/
 │   ├── attacks/                  # Chưa dùng ở tuần 4
 │   ├── interim/                  # Bảng kiểm định, domain, fold do nhóm tạo
 │   └── processed/                # Ma trận features do nhóm tạo
-├── notebooks/                    # 4 notebook có dàn ý/TODO
-├── src/phishguard_vn/             # Module dùng chung, nghiệp vụ chưa triển khai
+├── notebooks/                    # 01 → 03 → 02 → 04: chuỗi dữ liệu đến baseline
+├── src/phishguard_vn/             # Parser, features, CV, modeling, evaluation, reporting
 ├── scripts/check_setup.py         # Kiểm tra đường dẫn/file cục bộ
-├── models/                       # Chưa có model
+├── models/                       # Baseline LR + metadata local, bị Git bỏ qua
 ├── reports/
 │   ├── figures/
 │   ├── tables/
@@ -56,7 +57,7 @@ PhishGuardVN/
 │   ├── schema.md
 │   ├── data_sources.md
 │   └── project/                  # Workflow, quyết định và task của nhóm
-├── tests/README.md               # Tình huống cần kiểm tra khi viết code
+├── tests/                        # Split/CV và baseline contracts
 ├── requirements.txt
 ├── pyproject.toml
 ├── LICENSE                       # Giấy phép DATASET gốc
@@ -103,7 +104,7 @@ Trên macOS/Linux dùng `.venv/bin/python`.
 ```
 
 Notebook tự tìm root repo, đọc dữ liệu ở `data/` và config ở `configs/`.
-Các ô TODO được thành viên phụ trách triển khai; chạy template chưa tạo ra EDA/model.
+Chạy notebook theo thứ tự **01 → 03 → 02 → 04**. Mỗi bước tạo artifact cho bước kế tiếp.
 
 ### 4. Dữ liệu ở ổ đĩa khác — tùy chọn
 
@@ -146,6 +147,30 @@ lưu kết quả. Trước khi đóng runtime, tải kết quả cần giữ v�
 đã thống nhất. Code/parser/features và cấu hình dùng chung với luồng local.
 
 Xem [`docs/project/workflow.md`](docs/project/workflow.md) để phối hợp trong nhóm.
+
+
+## Chạy baseline tuần 4
+
+Sau khi đã chạy 01 → 03 → 02 để tạo handoff CSV:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/train_baseline.py
+.\.venv\Scripts\python.exe -m pip install -e '.[test]'
+.\.venv\Scripts\python.exe -m pytest -q
+```
+
+Hoặc mở `notebooks/04_baseline_ml.ipynb` bằng kernel `.venv` để xem từng bước.
+Dummy là mốc tham chiếu. LR thường và LR balanced là hai cấu hình của cùng thuật toán.
+Chọn cấu hình bằng F1 phishing trung bình trên Group CV, ngưỡng cố định 0,5;
+validation chỉ bổ sung và test chưa được dự đoán. Scaler fit riêng trong train mỗi fold.
+Code tự kiểm tra ID, domain, cột đầu vào và rò rỉ val/test trong fold.
+Model/metadata nằm tại models/, predictions lớn tại data/interim/, bảng nhỏ và hình ở reports/.
+File kết quả sẽ được tái tạo khi chạy lại cùng lệnh; thời gian fit có thể khác giữa các máy.
+Ghi chú observation/hypothesis/next_check trong `04_error_examples.csv` được giữ lại;
+`04_error_notes.csv` tự lưu ghi chú của ví dụ không còn được chọn ở lần chạy mới.
+Môi trường và hash source/handoff của kết quả nằm trong `reports/tables/04_run_metadata.json`.
+Để đối chiếu kết quả đã lưu, dùng cùng phiên bản Python/thư viện ghi trong metadata;
+chỉ giữ seed giống nhau chưa đủ bảo đảm tái lập giữa các phiên bản scikit-learn.
 
 ## Quy tắc dữ liệu và đánh giá
 

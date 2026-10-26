@@ -18,5 +18,8 @@ dependencies = [
     "joblib",
 ]
 
+[project.optional-dependencies]
+test = ["pytest"]
+
 [tool.setuptools.packages.find]
 where = ["src"]

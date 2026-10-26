@@ -1,0 +1,4 @@
+model,evaluation_partition,threshold,n_rows,n_benign,n_phishing,accuracy,precision_phishing,recall_phishing,f1_phishing,pr_auc,pr_auc_definition,false_positive_rate,tn,fp,fn,tp
+dummy_most_frequent,official_validation,0.5,1585,1561,24,0.9848580441640379,0.0,0.0,0.0,0.015141955835962145,average_precision,0.0,1561,0,24,0
+logistic_regression,official_validation,0.5,1585,1561,24,0.9703470031545741,0.2553191489361702,0.5,0.3380281690140845,0.2933080203073035,average_precision,0.02242152466367713,1526,35,12,12
+logistic_regression_balanced,official_validation,0.5,1585,1561,24,0.5917981072555205,0.0343796711509716,0.9583333333333334,0.06637806637806638,0.2744314014981259,average_precision,0.4138372837924407,915,646,1,23

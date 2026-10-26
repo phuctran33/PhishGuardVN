@@ -1,9 +1,11 @@
-# Model artifacts
+# Local baseline artifacts
 
-Chưa có mô hình được huấn luyện. Phúc bổ sung artifact sau baseline.
-Lưu cấu hình, phiên bản features, nhãn dương, ngưỡng, seed, môi trường,
-dữ liệu/split và bảng metric tương ứng. Pipeline chứa scaler đã fit;
-train và predict dùng chung parser/extractor.
+Sau khi chạy notebook 04 hoặc scripts/train_baseline.py:
+- week4_lr_baseline.joblib: pipeline, feature names, threshold và cấu hình.
+- week4_lr_baseline_metadata.json: scope, phiên bản thư viện, hash source/handoff và model.
 
-Model được lưu local tại thư mục này và bỏ qua trong Git. Bàn giao bằng file hoặc
-nơi lưu trữ đã thống nhất (ví dụ ổ chia sẻ/Drive); không bắt buộc dịch vụ cloud.
+Artifact chỉ fit core train. Official validation là báo cáo bổ sung; test chưa được dùng.
+Model được bỏ qua trong Git; bàn giao riêng. Xem reports/week4_baseline.md trước khi diễn giải score.
+
+Bản metadata có thể quản lý phiên bản nằm ở reports/tables/04_run_metadata.json.
+Source hashes chuẩn hóa CRLF về LF; input hashes kiểm tra byte gốc của các handoff.

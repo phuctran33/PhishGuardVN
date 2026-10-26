@@ -1,0 +1,11 @@
+id,model,fold_id,evaluation_partition,true_label,predicted_label,score,error_type,observation,hypothesis,next_check
+0016e4c2-9ad3-508d-b431-7f8b71490403,logistic_regression_balanced,0,group_cv,0,1,0.9790057979041636,false_positive,,,
+001bc235-ae68-5a77-9033-f89e5f3a1a3d,logistic_regression_balanced,0,group_cv,0,1,0.5630851158551314,false_positive,,,
+00365027-25d4-587b-b8fe-cf9fb6e96ca2,logistic_regression_balanced,0,group_cv,0,1,0.534817976684894,false_positive,,,
+003d4d8a-d526-5f12-a667-7669ea01433e,logistic_regression_balanced,0,group_cv,0,1,0.5376331779961606,false_positive,,,
+00599d96-dd2c-5155-b9e9-f8dc8a42cb87,logistic_regression_balanced,0,group_cv,1,0,0.44782864380543724,false_negative,,,
+006dd036-9639-5b7d-8829-b2dde328fdba,logistic_regression_balanced,0,group_cv,0,1,0.5732933806138149,false_positive,,,
+00becf11-e28e-5de3-a0ca-c9da1a7481ec,logistic_regression_balanced,0,group_cv,1,0,0.4912571316198368,false_negative,,,
+0126d36d-8ecb-5c58-a2a0-1a2cb4284bdc,logistic_regression_balanced,0,group_cv,1,0,0.42863183358807216,false_negative,,,
+024e4d37-e57b-57ea-9531-5f69c0a80b7c,logistic_regression_balanced,0,group_cv,1,0,0.42748390267018715,false_negative,,,
+03a03512-5c76-52a6-b5b9-5aaf78bdb0a8,logistic_regression_balanced,0,group_cv,1,0,0.42863183358807216,false_negative,,,
