@@ -49,19 +49,20 @@
     "matplotlib": "3.11.2"
   },
   "source_sha256_lf": {
+    "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
     "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
     "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
     "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
     "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
     "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
-    "src/phishguard_vn/reporting.py": "515a2d21b9cbdf14bb0fd4225ce4131f69631a954678e5e58d24b3a5d3cb7ffb",
+    "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
     "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
     "src/phishguard_vn/url_parser.py": "0ca974ef204ec025aeeb599d2f6460153b2e46f5f2af021b688d06c4e907102b",
-    "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
     "configs/baseline.toml": "0db33eb42a86c9ee82939e88c6aff9f6742c9fe8fe5b95f35228a5024e24b0d2",
     "scripts/train_baseline.py": "b5751f89805a04c80977033fd4ff536b884e87386340046a35d9000acf25152e",
     "reports/templates/feature_dictionary.csv": "bfcb84e18c818b3ef0ba0a8086956385b638c0b592b8182f2e15e5c6496a52cc"
   },
+  "source_manifest_sha256": "f90079f1805caf7a7c48160b5756c95d1d6ce08976618758ec0184741374077d",
   "input_sha256": {
     "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
     "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb",
@@ -73,6 +74,10 @@
     "input": "raw bytes"
   },
   "artifact_sha256": "f63a9b9b03e0badf02b1eb67b2b236aa6e8cc2a67b3043e93e20a79c47464d18",
-  "git_revision": "d5555da087399780678d1f97c100c3dc3201eec0",
-  "git_worktree_status": "M README.md\n M configs/baseline.toml\n M models/README.md\n M notebooks/04_baseline_ml.ipynb\n M pyproject.toml\n M src/phishguard_vn/__init__.py\n M src/phishguard_vn/evaluation.py\n M src/phishguard_vn/modeling.py\n M tests/README.md\n?? reports/figures/04_confusion_matrices.png\n?? reports/figures/04_precision_recall_cv.png\n?? reports/tables/04_cv_metrics.csv\n?? reports/tables/04_cv_summary.csv\n?? reports/tables/04_error_examples.csv\n?? reports/tables/04_validation_metrics.csv\n?? reports/week4_baseline.md\n?? scripts/train_baseline.py\n?? src/phishguard_vn/reporting.py\n?? tests/test_baseline.py"
+  "git_revision": "eb97564f28a226c417284dd8f3e5da99ec14e206",
+  "git_worktree_status": "M README.md\n M notebooks/04_baseline_ml.ipynb\n M reports/tables/04_cv_metrics.csv\n M reports/tables/04_error_examples.csv\n M reports/tables/04_run_metadata.json\n M reports/week4_baseline.md\n M src/phishguard_vn/reporting.py\n M tests/test_baseline.py\n?? reports/tables/04_error_diagnostics.json\n?? reports/tables/04_error_notes.csv\n?? reports/week4_error_analysis.md\n?? scripts/analyze_baseline_errors.py",
+  "git_source_worktree_status": "M src/phishguard_vn/reporting.py",
+  "source_state": "modified_from_head",
+  "captured_at_utc": "2026-10-26T07:00:24.571405+00:00",
+  "provenance_note": "Captured before save_results writes generated outputs. git_revision is HEAD at run time, not a claim that the run used a clean commit or the eventual report commit. source_state concerns only files in source_sha256_lf; that manifest identifies runtime sources/config (CRLF normalized to LF), including uncommitted changes. input_sha256 identifies handoff bytes; neither a later commit nor edited metadata retroactively changes the provenance of an earlier run."
 }

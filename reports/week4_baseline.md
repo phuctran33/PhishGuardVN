@@ -47,8 +47,16 @@ Excluded from X/CV: 2 core rows; the original core is preserved and excluded IDs
 ## Error analysis
 
 The CSV contains up to five false positives and five false negatives from the selected model's OOF predictions.
-TODO(Phuc): inspect original URLs by id and record observations/hypotheses; no labels were changed.
+Selection cycles through available folds (0, 1, 2), with ascending IDs within each fold. With five examples per error type the allocation is 2/2/1 when every fold has enough errors.
+This small deterministic sample is for qualitative inspection, not an unbiased sample or an estimate of error-category frequency.
+See [measured FP/FN analysis and CV-validation gap](week4_error_analysis.md). Observations, hypotheses and next checks are recorded in the CSV; no labels were changed.
 Manual notes in 04_error_examples.csv survive reruns; 04_error_notes.csv automatically archives notes for examples not currently selected.
+
+## Provenance
+
+Runtime HEAD (base revision): `eb97564f28a226c417284dd8f3e5da99ec14e206`; runtime source state: `modified_from_head`.
+The source SHA256 manifest, handoff hashes and capture time are in reports/tables/04_run_metadata.json. A dirty run is not presented as a clean-commit run; generated-output changes are separate from runtime-source changes.
+The previous snapshot recorded d5555da because the baseline source was then uncommitted on top of Hung's branch. It was a run-time base revision, not the baseline implementation commit. This snapshot comes from a fresh run; the old SHA was not manually replaced.
 
 Reproduce: python scripts/train_baseline.py (from the project environment).
 

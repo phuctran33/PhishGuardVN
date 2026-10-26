@@ -1,6 +1,7 @@
 """Save measured baseline results and reproducibility metadata."""
 from __future__ import annotations
 import hashlib
+from datetime import datetime, timezone
 from importlib.metadata import version
 import json
 import platform
@@ -82,8 +83,53 @@ def _source_hash(path):
     return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
+def select_error_examples(predictions, selected_model, per_type=5):
+    """Deterministic round robin across available folds, separately for FP/FN.
+
+    Within a fold use ascending ID, not score. This is a qualitative sample,
+    not a random or statistically representative estimate of the error population.
+    """
+    errors = predictions.loc[predictions.model.eq(selected_model) &
+                             predictions.true_label.ne(predictions.predicted_label)].copy()
+    errors["error_type"] = errors.predicted_label.map({1: "false_positive", 0: "false_negative"})
+    errors = errors.sort_values(["error_type", "fold_id", "id"])
+    errors["_rank_in_fold"] = errors.groupby(["error_type", "fold_id"]).cumcount()
+    return (errors.sort_values(["error_type", "_rank_in_fold", "fold_id", "id"])
+            .groupby("error_type", sort=True).head(per_type)
+            .drop(columns="_rank_in_fold").reset_index(drop=True))
+
+
+def _git_provenance(root, sources):
+    """HEAD is a base revision; source hashes identify any uncommitted runtime code."""
+    def git(*args):
+        proc = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
+        return proc.stdout.strip() if proc.returncode == 0 else "unavailable"
+    paths = sorted(p.relative_to(root).as_posix() for p in sources)
+    source_status = git("status", "--porcelain", "--untracked-files=all", "--", *paths)
+    return {
+        "git_revision": git("rev-parse", "HEAD"),
+        "git_worktree_status": git("status", "--porcelain", "--untracked-files=all"),
+        "git_source_worktree_status": source_status,
+        "source_state": ("unavailable" if source_status == "unavailable" else
+                         "modified_from_head" if source_status else "matches_head"),
+        "captured_at_utc": datetime.now(timezone.utc).isoformat(),
+        "provenance_note": (
+            "Captured before save_results writes generated outputs. git_revision is HEAD at run time, "
+            "not a claim that the run used a clean commit or the eventual report commit. "
+            "source_state concerns only files in source_sha256_lf; that manifest identifies runtime "
+            "sources/config (CRLF normalized to LF), including uncommitted changes. "
+            "input_sha256 identifies handoff bytes; neither a later commit nor edited metadata "
+            "retroactively changes the provenance of an earlier run."
+        ),
+    }
+
+
 def save_results(result, config, root, config_path):
     tables, interim, models = root/"reports/tables", root/"data/interim", root/"models"
+    sources = sorted((root/"src/phishguard_vn").glob("*.py")) + [config_path]
+    sources += [p for p in [root/"scripts/train_baseline.py", root/"reports/templates/feature_dictionary.csv"] if p.is_file()]
+    provenance = _git_provenance(root, sources)
+    source_hashes = {p.relative_to(root).as_posix(): _source_hash(p) for p in sources}
     notes = _read_error_notes(tables)
     for folder in (tables, interim, models):
         folder.mkdir(parents=True, exist_ok=True)
@@ -91,11 +137,7 @@ def save_results(result, config, root, config_path):
         result[key].to_csv(tables/f"04_{key}.csv", index=False)
     for key in ("cv_predictions", "validation_predictions"):
         result[key].to_csv(interim/f"04_{key}.csv", index=False)
-    errors = result["cv_predictions"]
-    errors = errors.loc[errors.model.eq(result["selected_model"]) &
-                        errors.true_label.ne(errors.predicted_label)].copy()
-    errors["error_type"] = errors.predicted_label.map({1: "false_positive", 0: "false_negative"})
-    examples = errors.groupby("error_type", sort=True).head(5)
+    examples = select_error_examples(result["cv_predictions"], result["selected_model"])
     examples = examples.merge(notes, on=NOTE_KEYS, how="left", validate="one_to_one")
     for column in NOTE_COLUMNS:
         examples[column] = examples[column].fillna("")
@@ -107,8 +149,6 @@ def save_results(result, config, root, config_path):
                 "selected_model": result["selected_model"], "config": config}
     artifact_path=models/"week4_lr_baseline.joblib"
     joblib.dump(artifact, artifact_path)
-    sources = list((root/"src/phishguard_vn").glob("*.py")) + [config_path]
-    sources += [p for p in [root/"scripts/train_baseline.py", root/"reports/templates/feature_dictionary.csv"] if p.is_file()]
     inputs = [interim/name for name in ["core_gold_silver.csv", "03_matrix_X_features.csv",
                                        "03_registrable_domains.csv", "02_group_folds_train.csv"]]
     metadata = {"selected_model": result["selected_model"], "selection_rule": result["selection_rule"],
@@ -116,13 +156,12 @@ def save_results(result, config, root, config_path):
                 "threshold": result["decision_threshold"], "pr_auc_definition": "average_precision",
                 "python": platform.python_version(),
                 "versions": {p: version(p) for p in ["numpy", "scipy", "pandas", "scikit-learn", "joblib", "tldextract", "idna", "matplotlib"]},
-                "source_sha256_lf": {p.relative_to(root).as_posix(): _source_hash(p) for p in sources},
+                "source_sha256_lf": source_hashes,
+                "source_manifest_sha256": hashlib.sha256(json.dumps(source_hashes, sort_keys=True).encode()).hexdigest(),
                 "input_sha256": {p.relative_to(root).as_posix(): _hash(p) for p in inputs},
                 "hash_conventions": {"source": "CRLF normalized to LF", "input": "raw bytes"},
                 "artifact_sha256": _hash(artifact_path)}
-    for command,key in [(["rev-parse","HEAD"],"git_revision"),(["status","--porcelain"],"git_worktree_status")]:
-        proc=subprocess.run(["git","-C",str(root),*command],capture_output=True,text=True)
-        metadata[key]=proc.stdout.strip() if proc.returncode==0 else "unavailable"
+    metadata.update(provenance)
     metadata_text=json.dumps(metadata,ensure_ascii=False,indent=2,allow_nan=False)+"\n"
     (models/"week4_lr_baseline_metadata.json").write_text(metadata_text,encoding="utf-8")
     (tables/"04_run_metadata.json").write_text(metadata_text,encoding="utf-8")
@@ -162,8 +201,14 @@ def save_results(result, config, root, config_path):
               "- data/interim/04_cv_predictions.csv and 04_validation_predictions.csv (ignored)",
               "- models/week4_lr_baseline.joblib and metadata JSON (ignored)",
               "", "## Error analysis", "", "The CSV contains up to five false positives and five false negatives from the selected model's OOF predictions.",
-              "TODO(Phuc): inspect original URLs by id and record observations/hypotheses; no labels were changed.",
+              "Selection cycles through available folds (0, 1, 2), with ascending IDs within each fold. With five examples per error type the allocation is 2/2/1 when every fold has enough errors.",
+              "This small deterministic sample is for qualitative inspection, not an unbiased sample or an estimate of error-category frequency.",
+              "See [measured FP/FN analysis and CV-validation gap](week4_error_analysis.md). Observations, hypotheses and next checks are recorded in the CSV; no labels were changed.",
               "Manual notes in 04_error_examples.csv survive reruns; 04_error_notes.csv automatically archives notes for examples not currently selected.",
+              "", "## Provenance", "",
+              f"Runtime HEAD (base revision): `{metadata['git_revision']}`; runtime source state: `{metadata['source_state']}`.",
+              "The source SHA256 manifest, handoff hashes and capture time are in reports/tables/04_run_metadata.json. A dirty run is not presented as a clean-commit run; generated-output changes are separate from runtime-source changes.",
+              "The previous snapshot recorded d5555da because the baseline source was then uncommitted on top of Hung's branch. It was a run-time base revision, not the baseline implementation commit. This snapshot comes from a fresh run; the old SHA was not manually replaced.",
               "", "Reproduce: python scripts/train_baseline.py (from the project environment).", ""]
     lines += ["", "![Confusion matrices](figures/04_confusion_matrices.png)",
               "", "![OOF precision-recall](figures/04_precision_recall_cv.png)", ""]

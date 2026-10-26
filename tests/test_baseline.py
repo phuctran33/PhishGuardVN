@@ -175,3 +175,104 @@ def test_report_describes_actual_run_and_publishes_environment(inputs,tmp_path):
     assert 'Two unresolved URLs' not in text
     assert 'Balanced LR prioritizes' not in text
     assert (tmp_path/'reports/tables/04_run_metadata.json').is_file()
+
+
+def test_error_sample_covers_folds_and_is_order_invariant():
+    from phishguard_vn.reporting import select_error_examples
+    rows = []
+    for fold in range(3):
+        for error_type, true, predicted in [("fp", 0, 1), ("fn", 1, 0)]:
+            for index in range(4):
+                rows.append(dict(id=f"{fold}-{error_type}-{index}", model="selected", fold_id=fold,
+                                 true_label=true, predicted_label=predicted, score=0.6 if predicted else 0.4))
+    frame = pd.DataFrame(rows)
+    selected = select_error_examples(frame, "selected")
+    shuffled = select_error_examples(frame.sample(frac=1, random_state=17), "selected")
+    pd.testing.assert_frame_equal(selected, shuffled)
+    assert len(selected) == 10
+    for _, group in selected.groupby("error_type"):
+        assert group.fold_id.tolist() == [0, 1, 2, 0, 1]
+        assert not group.id.duplicated().any()
+    # If one fold has no errors, consume the available folds without inventing rows.
+    sparse = select_error_examples(frame.loc[frame.fold_id.ne(1)], "selected")
+    assert set(sparse.fold_id) == {0, 2} and len(sparse) == 10
+    correct = frame.assign(predicted_label=frame.true_label)
+    assert select_error_examples(correct, "selected").empty
+
+
+def test_git_provenance_distinguishes_sources_from_generated_outputs(tmp_path):
+    import subprocess
+    from phishguard_vn.reporting import _git_provenance
+    def git(*args):
+        return subprocess.run(["git", "-C", str(tmp_path), *args], check=True, capture_output=True, text=True)
+    git("init")
+    source = tmp_path / "runtime.py"
+    source.write_text("value = 1\n", encoding="utf-8")
+    git("add", "runtime.py")
+    git("-c", "user.name=Baseline Test", "-c", "user.email=baseline-test@example.invalid",
+        "-c", "commit.gpgsign=false", "commit", "-m", "fixture")
+    head = git("rev-parse", "HEAD").stdout.strip()
+    clean = _git_provenance(tmp_path, [source])
+    assert clean["git_revision"] == head and clean["source_state"] == "matches_head"
+    (tmp_path / "generated.csv").write_text("output\n", encoding="utf-8")
+    outputs_only = _git_provenance(tmp_path, [source])
+    assert outputs_only["source_state"] == "matches_head"
+    assert "generated.csv" in outputs_only["git_worktree_status"]
+    source.write_text("value = 2\n", encoding="utf-8")
+    dirty = _git_provenance(tmp_path, [source])
+    assert dirty["git_revision"] == head and dirty["source_state"] == "modified_from_head"
+    assert "runtime.py" in dirty["git_source_worktree_status"]
+
+
+def test_provenance_is_captured_before_generated_writes(inputs,tmp_path,monkeypatch):
+    import json
+    import phishguard_vn.reporting as reporting
+    X,y,folds,config=inputs
+    result=run_baseline(X,y,folds,config)
+    config_path=_report_fixture(tmp_path)
+    original=reporting._git_provenance
+    captured=[]
+    def capture(root,sources):
+        captured.append(not (root/'reports/tables/04_cv_metrics.csv').exists())
+        return original(root,sources)
+    monkeypatch.setattr(reporting,'_git_provenance',capture)
+    reporting.save_results(result,config,tmp_path,config_path)
+    assert captured == [True]
+    metadata=json.loads((tmp_path/'reports/tables/04_run_metadata.json').read_text(encoding='utf-8'))
+    assert len(metadata['source_manifest_sha256']) == 64
+    assert metadata['source_sha256_lf']['configs/baseline.toml'] == reporting._source_hash(config_path)
+
+
+def test_error_diagnostics_reproduce_counts_and_reject_changed_inputs(inputs,tmp_path):
+    import importlib.util
+    import json
+    from pathlib import Path
+    from phishguard_vn.reporting import save_results
+    path=Path(__file__).resolve().parents[1]/'scripts/analyze_baseline_errors.py'
+    spec=importlib.util.spec_from_file_location('error_diagnostics',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    X,y,folds,config=inputs
+    result=run_baseline(X,y,folds,config)
+    config_path=_report_fixture(tmp_path)
+    interim=tmp_path/'data/interim'
+    X.to_csv(interim/'03_matrix_X_features.csv',index=False)
+    y.assign(source='fixture').to_csv(interim/'core_gold_silver.csv',index=False)
+    folds.to_csv(interim/'02_group_folds_train.csv',index=False)
+    save_results(result,config,tmp_path,config_path)
+    diagnostics=module.build_diagnostics(tmp_path)
+    selected=result['selected_model']
+    metrics=result['cv_metrics'].loc[result['cv_metrics'].model.eq(selected)]
+    assert diagnostics['cv']['pooled']['fp'] == int(metrics.fp.sum())
+    assert diagnostics['cv']['pooled']['fn'] == int(metrics.fn.sum())
+    assert diagnostics['validation']['pooled']['rows'] == 2
+    assert diagnostics['error_sample_collisions']
+    # Reject predictions with a test ID even if shape and labels look valid.
+    prediction_path=interim/'04_validation_predictions.csv'
+    predictions=pd.read_csv(prediction_path)
+    predictions.loc[predictions.model.eq(selected),'id']=['test-0','test-1']
+    predictions.to_csv(prediction_path,index=False)
+    with pytest.raises(ValueError,match='Unexpected prediction IDs'):
+        module.build_diagnostics(tmp_path)
+    with (interim/'03_matrix_X_features.csv').open('a') as handle:handle.write('\n')
+    with pytest.raises(ValueError,match='Handoff changed'):
+        module.build_diagnostics(tmp_path)

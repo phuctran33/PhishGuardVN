@@ -5,7 +5,7 @@ trong bối cảnh Việt Nam.
 
 **Trạng thái tuần 4: đã có kiểm định dữ liệu, parser/features, EDA/Group CV và baseline Dummy/LR.**
 Baseline là kết quả ban đầu; chưa đánh giá official test và chưa chọn mô hình cuối kỳ.
-Xem [báo cáo baseline](reports/week4_baseline.md) và notebook `04_baseline_ml.ipynb`.
+Xem [báo cáo baseline](reports/week4_baseline.md), [phân tích FP/FN và chênh lệch CV–Validation](reports/week4_error_analysis.md) và notebook `04_baseline_ml.ipynb`.
 
 **Mặc định chạy hoàn toàn local** bằng VS Code/Jupyter và môi trường `.venv` riêng.
 GitHub dùng để quản lý code; từng thành viên có thể chọn môi trường chạy khác nhau.
@@ -34,7 +34,7 @@ Tên/vai có thể hoán đổi theo thống nhất. Xem
 
 ```text
 PhishGuardVN/
-├── configs/baseline.toml          # Cấu hình đề xuất, chưa phải kết quả
+├── configs/baseline.toml          # Cấu hình cố định cho baseline tuần 4
 ├── data/
 │   ├── dataset_url.csv            # PhishVN gốc; giữ nguyên, có sẵn trong repo
 │   ├── vn_compphish.csv           # Bảng features tham khảo
@@ -155,6 +155,7 @@ Sau khi đã chạy 01 → 03 → 02 để tạo handoff CSV:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/train_baseline.py
+.\.venv\Scripts\python.exe scripts/analyze_baseline_errors.py
 .\.venv\Scripts\python.exe -m pip install -e '.[test]'
 .\.venv\Scripts\python.exe -m pytest -q
 ```
