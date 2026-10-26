@@ -1,4 +1,4 @@
-# Proposed settings, not an executed experiment.
+# Week-4 E1: fixed folds/threshold; validation supplementary; test held out.
 [experiment]
 name = "week4_e1_core_lr"
 seed = 42
@@ -23,13 +23,15 @@ use_test = false
 decision_threshold = 0.5
 
 [features]
-reference_schema = "PhishVN CompPhish-aligned 21 lexical features"
+reference_schema = "Hy official 12 lexical features (dictionary in reports/templates)"
 excluded_columns = ["is_https", "source", "tier", "split", "status", "scenario", "abuse_type", "id"]
-# TODO(Hy): define formulas and actual accepted columns in features.py.
+# Use CANDIDATE_FEATURES from the merged Hy extractor; metadata is not part of X.
 
 [model]
 baseline = "logistic_regression"
 reference = "dummy_most_frequent"
 scaling = "standard_scaler_within_fold"
-class_weight = "none"
-# Optional comparison: balanced, with the same folds and a separate result row.
+compare_balanced = true
+max_iter = 2000
+selection_metric = "mean_group_cv_f1_phishing"
+# Standard and balanced LR share the same folds and fixed threshold.

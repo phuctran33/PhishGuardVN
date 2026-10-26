@@ -1,14 +1,12 @@
-# Kiểm tra khi triển khai
+# Kiểm thử local
 
-Chưa có test nghiệp vụ vì parser/extractor/ML đang là template.
-Khi viết code, ưu tiên các kiểm tra có thể bắt lỗi thật:
+Cài test extra trong .venv: `python -m pip install -e '.[test]'`.
+Chạy `python -m pytest -q` tại root repo.
 
-- Parser: thiếu scheme, `.com.vn`, IP, `@`, port lỗi, Unicode/Punycode,
-  giữ path/query, thương hiệu trong subdomain.
-- Features: tính tay trên URL tổng hợp `.example`, phạm vi đếm scheme,
-  mẫu số 0, NaN/inf và thứ tự cột.
-- Split: domain không giao nhau, đủ hai lớp mỗi fold, id không mất/nhân bản khi join.
-- Pipeline: scaler/selector fit trong fold; load artifact cho cùng dự đoán;
-  train và predict dùng cùng công thức features.
+- test_splits.py: domain keys, train-only group CV, độ tái lập và handoff thật.
+- test_baseline.py: AP/confusion matrix, scaler fit trong fold, cấm val/test vào folds,
+  nối ID, metadata không vào X, model selection độc lập validation, lưu/load và URL lỗi.
 
-Không truy cập website từ URL trong dataset để kiểm tra.
+Integration test split cần CSV tạo từ notebook 01 → 03 → 02; nếu thiếu sẽ SKIP.
+Bộ kiểm thử đã chạy gồm split/CV, baseline, bảo toàn ghi chú, cấu hình và metadata báo cáo.
+Test synthetic không chứng minh hiệu năng ngoài dataset; xem reports/week4_baseline.md.
