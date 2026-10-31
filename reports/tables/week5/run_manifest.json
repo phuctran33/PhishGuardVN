@@ -1,0 +1,127 @@
+{
+  "files_sha256": {
+    "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+    "configs/week5.toml": "80cb28a956f447c7416939d8d5b588c231fd9c6c19eaa53f8957c7bd08c80975",
+    "configs/baseline.toml": "0db33eb42a86c9ee82939e88c6aff9f6742c9fe8fe5b95f35228a5024e24b0d2",
+    "pyproject.toml": "6019f0e71cd9f53e6f10f687eb1c24602af13a603aa7da0f29233cb795827cbe",
+    "requirements.txt": "f89a15df2e1078b3f59b520a86b9d6ee7ff07b019a8c64722b04d2e4fffa5209",
+    "reports/templates/feature_dictionary.csv": "bfcb84e18c818b3ef0ba0a8086956385b638c0b592b8182f2e15e5c6496a52cc",
+    "scripts/run_week5_evaluation.py": "1523f0f442664844f0decfc6336c34f8e23f0917a7e96368c0b962c07ea2f7dc",
+    "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
+    "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
+    "src/phishguard_vn/e2_audit.py": "1bcb56a9b98ee70b86ccb304f0c10613484af61388f6c1e93d6c77caee4f2c2a",
+    "src/phishguard_vn/error_analysis.py": "c7ae26f7267d01857f1b81a5dafde08c974adce6679ed175d86860eaf14afce9",
+    "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
+    "src/phishguard_vn/evaluation_audit.py": "298c3baf6e2301b580fa5394fb8c41d5cb9939d5b8ee9d6f92cf61fe67933898",
+    "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
+    "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
+    "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
+    "src/phishguard_vn/robustness.py": "0a57b790026d1ff88d08641f0b409545ad929c01060f237a54de91ed73f16e7d",
+    "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
+    "src/phishguard_vn/url_parser.py": "0ca974ef204ec025aeeb599d2f6460153b2e46f5f2af021b688d06c4e907102b",
+    "src/phishguard_vn/week5.py": "a4d641d57e5d5bae3e6fe92eccb7a857a84c8d1a2e74a38aca207b4f4ea03d54"
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "tldextract": "5.4.0",
+    "idna": "3.20",
+    "joblib": "1.6.0",
+    "matplotlib": "3.11.2"
+  },
+  "python": "3.14.0",
+  "fingerprint": "a43871519dbd72f2f3daa73522945e7dbc7d55bc6dcf7d013156fca9611f6134",
+  "git_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
+  "generated_at_utc": "2026-10-31T13:23:56.899763+00:00",
+  "selected_model": "logistic_regression_balanced",
+  "threshold": 0.5,
+  "cached_e1": false,
+  "e1_generation": {
+    "files_sha256": {
+      "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+      "configs/week5.toml": "80cb28a956f447c7416939d8d5b588c231fd9c6c19eaa53f8957c7bd08c80975",
+      "configs/baseline.toml": "0db33eb42a86c9ee82939e88c6aff9f6742c9fe8fe5b95f35228a5024e24b0d2",
+      "pyproject.toml": "6019f0e71cd9f53e6f10f687eb1c24602af13a603aa7da0f29233cb795827cbe",
+      "requirements.txt": "f89a15df2e1078b3f59b520a86b9d6ee7ff07b019a8c64722b04d2e4fffa5209",
+      "reports/templates/feature_dictionary.csv": "bfcb84e18c818b3ef0ba0a8086956385b638c0b592b8182f2e15e5c6496a52cc",
+      "scripts/run_week5_evaluation.py": "1523f0f442664844f0decfc6336c34f8e23f0917a7e96368c0b962c07ea2f7dc",
+      "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
+      "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
+      "src/phishguard_vn/e2_audit.py": "1bcb56a9b98ee70b86ccb304f0c10613484af61388f6c1e93d6c77caee4f2c2a",
+      "src/phishguard_vn/error_analysis.py": "c7ae26f7267d01857f1b81a5dafde08c974adce6679ed175d86860eaf14afce9",
+      "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
+      "src/phishguard_vn/evaluation_audit.py": "298c3baf6e2301b580fa5394fb8c41d5cb9939d5b8ee9d6f92cf61fe67933898",
+      "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+      "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
+      "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
+      "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
+      "src/phishguard_vn/robustness.py": "0a57b790026d1ff88d08641f0b409545ad929c01060f237a54de91ed73f16e7d",
+      "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
+      "src/phishguard_vn/url_parser.py": "0ca974ef204ec025aeeb599d2f6460153b2e46f5f2af021b688d06c4e907102b",
+      "src/phishguard_vn/week5.py": "a4d641d57e5d5bae3e6fe92eccb7a857a84c8d1a2e74a38aca207b4f4ea03d54"
+    },
+    "versions": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.0",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "tldextract": "5.4.0",
+      "idna": "3.20",
+      "joblib": "1.6.0",
+      "matplotlib": "3.11.2"
+    },
+    "python": "3.14.0",
+    "fingerprint": "a43871519dbd72f2f3daa73522945e7dbc7d55bc6dcf7d013156fca9611f6134",
+    "result_sha256": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+    "generated_at_utc": "2026-10-31T13:23:07.829794+00:00",
+    "lineage_sha256": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433",
+    "method": "merged run_baseline; each held-out domain fold predicted by a fresh clone fitted only on other folds"
+  },
+  "handoff_comparisons": {
+    "02_group_folds_train.csv": {
+      "status": "exact eligible-ID match",
+      "sha256": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863"
+    },
+    "03_matrix_X_features.csv": {
+      "status": "exact eligible-ID match",
+      "sha256": "c3039b30cf896df2355e8bb5115e05bdc6f9a7e0aa1f4e20a7ee33a060b6e7c9"
+    },
+    "03_registrable_domains.csv": {
+      "status": "exact eligible-ID match",
+      "sha256": "881dbc1a80a8a736395e774a9b0f36944e2f82df6cb682ab346c0d841c96705e"
+    }
+  },
+  "evaluation_scope": {
+    "train": 13078,
+    "validation": 1585,
+    "test_evaluated": false
+  },
+  "e2_status": "PREPARED / experimental audit BLOCKED: no E2 manifest supplied. Await Hy's features/dictionary/references and Phúc's predictions/configs/lineage/candidates; Khiêm's bias/pilot evidence is optional for core paired evaluation.",
+  "sampling": {
+    "seed": 42,
+    "requested": 40,
+    "actual": 40
+  },
+  "supporting_evidence_sha256": {
+    "reports/tables/week5/source_audit_review.json": "7c59608dcd1741e519957dea08610c071c65f21a9cad14f78ca1b0dda7861a8c"
+  },
+  "outputs_sha256": {
+    "reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
+    "reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
+    "reports/tables/week5/error_cases.csv": "b8444b4a0f821681659eee41224c8c11a0eab81a972a68b0b2eb061474e30cba",
+    "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+    "reports/tables/week5/error_taxonomy.csv": "466c0adf42cda6ea9df211d7ad86991b5476eca83a39a5685dce206cc307fe00",
+    "reports/tables/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320",
+    "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+    "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+    "reports/tables/week5/numerical_shift.csv": "a6790e0525f77340d8a6e8d37acd05e3264b3468b6618ffc07aeabd4eac5d8ae",
+    "reports/tables/week5/robustness_cases.csv": "131d0342bbeceb4a6cb7f97ce3782845ee96da693b1de7cacb2c47db6ad5c685",
+    "reports/tables/week5/robustness_summary.csv": "163a4af7a551616c1ac2c4d5a7d3ffb10c0784b946a60e6360f823b814a3c18e",
+    "reports/tables/week5/stratified_metrics.csv": "dc11f515fc5f52f0e1655bb7f923a5d296e7b3cf50be2b446f465f19b0b08a13"
+  },
+  "prediction_sha256": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+  "lineage_sha256": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433"
+}

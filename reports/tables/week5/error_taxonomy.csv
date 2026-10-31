@@ -1,0 +1,9 @@
+category,definition,sample_cases,interpretation
+brand_cues,Visible generic brand-like tokens; no proof of impersonation,2,"multi-label sample cue count, not population frequency"
+domain_subdomain,Multiple subdomain labels,6,"multi-label sample cue count, not population frequency"
+lexical_patterns,"Digits, hyphens, or action tokens in the string",5,"multi-label sample cue count, not population frequency"
+url_complexity,"Long URL, path or query",0,"multi-label sample cue count, not population frequency"
+idna_ip,"Unicode, punycode or IP literal",0,"multi-label sample cue count, not population frequency"
+source_effects,Source-label confounding is a population hypothesis,0,"multi-label sample cue count, not population frequency"
+label_uncertainty,Dataset label retained; semantic confirmation pending,0,"multi-label sample cue count, not population frequency"
+unknown,No selected static cue; mechanism undetermined,30,"multi-label sample cue count, not population frequency"

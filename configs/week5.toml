@@ -1,0 +1,19 @@
+[paths]
+dataset = "data/dataset_url.csv"
+baseline_config = "configs/baseline.toml"
+artifacts = "data/interim/week5"
+tables = "reports/tables/week5"
+figures = "reports/figures/week5"
+
+[audit]
+seed = 42
+sample_cases = 40
+expected_train_rows = 13078
+expected_validation_rows = 1585
+
+[e2]
+# Relative to project root. Artifact paths inside manifest are relative to manifest.
+manifest = ""
+# Optional trusted local module:function accepting one URL and returning phishing score.
+# Example: phishguard_local_e2:predict_score; must use the declared E2 extractor/order.
+predictor = ""

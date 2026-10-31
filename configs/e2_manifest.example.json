@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "feature_version": "REPLACE_WITH_HY_VERSION",
+  "producer_revision": "REPLACE_WITH_PHUC_REVISION",
+  "feature_names": ["url_len", "dom_len", "is_ip", "subdom_cnt", "letter_cnt", "digit_cnt", "dot_cnt", "dash_cnt", "under_cnt", "slash_cnt", "entropy", "path_len", "REPLACE_WITH_REAL_BRAND_FEATURES"],
+  "threshold": 0.5,
+  "score_definition": "phishing_probability",
+  "teacher_candidates": [],
+  "adapter": {"column_map": {}, "partition_map": {}},
+  "artifacts": {
+    "features": {"path": "features.csv", "sha256": "REPLACE_WITH_SHA256"},
+    "dictionary": {"path": "feature_dictionary.csv", "sha256": "REPLACE_WITH_SHA256"},
+    "references": {"path": "reference_manifest.json", "sha256": "REPLACE_WITH_SHA256"},
+    "predictions": {"path": "predictions.csv", "sha256": "REPLACE_WITH_SHA256"},
+    "folds": {"path": "folds.csv", "sha256": "REPLACE_WITH_SHA256"},
+    "configs": {"path": "model_configs.json", "sha256": "REPLACE_WITH_SHA256"},
+    "lineage": {"path": "training_lineage.json", "sha256": "REPLACE_WITH_SHA256"}
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "checked_at_utc": "2026-10-31T13:25:30.386843+00:00",
+  "runtime_fingerprint": "a43871519dbd72f2f3daa73522945e7dbc7d55bc6dcf7d013156fca9611f6134",
+  "pytest": {
+    "command": ".venv/bin/python -m pytest -q",
+    "passed": 126,
+    "skipped": 0,
+    "summary": "126 passed, 1322 warnings in 4.71s",
+    "test_source_sha256": {
+      "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
+      "tests/test_robustness.py": "64a96cea2df6ac77404489faf4fd95cd9c367f057558cb20e4287ddffc6753b4",
+      "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
+      "tests/test_week5_audit.py": "1db241af6f870e080697364b93080f5bca8059697ad8afd0970ef98ab5566ba8"
+    }
+  },
+  "notebook": {
+    "command": ".venv/bin/python -m nbconvert --to notebook --execute --inplace notebooks/05_error_robustness.ipynb --ExecutePreprocessor.timeout=600",
+    "code_cells_executed": 6,
+    "errors": 0,
+    "sha256": "c0bea229d398d0e1c5c5239bcf4622b96cb81728589bda2666cfe85de82091a2"
+  },
+  "reproducibility": {
+    "forced_reconstruction_seconds": 56.196658165892586,
+    "identical_hashes": true,
+    "before": {
+      "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+      "reports/tables/week5/error_cases.csv": "b8444b4a0f821681659eee41224c8c11a0eab81a972a68b0b2eb061474e30cba",
+      "reports/tables/week5/robustness_cases.csv": "131d0342bbeceb4a6cb7f97ce3782845ee96da693b1de7cacb2c47db6ad5c685",
+      "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028"
+    },
+    "after": {
+      "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+      "reports/tables/week5/error_cases.csv": "b8444b4a0f821681659eee41224c8c11a0eab81a972a68b0b2eb061474e30cba",
+      "reports/tables/week5/robustness_cases.csv": "131d0342bbeceb4a6cb7f97ce3782845ee96da693b1de7cacb2c47db6ad5c685",
+      "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028"
+    }
+  },
+  "clean_bootstrap": {
+    "clean_bootstrap_train_ids": 13078,
+    "excluded_train_rows": 2,
+    "week4_handoffs": "absent",
+    "independent_parser": {
+      "status": "parser/extractor-only",
+      "cases": 144,
+      "validity_pass": true
+    }
+  },
+  "pip_check": "No broken requirements found.",
+  "original_tracked_data_unchanged": true,
+  "official_test_predicted_or_scored": false,
+  "known_warnings": [
+    "Existing Hy parser uses deprecated tldextract registered_domain alias; no behavior change made to teammate code.",
+    "Original CSV loader reports mixed types in unused metadata columns; those columns are not part of X."
+  ],
+  "environment_lock_sha256": "cf5d8aece1c9fc76093d61bc3a12598bdafe4b0448f1f595015712d018a51019"
+}
