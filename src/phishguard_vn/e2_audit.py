@@ -89,8 +89,8 @@ def validate_feature_matrix(matrix, feature_names, dictionary, references, metad
     """
     if not feature_names or any(not isinstance(n, str) or not n.strip() for n in feature_names) or len(feature_names) != len(set(feature_names)):
         raise ValueError("Missing/duplicate feature order")
-    if any(name.lower() in FORBIDDEN or any(token in name.lower() for token in
-           ("label", "source", "tier", "split", "target", "scraped", "collected", "https")) for name in feature_names):
+    if any(name.lower() in FORBIDDEN or re.search(
+           r"(^|_)(label|source|tier|split|target|scraped|collected|https)(_|$)", name.lower()) for name in feature_names):
         raise ValueError("Forbidden metadata/post-hoc feature")
     if not set(CANDIDATE_FEATURES).issubset(feature_names):
         raise ValueError("E2 must declare the unchanged E1 lexical feature contract")
@@ -128,6 +128,8 @@ def validate_feature_matrix(matrix, feature_names, dictionary, references, metad
         if set(matrix.id) != set(metadata.id):
             raise ValueError("Feature eligibility/coverage mismatch")
     else:
+        if references.get("selection_scope") != "train_only":
+            raise ValueError("Fold-local references must declare train-only selection")
         expected_columns = ["id", "fold_id", *feature_names]
         expected = _contexts(metadata, folds)
         if "fold_id" not in matrix or not pd.api.types.is_integer_dtype(matrix.fold_id) or set(matrix.fold_id) != {0, 1, 2, -1}:
@@ -211,15 +213,81 @@ def paired_comparison(e1, e2):
                 mb = metrics_table(b, ["evaluation_partition"]).iloc[0]
                 record = {"model": name, "evaluation_partition": partition, "fold_id": fold,
                           "aggregation": "pooled" if fold is None else "per_fold", "n_paired": len(a)}
+                values = sorted(b.decision_threshold.unique().tolist()) if "decision_threshold" in b else [0.5]
+                record.update(e1_threshold=0.5, e2_thresholds=json.dumps(values),
+                              operating_point="fixed_0.5" if values == [0.5] else "candidate_train_selected")
                 for metric in ["precision_phishing", "recall_phishing", "f1_phishing", "pr_auc", "false_positive_rate", "fp_per_1000_benign"]:
                     record.update({metric + "_e1": ma[metric], metric + "_e2": mb[metric], metric + "_delta": mb[metric] - ma[metric]})
                 rows.append(record)
     return pd.DataFrame(rows)
 
 
+def validate_candidate_thresholds(manifest, models, metadata, folds, verified_artifacts):
+    """Optional outer-context operating points; E1 reference always remains 0.5.
+
+    Check declared inner-OOF selection IDs and hashed producer evidence. The
+    producer's optimization algorithm and evidence still require semantic review.
+    """
+    records = manifest.get("decision_thresholds")
+    if records is None:
+        return {name: {key: 0.5 for key in _contexts(metadata, folds)} for name in models}
+    if set(records) != set(models):
+        raise ValueError("Threshold records must cover exactly the candidate models")
+    expected = _contexts(metadata, folds)
+    thresholds = {}
+    for name in models:
+        if set(records[name]) != set(expected):
+            raise ValueError("Missing threshold-selection context")
+        thresholds[name] = {}
+        for key, allowed in expected.items():
+            record = records[name][key]
+            value = record.get("value")
+            if isinstance(value, bool) or not isinstance(value, (float, int)) or not np.isfinite(value) or not 0 < value < 1:
+                raise ValueError("Invalid candidate threshold")
+            selected = record.get("selection_ids", [])
+            if not selected or len(selected) != len(set(selected)) or not set(selected).issubset(allowed):
+                raise ValueError("Threshold selection includes held-out/Validation IDs or lacks evidence")
+            if record.get("selection_scope") != "inner_train_only" or record.get("prediction_kind") != "inner_oof":
+                raise ValueError("Candidate thresholds require inner train-only OOF selection")
+            artifact = record.get("evidence_artifact", "")
+            if not artifact.startswith("threshold_") or artifact not in verified_artifacts or not isinstance(record.get("method"), str) or not record["method"].strip():
+                raise ValueError("Missing hashed threshold-selection evidence/method")
+            evidence = pd.read_csv(verified_artifacts[artifact], dtype={"id": "string", "context": "string"})
+            required = {"id", "model", "context", "true_label", "score", "inner_fold_id"}
+            if not required.issubset(evidence):
+                raise ValueError("Threshold evidence must contain inner-OOF predictions")
+            block = evidence.loc[evidence.model.eq(name) & evidence.context.eq(key)]
+            check_ids(block, "threshold selection predictions")
+            if set(block.id) != set(selected):
+                raise ValueError("Threshold evidence/selection ID mismatch")
+            labels = metadata.set_index("id").label.map({"benign": 0, "phishing": 1}).reindex(block.id).to_numpy()
+            if (not np.array_equal(block.true_label.to_numpy(), labels) or not pd.api.types.is_numeric_dtype(block.score)
+                    or not np.isfinite(block.score).all() or not block.score.between(0, 1).all()):
+                raise ValueError("Threshold evidence label/score mismatch")
+            if not pd.api.types.is_integer_dtype(block.inner_fold_id) or block.inner_fold_id.lt(0).any() or block.inner_fold_id.nunique() < 2:
+                raise ValueError("Threshold evidence requires multiple inner folds")
+            inner_fit = record.get("inner_fit_ids", {})
+            if set(inner_fit) != {str(int(f)) for f in block.inner_fold_id.unique()}:
+                raise ValueError("Missing inner threshold-model fit lineage")
+            domains = metadata.set_index("id").registrable_domain
+            calibration = block.assign(domain=domains.reindex(block.id).to_numpy())
+            if calibration.groupby("domain").inner_fold_id.nunique().gt(1).any():
+                raise ValueError("Domain crosses inner threshold folds")
+            for inner, held_out in calibration.groupby("inner_fold_id"):
+                fit_ids = inner_fit[str(int(inner))]
+                if not fit_ids or len(fit_ids) != len(set(fit_ids)) or not set(fit_ids).issubset(allowed):
+                    raise ValueError("Invalid inner threshold fit IDs")
+                if set(domains.reindex(fit_ids)) & set(held_out.domain):
+                    raise ValueError("Inner threshold model trained on held-out domain")
+            thresholds[name][key] = float(value)
+    return thresholds
+
+
 def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
     """JSON manifest paths are relative to the manifest; verify every artifact SHA256."""
     path = Path(manifest_path)
+    if threshold != 0.5 or not e1.predicted_label.eq(e1.score.ge(0.5).astype(int)).all():
+        raise ValueError("E1 reference threshold must remain fixed at 0.5")
     manifest = json.loads(path.read_text())
     if manifest.get("schema_version") != 1 or not manifest.get("feature_version") or not manifest.get("producer_revision"):
         raise ValueError("Missing E2 schema/feature version/producer revision")
@@ -254,7 +322,6 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
         if not np.allclose(block[list(CANDIDATE_FEATURES)].to_numpy(dtype=float), canonical, rtol=0, atol=1e-10):
             raise ValueError("E1 lexical features changed under E2 contract")
     predictions = adapt_predictions(pd.read_csv(files["predictions"], dtype={"id": "string"}), **manifest.get("adapter", {}))
-    predictions = validate_predictions(predictions, metadata, folds, threshold=threshold)
     configs = json.loads(files["configs"].read_text())
     lineage = json.loads(files["lineage"].read_text())
     if set(configs) != set(predictions.model) or set(lineage) != set(predictions.model):
@@ -271,9 +338,16 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
         validate_lineage(lineage[name], metadata, folds)
         if any(v["config_sha256"] != expected_hash for v in lineage[name]["contexts"].values()):
             raise ValueError("Lineage config hash mismatch")
+    thresholds = validate_candidate_thresholds(manifest, configs, metadata, folds, files)
+    predictions = validate_predictions(predictions, metadata, folds, threshold=threshold, thresholds=thresholds)
+    fixed = predictions.copy()
+    fixed["predicted_label"] = fixed.score.ge(0.5).astype(int)
+    fixed["decision_threshold"] = 0.5
     source_checks = {key: validate_source_evidence(json.loads(files[key].read_text()), metadata)
                      for key in ("source_bias", "external_pilot") if key in files}
     return {"manifest": manifest, "predictions": predictions, "feature_check": feature_check,
             "source_evidence": source_checks,
-            "comparison": paired_comparison(e1, predictions),
+            "thresholds": thresholds,
+            "comparison": paired_comparison(e1, fixed),
+            "operating_point_comparison": paired_comparison(e1, predictions),
             "status": "E2 metrics verified; robustness requires a supplied local predictor adapter"}

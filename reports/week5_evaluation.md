@@ -4,9 +4,9 @@
 
 H5.1 DONE; H5.2 DONE for reproducible static review (human semantic checks pending); H5.3 DONE. H5.4 PREPARED for E2 and KD; actual E2 audit BLOCKED until producer artifacts arrive.
 
-GitHub PRs #1–#4 verified merged on 2026-10-31. Local checkout initially d5555da; fetched and switched to detached merged main 3e9001c, preserving the original branch. No commits, pushes or merges performed. No Week-5 plan found in the checkout; scope follows the supplied H5.1–H5.4 request.
+Published upstream snapshot: `251f0c144e0f311db49be5d8e70f837dd2342348` on week5/hung-evaluation-robustness. Current audit runtime base: `251f0c144e0f311db49be5d8e70f837dd2342348`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; the published SHA is a separate snapshot and does not identify uncommitted edits. No commit/push/merge is performed by this review.
 
-Runtime base revision: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Exact input/source hashes, versions, cache fingerprint and prediction/model hashes: tables/week5/run_manifest.json. This is a fresh reconstruction via merged `run_baseline`, not a claim that an unavailable Week-4 model was recovered. Original archived Week-4 tables were not overwritten.
+Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.
 
 12 lexical features; 13,078 eligible core train IDs; 3 unchanged domain folds; seed=42; scaler fit separately on each fitting fold; threshold=0.5. Two unresolved train/phishing URLs remain in the raw dataset, excluded with reasons. No official test features or predictions generated. Metadata (including source/tier) stays outside X.
 
@@ -92,16 +92,26 @@ Testable hypotheses (unverified):
 
 | category | definition | sample_cases | interpretation |
 |---|---|---|---|
-| brand_cues | Visible generic brand-like tokens; no proof of impersonation | 2 | multi-label sample cue count, not population frequency |
+| brand_cues | Visible generic brand-like tokens; no proof of impersonation | 3 | multi-label sample cue count, not population frequency |
 | domain_subdomain | Multiple subdomain labels | 6 | multi-label sample cue count, not population frequency |
 | lexical_patterns | Digits, hyphens, or action tokens in the string | 5 | multi-label sample cue count, not population frequency |
 | url_complexity | Long URL, path or query | 0 | multi-label sample cue count, not population frequency |
 | idna_ip | Unicode, punycode or IP literal | 0 | multi-label sample cue count, not population frequency |
 | source_effects | Source-label confounding is a population hypothesis | 0 | multi-label sample cue count, not population frequency |
 | label_uncertainty | Dataset label retained; semantic confirmation pending | 0 | multi-label sample cue count, not population frequency |
-| unknown | No selected static cue; mechanism undetermined | 30 | multi-label sample cue count, not population frequency |
+| unknown | No selected static cue; mechanism undetermined | 0 | multi-label sample cue count, not population frequency |
+| bare_host_lexical_ambiguity | Bare hostname; aggregate counts do not encode token meaning or categorical suffix identity | 34 | multi-label sample cue count, not population frequency |
+| representation_collision | Identical full lexical vector in fitting data has the opposite original label; tolerance 1e-12 | 30 | multi-label sample cue count, not population frequency |
+| near_threshold | Observed score within 0.05 of the fixed 0.5 threshold; descriptive only | 22 | multi-label sample cue count, not population frequency |
+| subdomain_count_sensitivity | Observed subdomain/dot structure; exact model terms inspected, semantics unverified | 6 | multi-label sample cue count, not population frequency |
 
 Each case has static observations, an explicitly unverified hypothesis, offline next verification, original labels and review status. Safe URL text is fully defanged and prefixed to prevent spreadsheet formulas; no suspicious URL was visited. Source effects and label uncertainty have explicit review fields; zero direct cue counts do not assert absence of those phenomena. No model output verifies a label error or individual causal mechanism.
+
+All 40 cases now have case-specific offline engineering notes, preserved read-only in [durable annotations](annotations/week5_error_reviews.json). Case signatures bind notes to ID, context, original label, URL, score and all 12 features; changed evidence fails as stale instead of silently reusing a review. Taxonomy describes observed representations, not verified root causes; all human semantic verification remains pending.
+
+Exact correct-context LR arithmetic is verified for every case. Opposite-label full-vector collisions in fitting data are observed for 30/40 cases (absolute feature tolerance 1e-12). The selected model is refitted only in its three existing fitting folds for explanation when those models are unavailable; no new model selection, thresholds or baseline experiments are introduced. Validation explanations use the original full-Train pipeline. Contributions are relative to each fitting mean, with correlated dot/subdomain/length terms often cancelling; they are not independent causal effects.
+
+Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hashes and collision supports) and error_feature_attributions.csv (all 12 raw/scaled terms per case). Collision searches use fitting IDs only, not held-out labels. The coarse representation can be ambiguous under original labels, but this does not verify maliciousness, label correctness or a source shortcut.
 
 Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.
 
@@ -118,5 +128,7 @@ No transformed ground truth, accuracy or F1. Prediction flips are sensitivity fi
 PREPARED / experimental audit BLOCKED: no E2 manifest supplied. Await Hy's features/dictionary/references and Phúc's predictions/configs/lineage/candidates; Khiêm's bias/pilot evidence is optional for core paired evaluation.
 
 Loaders/adapters enforce artifact hashes, exact feature order/dictionary, eligible IDs, fixed folds, finite values, lexical-contract consistency, fold-local or independent external brand references, producer training-ID lineage and matched E1/E2 comparisons. Producer declarations still need code/reference review; schema checks alone do not prove leakage absence. Synthetic fixtures validate logic only and contribute no reported experimental metrics.
+
+The primary E1–E2 comparison always recomputes both decisions at 0.5. Optional candidate/context thresholds require inner-Train-only OOF selection IDs within the correct fitting partition, a declared method and hashed supporting evidence. Their operating-point comparison is exported separately; changes in F1/Recall/FPR at different thresholds are not claimed as ranking improvements. AP is threshold-independent. E1 remains at 0.5.
 
 [KD evaluation protocol](../docs/kd_evaluation_protocol.md); [handoff and continuation prompt](../docs/week5_hung_handoff.md). Optional source-bias/pilot evidence from Khiêm remains separate from X; source bias is not claimed resolved.

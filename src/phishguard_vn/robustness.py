@@ -25,20 +25,50 @@ class Transformation:
     label_policy: str
     expected_valid: bool
     apply: Callable[[str], str]
+    applicable: Callable[[str], bool] = lambda url: True
 
 
 def _replace(url, **kwargs):
     return urlunsplit(urlsplit(url)._replace(**kwargs))
 
 
+def _http_host(url):
+    parts = urlsplit(url)
+    return parts.scheme.lower() in ("http", "https") and bool(parts.hostname) and parts.hostname.isascii()
+
+
+def _host_case(url):
+    parts = urlsplit(url)
+    # Userinfo may be case sensitive: only uppercase the host, never the authority.
+    userinfo = parts.netloc[:parts.netloc.rfind("@") + 1]
+    host = parts.hostname or ""
+    host = "[" + host.upper() + "]" if ":" in host else host.upper()
+    port = "" if parts.port is None else ":" + str(parts.port)
+    return _replace(url, netloc=userinfo + host + port)
+
+
+def _default_port_applicable(url):
+    parts = urlsplit(url)
+    return _http_host(url) and parts.port in (None, 443 if parts.scheme.lower() == "https" else 80)
+
+
+def _default_port(url):
+    if not _default_port_applicable(url):
+        return url
+    parts = urlsplit(url)
+    if parts.port is not None:
+        return url
+    return _replace(url, netloc=parts.netloc + (":443" if parts.scheme.lower() == "https" else ":80"))
+
+
 def transformations():
     unknown = "label-unknown"
-    preserve = "label-preserving"
+    preserve = "conditional-label-preserving"
     return (
-        Transformation("host_case", "Uppercase DNS host; same HTTP resource under case-insensitive DNS", preserve, True,
-                       lambda u: _replace(u, netloc=urlsplit(u).netloc.upper())),
-        Transformation("default_port", "Add scheme default port; same HTTP resource", preserve, True,
-                       lambda u: _replace(u, netloc=urlsplit(u).netloc + (":443" if u.startswith("https:") else ":80"))),
+        Transformation("host_case", "ASCII HTTP(S) host case normalization only; preserve userinfo/path/query/fragment; URI-equivalent under standard HTTP normalization, not verified live routing", preserve, True,
+                       _host_case, _http_host),
+        Transformation("default_port", "Add HTTP(S) default port only when absent; skip non-default ports; URI-equivalent under standard HTTP normalization, not verified live routing", preserve, True,
+                       _default_port, _default_port_applicable),
         Transformation("subdomain", "Prepend login.verify subdomain; different host", unknown, True,
                        lambda u: _replace(u, netloc="login.verify." + urlsplit(u).netloc)),
         Transformation("deep_subdomain", "Prepend twelve safe subdomain labels", unknown, True,
@@ -89,7 +119,8 @@ def transformations():
 def _resource_key(url):
     parts = urlsplit(url)
     return (parts.scheme.lower(), (parts.hostname or "").lower(),
-            parts.port or (443 if parts.scheme.lower() == "https" else 80), parts.path, parts.query)
+            parts.port if parts.port is not None else (443 if parts.scheme.lower() == "https" else 80),
+            parts.username, parts.password, parts.path, parts.query, parts.fragment)
 
 
 def run_robustness(predictor=None, *, bases=BASE_URLS, threshold=0.5):
@@ -101,21 +132,25 @@ def run_robustness(predictor=None, *, bases=BASE_URLS, threshold=0.5):
     records = []
     for base_index, original in enumerate(bases):
         for transform in transformations():
+            applicable = transform.applicable(original)
             modified = transform.apply(original)
             parsed = parse_url(modified)
             values = extract_features_from_parsed(parsed)
             finite = np.isfinite(np.array([np.nan if values[k] is None else values[k] for k in CANDIDATE_FEATURES], dtype=float)).all()
             check = bool(parsed.is_valid == transform.expected_valid)
-            resource_check = (_resource_key(original) == _resource_key(modified)) if transform.label_policy == "label-preserving" else None
+            resource_check = (_resource_key(original) == _resource_key(modified)) if applicable and transform.label_policy == "conditional-label-preserving" else None
             row = {"base_id": f"static_{base_index:02d}", "original_url": original, "transformed_url": modified,
                    "transformation": transform.name, "specification": transform.specification,
                    "seed": "none_deterministic", "label_policy": transform.label_policy,
+                   "applicable": applicable,
                    "expected_valid": transform.expected_valid, "parser_valid": parsed.is_valid,
                    "validity_check_pass": check, "resource_equivalence_check": resource_check,
                    "feature_finite": bool(finite), "error_reason": parsed.error_reason,
                    "prediction_status": "unavailable" if predictor is None else "invalid_url_skipped",
                    "original_score": None, "transformed_score": None, "score_shift": None, "flip": None}
-            if predictor is not None and parsed.is_valid and finite:
+            if not applicable:
+                row["prediction_status"] = "not_applicable"
+            if applicable and predictor is not None and parsed.is_valid and finite:
                 try:
                     before, after = float(predictor(original)), float(predictor(modified))
                     if not np.isfinite([before, after]).all() or not (0 <= before <= 1 and 0 <= after <= 1):
@@ -143,4 +178,30 @@ def robustness_summary(cases):
                      "mean_abs_score_shift": float(paired.score_shift.abs().mean()) if len(paired) else None,
                      "max_abs_score_shift": float(paired.score_shift.abs().max()) if len(paired) else None,
                      "predictor_errors": int(group.prediction_status.str.startswith("predictor_error:").sum())})
+    return pd.DataFrame(rows)
+
+
+def explain_lexical_shifts(cases, pipeline):
+    """Exact LR logit changes caused by raw lexical feature deltas, no model refit."""
+    from scipy.special import expit
+    names = list(CANDIDATE_FEATURES)
+    scaler, model = pipeline.named_steps["scaler"], pipeline.named_steps["model"]
+    rows = []
+    for _, case in cases.loc[cases.prediction_status.eq("paired")].iterrows():
+        before = extract_features_from_parsed(parse_url(case.original_url))
+        after = extract_features_from_parsed(parse_url(case.transformed_url))
+        a, b = np.array([before[n] for n in names]), np.array([after[n] for n in names])
+        before_logit = float(model.intercept_[0] + np.sum((a - scaler.mean_) / scaler.scale_ * model.coef_[0]))
+        after_logit = float(model.intercept_[0] + np.sum((b - scaler.mean_) / scaler.scale_ * model.coef_[0]))
+        if not np.allclose(expit([before_logit, after_logit]), [case.original_score, case.transformed_score], atol=1e-12, rtol=0):
+            raise ValueError("Robustness explanation does not reproduce E1 probabilities")
+        for j, feature in enumerate(names):
+            delta = float(b[j] - a[j])
+            if not np.isclose(delta, 0, atol=1e-12, rtol=0):
+                rows.append({"base_id": case.base_id, "transformation": case.transformation,
+                             "feature": feature, "original_value": float(a[j]), "transformed_value": float(b[j]),
+                             "feature_delta": delta, "coefficient": float(model.coef_[0, j]),
+                             "fitting_scale": float(scaler.scale_[j]),
+                             "logit_delta": float(delta / scaler.scale_[j] * model.coef_[0, j]),
+                             "total_logit_delta": after_logit - before_logit})
     return pd.DataFrame(rows)

@@ -1,7 +1,7 @@
 {
   "files_sha256": {
     "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
-    "configs/week5.toml": "80cb28a956f447c7416939d8d5b588c231fd9c6c19eaa53f8957c7bd08c80975",
+    "configs/week5.toml": "4d84fd52a3e08f69e7921c34d569d83fd4334f3d61be19aafc8cfd516beb21aa",
     "configs/baseline.toml": "0db33eb42a86c9ee82939e88c6aff9f6742c9fe8fe5b95f35228a5024e24b0d2",
     "pyproject.toml": "6019f0e71cd9f53e6f10f687eb1c24602af13a603aa7da0f29233cb795827cbe",
     "requirements.txt": "f89a15df2e1078b3f59b520a86b9d6ee7ff07b019a8c64722b04d2e4fffa5209",
@@ -9,18 +9,19 @@
     "scripts/run_week5_evaluation.py": "1523f0f442664844f0decfc6336c34f8e23f0917a7e96368c0b962c07ea2f7dc",
     "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
     "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
-    "src/phishguard_vn/e2_audit.py": "1bcb56a9b98ee70b86ccb304f0c10613484af61388f6c1e93d6c77caee4f2c2a",
-    "src/phishguard_vn/error_analysis.py": "c7ae26f7267d01857f1b81a5dafde08c974adce6679ed175d86860eaf14afce9",
+    "src/phishguard_vn/e2_audit.py": "443707d9a54ae31f4fd428d6bd0bec830b38a0d6239bb6dba843ee4b95409913",
+    "src/phishguard_vn/error_analysis.py": "9da25d7a715e58794fd36579438e7176f44ff3c700ab9895a982df252657213e",
     "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
-    "src/phishguard_vn/evaluation_audit.py": "298c3baf6e2301b580fa5394fb8c41d5cb9939d5b8ee9d6f92cf61fe67933898",
+    "src/phishguard_vn/evaluation_audit.py": "f9be5b860d7d7e839f7abd3c47532feb12eef0a45e1f17d4a57cc4479d7f86ed",
     "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
     "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
     "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
     "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
-    "src/phishguard_vn/robustness.py": "0a57b790026d1ff88d08641f0b409545ad929c01060f237a54de91ed73f16e7d",
+    "src/phishguard_vn/robustness.py": "fcf9a9bcd65a85ec557e968a8ca213b45607fd8b82e741711bf86cbe2164e139",
     "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
     "src/phishguard_vn/url_parser.py": "0ca974ef204ec025aeeb599d2f6460153b2e46f5f2af021b688d06c4e907102b",
-    "src/phishguard_vn/week5.py": "a4d641d57e5d5bae3e6fe92eccb7a857a84c8d1a2e74a38aca207b4f4ea03d54"
+    "src/phishguard_vn/week5.py": "1d4cf101decafcd45202fc6a5688da3ce40c7ef1c4017776a5584a460d084235",
+    "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240"
   },
   "versions": {
     "numpy": "2.5.4",
@@ -33,12 +34,18 @@
     "matplotlib": "3.11.2"
   },
   "python": "3.14.0",
-  "fingerprint": "a43871519dbd72f2f3daa73522945e7dbc7d55bc6dcf7d013156fca9611f6134",
-  "git_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
-  "generated_at_utc": "2026-10-31T13:23:56.899763+00:00",
+  "fingerprint": "b1879fa090f362e1d260149889397431a9f12b7bb9e40dde8d8a6e592b3b1ec4",
+  "git_revision": "251f0c144e0f311db49be5d8e70f837dd2342348",
+  "generated_at_utc": "2026-10-31T15:04:05.646708+00:00",
+  "audit_runtime_base_revision": "251f0c144e0f311db49be5d8e70f837dd2342348",
+  "e1_runtime_base_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
+  "published_commit": "251f0c144e0f311db49be5d8e70f837dd2342348",
+  "runtime_source_state": "modified_from_head",
+  "git_worktree_status_at_start": "M configs/week5.toml\n M docs/kd_evaluation_protocol.md\n M docs/week5_hung_handoff.md\n M notebooks/05_error_robustness.ipynb\n M reports/tables/week5/error_cases.csv\n M reports/tables/week5/error_taxonomy.csv\n M reports/tables/week5/robustness_cases.csv\n M reports/tables/week5/robustness_summary.csv\n M reports/tables/week5/run_manifest.json\n M reports/week5_evaluation.md\n M reports/week5_robustness.md\n M src/phishguard_vn/e2_audit.py\n M src/phishguard_vn/error_analysis.py\n M src/phishguard_vn/evaluation_audit.py\n M src/phishguard_vn/robustness.py\n M src/phishguard_vn/week5.py\n M tests/test_robustness.py\n M tests/test_week5_audit.py\n?? reports/annotations/\n?? reports/tables/week5/error_feature_attributions.csv\n?? reports/tables/week5/error_model_evidence.csv\n?? reports/tables/week5/robustness_feature_deltas.csv",
+  "provenance_note": "Audit hashes identify the current runtime sources, including uncommitted review changes; published_commit identifies the existing upstream snapshot, not publication of this review. E1 generation sources and runtime base remain the original immutable training record.",
   "selected_model": "logistic_regression_balanced",
   "threshold": 0.5,
-  "cached_e1": false,
+  "cached_e1": true,
   "e1_generation": {
     "files_sha256": {
       "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
@@ -111,17 +118,27 @@
   "outputs_sha256": {
     "reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
     "reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
-    "reports/tables/week5/error_cases.csv": "b8444b4a0f821681659eee41224c8c11a0eab81a972a68b0b2eb061474e30cba",
+    "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+    "reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+    "reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
     "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
-    "reports/tables/week5/error_taxonomy.csv": "466c0adf42cda6ea9df211d7ad86991b5476eca83a39a5685dce206cc307fe00",
+    "reports/tables/week5/error_taxonomy.csv": "40a4926d646d3792f48002fa045aa2705b3b08cd3c1710d69ef5bd7515ec164f",
     "reports/tables/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320",
     "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
     "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
     "reports/tables/week5/numerical_shift.csv": "a6790e0525f77340d8a6e8d37acd05e3264b3468b6618ffc07aeabd4eac5d8ae",
-    "reports/tables/week5/robustness_cases.csv": "131d0342bbeceb4a6cb7f97ce3782845ee96da693b1de7cacb2c47db6ad5c685",
-    "reports/tables/week5/robustness_summary.csv": "163a4af7a551616c1ac2c4d5a7d3ffb10c0784b946a60e6360f823b814a3c18e",
+    "reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+    "reports/tables/week5/robustness_feature_deltas.csv": "6881acb212daa72ebbeb1c5d663068deb73f1dfcf519b6a0603f6f2af5046426",
+    "reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f",
     "reports/tables/week5/stratified_metrics.csv": "dc11f515fc5f52f0e1655bb7f923a5d296e7b3cf50be2b446f465f19b0b08a13"
   },
   "prediction_sha256": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
-  "lineage_sha256": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433"
+  "lineage_sha256": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433",
+  "explanation_models_sha256": "b423bba186d37b2b460cecca1a9c3de00f596ad1e5d965746ee055561d4b8a91",
+  "figures_sha256": {
+    "reports/figures/week5/confusion_matrices.png": "633878b9833bc1d53a4b0167aa4aa457b9c2995af5543f067d2f13712e14465e",
+    "reports/figures/week5/precision_recall.png": "316a42d5b342c2bb03514a8f320809b6b19274e7547476e613c15092dc685f7e",
+    "reports/figures/week5/robustness_shift.png": "1533e268865e315e0d7f2dc7b143f3d3dc88c98842a14973625ef3e74df6c118",
+    "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
+  }
 }

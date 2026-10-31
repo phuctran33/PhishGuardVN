@@ -174,6 +174,20 @@ def test_hashed_bundle_and_tamper(inputs, tmp_path):
     e1 = validate_predictions(inputs[2], metadata, folds)
     bundle = load_e2_bundle(manifest_path, metadata, folds, e1)
     assert bundle["comparison"].pr_auc_delta.eq(0).all()
+    # A valid Train-selected operating point never replaces the primary 0.5 comparison.
+    threshold_manifest, threshold_files = threshold_fixture(inputs, tmp_path)
+    manifest.update(threshold_manifest)
+    threshold_path = threshold_files["threshold_evidence"]
+    manifest["artifacts"]["threshold_evidence"] = {"path": threshold_path.name, "sha256": sha256(threshold_path)}
+    pred["predicted_label"] = 0  # all synthetic scores are below the fixture threshold 0.95
+    pred.to_csv(tmp_path / "predictions.csv", index=False)
+    manifest["artifacts"]["predictions"]["sha256"] = sha256(tmp_path / "predictions.csv")
+    manifest_path.write_text(json.dumps(manifest))
+    bundle = load_e2_bundle(manifest_path, metadata, folds, e1)
+    assert bundle["comparison"].false_positive_rate_delta.eq(0).all()
+    assert bundle["comparison"].operating_point.eq("fixed_0.5").all()
+    assert bundle["operating_point_comparison"].false_positive_rate_delta.eq(-1).all()
+    assert bundle["predictions"].decision_threshold.eq(0.95).all()
     (tmp_path / "features.csv").write_text("tampered")
     with pytest.raises(ValueError, match="SHA256"): load_e2_bundle(manifest_path, metadata, folds, e1)
 
@@ -212,3 +226,119 @@ def test_brand_only_adapter_aligns_by_id(inputs):
     assert combined.url_len.tolist() == metadata.set_index("id").loc[brands.id, "url_len"].tolist()
     brands.loc[brands.index[0], "id"] = "unexpected_id"
     with pytest.raises(ValueError, match="ineligible"): assemble_brand_features(brands, names, metadata)
+
+
+def test_review_overlay_is_durable_bound_and_never_semantically_verified(inputs, tmp_path):
+    from phishguard_vn.error_analysis import apply_case_reviews, case_signature
+    metadata, folds, pred = inputs
+    sample = sample_errors(validate_predictions(pred, metadata, folds), model="E1", n=3)
+    reviews = {"schema_version": 1, "cases": [
+        {"id": r.id, "case_signature": case_signature(r), "taxonomy": ["unknown"],
+         "observation": "Specific offline observation for " + r.id, "hypothesis": "Unverified hypothesis for " + r.id,
+         "next_verification": "Inspect original evidence for " + r.id, "review_status": "human_verified"}
+        for _, r in sample.iterrows()]}
+    evidence = pd.DataFrame([{"id": r.id, "case_signature": case_signature(r), "context": int(r.sampling_fold),
+                             "intercept": 0.1, "positive_contributions": "toy=0.2", "negative_contributions": "toy=-0.1",
+                             "opposite_label_fitting_rows": 0} for _, r in sample.iterrows()])
+    path = tmp_path / "reviews.json"; path.write_text(json.dumps(reviews)); original = path.read_bytes()
+    cases = apply_case_reviews(sample, evidence, path)
+    assert cases.observation.nunique() == len(cases)
+    assert cases.review_status.str.contains("human_semantic_verification_pending").all()
+    assert not cases.review_status.eq("human_verified").any()
+    assert path.read_bytes() == original
+    pd.testing.assert_frame_equal(cases, apply_case_reviews(sample, evidence, path))
+    sample.loc[0, "score"] += 0.001
+    with pytest.raises(ValueError, match="Stale"): apply_case_reviews(sample, evidence, path)
+
+
+def test_selected_fold_explanations_reconstruct_scores_without_leakage(inputs):
+    from sklearn.base import clone
+    from phishguard_vn.modeling import build_logistic_baseline
+    from phishguard_vn.error_analysis import explain_error_cases
+    metadata, folds, _ = inputs
+    names = list(CANDIDATE_FEATURES)
+    train = metadata.loc[metadata.split.eq("train")].merge(folds, on="id")
+    pipeline = build_logistic_baseline(class_weight="balanced")
+    pipeline.fit(train[names], train.label.map({"benign": 0, "phishing": 1}))
+    selected = []
+    for fold in range(3):
+        fit = train.loc[train.fold_id.ne(fold)]
+        held = train.loc[train.fold_id.eq(fold)].iloc[[0]].copy()
+        fitted = clone(pipeline).fit(fit[names], fit.label.map({"benign": 0, "phishing": 1}))
+        held["score"] = fitted.predict_proba(held[names])[:, 1]
+        selected.append(held)
+    sample = pd.concat(selected, ignore_index=True)
+    sample["model"] = "E1"; sample["evaluation_partition"] = "group_cv"; sample["outcome"] = "FP"
+    evidence, terms, models = explain_error_cases(sample, metadata, folds, pipeline)
+    assert evidence.score_abs_error.max() < 1e-10
+    assert evidence.fit_rows.eq(12).all()
+    assert len(terms) == 3 * len(names)
+    np.testing.assert_allclose(terms.groupby("id").logit_contribution.sum().reindex(evidence.id).to_numpy() + evidence.intercept.to_numpy(), evidence.logit)
+    sample.loc[0, "score"] += 0.1
+    with pytest.raises(ValueError, match="reproduce"): explain_error_cases(sample, metadata, folds, pipeline, context_models=models)
+
+
+def test_analysis_edit_reuses_e1_but_training_edit_does_not():
+    from phishguard_vn.week5 import _baseline_cache_matches
+    modules = ["__init__", "data", "features", "url_parser", "splits", "modeling", "evaluation"]
+    files = {f"src/phishguard_vn/{m}.py": "training" for m in modules}
+    files.update({"raw.csv": "raw", "baseline.toml": "config", "src/phishguard_vn/error_analysis.py": "old"})
+    prior = {"files_sha256": files, "versions": {"numpy": "test"}, "python": "test"}
+    current = json.loads(json.dumps(prior)); current["files_sha256"]["src/phishguard_vn/error_analysis.py"] = "new"
+    assert _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
+    current["files_sha256"]["src/phishguard_vn/modeling.py"] = "changed"
+    assert not _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
+
+
+def threshold_fixture(inputs, tmp_path):
+    metadata, folds, _ = inputs
+    allowed = {str(f): set(folds.id if f == -1 else folds.loc[folds.fold_id.ne(f), "id"]) for f in (-1, 0, 1, 2)}
+    records, rows = {}, []
+    for context, ids in allowed.items():
+        ordered = sorted(ids)
+        inner = {row_id: (i // 2) % 2 for i, row_id in enumerate(ordered)}
+        for row_id in ordered:
+            label = int(metadata.set_index("id").label[row_id] == "phishing")
+            rows.append({"model": "E2", "context": context, "id": row_id, "true_label": label, "score": 0.1 + 0.8*label, "inner_fold_id": inner[row_id]})
+        records[context] = {"value": 0.95, "selection_scope": "inner_train_only", "prediction_kind": "inner_oof", "selection_ids": ordered,
+                            "method": "synthetic protocol fixture only", "evidence_artifact": "threshold_evidence",
+                            "inner_fit_ids": {str(f): [i for i in ordered if inner[i] != f] for f in (0, 1)}}
+    path = tmp_path / "threshold.csv"; pd.DataFrame(rows).to_csv(path, index=False)
+    return {"decision_thresholds": {"E2": records}}, {"threshold_evidence": path}
+
+
+@pytest.mark.parametrize("defect", [None, "outer_held_out", "validation", "scope", "inner_leak", "evidence_label", "missing_evidence"])
+def test_candidate_threshold_provenance(inputs, tmp_path, defect):
+    from phishguard_vn.e2_audit import validate_candidate_thresholds
+    metadata, folds, pred = inputs
+    manifest, files = threshold_fixture(inputs, tmp_path)
+    record = manifest["decision_thresholds"]["E2"]["0"]
+    if defect == "outer_held_out": record["selection_ids"].append(folds.id.iloc[0])
+    if defect == "validation": record["selection_ids"].append(metadata.id.iloc[-1])
+    if defect == "scope": record["selection_scope"] = "official_validation"
+    if defect == "inner_leak": record["inner_fit_ids"]["0"].append(record["selection_ids"][0])
+    if defect == "evidence_label":
+        table = pd.read_csv(files["threshold_evidence"]); table.loc[0, "true_label"] = 1-table.loc[0, "true_label"]; table.to_csv(files["threshold_evidence"], index=False)
+    if defect == "missing_evidence": files = {}
+    if defect:
+        with pytest.raises(ValueError): validate_candidate_thresholds(manifest, ["E2"], metadata, folds, files)
+    else:
+        thresholds = validate_candidate_thresholds(manifest, ["E2"], metadata, folds, files)
+        assert set(thresholds["E2"].values()) == {0.95}
+        pred["model"] = "E2"; pred["predicted_label"] = 0
+        joined = validate_predictions(pred, metadata, folds, thresholds=thresholds)
+        assert joined.decision_threshold.eq(0.95).all()
+        # E1 fixture was edited by reference above: rebuild its original fixed decisions.
+        raw_e1 = pred.copy(); raw_e1["model"] = "E1"; raw_e1["predicted_label"] = raw_e1.score.ge(0.5).astype(int)
+        e1 = validate_predictions(raw_e1, metadata, folds)
+        comparison = paired_comparison(e1, joined)
+        assert comparison.e1_threshold.eq(0.5).all()
+        assert comparison.operating_point.eq("candidate_train_selected").all()
+
+
+def test_resource_feature_name_is_not_source_metadata(inputs):
+    metadata, folds, _ = inputs
+    matrix, names, dictionary, refs = feature_fixture(inputs)
+    matrix = matrix.rename(columns={"brand_similarity": "resource_similarity"})
+    names[-1] = "resource_similarity"; dictionary.loc[len(dictionary)-1, "feature"] = "resource_similarity"
+    validate_feature_matrix(matrix, names, dictionary, refs, metadata, folds)

@@ -17,3 +17,5 @@ manifest = ""
 # Optional trusted local module:function accepting one URL and returning phishing score.
 # Example: phishguard_local_e2:predict_score; must use the declared E2 extractor/order.
 predictor = ""
+# Required when a predictor bundle contains multiple candidate models.
+predictor_model = ""

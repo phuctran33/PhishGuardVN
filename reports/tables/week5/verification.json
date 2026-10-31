@@ -1,58 +1,99 @@
 {
-  "checked_at_utc": "2026-10-31T13:25:30.386843+00:00",
-  "runtime_fingerprint": "a43871519dbd72f2f3daa73522945e7dbc7d55bc6dcf7d013156fca9611f6134",
+  "checked_at_utc": "2026-10-31T15:06:11.571028+00:00",
+  "runtime_fingerprint": "b1879fa090f362e1d260149889397431a9f12b7bb9e40dde8d8a6e592b3b1ec4",
+  "audit_runtime_base_revision": "251f0c144e0f311db49be5d8e70f837dd2342348",
+  "published_commit": "251f0c144e0f311db49be5d8e70f837dd2342348",
+  "e1_runtime_base_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
+  "runtime_source_state": "modified_from_head",
   "pytest": {
     "command": ".venv/bin/python -m pytest -q",
-    "passed": 126,
+    "passed": 140,
     "skipped": 0,
-    "summary": "126 passed, 1322 warnings in 4.71s",
+    "summary": "140 passed, 2457 warnings in 5.74s",
     "test_source_sha256": {
       "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
-      "tests/test_robustness.py": "64a96cea2df6ac77404489faf4fd95cd9c367f057558cb20e4287ddffc6753b4",
+      "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
       "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_audit.py": "1db241af6f870e080697364b93080f5bca8059697ad8afd0970ef98ab5566ba8"
+      "tests/test_week5_audit.py": "672f6a1b72a8110be69744bdcb23068e69141ee8f9075f7838ba8d7b7dae7eeb"
     }
   },
   "notebook": {
     "command": ".venv/bin/python -m nbconvert --to notebook --execute --inplace notebooks/05_error_robustness.ipynb --ExecutePreprocessor.timeout=600",
     "code_cells_executed": 6,
     "errors": 0,
-    "sha256": "c0bea229d398d0e1c5c5239bcf4622b96cb81728589bda2666cfe85de82091a2"
+    "sha256": "d008b115a7ae1d9530817068818cba869b103030fc5e6c9834b1d64aff62dc32"
   },
-  "reproducibility": {
-    "forced_reconstruction_seconds": 56.196658165892586,
-    "identical_hashes": true,
+  "baseline_unchanged": {
+    "cached_e1": true,
+    "original_result_predictions_metrics_sampling_pool_identical": true,
     "before": {
+      "data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
       "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
-      "reports/tables/week5/error_cases.csv": "b8444b4a0f821681659eee41224c8c11a0eab81a972a68b0b2eb061474e30cba",
-      "reports/tables/week5/robustness_cases.csv": "131d0342bbeceb4a6cb7f97ce3782845ee96da693b1de7cacb2c47db6ad5c685",
       "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
-      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028"
+      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25"
     },
     "after": {
+      "data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
       "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
-      "reports/tables/week5/error_cases.csv": "b8444b4a0f821681659eee41224c8c11a0eab81a972a68b0b2eb061474e30cba",
-      "reports/tables/week5/robustness_cases.csv": "131d0342bbeceb4a6cb7f97ce3782845ee96da693b1de7cacb2c47db6ad5c685",
       "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
-      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028"
-    }
+      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25"
+    },
+    "explanation_refits": "Only the selected unchanged LR was reconstructed in three fixed fitting folds for attribution; no E1 baseline experiment or selection rerun."
   },
-  "clean_bootstrap": {
-    "clean_bootstrap_train_ids": 13078,
-    "excluded_train_rows": 2,
-    "week4_handoffs": "absent",
-    "independent_parser": {
-      "status": "parser/extractor-only",
-      "cases": 144,
-      "validity_pass": true
-    }
+  "error_analysis": {
+    "cases": 40,
+    "distinct_observations": 40,
+    "distinct_hypotheses": 40,
+    "distinct_next_verifications": 40,
+    "opposite_label_fitting_collision_cases": 30,
+    "max_score_reconstruction_error": 3.3306690738754696e-16,
+    "all_semantic_labels_and_root_causes_unverified": true,
+    "fitting_scaler_means_supports_id_hashes_and_domain_exclusion_checked": true,
+    "durable_reviews_sha256": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240"
   },
-  "pip_check": "No broken requirements found.",
-  "original_tracked_data_unchanged": true,
+  "robustness": {
+    "cases": 144,
+    "parser_expectations_passed": 144,
+    "scores_identical_to_published_stress_cases": true,
+    "conditional_equivalence_cases": 12,
+    "conditional_equivalence_flips": 0,
+    "all_changed_feature_logit_delta_sums_checked": true
+  },
+  "current_output_sha256": {
+    "reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
+    "reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
+    "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+    "reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+    "reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
+    "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+    "reports/tables/week5/error_taxonomy.csv": "40a4926d646d3792f48002fa045aa2705b3b08cd3c1710d69ef5bd7515ec164f",
+    "reports/tables/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320",
+    "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+    "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+    "reports/tables/week5/numerical_shift.csv": "a6790e0525f77340d8a6e8d37acd05e3264b3468b6618ffc07aeabd4eac5d8ae",
+    "reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+    "reports/tables/week5/robustness_feature_deltas.csv": "6881acb212daa72ebbeb1c5d663068deb73f1dfcf519b6a0603f6f2af5046426",
+    "reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f",
+    "reports/tables/week5/stratified_metrics.csv": "dc11f515fc5f52f0e1655bb7f923a5d296e7b3cf50be2b446f465f19b0b08a13"
+  },
+  "current_figure_sha256": {
+    "reports/figures/week5/confusion_matrices.png": "633878b9833bc1d53a4b0167aa4aa457b9c2995af5543f067d2f13712e14465e",
+    "reports/figures/week5/precision_recall.png": "316a42d5b342c2bb03514a8f320809b6b19274e7547476e613c15092dc685f7e",
+    "reports/figures/week5/robustness_shift.png": "1533e268865e315e0d7f2dc7b143f3d3dc88c98842a14973625ef3e74df6c118",
+    "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
+  },
+  "historical_publication_verification": {
+    "reference": "git show 251f0c144e0f311db49be5d8e70f837dd2342348:reports/tables/week5/verification.json",
+    "note": "The published 126-test/forced-reconstruction/clean-bootstrap record is historical, not rerun as part of this review."
+  },
   "official_test_predicted_or_scored": false,
+  "original_tracked_data_and_teammate_baseline_sources_unchanged": true,
+  "pip_check": "No broken requirements found.",
   "known_warnings": [
-    "Existing Hy parser uses deprecated tldextract registered_domain alias; no behavior change made to teammate code.",
-    "Original CSV loader reports mixed types in unused metadata columns; those columns are not part of X."
+    "Existing parser registered_domain deprecation alias remains unchanged.",
+    "Existing raw CSV mixed-type metadata warning concerns columns excluded from X."
   ],
   "environment_lock_sha256": "cf5d8aece1c9fc76093d61bc3a12598bdafe4b0448f1f595015712d018a51019"
 }

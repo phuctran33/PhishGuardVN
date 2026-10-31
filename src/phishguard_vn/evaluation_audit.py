@@ -19,7 +19,7 @@ def check_ids(frame, name="table"):
         raise ValueError(f"{name}: duplicate, missing or invalid IDs")
 
 
-def validate_predictions(predictions, metadata, folds, *, threshold=0.5):
+def validate_predictions(predictions, metadata, folds, *, threshold=0.5, thresholds=None):
     """Require exact eligible coverage per model/partition; reject test and bad joins.
 
     Metadata contains only eligible core train/val rows. Fold mapping is authoritative.
@@ -48,6 +48,8 @@ def validate_predictions(predictions, metadata, folds, *, threshold=0.5):
         raise ValueError("Domain crosses official train/validation")
     if predictions.empty or predictions.model.isna().any() or predictions.model.astype(str).str.strip().eq("").any():
         raise ValueError("Missing predictions or model")
+    if thresholds is not None and set(thresholds) != set(predictions.model):
+        raise ValueError("Candidate threshold/model mismatch")
     partitions = {"group_cv": "train", "official_validation": "val"}
     if not predictions.evaluation_partition.isin(partitions).all():
         raise ValueError("Unknown partition; test/in-sample predictions forbidden")
@@ -68,8 +70,8 @@ def validate_predictions(predictions, metadata, folds, *, threshold=0.5):
             if not block.true_label.eq(block.label.map(LABEL_MAP)).all():
                 raise ValueError("Label mismatch by ID")
             summarize_predictions(block.true_label, block.predicted_label, block.score)
-            if not block.predicted_label.eq(block.score.ge(threshold).astype(int)).all():
-                raise ValueError("Prediction/threshold mismatch")
+            if not pd.api.types.is_numeric_dtype(block.score):
+                raise ValueError("Prediction scores must be numeric")
             if partition == "group_cv":
                 if "fold_id" not in block or not pd.api.types.is_integer_dtype(block.fold_id):
                     # A concatenated CV/val frame promotes fold_id to float; integral values are allowed.
@@ -80,6 +82,16 @@ def validate_predictions(predictions, metadata, folds, *, threshold=0.5):
                     raise ValueError("Fold mismatch by ID")
             elif "fold_id" in block and block.fold_id.notna().any():
                 raise ValueError("Validation must not have a CV fold")
+            if thresholds is None:
+                decisions = threshold
+            else:
+                contexts = block.fold_id.astype(int).astype(str) if partition == "group_cv" else pd.Series("-1", index=block.index)
+                decisions = contexts.map(thresholds[model])
+                if decisions.isna().any() or not decisions.between(0, 1, inclusive="neither").all():
+                    raise ValueError("Missing/invalid candidate context threshold")
+                block["decision_threshold"] = decisions
+            if not block.predicted_label.eq(block.score.ge(decisions).astype(int)).all():
+                raise ValueError("Prediction/threshold mismatch")
             block["outcome"] = np.select(
                 [block.true_label.eq(1) & block.predicted_label.eq(1),
                  block.true_label.eq(0) & block.predicted_label.eq(1),
