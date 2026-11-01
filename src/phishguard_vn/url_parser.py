@@ -108,7 +108,7 @@ def parse_url(raw_url: str | None) -> ParsedURL:
 
         ext = _EXTRACT(host)
         subdomain = ext.subdomain.lower() if ext.subdomain else ""
-        reg_domain = ext.registered_domain.lower() if ext.registered_domain else None
+        reg_domain = ext.top_domain_under_public_suffix.lower() if ext.top_domain_under_public_suffix else None
         if not reg_domain:
             return ParsedURL(**base, hostname=host, subdomain=subdomain, port=port,
                              error_reason="unresolved_domain")
