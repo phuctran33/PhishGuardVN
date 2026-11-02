@@ -1,0 +1,11 @@
+model,feature_set,batch_size,repetitions,warmups,serialized_estimator_bytes,bundle_bytes,predict_proba_median_ms,predict_proba_p95_ms,threadpool_limit
+hist_gradient_boosting,lexical_12,1,20,3,143840,777428,1.12215,1.6174800000000003,1
+hist_gradient_boosting,lexical_12,128,20,3,143840,777428,1.5272000000000001,1.9227450000000004,1
+logistic_regression,lexical_12,1,20,3,2129,777428,0.58195,0.70579,1
+logistic_regression,lexical_12,128,20,3,2129,777428,0.59625,0.93203,1
+logistic_regression_balanced,lexical_12,1,20,3,2145,777428,0.58365,0.694745,1
+logistic_regression_balanced,lexical_12,128,20,3,2145,777428,0.59165,0.64648,1
+mlp,lexical_12,1,20,3,44129,777428,0.5891,0.7794900000000001,1
+mlp,lexical_12,128,20,3,44129,777428,0.61795,1.1432000000000002,1
+svm_rbf,lexical_12,1,20,3,584285,777428,1.37425,1.932835,1
+svm_rbf,lexical_12,128,20,3,584285,777428,20.9227,28.438480000000002,1

@@ -16,6 +16,7 @@ dependencies = [
     "tldextract",
     "idna",
     "joblib",
+    "threadpoolctl",
 ]
 
 [project.optional-dependencies]

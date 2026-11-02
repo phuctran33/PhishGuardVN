@@ -1,12 +1,15 @@
 # Kiểm thử local
 
-Cài test extra trong .venv: `python -m pip install -e '.[test]'`.
-Chạy `python -m pytest -q` tại root repo.
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e '.[test]'
+.\.venv\Scripts\python.exe -m pytest -q
+```
 
-- test_splits.py: domain keys, train-only group CV, độ tái lập và handoff thật.
-- test_baseline.py: AP/confusion matrix, scaler fit trong fold, cấm val/test vào folds,
-  nối ID, metadata không vào X, model selection độc lập validation, lưu/load và URL lỗi.
+- test_splits.py: ID/domain/folds và handoff thật; integration case SKIP nếu chưa tạo handoff.
+- test_baseline.py: E1 metrics/leakage/save-load/notes.
+- test_readable_ml.py: chạy chính các code cell của notebook v2 trên fixture nhỏ; scaler/search không nhìn outer holdout, validation/test không chọn model, đổi đáp án outer fold không đổi dự đoánfold đó, score SVM margin và CLI Windows/save-load.
+- test_experiments.py,test_week5_reporting.py: giữ kiểm chứng tuyến v1 nâng cao đã lưu; không phải nội dung cần đọc trước notebook v2.
 
-Integration test split cần CSV tạo từ notebook 01 → 03 → 02; nếu thiếu sẽ SKIP.
-Bộ kiểm thử đã chạy gồm split/CV, baseline, bảo toàn ghi chú, cấu hình và metadata báo cáo.
-Test synthetic không chứng minh hiệu năng ngoài dataset; xem reports/week4_baseline.md.
+Lần kiểm tra 02/11/2026: **111 passed**. Warning còn lại là `registered_domain` deprecated trong parser E1 hiện tại; PR Hy đã có thay thuộc tính nhưng chưa merge vào nhánh này.
+
+Tests bảo vệ tính đúng code/giao thức, không chứng minh chất lượng ngoài dataset. Xem reports/week5_readable.md để đọc kết quả/giới hạn.

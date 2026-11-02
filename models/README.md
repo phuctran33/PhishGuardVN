@@ -1,11 +1,9 @@
-# Local baseline artifacts
+# Model local
 
-Sau khi chạy notebook 04 hoặc scripts/train_baseline.py:
-- week4_lr_baseline.joblib: pipeline, feature names, threshold và cấu hình.
-- week4_lr_baseline_metadata.json: scope, phiên bản thư viện, hash source/handoff và model.
+Bản hiện tại: `week5_readable_models.joblib`, tạo từ notebook05 v2. Bundle chứa models,
+selected_model, feature_names, feature_set, score_kinds vàprotocol. Dùng scripts/predict_week5.py
+hoặc phishguard_vn.prediction.predict_url. SVM dùng margin, không gọi margin là xác suất.
 
-Artifact chỉ fit core train. Official validation là báo cáo bổ sung; test chưa được dùng.
-Model được bỏ qua trong Git; bàn giao riêng. Xem reports/week4_baseline.md trước khi diễn giải score.
-
-Bản metadata có thể quản lý phiên bản nằm ở reports/tables/04_run_metadata.json.
-Source hashes chuẩn hóa CRLF về LF; input hashes kiểm tra byte gốc của các handoff.
+E1: week4_lr_baseline.joblib +metadata. V1: week5_lexical_models.joblib +metadata.
+Các model này giữ để đối chiếu, không bị v2 ghi đè. Model/predictions sinh ra bịGit bỏ qua.
+Đọc reports/week5_readable.md trước khi giải thích chất lượng hoặc chọn Teacher.
