@@ -3,7 +3,8 @@
 
 Chạy từ thư mục gốc dự án:
     python scripts/05_train_only_check.py                       # chỉ in kết quả
-    python scripts/05_train_only_check.py --write-dictionary    # ghi thêm train_check vào dictionary
+    python scripts/05_train_only_check.py --write-dictionary    # ghi train_check vào dictionary brand
+    python scripts/05_train_only_check.py --write-e1-dictionary # ghi train_check vào dictionary E1 (12 feature)
 
 Chỉ đọc cột `id` của url_train.csv (không đọc nhãn). Phần "bằng chứng v0.1" chỉ dùng hàng train.
 """
@@ -21,13 +22,32 @@ sys.path.insert(0, str(ROOT / "src"))
 from phishguard_vn.brand_features import BRAND_FEATURES, E2_FEATURES  # noqa: E402
 
 
+def fill_train_check(path: Path, xt: pd.DataFrame) -> None:
+    """Ghi cột train_check cho các feature có trong X; feature đã bị loại khỏi X giữ nguyên."""
+    d = pd.read_csv(path)
+    d["train_check"] = d["train_check"].astype(object)
+    n = len(xt)
+    for i, name in enumerate(d["feature"]):
+        if name not in xt.columns:
+            continue
+        nonzero = int((xt[name] != 0).sum())
+        note = f"train n={n}: {nonzero} dòng khác 0 ({nonzero / n:.2%}); {xt[name].nunique()} giá trị khác nhau"
+        if xt[name].nunique() <= 1:
+            note += "; HẰNG trên train"
+        d.loc[i, "train_check"] = note
+    d.to_csv(path, index=False, lineterminator="\n")
+    print(f"[dictionary] đã ghi train_check vào {path.name}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--matrix", type=Path, default=ROOT / "data/interim/05_matrix_X_brand.csv")
     ap.add_argument("--train", type=Path, default=ROOT / "data/splits/url_train.csv")
     ap.add_argument("--domains", type=Path, default=ROOT / "data/interim/03_registrable_domains.csv")
     ap.add_argument("--dictionary", type=Path, default=ROOT / "reports/templates/brand_feature_dictionary.csv")
+    ap.add_argument("--e1-dictionary", type=Path, default=ROOT / "reports/templates/feature_dictionary.csv")
     ap.add_argument("--write-dictionary", action="store_true")
+    ap.add_argument("--write-e1-dictionary", action="store_true")
     args = ap.parse_args()
 
     x = pd.read_csv(args.matrix)
@@ -51,18 +71,9 @@ def main() -> int:
     print(rates.to_string())
 
     if args.write_dictionary:
-        d = pd.read_csv(args.dictionary)
-        d["train_check"] = d["train_check"].astype(object)
-        for i, name in enumerate(d["feature"]):
-            if name not in xt.columns:
-                continue
-            nz = int((xt[name] != 0).sum())
-            note = f"train n={len(xt)}: {nz} dòng khác 0 ({nz / len(xt):.2%})"
-            if xt[name].nunique() <= 1:
-                note += "; HẰNG trên train"
-            d.loc[i, "train_check"] = note
-        d.to_csv(args.dictionary, index=False, lineterminator="\n")
-        print(f"[dictionary] đã ghi train_check vào {args.dictionary.name}")
+        fill_train_check(args.dictionary, xt)
+    if args.write_e1_dictionary:
+        fill_train_check(args.e1_dictionary, xt)
 
     if args.domains.is_file():
         mt = xt.merge(pd.read_csv(args.domains)[["id", "registrable_domain"]], on="id")
