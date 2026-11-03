@@ -79,8 +79,8 @@ def main() -> int:
 
     train_ids = set(pd.read_csv(args.train, usecols=["id"])["id"])
     frame = pd.read_csv(args.input, usecols=["id", "url"])
-    urls = (frame[frame["id"].isin(train_ids)]["url"].dropna()
-            .sample(min(args.n, len(frame)), random_state=args.seed).tolist())
+    train_urls = frame[frame["id"].isin(train_ids)]["url"].dropna()
+    urls = train_urls.sample(min(args.n, len(train_urls)), random_state=args.seed).tolist()
     print(f"[mẫu] {len(urls)} URL train (seed {args.seed})")
 
     cold = cold_start_seconds()
