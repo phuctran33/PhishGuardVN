@@ -12,11 +12,14 @@ from phishguard_vn.brand_features import (
     REFERENCE_PATH,
     build_e2_feature_table,
     extract_brand_features,
+    extract_brand_features_from_parsed,
+    explain_brand_matches,
     extract_e2_features,
     fold_text,
     load_reference,
 )
 from phishguard_vn.features import CANDIDATE_FEATURES
+from phishguard_vn.url_parser import parse_url
 
 
 def test_e2_schema_keeps_e1_columns_untouched():
@@ -73,6 +76,12 @@ def test_other_brand_name_is_not_typo_of_similar_brand():
 def test_homoglyph_hit_requires_confusable_fold():
     f = extract_brand_features("https://vietc0mbank.top/")  # 0 thay o
     assert f["homoglyph_brand_hit"] == 1.0 and f["brand_in_domain"] == 0.0
+
+
+
+
+
+
 
 
 def test_idna_flag():
@@ -148,3 +157,80 @@ def test_packaged_reference_loads_and_has_no_label_columns():
     with open(REFERENCE_PATH, encoding="utf-8") as handle:
         header = handle.readline().strip().split(",")
     assert not {"label", "source", "tier", "split"} & set(header)
+
+
+def test_packaged_reference_reports_provenance():
+    summary = load_reference().summary()
+    assert {"sha256", "status_counts", "n_missing_source_accessed", "fully_verified"} <= set(summary)
+    assert 0 <= summary["n_missing_source_accessed"] <= summary["n_brands"]
+
+
+# --- explain_brand_matches: cùng một lõi với features --------------------------------------
+@pytest.mark.parametrize("url", [
+    "https://vietcombank-login.top/verify",
+    "https://vietcombank.com.vn.xacminh-id.xyz/",
+    "https://vietcombnak.com/",
+    "https://vietc0mbank.top/",
+    "https://evil.top/vietcombank/login",
+    "https://thanhhoa.gov.vn/",
+])
+def test_explain_is_consistent_with_features(url):
+    feats, events = explain_brand_matches(url)
+    assert feats == extract_brand_features(url)
+    rules = {e["rule"] for e in events}
+    for name, rule in [("brand_in_domain", "brand_in_domain"), ("brand_in_subdomain", "brand_in_subdomain"),
+                       ("brand_in_path", "brand_in_path"), ("brand_domain_mismatch", "brand_domain_mismatch"),
+                       ("homoglyph_brand_hit", "homoglyph_brand_hit"), ("brand_typo_score", "brand_typo_score")]:
+        assert (feats[name] > 0) == (rule in rules), (url, name)
+    assert feats["susp_token_cnt"] == sum(e["rule"] == "susp_token" for e in events)
+
+
+# --- Vector tính tay (không dùng chính hàm để suy ra kỳ vọng) -----------------------------
+def test_hand_checked_vectors():
+    # "vietcombank-login.top/verify": 11+1+5+4=21 ký tự domain, +7 path = 28
+    f = extract_e2_features("https://vietcombank-login.top/verify")
+    expected = {"url_len": 28, "dom_len": 21, "is_ip": 0, "subdom_cnt": 0, "letter_cnt": 25, "digit_cnt": 0,
+                "dot_cnt": 1, "dash_cnt": 1, "under_cnt": 0, "slash_cnt": 1, "path_len": 7,
+                "brand_in_domain": 1, "brand_in_subdomain": 0, "brand_in_path": 0, "brand_domain_mismatch": 1,
+                "brand_typo_score": 0, "susp_token_cnt": 2, "idna_flag": 0, "homoglyph_brand_hit": 0}
+    assert all(f[k] == v for k, v in expected.items())
+    # "xn--bcher-kva.de/Path": 16 + 5 = 21; chữ cái 12 + 4 = 16; gạch ngang 3
+    g = extract_e2_features("http://xn--bcher-kva.de/Path")
+    expected = {"url_len": 21, "dom_len": 16, "letter_cnt": 16, "dash_cnt": 3, "dot_cnt": 1, "slash_cnt": 1,
+                "path_len": 5, "idna_flag": 1}
+    assert all(g[k] == v for k, v in expected.items())
+
+
+# --- Cột tùy chọn của reference: chỉ điền sau khi rà soát từng ca -----------------------------
+_HEADER = ("brand_id,canonical_name,aliases,official_domains,sector,source_url,source_accessed,status,notes,"
+           "official_suffixes,typo_ignore_tokens\n")
+
+
+def _ref(tmp_path, rows):
+    path = tmp_path / f"ref_{len(list(tmp_path.iterdir()))}.csv"  # load_reference cache theo đường dẫn
+    path.write_text(_HEADER + "\n".join(rows) + "\n", encoding="utf-8")
+    return load_reference(path)
+
+
+def test_official_suffix_is_scoped_to_one_brand(tmp_path):
+    ref = _ref(tmp_path, [
+        "dvc,Dich vu cong,dichvucong,dichvucong.gov.vn,gov,u,d,verified,,.gov.vn,",
+        "vcb,Vietcombank,,vietcombank.com.vn,bank,u,d,verified,,,",
+    ])
+    mm = lambda url: extract_brand_features_from_parsed(parse_url(url), ref)["brand_domain_mismatch"]  # noqa: E731
+    assert mm("https://dichvucong.caobang.gov.vn/") == 0.0   # miễn trừ gắn riêng brand dvc
+    assert mm("https://dichvucong.hokhauso.com/") == 1.0     # domain tự do vẫn là mismatch
+    assert mm("https://vietcombank.caobang.gov.vn/") == 1.0  # brand khác trên .gov.vn KHÔNG được miễn trừ
+
+
+def test_typo_ignore_token_removes_confirmed_false_match(tmp_path):
+    base = "vina,VinaPhone,,vinaphone.com.vn,telecom,u,d,verified,,,%s"
+    url = "https://vinhphong.haiphong.edu.vn/"
+    score = lambda ref: extract_brand_features_from_parsed(parse_url(url), ref)["brand_typo_score"]  # noqa: E731
+    assert score(_ref(tmp_path, [base % ""])) > 0.0          # không có danh sách bỏ qua: bị coi là lỗi gõ
+    assert score(_ref(tmp_path, [base % "vinhphong"])) == 0.0  # đã xác nhận là địa danh
+
+
+def test_official_suffix_must_start_with_dot(tmp_path):
+    with pytest.raises(ValueError, match="bắt đầu bằng"):
+        _ref(tmp_path, ["a,Alpha Corp,,alpha.vn,bank,u,d,draft,,gov.vn,"])
