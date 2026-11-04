@@ -2,9 +2,9 @@
 
 ## Status and provenance
 
-H5.1 DONE; H5.2 DONE for reproducible static review (human semantic checks pending); H5.3 DONE. H5.4 PREPARED for E2 and KD; actual E2 audit BLOCKED until producer artifacts arrive.
+H5.1 DONE; H5.2 OFFLINE REVIEW DONE / HUMAN REVIEW PENDING; H5.3 DONE. H5.4 FEATURE AUDIT DONE: native e2-brand-v0 technical PASS, PRELIMINARY. MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS: no matched 20-feature OOF/Validation bundle supplied. Hy's draft reference still requires review; KD PROTOCOL PREPARED.
 
-Published upstream snapshot: `251f0c144e0f311db49be5d8e70f837dd2342348` on week5/hung-evaluation-robustness. Current audit runtime base: `251f0c144e0f311db49be5d8e70f837dd2342348`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; the published SHA is a separate snapshot and does not identify uncommitted edits. No commit/push/merge is performed by this review.
+Upstream snapshot at runtime: `d667ac8050bd225b7f1ae3dff09c64d714c6d4d2` on week5/hung-evaluation-robustness. Current audit runtime base: `a7413aae3351703429eba518657b08894afae3e7`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
 
 Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.
 
@@ -115,6 +115,8 @@ Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hash
 
 Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.
 
+Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. The checklist is created only if absent and never overwritten. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.
+
 ## H5.3 — static robustness
 
 144 static cases; expected parser-validity checks passed 144/144. Full results/specifications and limitations: [robustness report](week5_robustness.md).
@@ -125,10 +127,14 @@ No transformed ground truth, accuracy or F1. Prediction flips are sensitivity fi
 
 ## H5.4 — E2 audit and KD readiness
 
-PREPARED / experimental audit BLOCKED: no E2 manifest supplied. Await Hy's features/dictionary/references and Phúc's predictions/configs/lineage/candidates; Khiêm's bias/pilot evidence is optional for core paired evaluation.
+H5.4 FEATURE AUDIT DONE: native e2-brand-v0 technical PASS, PRELIMINARY. MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS: no matched 20-feature OOF/Validation bundle supplied. Hy's draft reference still requires review; KD PROTOCOL PREPARED.
+
+Native Hy feature audit: **PASS / PRELIMINARY**; 14663 rows, 20 features, split counts {'train': {'x': 13078, 'excluded': 2}, 'val': {'x': 1585, 'excluded': 0}}; excluded=2. Reference SHA256 `32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf`, statuses={'draft': 37}. [Checks and provenance](tables/week5/e2_feature_audit.json). Draft reference provenance remains pending Hy review; this is not frozen E2 v1.
+
+The handoff records the producer branch/metadata reviewed for this run. Advanced models using lexical_12 must not be relabeled as 20-feature E2 results. Model comparison requires actual matched E2 OOF/Validation predictions, declared score kind/decision rule, fitting/preprocessing/tuning lineage and reference/version hashes. No producer model is trained by this audit.
 
 Loaders/adapters enforce artifact hashes, exact feature order/dictionary, eligible IDs, fixed folds, finite values, lexical-contract consistency, fold-local or independent external brand references, producer training-ID lineage and matched E1/E2 comparisons. Producer declarations still need code/reference review; schema checks alone do not prove leakage absence. Synthetic fixtures validate logic only and contribute no reported experimental metrics.
 
-The primary E1–E2 comparison always recomputes both decisions at 0.5. Optional candidate/context thresholds require inner-Train-only OOF selection IDs within the correct fitting partition, a declared method and hashed supporting evidence. Their operating-point comparison is exported separately; changes in F1/Recall/FPR at different thresholds are not claimed as ranking improvements. AP is threshold-independent. E1 remains at 0.5.
+The existing optional model-bundle adapter is for declared phishing probabilities only; its common-0.5 comparison is not a universal score rule. Phúc v2 SVM uses decision_function margins and estimator.predict (default margin boundary 0): do not range-check margins as probabilities, threshold them at 0.5 or apply an arbitrary sigmoid. An E2 margin adapter will be added only when the actual E2 prediction format and producer decision rule arrive. AP accepts ranking scores, including margins. E1 remains at 0.5; Validation/Test never select an operating point.
 
 [KD evaluation protocol](../docs/kd_evaluation_protocol.md); [handoff and continuation prompt](../docs/week5_hung_handoff.md). Optional source-bias/pilot evidence from Khiêm remains separate from X; source bias is not claimed resolved.

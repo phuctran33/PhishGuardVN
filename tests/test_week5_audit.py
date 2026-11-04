@@ -342,3 +342,66 @@ def test_resource_feature_name_is_not_source_metadata(inputs):
     matrix = matrix.rename(columns={"brand_similarity": "resource_similarity"})
     names[-1] = "resource_similarity"; dictionary.loc[len(dictionary)-1, "feature"] = "resource_similarity"
     validate_feature_matrix(matrix, names, dictionary, refs, metadata, folds)
+
+
+def test_pr5_parser_alias_cache_compatibility_is_narrow():
+    from phishguard_vn.week5 import _baseline_cache_matches
+    modules = ["__init__", "data", "features", "url_parser", "splits", "modeling", "evaluation"]
+    files = {f"src/phishguard_vn/{m}.py": "original" for m in modules}
+    files.update({"raw.csv": "raw", "baseline.toml": "config"})
+    prior = {"files_sha256": files, "versions": {"tldextract": "5.4.0"}, "python": "test"}
+    current = json.loads(json.dumps(prior))
+    current["files_sha256"]["src/phishguard_vn/url_parser.py"] = "alias-renamed"
+    assert not _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
+    current["parser_legacy_alias_sha256"] = "original"
+    assert _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
+    current["parser_legacy_alias_sha256"] = "additional-behavior-change"
+    assert not _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
+
+
+@pytest.mark.parametrize("defect", [None, "duplicate", "test_id", "order", "nan", "lexical_drift", "reference", "false_freeze"])
+def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
+    from pathlib import Path
+    from phishguard_vn.brand_features import BRAND_FEATURES, E2_FEATURES, FEATURE_SCHEMA_VERSION, load_reference
+    from phishguard_vn.e2_audit import audit_native_brand_features
+    metadata, folds, _ = inputs
+    interim = tmp_path / "data/interim"; interim.mkdir(parents=True)
+    splits = tmp_path / "data/splits"; splits.mkdir()
+    templates = tmp_path / "reports/templates"; templates.mkdir(parents=True)
+    original_root = Path(__file__).resolve().parents[1]
+    for filename in ["brand_feature_dictionary.csv", "feature_dictionary.csv"]:
+        (templates / filename).write_bytes((original_root / "reports/templates" / filename).read_bytes())
+    excluded = pd.DataFrame({"id": ["excluded_1", "excluded_2"], "error_reason": ["unresolved_domain"]*2, "split": ["train"]*2})
+    excluded[["id", "error_reason"]].to_csv(interim / "05_excluded_rows_trainval.csv", index=False)
+    matrix = metadata[["id", *CANDIDATE_FEATURES]].copy()
+    for name in BRAND_FEATURES: matrix[name] = 0.0
+    for split in ["train", "val"]:
+        metadata.loc[metadata.split.eq(split), ["id"]].to_csv(splits / f"url_{split}.csv", index=False)
+    # No Test file or model/prediction/config/lineage files exist in this fixture.
+    metadata[["id", "url"]].to_csv(interim / "core_gold_silver.csv", index=False)
+    ids_hash = lambda ids: hashlib.sha256("\n".join(sorted(ids)).encode()).hexdigest()
+    native = {"feature_schema_version": FEATURE_SCHEMA_VERSION, "partition": "trainval", "test_excluded_from_this_artifact": True,
+              "frozen": False, "columns": ["id", *E2_FEATURES], "e1_columns": list(CANDIDATE_FEATURES), "brand_columns": list(BRAND_FEATURES),
+              "rows_x": len(matrix), "rows_excluded": 2, "rows_by_split": {"train": {"x": 18, "excluded": 2}, "val": {"x": 6, "excluded": 0}},
+              "ids_sha256_x": ids_hash(matrix.id), "ids_sha256_excluded": ids_hash(excluded.id), "brand_reference": load_reference().summary(),
+              "input_file": "core_gold_silver.csv", "input_sha256": sha256(interim / "core_gold_silver.csv"),
+              "splits_sha256": {f"url_{s}.csv": sha256(splits / f"url_{s}.csv") for s in ["train", "val"]},
+              "brand_feature_dictionary_sha256": sha256(templates / "brand_feature_dictionary.csv"),
+              "e1_feature_dictionary_sha256": sha256(templates / "feature_dictionary.csv")}
+    if defect == "duplicate": matrix = pd.concat([matrix, matrix.iloc[[0]]])
+    if defect == "test_id": matrix.loc[0, "id"] = "official_test_id"
+    if defect == "order": matrix = matrix[list(reversed(matrix.columns))]
+    if defect == "nan": matrix.loc[0, "brand_in_domain"] = np.nan
+    if defect == "lexical_drift": matrix.loc[0, "url_len"] += 1
+    if defect == "reference": native["brand_reference"]["sha256"] = "wrong"
+    if defect == "false_freeze": native["frozen"] = True
+    matrix.to_csv(interim / "05_matrix_X_brand_trainval.csv", index=False)
+    manifest = interim / "05_matrix_X_brand_trainval.manifest.json"; manifest.write_text(json.dumps(native))
+    report = tmp_path / "audit.json"
+    if defect:
+        with pytest.raises(ValueError): audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
+        assert json.loads(report.read_text())["status"] == "FAIL"
+    else:
+        result = audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
+        assert result["status"] == "PASS" and result["feature_status"] == "PRELIMINARY"
+        assert result["n_features"] == 20 and result["model_comparison_status"] == "PENDING_PRODUCER_E2_PREDICTIONS"

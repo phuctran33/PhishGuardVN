@@ -13,8 +13,9 @@ def main():
     parser.add_argument("--config", type=Path)
     parser.add_argument("--rebuild-e1", action="store_true", help="Regenerate actual fold-held-out predictions with merged E1 pipeline")
     parser.add_argument("--robustness-only", action="store_true", help="Independent parser/extractor stress test; no data/model required")
+    parser.add_argument("--feature-only", action="store_true", help="Audit Hy native E2 trainval features without any models/predictions")
     args = parser.parse_args()
-    result = run_week5(get_project_root(), args.config, rebuild_e1=args.rebuild_e1, robustness_only=args.robustness_only)
+    result = run_week5(get_project_root(), args.config, rebuild_e1=args.rebuild_e1, robustness_only=args.robustness_only, feature_only=args.feature_only)
     for key, value in result.items():
         print(key + ":", value.to_string(index=False) if hasattr(value, "to_string") else value)
 

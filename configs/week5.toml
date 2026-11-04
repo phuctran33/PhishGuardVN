@@ -12,6 +12,8 @@ expected_train_rows = 13078
 expected_validation_rows = 1585
 
 [e2]
+# Native Hy feature audit runs independently of the optional model bundle below.
+native_manifest = "data/interim/05_matrix_X_brand_trainval.manifest.json"
 # Relative to project root. Artifact paths inside manifest are relative to manifest.
 manifest = ""
 # Optional trusted local module:function accepting one URL and returning phishing score.

@@ -18,7 +18,7 @@ import pandas as pd
 from phishguard_vn.data import load_dataset, prepare_core
 from phishguard_vn.evaluation_audit import check_ids, distribution_shift, metrics_table, stratified_metrics, validate_predictions
 from phishguard_vn.error_analysis import apply_case_reviews, explain_error_cases, sample_errors, taxonomy_summary
-from phishguard_vn.e2_audit import load_e2_bundle, sha256
+from phishguard_vn.e2_audit import audit_native_brand_features, load_e2_bundle, sha256
 from phishguard_vn.features import CANDIDATE_FEATURES, build_feature_table
 from phishguard_vn.modeling import predict_url, run_baseline
 from phishguard_vn.robustness import explain_lexical_shifts, run_robustness, robustness_summary
@@ -48,9 +48,16 @@ def _input_fingerprint(root, config_path, dataset_path, baseline_path):
     reviews = root / "reports/annotations/week5_error_reviews.json"
     if reviews.is_file():
         paths.append(reviews)
+    paths += [p for p in [root / "reports/templates/brand_feature_dictionary.csv",
+                         root / "src/phishguard_vn/resources/brand_reference_v1.csv"] if p.is_file()]
     files = {str(p.relative_to(root) if p.is_relative_to(root) else p): sha256(p) for p in paths}
     versions = {p: version(p) for p in ["numpy", "pandas", "scipy", "scikit-learn", "tldextract", "idna", "joblib", "matplotlib"]}
     value = {"files_sha256": files, "versions": versions, "python": platform.python_version()}
+    # PR #5 replaces only a deprecated tldextract alias. Preserve cached E1 only
+    # when reversing that exact spelling change reproduces its original source hash.
+    parser = root / "src/phishguard_vn/url_parser.py"
+    value["parser_legacy_alias_sha256"] = hashlib.sha256(parser.read_bytes().replace(
+        b"top_domain_under_public_suffix", b"registered_domain")).hexdigest()
     value["fingerprint"] = hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
     return value
 
@@ -60,7 +67,10 @@ def _baseline_cache_matches(prior, current, dataset_key, config_key):
     modules = ["__init__", "data", "features", "url_parser", "splits", "modeling", "evaluation"]
     keys = {dataset_key, config_key, *[f"src/phishguard_vn/{name}.py" for name in modules]}
     return (prior.get("versions") == current["versions"] and prior.get("python") == current["python"]
-            and all(k in current["files_sha256"] and prior.get("files_sha256", {}).get(k) == current["files_sha256"][k] for k in keys))
+            and all(k in current["files_sha256"] and (
+                prior.get("files_sha256", {}).get(k) == current["files_sha256"][k]
+                or (k == "src/phishguard_vn/url_parser.py" and prior.get("files_sha256", {}).get(k)
+                    == current.get("parser_legacy_alias_sha256") is not None)) for k in keys))
 
 
 def prepare_inputs(root, dataset_path, config, output):
@@ -182,8 +192,16 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
         counts_same = archived_delta[[m + "_delta" for m in ["tn", "fp", "fn", "tp"]]].eq(0).all().all()
         archive_note = (f"Archived Week-4 comparison: identical confusion counts={bool(counts_same)}; maximum absolute per-fold AP difference={ap_delta:.9f}. "
                         "Current runtime versions differ from the archived environment; the AP difference is recorded, not silently replaced by old metrics or attributed to a verified cause. See archived_e1_comparison.csv.")
-    readiness = ("H5.4 PREPARED for E2 and KD; actual E2 audit BLOCKED until producer artifacts arrive."
-                 if "BLOCKED" in e2_status else "H5.4 supplied E2 metrics audited; KD protocol PREPARED; predictor and semantic review status below.")
+    readiness = e2_status
+    native_path = root / "reports/tables/week5/e2_feature_audit.json"
+    native_note = "Native E2 feature audit has not run."
+    if native_path.is_file():
+        native = json.loads(native_path.read_text())
+        native_note = (f"Native Hy feature audit: **{native['status']} / {native.get('feature_status', 'PENDING')}**; "
+                       f"{native.get('rows_x')} rows, {native.get('n_features')} features, split counts {native.get('rows_by_split')}; "
+                       f"excluded={native.get('rows_excluded')}. Reference SHA256 `{native.get('brand_reference', {}).get('sha256')}`, "
+                       f"statuses={native.get('brand_reference', {}).get('status_counts')}. "
+                       "[Checks and provenance](tables/week5/e2_feature_audit.json). Draft reference provenance remains pending Hy review; this is not frozen E2 v1.")
     source_path = root / "reports/tables/week5/source_audit_review.json"
     source_note = "No supporting source-audit snapshot has been reviewed in this checkout."
     if source_path.is_file():
@@ -192,8 +210,8 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
                        f"{source_review['limitations']} {source_review['parser_reconciliation']} {source_review['external_pilot_status']}")
     lines = ["# PhishGuardVN — Week 5 evaluation (Hưng)", "",
              "## Status and provenance", "",
-             "H5.1 DONE; H5.2 DONE for reproducible static review (human semantic checks pending); H5.3 DONE. " + readiness, "",
-             f"Published upstream snapshot: `{manifest['published_commit']}` on week5/hung-evaluation-robustness. Current audit runtime base: `{manifest['audit_runtime_base_revision']}`; original E1 generation base: `{manifest['e1_runtime_base_revision']}`. Runtime source state: `{manifest['runtime_source_state']}`. Source/config/annotation hashes identify the working sources; the published SHA is a separate snapshot and does not identify uncommitted edits. No commit/push/merge is performed by this review.", "",
+             "H5.1 DONE; H5.2 OFFLINE REVIEW DONE / HUMAN REVIEW PENDING; H5.3 DONE. " + readiness, "",
+             f"Upstream snapshot at runtime: `{manifest['published_commit']}` on week5/hung-evaluation-robustness. Current audit runtime base: `{manifest['audit_runtime_base_revision']}`; original E1 generation base: `{manifest['e1_runtime_base_revision']}`. Runtime source state: `{manifest['runtime_source_state']}`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.", "",
              "Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.", "",
              "12 lexical features; 13,078 eligible core train IDs; 3 unchanged domain folds; seed=42; scaler fit separately on each fitting fold; threshold=0.5. Two unresolved train/phishing URLs remain in the raw dataset, excluded with reasons. No official test features or predictions generated. Metadata (including source/tier) stays outside X.", "",
              f"Selected E1: **{selected}** by existing mean-CV-F1 rule, AP tie-break. Reconstructed predictions cover every eligible ID once per model/partition and pass label/fold/group/threshold checks. All available local Week-4 feature/domain/fold handoffs match by ID.", "",
@@ -222,18 +240,21 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
              f"Exact correct-context LR arithmetic is verified for every case. Opposite-label full-vector collisions in fitting data are observed for {int(cases.taxonomy.str.contains('representation_collision', regex=False).sum())}/{len(cases)} cases (absolute feature tolerance 1e-12). The selected model is refitted only in its three existing fitting folds for explanation when those models are unavailable; no new model selection, thresholds or baseline experiments are introduced. Validation explanations use the original full-Train pipeline. Contributions are relative to each fitting mean, with correlated dot/subdomain/length terms often cancelling; they are not independent causal effects.", "",
              "Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hashes and collision supports) and error_feature_attributions.csv (all 12 raw/scaled terms per case). Collision searches use fitting IDs only, not held-out labels. The coarse representation can be ambiguous under original labels, but this does not verify maliciousness, label correctness or a source shortcut.", "",
              "Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.", "",
+             "Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. The checklist is created only if absent and never overwritten. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.", "",
              "## H5.3 — static robustness", "",
              f"{int(robust.n_cases.sum())} static cases; expected parser-validity checks passed {int((robust.expected_validity_pass_rate * robust.n_cases).sum())}/{int(robust.n_cases.sum())}. Full results/specifications and limitations: [robustness report](week5_robustness.md).", "",
              "![Score shifts](figures/week5/robustness_shift.png)", "",
              "No transformed ground truth, accuracy or F1. Prediction flips are sensitivity findings, not established model errors. Expected malformed rejection is a successful validity check.", "",
              "## H5.4 — E2 audit and KD readiness", "", e2_status, "",
+             native_note, "",
+             "The handoff records the producer branch/metadata reviewed for this run. Advanced models using lexical_12 must not be relabeled as 20-feature E2 results. Model comparison requires actual matched E2 OOF/Validation predictions, declared score kind/decision rule, fitting/preprocessing/tuning lineage and reference/version hashes. No producer model is trained by this audit.", "",
              "Loaders/adapters enforce artifact hashes, exact feature order/dictionary, eligible IDs, fixed folds, finite values, lexical-contract consistency, fold-local or independent external brand references, producer training-ID lineage and matched E1/E2 comparisons. Producer declarations still need code/reference review; schema checks alone do not prove leakage absence. Synthetic fixtures validate logic only and contribute no reported experimental metrics.", "",
-             "The primary E1–E2 comparison always recomputes both decisions at 0.5. Optional candidate/context thresholds require inner-Train-only OOF selection IDs within the correct fitting partition, a declared method and hashed supporting evidence. Their operating-point comparison is exported separately; changes in F1/Recall/FPR at different thresholds are not claimed as ranking improvements. AP is threshold-independent. E1 remains at 0.5.", "",
+             "The existing optional model-bundle adapter is for declared phishing probabilities only; its common-0.5 comparison is not a universal score rule. Phúc v2 SVM uses decision_function margins and estimator.predict (default margin boundary 0): do not range-check margins as probabilities, threshold them at 0.5 or apply an arbitrary sigmoid. An E2 margin adapter will be added only when the actual E2 prediction format and producer decision rule arrive. AP accepts ranking scores, including margins. E1 remains at 0.5; Validation/Test never select an operating point.", "",
              "[KD evaluation protocol](../docs/kd_evaluation_protocol.md); [handoff and continuation prompt](../docs/week5_hung_handoff.md). Optional source-bias/pilot evidence from Khiêm remains separate from X; source bias is not claimed resolved.", ""]
     (root / "reports/week5_evaluation.md").write_text("\n".join(lines), encoding="utf-8")
 
 
-def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False):
+def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False, feature_only=False):
     root = Path(root).resolve()
     config_path = Path(config_path).resolve() if config_path else root / "configs/week5.toml"
     with config_path.open("rb") as handle:
@@ -259,6 +280,15 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     fingerprint = _input_fingerprint(root, config_path, paths["dataset"], paths["baseline_config"])
     source_status = subprocess.run(["git", "status", "--porcelain", "--", *fingerprint["files_sha256"]], cwd=root, text=True, capture_output=True).stdout.strip()
     features, metadata, folds, exclusions, comparisons = prepare_inputs(root, paths["dataset"], config, output)
+    native_feature_audit = None
+    if config.get("e2", {}).get("native_manifest"):
+        native_feature_audit = audit_native_brand_features(root / config["e2"]["native_manifest"], metadata, folds, exclusions,
+                                                          root, tables / "e2_feature_audit.json")
+    if feature_only:
+        if native_feature_audit is None:
+            raise ValueError("Set e2.native_manifest to Hy's trainval manifest")
+        return {"feature_audit": native_feature_audit["status"], "feature_status": native_feature_audit["feature_status"],
+                "rows_by_split": native_feature_audit["rows_by_split"], "model_comparison": native_feature_audit["model_comparison_status"]}
     with paths["baseline_config"].open("rb") as handle:
         baseline_config = tomllib.load(handle)
     if baseline_config["experiment"]["seed"] != 42 or baseline_config["evaluation"]["decision_threshold"] != 0.5:
@@ -326,6 +356,13 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
         joblib.dump({"result_sha256": sha256(result_path), "models": context_models}, explanation_cache)
     review_path = root / "reports/annotations/week5_error_reviews.json"
     cases = apply_case_reviews(sample, evidence, review_path)
+    human_checklist = root / "reports/annotations/week5_human_review.csv"
+    if not human_checklist.is_file():
+        checklist = cases[["id", "url_safe", "evaluation_partition", "fold_id", "outcome", "score"]].copy()
+        for field in ["reviewer", "reviewed_at", "observation_checked", "hypothesis_assessed", "evidence_checked", "notes"]:
+            checklist[field] = ""
+        checklist["review_status"] = "pending"
+        checklist.to_csv(human_checklist, index=False)
     if len(cases) < 30:
         raise ValueError("Fewer than 30 available errors; report shortage rather than silently accepting")
     pool = predictions.loc[predictions.model.eq(selected) & predictions.outcome.isin(["FP", "FN"])].copy()
@@ -342,7 +379,9 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     outputs.update(error_model_evidence=evidence, error_feature_attributions=attributions, robustness_feature_deltas=feature_deltas)
     for name, frame in outputs.items():
         frame.to_csv(tables / f"{name}.csv", index=False)
-    e2_status = "PREPARED / experimental audit BLOCKED: no E2 manifest supplied. Await Hy's features/dictionary/references and Phúc's predictions/configs/lineage/candidates; Khiêm's bias/pilot evidence is optional for core paired evaluation."
+    e2_status = (f"H5.4 FEATURE AUDIT DONE: native {native_feature_audit['feature_schema_version']} technical PASS, {native_feature_audit['feature_status']}. "
+                 "MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS: no matched 20-feature OOF/Validation bundle supplied. "
+                 "Hy's draft reference still requires review; KD PROTOCOL PREPARED.") if native_feature_audit else "H5.4 FEATURE AUDIT PENDING; MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS. KD PROTOCOL PREPARED."
     current_csvs = [tables / f"{name}.csv" for name in outputs] + [tables / "error_sampling_pool.csv"]
     if config.get("e2", {}).get("manifest"):
         bundle = load_e2_bundle(root / config["e2"]["manifest"], metadata, folds,
@@ -375,6 +414,8 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
                 "git_worktree_status_at_start": worktree,
                 "provenance_note": "Audit hashes identify the current runtime sources, including uncommitted review changes; published_commit identifies the existing upstream snapshot, not publication of this review. E1 generation sources and runtime base remain the original immutable training record.",
                 "selected_model": selected, "threshold": result["decision_threshold"], "cached_e1": cached,
+                "e1_parser_alias_compatibility": "PR #5 deprecated-property spelling only; reversed source hash matches E1, and regenerated feature/domain/fold handoffs agree" if cached and provenance["files_sha256"]["src/phishguard_vn/url_parser.py"] != fingerprint["files_sha256"]["src/phishguard_vn/url_parser.py"] else "not needed",
+                "e2_feature_audit_sha256": sha256(tables / "e2_feature_audit.json") if native_feature_audit else None,
                 "e1_generation": provenance, "handoff_comparisons": comparisons,
                 "evaluation_scope": {"train": int(metadata.split.eq("train").sum()), "validation": int(metadata.split.eq("val").sum()), "test_evaluated": False},
                 "e2_status": e2_status, "sampling": {"seed": config["audit"]["seed"], "requested": config["audit"]["sample_cases"], "actual": len(cases)},

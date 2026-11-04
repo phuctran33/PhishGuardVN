@@ -351,3 +351,91 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
             "comparison": paired_comparison(e1, fixed),
             "operating_point_comparison": paired_comparison(e1, predictions),
             "status": "E2 metrics verified; robustness requires a supplied local predictor adapter"}
+
+
+def audit_native_brand_features(manifest_path, metadata, folds, exclusions, root, report_path):
+    """Audit Hy's native trainval artifacts without requiring models or predictions.
+
+    Keep the producer's schema/reference/dictionaries unchanged. A technical PASS
+    with draft references is PRELIMINARY, never a frozen/verified E2 result.
+    """
+    from datetime import datetime, timezone
+    from phishguard_vn.brand_features import BRAND_FEATURES, E2_FEATURES, FEATURE_SCHEMA_VERSION, REFERENCE_PATH, load_reference
+    root, path, report_path = Path(root), Path(manifest_path), Path(report_path)
+    report = {"checked_at_utc": datetime.now(timezone.utc).isoformat(), "status": "FAIL", "checks": {},
+              "model_comparison_status": "PENDING_PRODUCER_E2_PREDICTIONS",
+              "limitations": "Feature checks do not verify reference truth or model training; no E2 metrics calculated."}
+
+    def check(name, passed, detail):
+        report["checks"][name] = {"status": "PASS" if passed else "FAIL", "detail": detail}
+        if not passed:
+            raise ValueError(f"Native E2 audit: {name}: {detail}")
+
+    try:
+        native = json.loads(path.read_text())
+        matrix_path = path.with_name(path.name.replace(".manifest.json", ".csv"))
+        excluded_path = path.parent / "05_excluded_rows_trainval.csv"
+        matrix = pd.read_csv(matrix_path, dtype={"id": "string"})
+        excluded = pd.read_csv(excluded_path, dtype={"id": "string"})
+        check("partition_version", native.get("partition") == "trainval" and native.get("test_excluded_from_this_artifact") is True
+              and native.get("feature_schema_version") == FEATURE_SCHEMA_VERSION, "Require native trainval / e2-brand-v0 contract")
+        check_ids(metadata, "eligible metadata"); check_ids(folds, "folds"); check_ids(matrix, "native E2")
+        check("schema_order", list(matrix) == ["id", *E2_FEATURES] and native.get("columns") == list(matrix)
+              and native.get("e1_columns") == list(CANDIDATE_FEATURES) and native.get("brand_columns") == list(BRAND_FEATURES),
+              "Exactly id + unchanged 12 lexical + 8 brand columns; metadata excluded")
+        check("eligible_ids", metadata.split.isin(["train", "val"]).all() and metadata.tier.isin(["gold", "silver"]).all()
+              and set(matrix.id) == set(metadata.id), "Exact eligible Core Train/Validation IDs; Test rejected by Train/Validation whitelist")
+        check("numeric_finite", all(pd.api.types.is_numeric_dtype(matrix[c]) for c in E2_FEATURES)
+              and np.isfinite(matrix[list(E2_FEATURES)].to_numpy(dtype=float)).all(), "All 20 features numeric; no NaN/Inf")
+        binary = [c for c in BRAND_FEATURES if c not in ("brand_typo_score", "susp_token_cnt")]
+        check("brand_value_contract", matrix[binary].isin([0, 1]).all().all() and matrix.brand_typo_score.between(0, 1).all()
+              and matrix.susp_token_cnt.ge(0).all() and matrix.susp_token_cnt.mod(1).eq(0).all(), "Native binary flags, typo range and nonnegative integer token counts")
+        check("excluded_ids", {"id", "error_reason"}.issubset(excluded) and excluded.id.is_unique
+              and set(excluded.id) == set(exclusions.id) and set(matrix.id).isdisjoint(excluded.id)
+              and excluded.error_reason.notna().all() and excluded.error_reason.astype(str).str.strip().ne("").all(),
+              "Excluded IDs exactly match E1 exclusions and have nonblank reasons")
+        reasons = exclusions.set_index("id").error_reason.reindex(excluded.id)
+        check("excluded_reasons", np.array_equal(reasons.to_numpy(), excluded.error_reason.to_numpy()), "E2 exclusion reasons match the unchanged E1 parser policy")
+        a = metadata.set_index("id").loc[matrix.id, list(CANDIDATE_FEATURES)].to_numpy(float)
+        b = matrix[list(CANDIDATE_FEATURES)].to_numpy(float)
+        check("lexical_parity_by_id", np.allclose(a, b, rtol=0, atol=1e-10), "Compare 12 E1 columns by ID, absolute tolerance 1e-10")
+        train = metadata.loc[metadata.split.eq("train")]
+        check("fold_ids", set(folds.id) == set(train.id) and set(folds.fold_id) == {0, 1, 2}, "Same three eligible domain folds")
+        grouped = train.merge(folds, on="id", validate="one_to_one")
+        check("domain_groups", grouped.registrable_domain.notna().all() and grouped.groupby("registrable_domain").fold_id.nunique().eq(1).all()
+              and set(train.registrable_domain).isdisjoint(metadata.loc[metadata.split.eq("val"), "registrable_domain"]),
+              "No domain crosses outer folds or official Train/Validation")
+        counts = {s: {"x": int(metadata.split.eq(s).sum()), "excluded": int(exclusions.split.eq(s).sum())} for s in ("train", "val")}
+        id_hash = lambda values: hashlib.sha256("\n".join(sorted(map(str, values))).encode()).hexdigest()
+        check("manifest_counts_ids", native.get("rows_x") == len(matrix) and native.get("rows_excluded") == len(excluded)
+              and native.get("rows_by_split") == counts and native.get("ids_sha256_x") == id_hash(matrix.id)
+              and native.get("ids_sha256_excluded") == id_hash(excluded.id), "Native counts, split supports and ID digests agree")
+        brand_dict = root / "reports/templates/brand_feature_dictionary.csv"
+        e1_dict = root / "reports/templates/feature_dictionary.csv"
+        dictionary = pd.read_csv(brand_dict)
+        check("dictionary", list(dictionary.feature) == list(BRAND_FEATURES) and dictionary.schema_version.eq(FEATURE_SCHEMA_VERSION).all()
+              and dictionary[["formula", "count_scope"]].notna().all().all()
+              and native.get("brand_feature_dictionary_sha256") == sha256(brand_dict)
+              and native.get("e1_feature_dictionary_sha256") == sha256(e1_dict), "Native brand definitions/order/version and both dictionary hashes match")
+        reference = load_reference(REFERENCE_PATH)
+        check("reference_hash", native.get("brand_reference") == reference.summary(), "Reference summary/hash matches the actual packaged reference")
+        input_path = path.parent / native["input_file"]
+        check("input_provenance", native.get("input_sha256") == sha256(input_path)
+              and all(native.get("splits_sha256", {}).get(f"url_{s}.csv") == sha256(root / f"data/splits/url_{s}.csv") for s in ("train", "val")),
+              "Input and Train/Validation split-file hashes match; no Test file opened")
+        check("freeze_claim", not native.get("frozen") or reference.is_fully_verified, "A draft reference cannot claim frozen/verified status")
+        report.update(status="PASS", feature_status="PRELIMINARY" if not native.get("frozen") else "FROZEN",
+                      feature_schema_version=FEATURE_SCHEMA_VERSION, n_features=len(E2_FEATURES), rows_by_split=counts,
+                      rows_x=len(matrix), rows_excluded=len(excluded), excluded_reasons=excluded.error_reason.value_counts().to_dict(),
+                      brand_reference=reference.summary(), producer_git_commit=native.get("git_commit"), producer_git_dirty=native.get("git_dirty"),
+                      artifact_sha256={str(p.relative_to(root) if p.is_relative_to(root) else p): sha256(p)
+                                       for p in [path, matrix_path, excluded_path, brand_dict, e1_dict, REFERENCE_PATH]},
+                      pending={"reference_review": "PENDING_HY_REFERENCE_REVIEW" if not reference.is_fully_verified else "source records reviewed by producer; independent review still needed",
+                               "e2_predictions": "PENDING_PRODUCER_E2_PREDICTIONS"})
+    except (ValueError, KeyError, FileNotFoundError, TypeError, AssertionError) as exc:
+        report["error"] = str(exc)
+        raise
+    finally:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
+    return report

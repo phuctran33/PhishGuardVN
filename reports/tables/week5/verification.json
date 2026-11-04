@@ -1,66 +1,137 @@
 {
-  "checked_at_utc": "2026-10-31T15:06:11.571028+00:00",
-  "runtime_fingerprint": "b1879fa090f362e1d260149889397431a9f12b7bb9e40dde8d8a6e592b3b1ec4",
-  "audit_runtime_base_revision": "251f0c144e0f311db49be5d8e70f837dd2342348",
-  "published_commit": "251f0c144e0f311db49be5d8e70f837dd2342348",
+  "checked_at_utc": "2026-11-04T03:53:14.883119+00:00",
+  "runtime_fingerprint": "1326b9c34b64852fc849f3234560687ab943780666c00d5709ec884dacd08a13",
+  "audit_runtime_base_revision": "a7413aae3351703429eba518657b08894afae3e7",
+  "published_snapshot_at_runtime": "d667ac8050bd225b7f1ae3dff09c64d714c6d4d2",
   "e1_runtime_base_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
-  "runtime_source_state": "modified_from_head",
+  "integration": {
+    "pr5_merge_commit": "0054a1b1844ce12b84030e52952106488b0cbc10",
+    "main_merge_commit": "a7413aae3351703429eba518657b08894afae3e7",
+    "hy_sources_identical_to_main": true
+  },
   "pytest": {
     "command": ".venv/bin/python -m pytest -q",
-    "passed": 140,
+    "passed": 182,
     "skipped": 0,
-    "summary": "140 passed, 2457 warnings in 5.74s",
+    "summary": "182 passed in 5.49s",
     "test_source_sha256": {
       "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
+      "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
       "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
       "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_audit.py": "672f6a1b72a8110be69744bdcb23068e69141ee8f9075f7838ba8d7b7dae7eeb"
+      "tests/test_week5_audit.py": "ad7b13205224771c5277f36cad79eb1fe0d0ac56714de28654e1e2e3569d53d8"
     }
   },
-  "notebook": {
-    "command": ".venv/bin/python -m nbconvert --to notebook --execute --inplace notebooks/05_error_robustness.ipynb --ExecutePreprocessor.timeout=600",
-    "code_cells_executed": 6,
-    "errors": 0,
-    "sha256": "d008b115a7ae1d9530817068818cba869b103030fc5e6c9834b1d64aff62dc32"
+  "commands": {
+    "native_extraction": {
+      "command": ".venv/bin/python scripts/05_build_matrix_x_brand.py --partition trainval",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "feature_only": {
+      "command": ".venv/bin/python scripts/run_week5_evaluation.py --feature-only",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "evaluation": {
+      "command": ".venv/bin/python scripts/run_week5_evaluation.py",
+      "exit_code": 0,
+      "cached_e1": true
+    },
+    "notebook": {
+      "command": ".venv/bin/python -m nbconvert --to notebook --execute --inplace notebooks/05_error_robustness.ipynb --ExecutePreprocessor.timeout=600",
+      "exit_code": 0,
+      "code_cells_executed": 6,
+      "errors": 0,
+      "sha256": "facb1b879c817b9506d435280d128e5b22498142318f4bb59b062bd879884820"
+    }
   },
-  "baseline_unchanged": {
-    "cached_e1": true,
-    "original_result_predictions_metrics_sampling_pool_identical": true,
+  "baseline_annotations_and_robustness_unchanged": {
+    "identical_hashes": true,
     "before": {
       "data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
       "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
       "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
       "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
-      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25"
+      "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+      "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+      "reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+      "reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f"
     },
     "after": {
       "data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
       "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
       "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
       "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
-      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25"
+      "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+      "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+      "reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+      "reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f"
     },
-    "explanation_refits": "Only the selected unchanged LR was reconstructed in three fixed fitting folds for attribution; no E1 baseline experiment or selection rerun."
+    "parser_alias_compatibility": "PR #5 deprecated-property spelling only; reversed source hash matches E1, and regenerated feature/domain/fold handoffs agree"
   },
-  "error_analysis": {
+  "native_e2": {
+    "report_sha256": "37acb691ed908114a4472326de9a053b5fa018f238b7d0a45775a57d0a99f847",
+    "status": "PASS",
+    "feature_status": "PRELIMINARY",
+    "rows_by_split": {
+      "train": {
+        "x": 13078,
+        "excluded": 2
+      },
+      "val": {
+        "x": 1585,
+        "excluded": 0
+      }
+    },
+    "n_features": 20,
+    "brand_reference_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+    "draft_records": 37,
+    "missing_source_accessed": 37,
+    "model_comparison_status": "PENDING_PRODUCER_E2_PREDICTIONS"
+  },
+  "producer_discovery": {
+    "ref": "origin/phuc-week5-models",
+    "commit": "a4f8a1892237c3d9b3c1bb2a3243928b453744bd",
+    "metadata_path": "reports/tables/05_readable_metadata.json",
+    "feature_set": "lexical_12",
+    "feature_names": [
+      "url_len",
+      "dom_len",
+      "is_ip",
+      "subdom_cnt",
+      "letter_cnt",
+      "digit_cnt",
+      "dot_cnt",
+      "dash_cnt",
+      "under_cnt",
+      "slash_cnt",
+      "entropy",
+      "path_len"
+    ],
+    "score_kinds": {
+      "logistic_regression": "probability",
+      "logistic_regression_balanced": "probability",
+      "svm_rbf": "decision_function",
+      "mlp": "probability",
+      "hist_gradient_boosting": "probability"
+    },
+    "decision_rule": "estimator.predict",
+    "e2_predictions": "No native 20-feature E2 predictions found in local artifacts or tracked producer tree; ignored producer files not delivered."
+  },
+  "human_review": {
+    "checklist": "reports/annotations/week5_human_review.csv",
+    "sha256": "7a6dffb6e083452f9b3c493e04b185897864e9add22acaed67d725abc67fe6c8",
     "cases": 40,
-    "distinct_observations": 40,
-    "distinct_hypotheses": 40,
-    "distinct_next_verifications": 40,
-    "opposite_label_fitting_collision_cases": 30,
-    "max_score_reconstruction_error": 3.3306690738754696e-16,
-    "all_semantic_labels_and_root_causes_unverified": true,
-    "fitting_scaler_means_supports_id_hashes_and_domain_exclusion_checked": true,
-    "durable_reviews_sha256": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240"
+    "pending": 40,
+    "minimum_personal_reviews_required": 30,
+    "codex_offline_notes_retained": true
   },
-  "robustness": {
-    "cases": 144,
-    "parser_expectations_passed": 144,
-    "scores_identical_to_published_stress_cases": true,
-    "conditional_equivalence_cases": 12,
-    "conditional_equivalence_flips": 0,
-    "all_changed_feature_logit_delta_sums_checked": true
-  },
+  "original_tracked_data_and_e1_training_sources_unchanged": true,
+  "kd_protocol_unchanged": true,
+  "official_test_predicted_or_scored": false,
   "current_output_sha256": {
     "reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
     "reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
@@ -84,16 +155,6 @@
     "reports/figures/week5/robustness_shift.png": "1533e268865e315e0d7f2dc7b143f3d3dc88c98842a14973625ef3e74df6c118",
     "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
   },
-  "historical_publication_verification": {
-    "reference": "git show 251f0c144e0f311db49be5d8e70f837dd2342348:reports/tables/week5/verification.json",
-    "note": "The published 126-test/forced-reconstruction/clean-bootstrap record is historical, not rerun as part of this review."
-  },
-  "official_test_predicted_or_scored": false,
-  "original_tracked_data_and_teammate_baseline_sources_unchanged": true,
   "pip_check": "No broken requirements found.",
-  "known_warnings": [
-    "Existing parser registered_domain deprecation alias remains unchanged.",
-    "Existing raw CSV mixed-type metadata warning concerns columns excluded from X."
-  ],
-  "environment_lock_sha256": "cf5d8aece1c9fc76093d61bc3a12598bdafe4b0448f1f595015712d018a51019"
+  "historical_verification": "Previous 140-test review and 126-test publication records remain in Git history; no baseline training was repeated for this integration."
 }
