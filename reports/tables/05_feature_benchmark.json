@@ -1,0 +1,49 @@
+{
+  "schema_version": "e2-brand-v0",
+  "reference_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+  "n_urls": 5000,
+  "cold_start_s_new_process": 0.268,
+  "stages": {
+    "parse_url": {
+      "median_ms": 0.0104,
+      "p95_ms": 0.0139,
+      "p99_ms": 0.0183,
+      "mean_ms": 0.0112,
+      "throughput_per_s": 89607.5
+    },
+    "lexical_e1_from_parsed": {
+      "median_ms": 0.0048,
+      "p95_ms": 0.0083,
+      "p99_ms": 0.0103,
+      "mean_ms": 0.0052,
+      "throughput_per_s": 191099.9
+    },
+    "brand_from_parsed": {
+      "median_ms": 0.2905,
+      "p95_ms": 0.4438,
+      "p99_ms": 0.6551,
+      "mean_ms": 0.2723,
+      "throughput_per_s": 3672.1
+    },
+    "e2_total_from_raw_url": {
+      "median_ms": 0.3101,
+      "p95_ms": 0.4645,
+      "p99_ms": 0.6689,
+      "mean_ms": 0.2906,
+      "throughput_per_s": 3440.8
+    }
+  },
+  "memory": {
+    "python_heap_peak_mb_during_extraction": 4.37,
+    "process_max_rss_mb_before": 143.2,
+    "process_max_rss_mb_after": 147.7,
+    "note": "ru_maxrss là đỉnh toàn tiến trình (gồm pandas, đọc CSV), không phải riêng extractor"
+  },
+  "environment": {
+    "python": "3.12.6",
+    "platform": "macOS-15.7.4-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 10,
+    "tldextract": "5.4.0"
+  }
+}
