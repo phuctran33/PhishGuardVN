@@ -3,7 +3,7 @@
 | Task | Current status | Evidence / remaining work |
 |---|---|---|
 | H5.1 E1 evaluation | DONE | Same 12 features, 3 domain folds, seed 42, threshold 0.5; cached original model/predictions |
-| H5.2 error analysis | OFFLINE DONE / AI REVIEW DONE (30) / HUMAN_REVIEW_PENDING | Separate AI ledger covers the 30 priority cases; all 40 personal reviews remain pending |
+| H5.2 error analysis | DONE / HUMAN VERIFIED OFFLINE (30/40) | Hưng explicitly confirms matching independent review of the 30 priority cases; 10 additional cases pending |
 | H5.3 static robustness | DONE | Same 144 cases, exact E1 score/logit/feature evidence; no ground-truth accuracy/F1 for unlabeled variants |
 | H5.4 native E2 features | DONE / PASS / PRELIMINARY | Actual 14,663 Train/Validation rows, 20 features, 2 unresolved Train exclusions |
 | H5.4 native model audit | DONE / PASS / PRELIMINARY | Native gzip predictions/partitions checked; all published metrics match within floating-point tolerance |
@@ -54,19 +54,19 @@ Both checkouts' models/artifact directories and Phúc's tracked/ignored weight e
 
 All 40 durable notes were rechecked against static strings, actual original labels/scores, exact fitting-context attribution and collision evidence. Existing valid notes are retained; case signatures detect stale evidence, and reconstructed E1 scores agree to floating-point tolerance. No semantic/root cause or label is asserted verified. Correlated lexical contributions are arithmetic explanations, not independent causal effects.
 
-Hưng must personally inspect at least 30 and fill reviewer/date, observation/hypothesis/evidence checks and notes. A reviewed hypothesis may remain unresolved. Regeneration refreshes only offline suggestion fields and preserves reviewer/date/checks/notes/status by ID; mismatched checklist IDs stop for reconciliation. No live suspect URL is visited, original labels are retained, and Codex neither fills human identity/date nor promotes human verification. All **40 remain pending**.
+Hưng has explicitly confirmed his own independent analysis matches the 30 priority cases. Codex recorded that statement at 2026-11-04T12:43:24Z in reviewer/date/checks/notes/status fields for exactly those IDs: **30 human_verified, 10 pending**. `reviewed_at` is the confirmation-recording time; no date was supplied for the earlier work. Review scope is the offline observations, evidence interpretation and qualified hypotheses. Original labels and semantic/root-cause uncertainty remain unchanged. Regeneration preserves the human-owned fields by ID.
 
-### AI review supplement (no human sign-off)
+### AI-prepared review and subsequent human confirmation
 
 `reports/annotations/week5_ai_review.csv` reviews exactly the 30 priority IDs in suggested order (17 FP, 13 FN). Each has an individual Vietnamese conclusion, evidence, limitations and next verification. All **30 hypotheses are plausible_unverified**, **0 unsupported**; all 30 still require evidence for semantic/label/root-cause verification. Offline observations/features and arithmetic are consistent; maximum score reconstruction error is 3.33e-16. Recounted fitting collisions: 22 opposite-label cases, six without any exact match, two with only same-label matches. No opposite-label collision is asserted for those eight.
 
-This supplements the previous notebook/evaluation snapshot; it does not rerun E1/E2 or count as personal verification. Full suite after adding the three AI-ledger checks: **201 tests passed, 0 skipped**. The original 40-row human checklist, reviewer/date fields, durable notes, evidence and baseline artifacts remain byte-identical. Human verification stays **PENDING (40)**. AI findings and hashes are in `verification.json → ai_review`; reproducible committed-table checks are in `tests/test_week5_ai_review.py`. The AI CSV is separate from generated evaluation outputs; preserve its report supplement if rerunning the old report generator.
+The AI preparation supplements the earlier evaluation snapshot; no model/evaluation/notebook rerun is claimed. A subsequent explicit user statement supplies human confirmation for the same 30 priority IDs. The human checklist is updated only in its authorized review fields; all non-review fields and the original evidence/model artifacts remain unchanged. `verification.json` records the statement, current checklist hash and the historical pending-checklist hash. Keep the current human-confirmation overlay if regenerating the old report.
 
 ### Final H5.2 handoff and acceptance
 
 The existing `reports/annotations/week5_ai_review.csv` is the 30-case handoff table. It now exposes fold/partition, source/tier, original label, prediction, score, observation, hypothesis and `next_check` directly, alongside evidence/limitations and AI/human status. Labels use phishing=1, benign=0; Validation fold is blank. `next_check` replaces the old AI-only `next_verification` column; original annotation/checklist schemas are unchanged. Observations/hypotheses/next checks are in Vietnamese. Two AI conclusions were tightened (digit attribution versus counterfactual effect; same-label-only fitting matches), and next checks explicitly require recalculating all affected features.
 
-The H5.2 report now includes 30-case coverage/taxonomy, four testable hypotheses with checks and falsifiers, and an acceptance matrix against the supplied Week-5 plan. Method is **AI-assisted offline error analysis**. Technical/offline H5.2 is DONE; **human-assessed acceptance is PENDING**, with zero actual human sign-offs. All original 40 human checklist rows remain pending. Completing that acceptance requires a real person's review of at least 30, actual identity/date/checks and source evidence where semantics remain unresolved. No H5.1/H5.3/H5.4 work is reopened or changed.
+The H5.2 report contains coverage/taxonomy, four falsifiable hypotheses and an acceptance matrix. Method is **Human-assessed offline error analysis (AI-assisted preparation)**. Technical H5.2 and the minimum 30-case human review are DONE based on Hưng's direct confirmation. Ten additional human reviews remain pending. Human confirmation covers the offline analysis and does not certify website behavior, labels or individual root causes. No H5.1/H5.3/H5.4 work is reopened or changed.
 
 ## Reproduce the integration
 
@@ -91,7 +91,7 @@ Prior full evaluation verification at `d3d0d8e`: **198 tests passed, 0 skipped**
 
 Changes are confined to Hưng's existing audit/orchestration/checklist/tests/notebook/config/reports, plus one 15-row CSV. No audit framework, registry, new model runner, KD implementation or baseline refactor is added.
 
-- **Hưng:** personally verify at least 30 cases and enter real sign-off. This cannot be performed by Codex.
+- **Hưng:** confirmed independent offline review of the 30 priority cases; 10 additional cases remain pending. Original source evidence is still needed before stronger semantic/label/root-cause claims.
 - **Hy:** verify/freeze brand reference and provenance; current E2 remains PRELIMINARY.
 - **Phúc:** optionally deliver trusted fitted E2 weights/predictor for robustness; model audit is already DONE.
 - **Khiêm:** resolve source-label confounding evidence and deliver the optional independently reviewed external pilot. Existing source audit snapshot remains supporting evidence, outside X; missing pilot does not block the matched core model audit.

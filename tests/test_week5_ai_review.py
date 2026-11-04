@@ -15,8 +15,8 @@ ANNOTATIONS = ROOT / 'reports/annotations'
 TABLES = ROOT / 'reports/tables/week5'
 
 
-def test_ai_review_exact_priority_selection_and_no_human_signoff():
-    human = pd.read_csv(ANNOTATIONS / 'week5_human_review.csv')
+def test_ai_review_exact_priority_selection_and_explicit_human_confirmation():
+    human = pd.read_csv(ANNOTATIONS / 'week5_human_review.csv', keep_default_na=False)
     expected = human.loc[human.priority_first_30].sort_values('suggested_review_order')
     ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv', keep_default_na=False)
     assert len(ai) == 30 and ai.id.is_unique
@@ -24,12 +24,23 @@ def test_ai_review_exact_priority_selection_and_no_human_signoff():
     assert list(ai.suggested_review_order) == list(expected.suggested_review_order)
     assert ai.hypothesis_status.isin(['plausible_unverified', 'unsupported']).all()
     assert ai.review_status.eq('ai_review_complete').all()
-    assert ai.human_verification_status.eq('PENDING').all()
+    confirmation = json.loads((TABLES / 'verification.json').read_text())['human_review']
+    verified = human.loc[human.review_status.eq('human_verified')]
+    assert set(verified.id) == set(ai.id) == set(confirmation['confirmed_ids'])
+    assert len(verified) == confirmation['verified'] == 30
+    assert verified.reviewer.eq(confirmation['reviewer']).all()
+    assert verified.reviewed_at.eq(confirmation['confirmation_recorded_at_utc']).all()
+    assert pd.to_datetime(verified.reviewed_at, utc=True).notna().all()
+    assert verified[['observation_checked', 'hypothesis_assessed', 'evidence_checked', 'notes']].ne('').all().all()
+    remaining = human.loc[~human.id.isin(ai.id)]
+    assert len(remaining) == confirmation['pending'] == 10
+    assert remaining.review_status.eq('pending').all() and remaining.reviewer.eq('').all() and remaining.reviewed_at.eq('').all()
+    assert ai.human_verification_status.eq('human_verified').all()
     assert not {'reviewer', 'reviewed_at', 'human_verified'}.intersection(ai.columns)
     required = ['id', 'fold', 'source', 'label', 'prediction', 'score', 'observation', 'hypothesis', 'next_check']
     assert set(required).issubset(ai.columns)
     assert ai[['observation', 'hypothesis', 'next_check', 'conclusion', 'evidence', 'limitations']].ne('').all().all()
-    assert ai.analysis_method.eq('AI-assisted offline error analysis').all()
+    assert ai.analysis_method.eq('Human-assessed offline error analysis (AI-assisted preparation)').all()
     assert not ai.url_safe.str.contains('://', regex=False).any()
 
 
@@ -84,9 +95,13 @@ def test_ai_review_verification_counts_and_protected_inputs():
     assert ai.hypothesis_status.value_counts().to_dict() == verification['hypothesis_status']
     assert ai.outcome.value_counts().to_dict() == verification['outcomes']
     assert len(ai) == verification['cases'] == verification['needs_further_semantic_evidence']
-    assert verification['human_file_unchanged'] is True
+    assert verification['human_file_unchanged'] is False
+    human_confirmation = json.loads((TABLES / 'verification.json').read_text())['human_review']
+    assert human_confirmation['confirmation_quote']
+    assert human_confirmation['previous_checklist_sha256'] == verification['protected_sha256']['reports/annotations/week5_human_review.csv']
     # Validate committed inputs only; ignored model caches are checked in the actual local audit.
-    for name in ['week5_human_review.csv', 'week5_error_reviews.json']:
+    for name in ['week5_error_reviews.json']:
         path = ANNOTATIONS / name
         assert hashlib.sha256(path.read_bytes()).hexdigest() == verification['protected_sha256'][path.relative_to(ROOT).as_posix()]
+    assert hashlib.sha256((ANNOTATIONS / 'week5_human_review.csv').read_bytes()).hexdigest() == human_confirmation['sha256']
     assert hashlib.sha256((ANNOTATIONS / 'week5_ai_review.csv').read_bytes()).hexdigest() == verification['ai_review_sha256']

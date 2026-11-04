@@ -458,11 +458,13 @@ def test_human_checklist_preserves_manual_fields(inputs, tmp_path):
     first = update_human_checklist(cases, evidence, path)
     assert first.reviewer.eq('').all() and first.reviewed_at.eq('').all() and first.review_status.eq('pending').all()
     first.loc[0, ['reviewer', 'reviewed_at', 'notes']] = ['real reviewer fixture', '2026-01-01', 'keep literal NA']
+    first.loc[0, 'review_status'] = 'human_verified'
     first.to_csv(path, index=False)
     second = update_human_checklist(cases.iloc[::-1].reset_index(drop=True), evidence, path).set_index('id')
     assert second.loc[first.id.iloc[0], 'notes'] == 'keep literal NA'
     assert second.loc[first.id.iloc[0], 'reviewer'] == 'real reviewer fixture'
-    assert second.review_status.eq('pending').all()
+    assert second.loc[first.id.iloc[0], 'review_status'] == 'human_verified'
+    assert second.drop(index=first.id.iloc[0]).review_status.eq('pending').all()
 
 
 @pytest.mark.parametrize('defect', ['', 'schema', 'hash', 'inner', 'ap', 'fpr'])

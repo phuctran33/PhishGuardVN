@@ -2,7 +2,7 @@
 
 ## Status and provenance
 
-H5.1 DONE; H5.2 OFFLINE REVIEW DONE / AI REVIEW DONE (30) / HUMAN REVIEW PENDING; H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
+H5.1 DONE; H5.2 DONE / HUMAN VERIFIED OFFLINE (30/40); H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
 
 Upstream snapshot at runtime: `06526d63614747e903715b9737016415b4088435` on week5/hung-evaluation-robustness. Current audit runtime base: `06526d63614747e903715b9737016415b4088435`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
 
@@ -75,7 +75,7 @@ Testable hypotheses (unverified):
 3. Domain lexical patterns interact with single-label sources. Use source-held-out diagnostics where both classes are supported and matched-length/entropy train OOF comparisons; lack of source class overlap makes some effects unidentifiable.
 4. IDNA/brand cues add information beyond 12 lexical features. Compare E2 with E1 on exactly the same outer folds and an independent predeclared reference list; audit reference fitting before interpreting gains.
 
-## H5.2 — AI-assisted offline error analysis
+## H5.2 — Human-assessed error analysis (AI-assisted preparation)
 
 40 FP/FN cases selected using seed=42, SHA256-ranked IDs, round robin across partition/fold/type/source/tier and then distinct domains within queues. No ranking by score; selection is a diversity sample, not a population estimate. Sampling pool, coverage and limitations are recorded; if a stratum has no errors it contributes no cases.
 
@@ -107,19 +107,19 @@ Testable hypotheses (unverified):
 
 Each case has static observations, an explicitly unverified hypothesis, offline next verification, original labels and review status. Safe URL text is fully defanged and prefixed to prevent spreadsheet formulas; no suspicious URL was visited. Source effects and label uncertainty have explicit review fields; zero direct cue counts do not assert absence of those phenomena. No model output verifies a label error or individual causal mechanism.
 
-All 40 cases now have case-specific offline engineering notes, preserved read-only in [durable annotations](annotations/week5_error_reviews.json). Case signatures bind notes to ID, context, original label, URL, score and all 12 features; changed evidence fails as stale instead of silently reusing a review. Taxonomy describes observed representations, not verified root causes; all human semantic verification remains pending.
+All 40 cases now have case-specific offline engineering notes, preserved read-only in [durable annotations](annotations/week5_error_reviews.json). Case signatures bind notes to ID, context, original label, URL, score and all 12 features; changed evidence fails as stale instead of silently reusing a review. Taxonomy describes observed representations, not verified root causes; independent verification of website behavior, label correctness and root causes remains pending.
 
 Exact correct-context LR arithmetic is verified for every case. Opposite-label full-vector collisions in fitting data are observed for 30/40 cases (absolute feature tolerance 1e-12). The selected model is refitted only in its three existing fitting folds for explanation when those models are unavailable; no new model selection, thresholds or baseline experiments are introduced. Validation explanations use the original full-Train pipeline. Contributions are relative to each fitting mean, with correlated dot/subdomain/length terms often cancelling; they are not independent causal effects.
 
 Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hashes and collision supports) and error_feature_attributions.csv (all 12 raw/scaled terms per case). Collision searches use fitting IDs only, not held-out labels. The coarse representation can be ambiguous under original labels, but this does not verify maliciousness, label correctness or a source shortcut.
 
-Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.
+Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Original labels are retained; independent semantic/label verification remains pending. Offline human review is recorded separately in the checklist.
 
-Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. Suggested review order covers every partition/fold/FP-FN stratum before repeating a stratum; the first 30 span all of them. Case-specific observations, unverified hypotheses and exact fitting-context evidence accompany each row. Human reviewer/date/checks/notes/status are preserved on regeneration. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.
+Hưng explicitly confirmed that his independent analysis matches these 30 priority cases. Codex recorded that user confirmation at **2026-11-04T12:43:24Z** in the [human checklist](annotations/week5_human_review.csv): **30 human_verified, 10 pending**. The confirmation covers offline observations, evidence interpretation and agreement with qualified hypotheses. `reviewed_at` records the confirmation-recording time; the earlier independent-work date was not supplied. IDs, scores, labels and all non-review checklist fields are preserved. Regeneration preserves reviewer/date/checks/notes/status by ID.
 
 ### Separate AI review of the 30 priority cases
 
-[AI review ledger](annotations/week5_ai_review.csv) contains exactly the 30 IDs marked `priority_first_30=True`, in `suggested_review_order`: 17 FP and 13 FN. Each row has an individual Vietnamese conclusion, concrete evidence, limitations and next verification. This is an automated offline review; it does not count toward Hưng's personal review requirement.
+[AI review ledger](annotations/week5_ai_review.csv) contains exactly the 30 IDs marked `priority_first_30=True`, in `suggested_review_order`: 17 FP and 13 FN. Each row has an individual Vietnamese conclusion, concrete evidence, limitations and next verification. The ledger was prepared by AI and subsequently confirmed by Hưng as matching his independent offline analysis; human confirmation is recorded in the separate checklist.
 
 | Assessment | Cases |
 |---|---:|
@@ -128,7 +128,8 @@ Hưng must directly review at least 30 cases using [human checklist](annotations
 | Hypothesis `plausible_unverified` | 30 |
 | Hypothesis `unsupported` | 0 |
 | Still need evidence to verify semantic/root cause or dataset label | 30 |
-| Human reviews still pending across the original sample | 40 |
+| Human reviews confirmed from the explicit user statement | 30 |
+| Human reviews still pending across the original sample | 10 |
 
 The plausible and evidence-needed rows overlap: every plausible hypothesis remains unverified. No factual/numerical inconsistency was found in the 30 observations. Dataset labels describe the retained source annotation, not independently established website behavior.
 
@@ -138,13 +139,13 @@ The audit rejoined durable notes, cases, fitting-context evidence and all 12 att
 
 Additional precision in the AI ledger: hostname lengths for tuantaynguyen/dltp include their suffixes; repeated x in xfcf includes the xyz suffix. For abo2sadam, removing a digit also changes lengths and entropy, so the suggested future check cannot be interpreted as changing only `digit_cnt`. No perturbation experiment or model training was run here.
 
-All AI rows are `ai_review_complete`; hypothesis status remains `plausible_unverified` or `unsupported`, and human verification is explicitly `PENDING`. The original 40-row human checklist, its empty reviewer/date fields, durable notes, cases, attribution/evidence tables and E1/E2 artifacts are unchanged. No suspicious URL was requested, no label was changed, and no human identity/sign-off was supplied. Hưng's personal review of at least 30 cases remains outstanding.
+All AI rows retain `ai_review_complete` for their AI preparation and now have `human_verification_status=human_verified` based on Hưng's direct statement. Hypotheses remain `plausible_unverified`; human review of an analysis does not establish website behavior, label correctness or individual causality. The original 40-row checklist has 30 explicitly confirmed reviews and 10 untouched pending rows. No suspect URL was requested, no original label changed and no unreported review date was invented.
 
-The AI ledger is a separately preserved annotation artifact. This supplement follows the earlier evaluation/notebook run; it does not replace that run's immutable runtime base or claim the notebook was rerun. Current verification: **201 tests passed, 0 skipped**, including three new AI-ledger checks. Protected/input hashes and the actual local audit are recorded under `verification.json → ai_review`. If regenerating the baseline report, retain this supplement from the AI ledger rather than treating its absence as completion of human review.
+The AI-prepared ledger and human checklist are separate artifacts. This update records a later user confirmation and does not replace the earlier evaluation runtime or claim the notebook was rerun. Current checks, input hashes and the exact user statement are in `verification.json`; original AI-review input hashes retain the earlier pending-checklist snapshot, while `human_review.sha256` identifies the current authorized checklist. Retain the current confirmation overlay when regenerating the old report.
 
 ### H5.2 handoff, conclusions and acceptance
 
-**Method: AI-assisted offline error analysis. Human assessment: PENDING.** The review was performed by Codex using static data and the existing, hash-verified E1 artifacts. No person has supplied case-level sign-off. Model arithmetic verification and original dataset labels are distinguished from semantic label/root-cause verification.
+**Method: Human-assessed offline error analysis (AI-assisted preparation). Human review: confirmed for 30 priority cases.** Hưng stated: “tôi muốn thay đổi là human verified bởi vì tôi cũng tự làm và trùng với những gì bạn làm”. The existing handoff scope is the same 30 priority cases. Codex records this direct user confirmation at 2026-11-04T12:43:24Z; the reviewer's prior independent-work date is unknown. Original AI authorship remains documented, and human confirmation does not convert qualified hypotheses into verified causes or labels.
 
 The [same 30-row ledger](annotations/week5_ai_review.csv) now serves as the H5.2 handoff table, with explicit `id`, `fold`, `source`, `label`, `prediction`, `score`, `observation`, `hypothesis`, `next_check`, plus partition/tier, defanged URL, evidence, limitations and review status. `label` and `prediction` use phishing=1/benign=0. A blank `fold` means official Validation (full-Train prediction), not an extra CV fold. `next_check` replaces the former `next_verification` column in this AI ledger only; original durable annotations/checklist retain their schemas.
 
@@ -200,9 +201,9 @@ The dominant measured limitations are aggregate lexical ambiguity (22 opposite-l
 | Original evidence, model arithmetic and provenance | PASS — all 360 attribution terms rechecked; max score error 3.33e-16; source/case/model hashes retained |
 | Conclusions, limitations and at least three testable hypotheses | PASS — four falsifiable protocols above; no experiments/results invented |
 | Regression checks and no baseline/robustness/model-audit changes | PASS — 201 tests, 0 skipped; no H5.1/H5.3/H5.4 source or artifact changes |
-| Human-assessed/human-verified acceptance | PENDING — zero human sign-offs; the original 40 human rows remain pending |
+| Human-assessed/human-verified acceptance | PASS — Hưng explicitly confirms matching independent offline review of the 30 priority cases; 10 additional cases remain pending |
 
-**Conclusion:** the available-data technical/offline deliverable is complete. Human-assessed acceptance remains incomplete: a real reviewer must assess at least 30 cases and enter actual identity/date/checks. Semantic labels and individual root causes need original collection evidence where unresolved; those claims remain qualified. No code/test output can substitute for that sign-off. The verified arithmetic, proposal of future checks and an AI-written ledger do not establish that a website was malicious or that a human reviewed it.
+**Conclusion:** the technical/offline deliverable and the minimum 30-case human review requirement are complete on the basis of Hưng's explicit confirmation. Ten additional cases remain pending beyond that minimum. Website behavior, original-label correctness and individual root causes remain unverified where evidence is missing; all hypotheses retain their qualified status. The user confirmation is review of the analysis, not independent certification of those semantic claims.
 
 ## H5.3 — static robustness
 

@@ -17,7 +17,7 @@
   },
   "statuses": {
     "H5.1": "DONE",
-    "H5.2": "OFFLINE DONE / AI REVIEW DONE (30) / HUMAN_REVIEW_PENDING",
+    "H5.2": "DONE / HUMAN VERIFIED OFFLINE (30/40)",
     "H5.3": "DONE",
     "H5.4_feature": "DONE / PASS / PRELIMINARY",
     "H5.4_model": "DONE / PASS / PRELIMINARY",
@@ -164,16 +164,60 @@
   },
   "human_review": {
     "checklist": "reports/annotations/week5_human_review.csv",
-    "sha256": "30ea5aae9010e5f69b9e8bee652422c1c26e7e8a75a46f279ea11c6eb594581e",
+    "sha256": "d1bef9ecd1cb6b155718b07a11b6db9db9f9266c05fadf801ee8e32cb50e0ac4",
     "cases": 40,
-    "pending": 40,
+    "pending": 10,
     "priority_first_30": 30,
     "priority_covers_all_partition_fold_outcome_strata": true,
     "priority_validation_cases": 5,
     "minimum_personal_reviews_required": 30,
     "codex_offline_notes_retained": true,
     "case_signature_revalidation": "All 40 passed during CLI and notebook; no annotation edits or label changes",
-    "max_score_reconstruction_abs_error": 3.3306690738754696e-16
+    "max_score_reconstruction_abs_error": 3.3306690738754696e-16,
+    "previous_checklist_sha256": "30ea5aae9010e5f69b9e8bee652422c1c26e7e8a75a46f279ea11c6eb594581e",
+    "verified": 30,
+    "reviewer": "Hưng",
+    "confirmation_recorded_at_utc": "2026-11-04T12:43:24Z",
+    "reviewed_at_semantics": "Time the user confirmation was recorded; independent-review date not supplied",
+    "confirmation_basis": "Explicit user statement that independent offline work matches the 30 priority case analyses",
+    "confirmation_quote": "tôi muốn thay đổi là human verified bởi vì tôi cũng tự làm và trùng với những gì bạn làm",
+    "confirmation_scope": "Exactly the 30 priority cases in the current AI-prepared handoff ledger",
+    "confirmed_ids": [
+      "6e2fe1fa-4187-535a-9e4d-ed4f04f521d8",
+      "2aee13a2-eafb-5171-819f-e246b1c867a3",
+      "82998996-e80e-5061-8609-18d984e0c795",
+      "40456d96-b073-562b-8a6c-468c96670b06",
+      "22fd85e0-cb1b-5023-8ed1-34e430a7d3ad",
+      "25cf507a-2766-5326-9e00-2b724107c219",
+      "05072e1d-7898-54a9-8014-b69a4ef5553e",
+      "93e76255-61c4-53c3-8bd6-8eedc844330f",
+      "68b21c18-0edb-5b77-ac39-6054afcfbe75",
+      "9d403305-972e-51b5-af2d-8dc977647666",
+      "679a800b-9657-5e0b-ac73-5aab35bf14d2",
+      "0bd94564-7d97-5499-8668-7fe55bf4a40b",
+      "71d0b5ed-19af-5b33-8bda-7299ca41539a",
+      "fbc2ecfa-7ef7-57a0-b2d7-d0423f49b954",
+      "1b1979e5-bf71-562c-a536-d2d898135938",
+      "7a73788a-0f81-5e4a-8573-e07c85e2fb19",
+      "55cfcf83-0386-500a-8543-1e4adfcee35e",
+      "8db0d463-6c13-5492-9a4f-91a8b937552e",
+      "e7be1879-1153-5212-95bc-3143f8257765",
+      "9f81061c-e205-59a0-ab33-3318f94ea405",
+      "26f9b36f-d6d4-5b2a-8037-564786cfdcb6",
+      "a21f7268-f289-58d5-a3c2-ac83ddd847a5",
+      "4e8262a1-336e-5819-9e98-d06e12be0475",
+      "bb06bda7-4971-5578-80f7-d95fc3782148",
+      "cf52ceb8-61bc-5b6a-a7a1-cf5842860f1e",
+      "9ffc764a-2303-5483-8e41-b6ada263bba8",
+      "03a03512-5c76-52a6-b5b9-5aaf78bdb0a8",
+      "a9bd7432-3cc7-5941-9c0a-0e784bb7cf8b",
+      "e29de6fb-8ee4-572b-b388-929e76c10a17",
+      "6fa3beb4-4686-5e8a-b940-c29dc75509aa"
+    ],
+    "immutable_fields_sha256": "fc1ba75321a6465deeaf83889ea9aa0013972ad61435cae1464ff388f3268fbd",
+    "verification_scope": "Human review of offline observations, evidence interpretation and qualified hypotheses; no website, dataset-label or root-cause certification",
+    "recorded_by": "Codex, at the user request",
+    "verification": "PASS: exactly 30 explicitly confirmed IDs; 10 pending rows unchanged; all non-review fields preserved; AI ledger numerical facts/hypothesis status preserved; regeneration retains the human_verified status."
   },
   "baseline_annotations_and_robustness_unchanged": {
     "identical_hashes": true,
@@ -238,9 +282,9 @@
     "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
   },
   "report_and_handoff_sha256": {
-    "reports/week5_evaluation.md": "28661d393b6cbf0f96d8644b7e083c9db4ec99ebec36eb49164f68ea16cb92cf",
+    "reports/week5_evaluation.md": "cc4c064bc8ba1b3fc96fb201f4fcbb5b31acb13ee0bf087a5039503f8b761a46",
     "reports/week5_robustness.md": "8a7afa85ca9dbbc5e5fc8a6ec9914d2dddbc9f2bf9542d6f3d76b8bd6a02b172",
-    "docs/week5_hung_handoff.md": "00a58cd1147743e2be878d475bcadd092023a3138f6ee9d9b3b1c049f11eeaa2"
+    "docs/week5_hung_handoff.md": "053e7cb18114a11808dc09b1c77a3460708d0fa8939f4b10cd56538c48b02380"
   },
   "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds.",
   "ai_review": {
@@ -261,7 +305,7 @@
     "same_label_matches_only": 2,
     "max_score_reconstruction_abs_error": 3.3306690738754696e-16,
     "max_contribution_abs_error": 0.0,
-    "human_pending": 40,
+    "human_pending": 10,
     "protected_sha256": {
       "reports/annotations/week5_human_review.csv": "30ea5aae9010e5f69b9e8bee652422c1c26e7e8a75a46f279ea11c6eb594581e",
       "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
@@ -285,12 +329,12 @@
       "data/interim/week5/metadata.csv": "7345453a7c08995f1596689c5ea5584b7094a9e67932df45ac8829a36cb2b083",
       "data/interim/week5/folds.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863"
     },
-    "ai_review_sha256": "fa14b465cd2584f5989a99b22717a563790df425a1bc2894151b9c3e4affbda8",
-    "human_file_unchanged": true,
+    "ai_review_sha256": "2aec25865c880cdb658f3ea7e94c85bb4a1e95f59c761c2b263c0871b7451795",
+    "human_file_unchanged": false,
     "fit_or_training_called": false,
     "network_requests_to_urls": false,
     "authorship": "Codex automated offline review; no human reviewer or sign-off",
-    "human_verification_status": "PENDING",
+    "human_verification_status": "human_verified",
     "review_basis_revision": "d3d0d8eb2367c9280546220f1ad9ff9a5e3c6ccd",
     "method": "Joined all five review inputs by ID; static metadata/features/signatures, original labels/outcomes/threshold, all 12 standardized/coefficient terms, full logit/sigmoid checked. Hash-verified existing E1 explanation coefficients/scalers/intercepts and recounted fitting-only vector collisions. No fitting or URL requests.",
     "notebook_rerun": false,
@@ -299,12 +343,12 @@
       "passed": 201,
       "skipped": 0,
       "new_ai_review_tests": 3,
-      "summary": "201 passed in 7.25s"
+      "summary": "201 passed in 6.42s"
     },
-    "final_hash_and_scope_verification": "PASS: protected inputs/model caches/metrics/figures unchanged; source fingerprint matches; no E1/E2 code, notebook or data edits; 40 human rows pending with empty reviewer/date.",
+    "final_hash_and_scope_verification": "Authorized human review fields/status and AI-ledger method/status updated from explicit user confirmation; all case facts/model evidence and H5.1/H5.3/H5.4 remain unchanged.",
     "handoff_rechecked_at_utc": "2026-11-04T12:34:42.957873+00:00",
     "handoff_review_revision": "17e6662db6747b8fa1ccb600414163de1027c641",
-    "analysis_method": "AI-assisted offline error analysis",
+    "analysis_method": "Human-assessed offline error analysis (AI-assisted preparation)",
     "handoff_columns": [
       "id",
       "suggested_review_order",
@@ -332,8 +376,8 @@
       "analysis_method"
     ],
     "offline_technical_acceptance": "DONE",
-    "human_assessed_acceptance": "PENDING_NO_HUMAN_SIGNOFF",
-    "human_signed_off_cases": 0,
+    "human_assessed_acceptance": "DONE_USER_CONFIRMED_OFFLINE_REVIEW",
+    "human_signed_off_cases": 30,
     "conclusion_clarifications": [
       "7a73788a-0f81-5e4a-8573-e07c85e2fb19",
       "25cf507a-2766-5326-9e00-2b724107c219"
@@ -360,7 +404,13 @@
       "subdomain_count_sensitivity": 5
     },
     "handoff_verification": "PASS: all 30 requested rows/fields, partition/fold/source/tier/labels/predictions/scores/features/signatures and full attribution math checked; H5.1/H5.3/H5.4 sources/artifacts and report sections unchanged.",
-    "numeric_reaudit_at_utc": "2026-11-04T12:30:00.209965+00:00"
+    "numeric_reaudit_at_utc": "2026-11-04T12:30:00.209965+00:00",
+    "previous_ai_review_sha256": "fa14b465cd2584f5989a99b22717a563790df425a1bc2894151b9c3e4affbda8",
+    "human_file_unchanged_at_ai_review": true,
+    "human_change_reason": "Explicit user confirmation of matching independent offline review",
+    "human_pending_at_ai_review": 40,
+    "human_confirmation_recorded_at_utc": "2026-11-04T12:43:24Z",
+    "historical_input_hashes_note": "Original AI-review input/protected hashes retain the earlier checklist snapshot. Current authorized human-checklist hash is human_review.sha256."
   },
   "previous_full_evaluation_pytest": {
     "command": ".venv/bin/python -m pytest -q",
@@ -377,17 +427,17 @@
   },
   "pytest": {
     "command": ".venv/bin/python -m pytest -q",
-    "checked_at_utc": "2026-11-04T12:36:05.263232+00:00",
+    "checked_at_utc": "2026-11-04T12:48:27.654562+00:00",
     "passed": 201,
     "skipped": 0,
-    "summary": "201 passed in 7.25s",
+    "summary": "201 passed in 6.42s",
     "test_source_sha256": {
       "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
       "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
       "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
       "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_ai_review.py": "a1d39bae31e18c976610dbcb8df7cd38e1cb956078cf4b7219813ba82949dac4",
-      "tests/test_week5_audit.py": "df4eb6b30285bba59b8e58900156701aa51f8e4d0c8f80d4fb4116aa3f98ff31"
+      "tests/test_week5_ai_review.py": "dcac19f542f6d00678bdd0b0eb12fe7b186c0225a62851e6230b1865af24cc64",
+      "tests/test_week5_audit.py": "408f9d0de2a60a3c903c54fb2178a0e3d7d62a5df3f1c43dc71df58598311203"
     }
   }
 }
