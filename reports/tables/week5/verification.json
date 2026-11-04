@@ -238,9 +238,9 @@
     "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
   },
   "report_and_handoff_sha256": {
-    "reports/week5_evaluation.md": "d952f5c779feed5693e7fcba841e7ce184ac5325a9292dc270e478cca0fb53f8",
+    "reports/week5_evaluation.md": "28661d393b6cbf0f96d8644b7e083c9db4ec99ebec36eb49164f68ea16cb92cf",
     "reports/week5_robustness.md": "8a7afa85ca9dbbc5e5fc8a6ec9914d2dddbc9f2bf9542d6f3d76b8bd6a02b172",
-    "docs/week5_hung_handoff.md": "a96d926ce230472b34f4d5440d6dadfc40cd735e97cae48aa05f62cd3a892696"
+    "docs/week5_hung_handoff.md": "00a58cd1147743e2be878d475bcadd092023a3138f6ee9d9b3b1c049f11eeaa2"
   },
   "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds.",
   "ai_review": {
@@ -285,7 +285,7 @@
       "data/interim/week5/metadata.csv": "7345453a7c08995f1596689c5ea5584b7094a9e67932df45ac8829a36cb2b083",
       "data/interim/week5/folds.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863"
     },
-    "ai_review_sha256": "cd9b94b141c278dd2394a6c0a8a760b8f9805e4b7f98909c5e005aff94fee88c",
+    "ai_review_sha256": "fa14b465cd2584f5989a99b22717a563790df425a1bc2894151b9c3e4affbda8",
     "human_file_unchanged": true,
     "fit_or_training_called": false,
     "network_requests_to_urls": false,
@@ -299,9 +299,68 @@
       "passed": 201,
       "skipped": 0,
       "new_ai_review_tests": 3,
-      "summary": "201 passed in 6.48s"
+      "summary": "201 passed in 7.25s"
     },
-    "final_hash_and_scope_verification": "PASS: protected inputs/model caches/metrics/figures unchanged; source fingerprint matches; no E1/E2 code, notebook or data edits; 40 human rows pending with empty reviewer/date."
+    "final_hash_and_scope_verification": "PASS: protected inputs/model caches/metrics/figures unchanged; source fingerprint matches; no E1/E2 code, notebook or data edits; 40 human rows pending with empty reviewer/date.",
+    "handoff_rechecked_at_utc": "2026-11-04T12:34:42.957873+00:00",
+    "handoff_review_revision": "17e6662db6747b8fa1ccb600414163de1027c641",
+    "analysis_method": "AI-assisted offline error analysis",
+    "handoff_columns": [
+      "id",
+      "suggested_review_order",
+      "evaluation_partition",
+      "fold",
+      "source",
+      "tier",
+      "label",
+      "prediction",
+      "outcome",
+      "score",
+      "url_safe",
+      "observation",
+      "hypothesis",
+      "next_check",
+      "observation_status",
+      "hypothesis_status",
+      "arithmetic_status",
+      "conclusion",
+      "evidence",
+      "limitations",
+      "case_signature",
+      "review_status",
+      "human_verification_status",
+      "analysis_method"
+    ],
+    "offline_technical_acceptance": "DONE",
+    "human_assessed_acceptance": "PENDING_NO_HUMAN_SIGNOFF",
+    "human_signed_off_cases": 0,
+    "conclusion_clarifications": [
+      "7a73788a-0f81-5e4a-8573-e07c85e2fb19",
+      "25cf507a-2766-5326-9e00-2b724107c219"
+    ],
+    "testable_hypotheses": [
+      "H52-A",
+      "H52-B",
+      "H52-C",
+      "H52-D"
+    ],
+    "hypothesis_experiments_run": false,
+    "priority_taxonomy_counts": {
+      "brand_cues": 3,
+      "domain_subdomain": 5,
+      "lexical_patterns": 3,
+      "url_complexity": 0,
+      "idna_ip": 0,
+      "source_effects": 0,
+      "label_uncertainty": 0,
+      "unknown": 0,
+      "bare_host_lexical_ambiguity": 25,
+      "representation_collision": 22,
+      "near_threshold": 17,
+      "subdomain_count_sensitivity": 5
+    },
+    "handoff_verification": "PASS: all 30 requested rows/fields, partition/fold/source/tier/labels/predictions/scores/features/signatures and full attribution math checked; H5.1/H5.3/H5.4 sources/artifacts and report sections unchanged.",
+    "numeric_reaudit_at_utc": "2026-11-04T12:30:00.209965+00:00"
   },
   "previous_full_evaluation_pytest": {
     "command": ".venv/bin/python -m pytest -q",
@@ -318,16 +377,16 @@
   },
   "pytest": {
     "command": ".venv/bin/python -m pytest -q",
-    "checked_at_utc": "2026-11-04T11:51:58.252541+00:00",
+    "checked_at_utc": "2026-11-04T12:36:05.263232+00:00",
     "passed": 201,
     "skipped": 0,
-    "summary": "201 passed in 6.48s",
+    "summary": "201 passed in 7.25s",
     "test_source_sha256": {
       "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
       "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
       "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
       "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_ai_review.py": "e14ab3c65f6008d03a56f624283fa5ea89ee941c6e726e6446153637772ef524",
+      "tests/test_week5_ai_review.py": "a1d39bae31e18c976610dbcb8df7cd38e1cb956078cf4b7219813ba82949dac4",
       "tests/test_week5_audit.py": "df4eb6b30285bba59b8e58900156701aa51f8e4d0c8f80d4fb4116aa3f98ff31"
     }
   }

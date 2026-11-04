@@ -26,7 +26,10 @@ def test_ai_review_exact_priority_selection_and_no_human_signoff():
     assert ai.review_status.eq('ai_review_complete').all()
     assert ai.human_verification_status.eq('PENDING').all()
     assert not {'reviewer', 'reviewed_at', 'human_verified'}.intersection(ai.columns)
-    assert ai[['conclusion', 'evidence', 'limitations', 'next_verification']].ne('').all().all()
+    required = ['id', 'fold', 'source', 'label', 'prediction', 'score', 'observation', 'hypothesis', 'next_check']
+    assert set(required).issubset(ai.columns)
+    assert ai[['observation', 'hypothesis', 'next_check', 'conclusion', 'evidence', 'limitations']].ne('').all().all()
+    assert ai.analysis_method.eq('AI-assisted offline error analysis').all()
     assert not ai.url_safe.str.contains('://', regex=False).any()
 
 
@@ -39,6 +42,13 @@ def test_ai_review_sources_features_and_score_arithmetic():
     for row in ai.itertuples():
         case, fact, note = cases.loc[row.id], facts.loc[row.id], notes[row.id]
         assert row.url_safe == case.url_safe and row.outcome == case.outcome
+        assert row.evaluation_partition == case.evaluation_partition
+        assert row.source == case.source and row.tier == case.tier
+        assert row.label == case.true_label and row.prediction == case.predicted_label
+        if case.evaluation_partition == 'official_validation':
+            assert pd.isna(row.fold)
+        else:
+            assert row.fold == case.fold_id and row.fold in (0, 1, 2)
         assert abs(row.score - case.score) < 1e-12
         assert case.outcome == ('FN' if (case.true_label, case.predicted_label) == (1, 0) else 'FP')
         assert case.true_label != case.predicted_label and case.predicted_label == int(case.score >= .5)
@@ -54,6 +64,8 @@ def test_ai_review_sources_features_and_score_arithmetic():
         assert len(block) == 12 and set(block.index) == set(CANDIDATE_FEATURES)
         block = block.loc[list(CANDIDATE_FEATURES)]
         assert np.allclose(block.raw_value, [features[n] for n in CANDIDATE_FEATURES], rtol=0, atol=1e-12)
+        for name in ['url_len', 'dom_len', 'subdom_cnt', 'digit_cnt', 'dot_cnt', 'entropy', 'path_len']:
+            assert f'{name}={features[name]:.4f}' in row.observation
         context = -1 if case.evaluation_partition == 'official_validation' else int(case.fold_id)
         assert block.context.eq(context).all() and fact.context == context
         assert block.fitting_scale.gt(0).all()

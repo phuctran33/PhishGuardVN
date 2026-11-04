@@ -62,6 +62,12 @@ Hưng must personally inspect at least 30 and fill reviewer/date, observation/hy
 
 This supplements the previous notebook/evaluation snapshot; it does not rerun E1/E2 or count as personal verification. Full suite after adding the three AI-ledger checks: **201 tests passed, 0 skipped**. The original 40-row human checklist, reviewer/date fields, durable notes, evidence and baseline artifacts remain byte-identical. Human verification stays **PENDING (40)**. AI findings and hashes are in `verification.json → ai_review`; reproducible committed-table checks are in `tests/test_week5_ai_review.py`. The AI CSV is separate from generated evaluation outputs; preserve its report supplement if rerunning the old report generator.
 
+### Final H5.2 handoff and acceptance
+
+The existing `reports/annotations/week5_ai_review.csv` is the 30-case handoff table. It now exposes fold/partition, source/tier, original label, prediction, score, observation, hypothesis and `next_check` directly, alongside evidence/limitations and AI/human status. Labels use phishing=1, benign=0; Validation fold is blank. `next_check` replaces the old AI-only `next_verification` column; original annotation/checklist schemas are unchanged. Observations/hypotheses/next checks are in Vietnamese. Two AI conclusions were tightened (digit attribution versus counterfactual effect; same-label-only fitting matches), and next checks explicitly require recalculating all affected features.
+
+The H5.2 report now includes 30-case coverage/taxonomy, four testable hypotheses with checks and falsifiers, and an acceptance matrix against the supplied Week-5 plan. Method is **AI-assisted offline error analysis**. Technical/offline H5.2 is DONE; **human-assessed acceptance is PENDING**, with zero actual human sign-offs. All original 40 human checklist rows remain pending. Completing that acceptance requires a real person's review of at least 30, actual identity/date/checks and source evidence where semantics remain unresolved. No H5.1/H5.3/H5.4 work is reopened or changed.
+
 ## Reproduce the integration
 
 Use the existing `.venv` and ignored Week-4 handoffs. For a clean checkout, generate those handoffs with notebooks 01 → 03 → 02 first. Native E2 features are generated only for Train/Validation; no Official Test file is opened for extraction or prediction.

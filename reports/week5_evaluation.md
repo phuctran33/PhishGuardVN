@@ -75,7 +75,7 @@ Testable hypotheses (unverified):
 3. Domain lexical patterns interact with single-label sources. Use source-held-out diagnostics where both classes are supported and matched-length/entropy train OOF comparisons; lack of source class overlap makes some effects unidentifiable.
 4. IDNA/brand cues add information beyond 12 lexical features. Compare E2 with E1 on exactly the same outer folds and an independent predeclared reference list; audit reference fitting before interpreting gains.
 
-## H5.2 — manual error analysis
+## H5.2 — AI-assisted offline error analysis
 
 40 FP/FN cases selected using seed=42, SHA256-ranked IDs, round robin across partition/fold/type/source/tier and then distinct domains within queues. No ranking by score; selection is a diversity sample, not a population estimate. Sampling pool, coverage and limitations are recorded; if a stratum has no errors it contributes no cases.
 
@@ -141,6 +141,68 @@ Additional precision in the AI ledger: hostname lengths for tuantaynguyen/dltp i
 All AI rows are `ai_review_complete`; hypothesis status remains `plausible_unverified` or `unsupported`, and human verification is explicitly `PENDING`. The original 40-row human checklist, its empty reviewer/date fields, durable notes, cases, attribution/evidence tables and E1/E2 artifacts are unchanged. No suspicious URL was requested, no label was changed, and no human identity/sign-off was supplied. Hưng's personal review of at least 30 cases remains outstanding.
 
 The AI ledger is a separately preserved annotation artifact. This supplement follows the earlier evaluation/notebook run; it does not replace that run's immutable runtime base or claim the notebook was rerun. Current verification: **201 tests passed, 0 skipped**, including three new AI-ledger checks. Protected/input hashes and the actual local audit are recorded under `verification.json → ai_review`. If regenerating the baseline report, retain this supplement from the AI ledger rather than treating its absence as completion of human review.
+
+### H5.2 handoff, conclusions and acceptance
+
+**Method: AI-assisted offline error analysis. Human assessment: PENDING.** The review was performed by Codex using static data and the existing, hash-verified E1 artifacts. No person has supplied case-level sign-off. Model arithmetic verification and original dataset labels are distinguished from semantic label/root-cause verification.
+
+The [same 30-row ledger](annotations/week5_ai_review.csv) now serves as the H5.2 handoff table, with explicit `id`, `fold`, `source`, `label`, `prediction`, `score`, `observation`, `hypothesis`, `next_check`, plus partition/tier, defanged URL, evidence, limitations and review status. `label` and `prediction` use phishing=1/benign=0. A blank `fold` means official Validation (full-Train prediction), not an extra CV fold. `next_check` replaces the former `next_verification` column in this AI ledger only; original durable annotations/checklist retain their schemas.
+
+All 30 observations, hypotheses and next checks are case-specific Vietnamese text. Numeric observations were rejoined to all 12 attribution rows and original metadata; label/prediction/outcome/score/context and the full standardized-LR arithmetic were checked again. Re-audit preserves the same priority IDs and order. Corrections tighten two conclusions: abo2sadam's positive digit contribution is relative to the fitting mean and does not establish the effect of adding/removing a digit; vieclambencat's 22 fitting matches are all benign, so no opposite-label collision is claimed. The next check for abo2sadam explicitly recalculates all features when changing a digit. No perturbation run, refit or threshold selection was performed.
+
+Priority selection remains a round-robin subset of the original fixed diversity sample, with no score-based selection. The five sources contribute tinnhiemmang=13, tinnhiem_org=5, tinnhiem_web=4, tranco=4, tranco_vn=4. Coverage is:
+
+| Partition | Fold | Outcome | Cases |
+|---|---|---|---:|
+| group_cv | 0 | FN | 4 |
+| group_cv | 0 | FP | 5 |
+| group_cv | 1 | FN | 4 |
+| group_cv | 1 | FP | 4 |
+| group_cv | 2 | FN | 4 |
+| group_cv | 2 | FP | 4 |
+| official_validation | — | FN | 1 |
+| official_validation | — | FP | 4 |
+
+The error patterns overlap; their counts are descriptive of this selected sample, not population error rates:
+
+| Taxonomy | Priority cases |
+|---|---:|
+| brand_cues | 3 |
+| domain_subdomain | 5 |
+| lexical_patterns | 3 |
+| url_complexity | 0 |
+| idna_ip | 0 |
+| source_effects | 0 |
+| label_uncertainty | 0 |
+| unknown | 0 |
+| bare_host_lexical_ambiguity | 25 |
+| representation_collision | 22 |
+| near_threshold | 17 |
+| subdomain_count_sensitivity | 5 |
+
+The dominant measured limitations are aggregate lexical ambiguity (22 opposite-label exact-vector collision cases), decisions near the fixed threshold (17 cases within 0.05), and subdomain/count sensitivity (five cases). Of the hierarchy cases, four are FP and one is FN (dangkyonline/vietcombank247); subdomain presence is therefore not a universal phishing mechanism. Six cases lack exact fitting matches and two have only same-label matches. Source effects remain population hypotheses because the sources are single-label; neither identity-like tokens nor organization-like strings validate the dataset label. No path/query/IDNA/IP error example is present in these 30 cases. The taxonomy still defines those categories with zero counts; no synthetic cases were added to satisfy coverage.
+
+#### Testable hypotheses (proposed, not executed here)
+
+1. **H52-A — mixed-label lexical vectors concentrate errors.** Evidence: 22 reviewed cases have opposite-label fitting collisions, including the dieniex/gateswq/wefinex and winbank/daubao groups. Check: on existing Train OOF only, assign each held-out record collision status using its own fitting folds, then compare FP/FN rates and supports for mixed-label versus unambiguous vectors within predeclared length/entropy/source strata; account for domain dependence and report unsupported single-class strata. A similar or lower error rate after matched-support comparisons weakens the concentration hypothesis. This tests a distributional association; it cannot identify an individual URL's cause or establish that adding a token feature would fix it.
+2. **H52-B — correlated hierarchy counts contribute to high benign scores.** Evidence: four reviewed hierarchy FPs have large positive subdomain terms; the banking-like hierarchy is a counterexample with a low FN score. Check: predeclare benign Train OOF records with www/one subdomain and matched bare-host controls, inspect the complete logit balance and, if performing a separate sensitivity study, recompute all 12 features under a www-removal string perturbation (resource and label equivalence unknown) with the same cached fitting-context model. Report score/logit deltas and parser checks, without assigning transformed ground truth. No systematic matched-group difference or consistently contrary deltas would weaken the hypothesis. Do not isolate one correlated term as a causal effect.
+3. **H52-C — near-boundary errors are sensitive to the lexical balance.** Evidence: 17/30 lie within 0.05 of 0.5; dltp is 0.000805 below the boundary. Check: use the full predeclared Train OOF pool to compare the share of FP/FN versus correct predictions inside the same margin band, within class and fold, and report denominator supports. No enrichment of errors in the band would weaken this population hypothesis. Keep E1's 0.5 threshold fixed; the present diversity sample cannot estimate that enrichment, and proximity is not calibrated uncertainty or evidence of a wrong label.
+4. **H52-D — source/label confounding limits transport of these explanations.** Evidence: all 13 reviewed FNs are from tinnhiemmang while FP sources carry benign labels. Check: request an independently reviewed, provenance-recorded pilot with both classes represented across sources, predeclare prevalence/source matching and evaluate the unchanged E1; report AP, FPR and class supports without selecting features/thresholds. If the proposed performance/lexical association gaps do not persist under matching, that weakens a transport-gap explanation. Current single-label sources cannot separate source from label effects; no independent pilot experiment is claimed.
+
+#### Acceptance against the supplied Week-5 H5.2 plan
+
+| Criterion | Assessment and evidence |
+|---|---|
+| At least 30 reproducibly selected FP/FN | PASS — exact 30 priority IDs; 17 FP, 13 FN; all three folds and five Validation cases |
+| ID, split/fold, source/tier, label, prediction, score, safe URL | PASS — explicit columns and ID joins in the handoff ledger |
+| Per-case observation, hypothesis, next check, review status | PASS — 30 distinct case-specific rows; hypotheses remain plausible_unverified |
+| Taxonomy and summary without forced coverage | PASS — all declared categories shown; zero counts retained and overlapping counts disclosed |
+| Original evidence, model arithmetic and provenance | PASS — all 360 attribution terms rechecked; max score error 3.33e-16; source/case/model hashes retained |
+| Conclusions, limitations and at least three testable hypotheses | PASS — four falsifiable protocols above; no experiments/results invented |
+| Regression checks and no baseline/robustness/model-audit changes | PASS — 201 tests, 0 skipped; no H5.1/H5.3/H5.4 source or artifact changes |
+| Human-assessed/human-verified acceptance | PENDING — zero human sign-offs; the original 40 human rows remain pending |
+
+**Conclusion:** the available-data technical/offline deliverable is complete. Human-assessed acceptance remains incomplete: a real reviewer must assess at least 30 cases and enter actual identity/date/checks. Semantic labels and individual root causes need original collection evidence where unresolved; those claims remain qualified. No code/test output can substitute for that sign-off. The verified arithmetic, proposal of future checks and an AI-written ledger do not establish that a website was malicious or that a human reviewed it.
 
 ## H5.3 — static robustness
 
