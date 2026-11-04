@@ -1,3 +1,5 @@
+> Cập nhật 04/11/2026: tài liệu này giải thích **E1 lexical notebook 05**. E2 đã tích hợp ở [notebook E2 ablation](../notebooks/05_e2_ablation.ipynb); đọc [ablation](week5_ablation.md) và [handoff](../docs/week5_phuc_handoff.md). Các câu “chờ brand” bên dưới mô tả trạng thái lúc khóa E1, không phải trạng thái E2 hiện tại.
+
 # Phúc — ML tuần 5, bản dễ đọc v2
 
 Ngày chỉnh luồng: 02/11/2026. Notebook chính: `notebooks/05_advanced_models.ipynb`. Mục tiêu là đọc từ trên xuống và nhìn thấy lời gọi scikit-learn trực tiếp, đồng thời giữ đánh giá hợp lệ và đường dùng lại model cho web.

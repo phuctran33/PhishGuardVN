@@ -1,9 +1,14 @@
 # ML tuần 5 của Phúc
 
-Bản chạy chính hiện tại là **v2 dễ đọc** trong `notebooks/05_advanced_models.ipynb`.
+Luồng hiện tại: [notebook 05](../notebooks/05_advanced_models.ipynb) học/so sánh lexical,
+rồi [notebook E2 ablation](../notebooks/05_e2_ablation.ipynb) chạy E1–E2 trực tiếp sklearn.
 
-- [Hướng dẫn và nhận xét v2](week5_readable.md)
-- Kết quả: tables/05_readable_comparison.csv,05_readable_validation.csv.
-- Model: models/week5_readable_models.joblib (local).
+- [E1–E2: kết quả, contribution, lỗi và giới hạn](week5_ablation.md).
+- [Teacher shortlist: E2 MLP và E2 HistGB, bản sơ bộ](week5_teacher_cards.md).
+- [Bàn giao OOF/partitions cho Hưng](../docs/week5_phuc_handoff.md).
+- [Cách đọc notebook 05 cho người mới](week5_readable.md).
+- [Kiểm chứng](week5_validation.md).
 
-Báo cáo nested/calibrated v1 trước khi đơn giản hóa được giữ ở [archive](archive/week5_nested_v1/week5_models.md). Không trộn score SVM margin v2 với probability v1.
+E2 đã chạy thật nhưng reference vẫn draft; chưa có KD hay official Test evaluation.
+V1 nested/calibrated trước khi đơn giản hóa được giữ ở [archive](archive/week5_nested_v1/week5_models.md).
+Không trộn score SVM margin v2/ablation với probability v1.

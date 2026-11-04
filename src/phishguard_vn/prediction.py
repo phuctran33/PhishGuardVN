@@ -4,6 +4,9 @@ Không train, không thay threshold, không truy cập website.
 """
 from __future__ import annotations
 
+from pathlib import Path
+import hashlib
+
 import numpy as np
 import pandas as pd
 
@@ -12,9 +15,22 @@ from phishguard_vn.features import extract_features
 
 def predict_url(url: str, bundle: dict, model_name: str | None = None) -> dict:
     """Dùng bundle v2; SVM trả margin, các model còn lại trả probability."""
-    if bundle["feature_set"] != "lexical_12":
-        raise ValueError("Cần nối extractor brand đúng phiên bản trước khi predict schema mới.")
-    feature_values = extract_features(url)
+    if bundle["feature_set"] == "lexical_12":
+        feature_values = extract_features(url)
+    else:
+        from phishguard_vn.brand_features import FEATURE_SCHEMA_VERSION, extract_brand_features_from_parsed
+        from phishguard_vn.features import extract_features_from_parsed
+        from phishguard_vn.url_parser import parse_url
+        if bundle["feature_set"] != FEATURE_SCHEMA_VERSION or "brand_reference" not in bundle:
+            raise ValueError("Bundle E2 thiếu schema/reference snapshot đúng phiên bản.")
+        # Cùng schema nhưng công thức đổi cũng phải train lại. LF/CRLF không đổi công thức.
+        for filename in ["features.py", "url_parser.py", "brand_features.py"]:
+            source = (Path(__file__).parent / filename).read_bytes().replace(b"\r\n", b"\n")
+            if hashlib.sha256(source).hexdigest() != bundle.get("extractor_source_sha256", {}).get(filename):
+                raise ValueError(f"Extractor {filename} đã đổi so với model; cần train lại.")
+        parsed = parse_url(url)
+        feature_values = {**extract_features_from_parsed(parsed),
+                          **extract_brand_features_from_parsed(parsed, bundle["brand_reference"])}
     names = bundle["feature_names"]
     if len(names) != len(set(names)) or set(names) != set(feature_values):
         raise ValueError("Feature schema trong bundle không khớp extractor.")

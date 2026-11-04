@@ -1,9 +1,17 @@
 # Model local
 
-Bản hiện tại: `week5_readable_models.joblib`, tạo từ notebook05 v2. Bundle chứa models,
-selected_model, feature_names, feature_set, score_kinds vàprotocol. Dùng scripts/predict_week5.py
-hoặc phishguard_vn.prediction.predict_url. SVM dùng margin, không gọi margin là xác suất.
+Notebook E2 ablation tạo `week5_e1_ablation.joblib` và `week5_e2_ablation.joblib`, mỗi bundle chứa năm model full Train,
+feature order/set, selected_model, score_kinds/protocol. E2 có reference snapshot và extractor source hashes.
+Shortlist là E2 MLP / HistGB; model full Train dùng cho inference/Validation, không phải Teacher OOF cho KD.
 
-E1: week4_lr_baseline.joblib +metadata. V1: week5_lexical_models.joblib +metadata.
-Các model này giữ để đối chiếu, không bị v2 ghi đè. Model/predictions sinh ra bịGit bỏ qua.
-Đọc reports/week5_readable.md trước khi giải thích chất lượng hoặc chọn Teacher.
+```powershell
+.\.venv\Scripts\python.exe scripts/predict_week5.py https://example.com/a --feature-set E2 --model mlp
+```
+
+Web/API có thể load một lần và gọi `phishguard_vn.prediction.predict_url`. SVM trả margin, không phải xác suất.
+Joblib cần môi trường/code tương thích; không chạy trực tiếp offline trên mobile.
+
+`week5_readable_models.joblib` từ notebook 05 v2; CLI mặc định vẫn dùng file này.
+`week4_lr_baseline.joblib` và `week5_lexical_models.joblib` giữ đối chiếu, không bị ablation ghi đè.
+Model giữ local và bị Git bỏ qua. Ba bảng OOF/Validation/partitions dạng `.csv.gz` trong `reports/tables/` được đưa vào repo để Hưng audit; không đóng gói bản sao model/code/reference.
+Đọc `reports/week5_ablation.md`, `reports/week5_teacher_cards.md`, `docs/week5_phuc_handoff.md`.

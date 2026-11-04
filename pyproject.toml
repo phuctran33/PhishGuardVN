@@ -24,3 +24,6 @@ test = ["pytest"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+phishguard_vn = ["resources/*.csv"]
