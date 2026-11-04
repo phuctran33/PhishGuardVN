@@ -1,0 +1,21 @@
+model,outer_fold,candidate_id,parameters_json,mean_inner_ap,status
+logistic_regression,0,logistic_regression_00,"{""C"": 1.0, ""class_weight"": ""none"", ""max_iter"": 2000}",,fixed_config
+logistic_regression,1,logistic_regression_00,"{""C"": 1.0, ""class_weight"": ""none"", ""max_iter"": 2000}",,fixed_config
+logistic_regression,2,logistic_regression_00,"{""C"": 1.0, ""class_weight"": ""none"", ""max_iter"": 2000}",,fixed_config
+logistic_regression_balanced,0,logistic_regression_balanced_00,"{""C"": 1.0, ""class_weight"": ""balanced"", ""max_iter"": 2000}",,fixed_config
+logistic_regression_balanced,1,logistic_regression_balanced_00,"{""C"": 1.0, ""class_weight"": ""balanced"", ""max_iter"": 2000}",,fixed_config
+logistic_regression_balanced,2,logistic_regression_balanced_00,"{""C"": 1.0, ""class_weight"": ""balanced"", ""max_iter"": 2000}",,fixed_config
+svm_rbf,0,svm_rbf_00,"{""C"": 0.5, ""class_weight"": ""none"", ""gamma"": ""scale""}",0.6273995840606315,selected_by_inner_ap
+svm_rbf,1,svm_rbf_01,"{""C"": 2.0, ""class_weight"": ""none"", ""gamma"": ""scale""}",0.6639126931090764,selected_by_inner_ap
+svm_rbf,2,svm_rbf_01,"{""C"": 2.0, ""class_weight"": ""none"", ""gamma"": ""scale""}",0.6247262411123415,selected_by_inner_ap
+mlp,0,mlp_00,"{""alpha"": 0.001, ""hidden_layer_sizes"": [32], ""max_iter"": 1000}",0.6742741327044176,selected_by_inner_ap
+mlp,1,mlp_00,"{""alpha"": 0.001, ""hidden_layer_sizes"": [32], ""max_iter"": 1000}",0.6969925165168795,selected_by_inner_ap
+mlp,2,mlp_00,"{""alpha"": 0.001, ""hidden_layer_sizes"": [32], ""max_iter"": 1000}",0.6990193111206048,selected_by_inner_ap
+hist_gradient_boosting,0,hist_gradient_boosting_00,"{""l2_regularization"": 1.0, ""learning_rate"": 0.1, ""max_iter"": 150, ""max_leaf_nodes"": 7}",0.6887361407871841,selected_by_inner_ap
+hist_gradient_boosting,1,hist_gradient_boosting_00,"{""l2_regularization"": 1.0, ""learning_rate"": 0.1, ""max_iter"": 150, ""max_leaf_nodes"": 7}",0.6778484127084481,selected_by_inner_ap
+hist_gradient_boosting,2,hist_gradient_boosting_00,"{""l2_regularization"": 1.0, ""learning_rate"": 0.1, ""max_iter"": 150, ""max_leaf_nodes"": 7}",0.7009194526001981,selected_by_inner_ap
+logistic_regression,-1,logistic_regression_00,"{""C"": 1.0, ""class_weight"": ""none"", ""max_iter"": 2000}",,fixed_config
+logistic_regression_balanced,-1,logistic_regression_balanced_00,"{""C"": 1.0, ""class_weight"": ""balanced"", ""max_iter"": 2000}",,fixed_config
+svm_rbf,-1,svm_rbf_00,"{""C"": 0.5, ""class_weight"": ""none"", ""gamma"": ""scale""}",0.6401988444937261,selected_by_inner_ap
+mlp,-1,mlp_01,"{""alpha"": 0.001, ""hidden_layer_sizes"": [32, 16], ""max_iter"": 1000}",0.6876064738774018,selected_by_inner_ap
+hist_gradient_boosting,-1,hist_gradient_boosting_00,"{""l2_regularization"": 1.0, ""learning_rate"": 0.1, ""max_iter"": 150, ""max_leaf_nodes"": 7}",0.6904125446689846,selected_by_inner_ap

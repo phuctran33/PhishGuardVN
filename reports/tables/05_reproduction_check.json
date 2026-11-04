@@ -1,0 +1,15 @@
+{
+  "status": "pass",
+  "started_from_original_data": true,
+  "handoff_notebooks": [
+    "01",
+    "03",
+    "02"
+  ],
+  "cli": "scripts/train_week5.py",
+  "metrics_tolerance": 1e-10,
+  "handoff_hashes_identical": true,
+  "feature_set": "lexical_12",
+  "test_evaluated": false,
+  "threads": 1
+}

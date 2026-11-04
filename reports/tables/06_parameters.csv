@@ -1,0 +1,41 @@
+candidate,context,parameters
+E1__logistic_regression,0,{}
+E1__logistic_regression,1,{}
+E1__logistic_regression,2,{}
+E1__logistic_regression_balanced,0,{}
+E1__logistic_regression_balanced,1,{}
+E1__logistic_regression_balanced,2,{}
+E1__svm_rbf,0,"{""model__C"": 0.5}"
+E1__svm_rbf,1,"{""model__C"": 2.0}"
+E1__svm_rbf,2,"{""model__C"": 2.0}"
+E1__mlp,0,"{""model__hidden_layer_sizes"": [32]}"
+E1__mlp,1,"{""model__hidden_layer_sizes"": [32]}"
+E1__mlp,2,"{""model__hidden_layer_sizes"": [32]}"
+E1__hist_gradient_boosting,0,"{""max_leaf_nodes"": 7}"
+E1__hist_gradient_boosting,1,"{""max_leaf_nodes"": 7}"
+E1__hist_gradient_boosting,2,"{""max_leaf_nodes"": 7}"
+E2__logistic_regression,0,{}
+E2__logistic_regression,1,{}
+E2__logistic_regression,2,{}
+E2__logistic_regression_balanced,0,{}
+E2__logistic_regression_balanced,1,{}
+E2__logistic_regression_balanced,2,{}
+E2__svm_rbf,0,"{""model__C"": 2.0}"
+E2__svm_rbf,1,"{""model__C"": 2.0}"
+E2__svm_rbf,2,"{""model__C"": 2.0}"
+E2__mlp,0,"{""model__hidden_layer_sizes"": [32, 16]}"
+E2__mlp,1,"{""model__hidden_layer_sizes"": [32, 16]}"
+E2__mlp,2,"{""model__hidden_layer_sizes"": [32]}"
+E2__hist_gradient_boosting,0,"{""max_leaf_nodes"": 7}"
+E2__hist_gradient_boosting,1,"{""max_leaf_nodes"": 7}"
+E2__hist_gradient_boosting,2,"{""max_leaf_nodes"": 7}"
+E1__logistic_regression,full_train,{}
+E1__logistic_regression_balanced,full_train,{}
+E1__svm_rbf,full_train,"{""model__C"": 0.5}"
+E1__mlp,full_train,"{""model__hidden_layer_sizes"": [32, 16]}"
+E1__hist_gradient_boosting,full_train,"{""max_leaf_nodes"": 7}"
+E2__logistic_regression,full_train,{}
+E2__logistic_regression_balanced,full_train,{}
+E2__svm_rbf,full_train,"{""model__C"": 2.0}"
+E2__mlp,full_train,"{""model__hidden_layer_sizes"": [32]}"
+E2__hist_gradient_boosting,full_train,"{""max_leaf_nodes"": 7}"
