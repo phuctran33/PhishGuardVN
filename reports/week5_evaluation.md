@@ -2,7 +2,7 @@
 
 ## Status and provenance
 
-H5.1 DONE; H5.2 OFFLINE REVIEW DONE / HUMAN REVIEW PENDING; H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
+H5.1 DONE; H5.2 OFFLINE REVIEW DONE / AI REVIEW DONE (30) / HUMAN REVIEW PENDING; H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
 
 Upstream snapshot at runtime: `06526d63614747e903715b9737016415b4088435` on week5/hung-evaluation-robustness. Current audit runtime base: `06526d63614747e903715b9737016415b4088435`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
 
@@ -116,6 +116,31 @@ Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hash
 Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.
 
 Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. Suggested review order covers every partition/fold/FP-FN stratum before repeating a stratum; the first 30 span all of them. Case-specific observations, unverified hypotheses and exact fitting-context evidence accompany each row. Human reviewer/date/checks/notes/status are preserved on regeneration. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.
+
+### Separate AI review of the 30 priority cases
+
+[AI review ledger](annotations/week5_ai_review.csv) contains exactly the 30 IDs marked `priority_first_30=True`, in `suggested_review_order`: 17 FP and 13 FN. Each row has an individual Vietnamese conclusion, concrete evidence, limitations and next verification. This is an automated offline review; it does not count toward Hưng's personal review requirement.
+
+| Assessment | Cases |
+|---|---:|
+| Observations consistent with offline strings/features and original metadata | 30 |
+| Twelve feature contributions and score arithmetic checked | 30 |
+| Hypothesis `plausible_unverified` | 30 |
+| Hypothesis `unsupported` | 0 |
+| Still need evidence to verify semantic/root cause or dataset label | 30 |
+| Human reviews still pending across the original sample | 40 |
+
+The plausible and evidence-needed rows overlap: every plausible hypothesis remains unverified. No factual/numerical inconsistency was found in the 30 observations. Dataset labels describe the retained source annotation, not independently established website behavior.
+
+The audit rejoined durable notes, cases, fitting-context evidence and all 12 attribution rows by ID. Original metadata/URL features and case signatures were rechecked offline. Every standardized value, coefficient multiplication, intercept and sigmoid score was recomputed; maximum score reconstruction error is 3.33e-16. The existing trusted local explanation cache passed its recorded hash check; coefficients/scaler/intercepts matched without fitting a model. Fitting-only ID hashes, exact-vector matches and opposite-label counts were independently recounted from the existing Train metadata; no held-out label enters a fitting count.
+
+**22/30** have opposite-label fitting collisions; **6** have no exact fitting match and **2** have matches only with the same original label. These findings constrain the individual conclusions: an opposite-label collision explanation is unsupported for the latter eight cases. This does not make their existing hypotheses unsupported, because those hypotheses explicitly avoid claiming such collisions. Correlated feature terms explain the model arithmetic but do not establish independent causal effects or imply that extra token/suffix features would fix an error.
+
+Additional precision in the AI ledger: hostname lengths for tuantaynguyen/dltp include their suffixes; repeated x in xfcf includes the xyz suffix. For abo2sadam, removing a digit also changes lengths and entropy, so the suggested future check cannot be interpreted as changing only `digit_cnt`. No perturbation experiment or model training was run here.
+
+All AI rows are `ai_review_complete`; hypothesis status remains `plausible_unverified` or `unsupported`, and human verification is explicitly `PENDING`. The original 40-row human checklist, its empty reviewer/date fields, durable notes, cases, attribution/evidence tables and E1/E2 artifacts are unchanged. No suspicious URL was requested, no label was changed, and no human identity/sign-off was supplied. Hưng's personal review of at least 30 cases remains outstanding.
+
+The AI ledger is a separately preserved annotation artifact. This supplement follows the earlier evaluation/notebook run; it does not replace that run's immutable runtime base or claim the notebook was rerun. Current verification: **201 tests passed, 0 skipped**, including three new AI-ledger checks. Protected/input hashes and the actual local audit are recorded under `verification.json → ai_review`. If regenerating the baseline report, retain this supplement from the AI ledger rather than treating its absence as completion of human review.
 
 ## H5.3 — static robustness
 

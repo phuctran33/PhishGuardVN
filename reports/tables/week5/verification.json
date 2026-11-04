@@ -17,25 +17,12 @@
   },
   "statuses": {
     "H5.1": "DONE",
-    "H5.2": "OFFLINE DONE / HUMAN_REVIEW_PENDING",
+    "H5.2": "OFFLINE DONE / AI REVIEW DONE (30) / HUMAN_REVIEW_PENDING",
     "H5.3": "DONE",
     "H5.4_feature": "DONE / PASS / PRELIMINARY",
     "H5.4_model": "DONE / PASS / PRELIMINARY",
     "E2_robustness": "E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT",
     "KD_protocol": "PREPARED"
-  },
-  "pytest": {
-    "command": ".venv/bin/python -m pytest -q",
-    "passed": 198,
-    "skipped": 0,
-    "summary": "198 passed in 6.40s",
-    "test_source_sha256": {
-      "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
-      "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
-      "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
-      "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_audit.py": "df4eb6b30285bba59b8e58900156701aa51f8e4d0c8f80d4fb4116aa3f98ff31"
-    }
   },
   "commands": {
     "evaluation": {
@@ -251,9 +238,97 @@
     "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
   },
   "report_and_handoff_sha256": {
-    "reports/week5_evaluation.md": "5f7a5135b70b13eaee76270fdd0f0ae2fe75e83c1e5455972395ac85b4022ff9",
+    "reports/week5_evaluation.md": "d952f5c779feed5693e7fcba841e7ce184ac5325a9292dc270e478cca0fb53f8",
     "reports/week5_robustness.md": "8a7afa85ca9dbbc5e5fc8a6ec9914d2dddbc9f2bf9542d6f3d76b8bd6a02b172",
-    "docs/week5_hung_handoff.md": "6ae22c6b0b0fa6450b00233c51ba7a271f028584c539d5e7000354aabaf67141"
+    "docs/week5_hung_handoff.md": "a96d926ce230472b34f4d5440d6dadfc40cd735e97cae48aa05f62cd3a892696"
   },
-  "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds."
+  "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds.",
+  "ai_review": {
+    "reviewed_at_utc": "2026-11-04T11:47:47.557294+00:00",
+    "cases": 30,
+    "outcomes": {
+      "FP": 17,
+      "FN": 13
+    },
+    "hypothesis_status": {
+      "plausible_unverified": 30
+    },
+    "observation_inconsistencies": 0,
+    "unsupported": 0,
+    "needs_further_semantic_evidence": 30,
+    "opposite_label_collision_cases": 22,
+    "no_exact_fitting_match": 6,
+    "same_label_matches_only": 2,
+    "max_score_reconstruction_abs_error": 3.3306690738754696e-16,
+    "max_contribution_abs_error": 0.0,
+    "human_pending": 40,
+    "protected_sha256": {
+      "reports/annotations/week5_human_review.csv": "30ea5aae9010e5f69b9e8bee652422c1c26e7e8a75a46f279ea11c6eb594581e",
+      "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+      "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+      "reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
+      "reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+      "data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+      "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+      "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+      "reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+      "reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f"
+    },
+    "explanation_cache_sha256": "b423bba186d37b2b460cecca1a9c3de00f596ad1e5d965746ee055561d4b8a91",
+    "input_sha256": {
+      "reports/annotations/week5_human_review.csv": "30ea5aae9010e5f69b9e8bee652422c1c26e7e8a75a46f279ea11c6eb594581e",
+      "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+      "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+      "reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
+      "reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+      "data/interim/week5/metadata.csv": "7345453a7c08995f1596689c5ea5584b7094a9e67932df45ac8829a36cb2b083",
+      "data/interim/week5/folds.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863"
+    },
+    "ai_review_sha256": "cd9b94b141c278dd2394a6c0a8a760b8f9805e4b7f98909c5e005aff94fee88c",
+    "human_file_unchanged": true,
+    "fit_or_training_called": false,
+    "network_requests_to_urls": false,
+    "authorship": "Codex automated offline review; no human reviewer or sign-off",
+    "human_verification_status": "PENDING",
+    "review_basis_revision": "d3d0d8eb2367c9280546220f1ad9ff9a5e3c6ccd",
+    "method": "Joined all five review inputs by ID; static metadata/features/signatures, original labels/outcomes/threshold, all 12 standardized/coefficient terms, full logit/sigmoid checked. Hash-verified existing E1 explanation coefficients/scalers/intercepts and recounted fitting-only vector collisions. No fitting or URL requests.",
+    "notebook_rerun": false,
+    "e1_e2_sources_or_results_modified": false,
+    "tests": {
+      "passed": 201,
+      "skipped": 0,
+      "new_ai_review_tests": 3,
+      "summary": "201 passed in 6.48s"
+    },
+    "final_hash_and_scope_verification": "PASS: protected inputs/model caches/metrics/figures unchanged; source fingerprint matches; no E1/E2 code, notebook or data edits; 40 human rows pending with empty reviewer/date."
+  },
+  "previous_full_evaluation_pytest": {
+    "command": ".venv/bin/python -m pytest -q",
+    "passed": 198,
+    "skipped": 0,
+    "summary": "198 passed in 6.40s",
+    "test_source_sha256": {
+      "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
+      "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
+      "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
+      "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
+      "tests/test_week5_audit.py": "df4eb6b30285bba59b8e58900156701aa51f8e4d0c8f80d4fb4116aa3f98ff31"
+    }
+  },
+  "pytest": {
+    "command": ".venv/bin/python -m pytest -q",
+    "checked_at_utc": "2026-11-04T11:51:58.252541+00:00",
+    "passed": 201,
+    "skipped": 0,
+    "summary": "201 passed in 6.48s",
+    "test_source_sha256": {
+      "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
+      "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
+      "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
+      "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
+      "tests/test_week5_ai_review.py": "e14ab3c65f6008d03a56f624283fa5ea89ee941c6e726e6446153637772ef524",
+      "tests/test_week5_audit.py": "df4eb6b30285bba59b8e58900156701aa51f8e4d0c8f80d4fb4116aa3f98ff31"
+    }
+  }
 }

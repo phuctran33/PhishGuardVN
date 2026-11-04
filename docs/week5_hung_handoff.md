@@ -3,7 +3,7 @@
 | Task | Current status | Evidence / remaining work |
 |---|---|---|
 | H5.1 E1 evaluation | DONE | Same 12 features, 3 domain folds, seed 42, threshold 0.5; cached original model/predictions |
-| H5.2 error analysis | OFFLINE DONE / HUMAN_REVIEW_PENDING | Same 40 case-specific Codex notes; 40 human reviews pending; Hưng must personally review at least 30 |
+| H5.2 error analysis | OFFLINE DONE / AI REVIEW DONE (30) / HUMAN_REVIEW_PENDING | Separate AI ledger covers the 30 priority cases; all 40 personal reviews remain pending |
 | H5.3 static robustness | DONE | Same 144 cases, exact E1 score/logit/feature evidence; no ground-truth accuracy/F1 for unlabeled variants |
 | H5.4 native E2 features | DONE / PASS / PRELIMINARY | Actual 14,663 Train/Validation rows, 20 features, 2 unresolved Train exclusions |
 | H5.4 native model audit | DONE / PASS / PRELIMINARY | Native gzip predictions/partitions checked; all published metrics match within floating-point tolerance |
@@ -56,6 +56,12 @@ All 40 durable notes were rechecked against static strings, actual original labe
 
 Hưng must personally inspect at least 30 and fill reviewer/date, observation/hypothesis/evidence checks and notes. A reviewed hypothesis may remain unresolved. Regeneration refreshes only offline suggestion fields and preserves reviewer/date/checks/notes/status by ID; mismatched checklist IDs stop for reconciliation. No live suspect URL is visited, original labels are retained, and Codex neither fills human identity/date nor promotes human verification. All **40 remain pending**.
 
+### AI review supplement (no human sign-off)
+
+`reports/annotations/week5_ai_review.csv` reviews exactly the 30 priority IDs in suggested order (17 FP, 13 FN). Each has an individual Vietnamese conclusion, evidence, limitations and next verification. All **30 hypotheses are plausible_unverified**, **0 unsupported**; all 30 still require evidence for semantic/label/root-cause verification. Offline observations/features and arithmetic are consistent; maximum score reconstruction error is 3.33e-16. Recounted fitting collisions: 22 opposite-label cases, six without any exact match, two with only same-label matches. No opposite-label collision is asserted for those eight.
+
+This supplements the previous notebook/evaluation snapshot; it does not rerun E1/E2 or count as personal verification. Full suite after adding the three AI-ledger checks: **201 tests passed, 0 skipped**. The original 40-row human checklist, reviewer/date fields, durable notes, evidence and baseline artifacts remain byte-identical. Human verification stays **PENDING (40)**. AI findings and hashes are in `verification.json → ai_review`; reproducible committed-table checks are in `tests/test_week5_ai_review.py`. The AI CSV is separate from generated evaluation outputs; preserve its report supplement if rerunning the old report generator.
+
 ## Reproduce the integration
 
 Use the existing `.venv` and ignored Week-4 handoffs. For a clean checkout, generate those handoffs with notebooks 01 → 03 → 02 first. Native E2 features are generated only for Train/Validation; no Official Test file is opened for extraction or prediction.
@@ -75,7 +81,7 @@ Reuse the worktree if it already exists at that commit. `[e2].producer_root` is 
 
 ## Verification and remaining owners
 
-Current verification: **198 tests passed, 0 skipped**, native model audit and full CLI succeeded using cached E1; notebook Run All and final output/hash checks are recorded in `verification.json`. Original model bytes, E1 predictions/metrics/folds, 40-case sample/notes and 144-case robustness outputs retain identical SHA256. Hy/Phúc sources, tracked dataset/splits, baseline and KD protocol remain unchanged. No Official Test features/scores, no Validation tuning, no original model retraining. Tests use explicit synthetic fixtures solely for validator failure cases.
+Prior full evaluation verification at `d3d0d8e`: **198 tests passed, 0 skipped**, native model audit and full CLI succeeded using cached E1; notebook Run All and final output/hash checks are recorded in `verification.json`. Original model bytes, E1 predictions/metrics/folds, 40-case sample/notes and 144-case robustness outputs retain identical SHA256. Hy/Phúc sources, tracked dataset/splits, baseline and KD protocol remain unchanged. No Official Test features/scores, no Validation tuning, no original model retraining. Tests use explicit synthetic fixtures solely for validator failure cases.
 
 Changes are confined to Hưng's existing audit/orchestration/checklist/tests/notebook/config/reports, plus one 15-row CSV. No audit framework, registry, new model runner, KD implementation or baseline refactor is added.
 
