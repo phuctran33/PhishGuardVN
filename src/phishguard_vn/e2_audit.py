@@ -8,10 +8,13 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import average_precision_score, confusion_matrix, f1_score, precision_score, recall_score
+from sklearn.model_selection import StratifiedGroupKFold
 
 from phishguard_vn.evaluation_audit import check_ids, metrics_table, validate_predictions
 from phishguard_vn.features import CANDIDATE_FEATURES
@@ -22,6 +25,165 @@ FORBIDDEN = {"id", "label", "target", "true_label", "predicted_label", "source",
 
 def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _validate_native_predictions(frame, metadata, folds, partition, models):
+    """Phúc's native predict labels: probabilities > .5; signed SVC margins > 0.
+
+    Native estimators choose class 0 on a probability tie. Exact SVC zero-margin
+    labels are solver dependent, so reject ties for explicit producer review.
+    """
+    expected = metadata.loc[metadata.split.eq("train" if partition == "group_cv" else "val")].set_index("id")
+    candidates = {f"{arm}__{model}" for arm in ("E1", "E2") for model in models}
+    if (set(frame.candidate) != candidates or frame.duplicated(["candidate", "id"]).any()
+            or not frame.evaluation_partition.eq(partition).all()):
+        raise ValueError("Native candidate/partition/duplicate ID mismatch")
+    for candidate, rows in frame.groupby("candidate"):
+        if set(rows.id) != set(expected.index):
+            raise ValueError("Native missing/unexpected IDs (including Test)")
+        truth = expected.label.map({"benign": 0, "phishing": 1}).reindex(rows.id).to_numpy()
+        if not np.array_equal(rows.true_label, truth):
+            raise ValueError("Native label mismatch")
+        if partition == "group_cv":
+            if not np.array_equal(rows.fold_id, folds.set_index("id").fold_id.reindex(rows.id)):
+                raise ValueError("Native fold mismatch")
+        elif "fold_id" in rows and not rows.fold_id.isna().all():
+            raise ValueError("Native Validation must not have outer folds")
+        model = candidate.split("__", 1)[1]
+        margin = model == "svm_rbf"
+        if (not rows.candidate.eq(rows.feature_set + "__" + rows.model).all()
+                or not rows.decision_rule.eq("estimator.predict").all()
+                or not rows.score_kind.eq("decision_function" if margin else "probability").all()
+                or not np.isfinite(rows.score).all()
+                or (margin and rows.score.eq(0).any())
+                or (not margin and not rows.score.between(0, 1).all())
+                or not np.array_equal(rows.predicted_label, rows.score.gt(0 if margin else .5).astype(int))):
+            raise ValueError("Native score semantics/predicted label mismatch")
+
+
+def _native_metrics(rows):
+    """Use ranking scores directly for AP, including unbounded SVM margins."""
+    y, pred = rows.true_label, rows.predicted_label
+    tn, fp, fn, tp = confusion_matrix(y, pred, labels=[0, 1]).ravel()
+    return {"accuracy": (tn + tp) / len(rows), "tn": int(tn), "fp": int(fp), "fn": int(fn), "tp": int(tp),
+            "precision_phishing": precision_score(y, pred, zero_division=0),
+            "recall_phishing": recall_score(y, pred, zero_division=0), "f1_phishing": f1_score(y, pred, zero_division=0),
+            "pr_auc": average_precision_score(y, rows.score), "false_positive_rate": fp / (fp + tn)}
+
+
+def audit_native_model_handoff(producer_root, metadata, folds, root):
+    """Read native gzip handoff from a clean producer checkout; never fit/load models.
+
+    Recheck IDs, outer/inner domain partitions and published metrics. Original
+    training execution is supported by the separate PR code review, not proved
+    from prediction files alone. Windows raw input hashes are retained without
+    claiming byte equality to regenerated local CSVs.
+    """
+    from phishguard_vn.brand_features import E2_FEATURES, FEATURE_SCHEMA_VERSION
+
+    producer_root, root = Path(producer_root).resolve(), Path(root).resolve()
+    def git(*args):
+        return subprocess.check_output(["git", *args], cwd=producer_root, text=True).strip()
+    revision = git("rev-parse", "HEAD")
+    # Separate worktree is read-only. A merged/current checkout may contain Hung edits.
+    if producer_root != root and git("status", "--porcelain", "--untracked-files=no"):
+        raise ValueError("Native producer checkout has modified tracked files")
+    tables = producer_root / "reports/tables"
+    read = lambda name: pd.read_csv(tables / name, dtype={"id": "string"})
+    meta = json.loads((tables / "06_ablation_metadata.json").read_text())
+    if (meta.get("protocol") != "week5_e1_e2_readable_v1" or meta.get("feature_schema_version") != FEATURE_SCHEMA_VERSION
+            or meta.get("feature_sets") != {"E1": list(CANDIDATE_FEATURES), "E2": list(E2_FEATURES)}
+            or meta.get("class_order") != [0, 1] or meta.get("decision_rule") != "estimator.predict"
+            or meta.get("boundaries") != {"svm_rbf": 0., "other_models": .5}
+            or meta.get("seed") != 42 or meta.get("outer_folds") != 3 or meta.get("inner_folds") != 2
+            or meta.get("test_evaluated") is not False):
+        raise ValueError("Native provenance/schema/score contract mismatch")
+    lf_sha = lambda path: hashlib.sha256(Path(path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    for name in ("features.py", "url_parser.py", "brand_features.py"):
+        expected = meta["extractor_source_lf_sha256"][name]
+        if any(lf_sha(base / "src/phishguard_vn" / name) != expected for base in (root, producer_root)):
+            raise ValueError("Native extractor hash mismatch")
+    reference = "src/phishguard_vn/resources/brand_reference_v1.csv"
+    if any(lf_sha(base / reference) != meta["reference_lf_sha256"] for base in (root, producer_root)):
+        raise ValueError("Native reference hash mismatch")
+    notebook = json.loads((producer_root / "notebooks/05_e2_ablation.ipynb").read_text())
+    code = "\n".join("".join(c["source"]) for c in notebook["cells"] if c["cell_type"] == "code")
+    if hashlib.sha256(code.encode()).hexdigest() != meta["notebook_code_sha256"]:
+        raise ValueError("Native notebook code hash mismatch")
+    artifacts = ("06_oof_predictions.csv.gz", "06_validation_predictions.csv.gz", "06_training_partitions.csv.gz")
+    if any(sha256(tables / n) != meta["artifact_sha256"].get("reports/tables/" + n) for n in artifacts):
+        raise ValueError("Native compressed artifact hash mismatch")
+    oof, validation, partitions = map(read, artifacts)
+    models = ("logistic_regression", "logistic_regression_balanced", "svm_rbf", "mlp", "hist_gradient_boosting")
+    if meta.get("score_kinds") != {m: "decision_function" if m == "svm_rbf" else "probability" for m in models}:
+        raise ValueError("Native metadata score semantics mismatch")
+    for frame, partition in ((oof, "group_cv"), (validation, "official_validation")):
+        _validate_native_predictions(frame, metadata, folds, partition, models)
+    train = metadata.loc[metadata.split.eq("train")].sort_values("id").set_index("id")
+    val = metadata.loc[metadata.split.eq("val")]
+    if (len(train) != meta["train_rows"] or len(val) != meta["validation_rows"]
+            or not set(train.registrable_domain).isdisjoint(val.registrable_domain)):
+        raise ValueError("Native Train/Validation supports or domain overlap")
+    if (partitions.duplicated(["context", "id"]).any() or set(partitions.context.astype(str)) != {"0", "1", "2", "full_train"}
+            or not partitions.role.isin(["fitting", "held_out"]).all()):
+        raise ValueError("Native partition coverage/roles mismatch")
+    supports = []
+    for context, rows in partitions.groupby("context"):
+        held_ids = set() if context == "full_train" else set(folds.loc[folds.fold_id.eq(int(context)), "id"])
+        fitting, held = rows.loc[rows.role.eq("fitting")], rows.loc[rows.role.eq("held_out")]
+        if (set(rows.id) != set(train.index) or set(held.id) != held_ids
+                or set(fitting.id) != set(train.index) - held_ids or not held.inner_fold_id.eq(-1).all()):
+            raise ValueError("Native outer fitting/held-out leakage or coverage mismatch")
+        fit = train.loc[sorted(fitting.id)]
+        if not set(fit.registrable_domain).isdisjoint(train.loc[sorted(held_ids)].registrable_domain):
+            raise ValueError("Native outer domain leakage")
+        if not set(fitting.inner_fold_id).issubset({0, 1}):
+            raise ValueError("Native inner fold mismatch")
+        inner = StratifiedGroupKFold(n_splits=2, shuffle=True, random_state=42)
+        for j, (a, b) in enumerate(inner.split(np.zeros(len(fit)), fit.label, fit.registrable_domain)):
+            if (set(fitting.loc[fitting.inner_fold_id.eq(j), "id"]) != set(fit.iloc[b].index)
+                    or not set(fit.iloc[a].registrable_domain).isdisjoint(fit.iloc[b].registrable_domain)):
+                raise ValueError("Native inner fitting/selection leakage or fold mismatch")
+        supports.append({"context": str(context), "fitting": len(fitting), "held_out": len(held)})
+    cv = pd.DataFrame([{"candidate": c, "fold_id": f, **_native_metrics(r)} for (c, f), r in oof.groupby(["candidate", "fold_id"])])
+    supplementary = pd.DataFrame([{"candidate": c, **_native_metrics(r)} for c, r in validation.groupby("candidate")])
+    metric_names = ["pr_auc", "precision_phishing", "recall_phishing", "f1_phishing", "false_positive_rate"]
+    summary = cv.groupby("candidate")[metric_names].agg(["mean", "std"])
+    summary.columns = ["_".join(c) for c in summary.columns]
+    summary = summary.reset_index()
+    cv["model"] = cv.candidate.str.split("__").str[1]
+    paired = cv.loc[cv.candidate.str.startswith("E1__")].merge(cv.loc[cv.candidate.str.startswith("E2__")], on=["model", "fold_id"], suffixes=("_e1", "_e2"), validate="one_to_one")
+    for metric in metric_names:
+        paired["delta_" + metric] = paired[metric + "_e2"] - paired[metric + "_e1"]
+    errors = {}
+    all_metrics = ["accuracy", "tn", "fp", "fn", "tp", *metric_names]
+    for name, actual, keys, columns in [
+        ("06_cv_metrics.csv", cv, ["candidate", "fold_id"], all_metrics),
+        ("06_validation.csv", supplementary, ["candidate"], all_metrics),
+        ("06_comparison.csv", summary, ["candidate"], list(summary.columns[1:])),
+        ("06_paired_folds.csv", paired, ["model", "fold_id"], [m + s for m in metric_names for s in ("_e1", "_e2")] + ["delta_" + m for m in metric_names])]:
+        joined = actual.merge(read(name), on=keys, how="outer", suffixes=("_audit", "_reported"), indicator=True, validate="one_to_one")
+        a, b = (joined[[c + suffix for c in columns]].to_numpy(dtype=float) for suffix in ("_audit", "_reported"))
+        if not joined._merge.eq("both").all() or not np.allclose(a, b, atol=1e-12, rtol=0):
+            raise ValueError("Native published metric mismatch: " + name)
+        errors[name] = float(np.max(np.abs(a - b)))
+    summary["family"] = summary.candidate.str.split("__").str[1].replace({"logistic_regression_balanced": "logistic_regression"})
+    shortlist = summary.sort_values(["pr_auc_mean", "f1_phishing_mean", "false_positive_rate_mean", "candidate"], ascending=[False, False, True, True]).drop_duplicates("family").head(2).candidate.tolist()
+    if shortlist != meta["teacher_candidates"]:
+        raise ValueError("Native Train-only shortlist mismatch")
+    names = [*artifacts, "06_ablation_metadata.json", "06_comparison.csv", "06_paired_folds.csv", "06_cv_metrics.csv", "06_validation.csv", "06_verification.json"]
+    audit = {"status": "PASS", "feature_status": meta["status"], "producer_revision": revision,
+             "producer_runtime_base_revision": meta["runtime_git_revision"], "producer_runtime_dirty": meta["runtime_git_dirty"],
+             "protocol": meta["protocol"], "feature_schema_version": meta["feature_schema_version"], "producer_versions": meta["versions"],
+             "artifact_sha256": {"reports/tables/" + n: sha256(tables / n) for n in names},
+             "reference_lf_sha256": meta["reference_lf_sha256"], "producer_reference": meta["reference"],
+             "producer_raw_input_sha256": meta["input_sha256"], "extractor_source_lf_sha256": meta["extractor_source_lf_sha256"],
+             "notebook_code_sha256": meta["notebook_code_sha256"], "rows": dict(zip(("oof", "validation", "training_partitions"), map(len, (oof, validation, partitions)))),
+             "partition_supports": supports, "table_max_abs_errors": errors, "teacher_candidates_train_only": shortlist,
+             "summary": summary.to_dict("records"), "validation": supplementary.to_dict("records"),
+             "e2_robustness": "E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT",
+             "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds."}
+    return audit, paired.drop(columns=["candidate_e1", "candidate_e2"])
 
 
 def adapt_predictions(frame, column_map=None, partition_map=None, model=None):

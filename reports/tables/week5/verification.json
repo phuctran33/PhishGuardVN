@@ -1,28 +1,62 @@
 {
-  "checked_at_utc": "2026-11-04T03:53:14.883119+00:00",
-  "runtime_fingerprint": "1326b9c34b64852fc849f3234560687ab943780666c00d5709ec884dacd08a13",
-  "audit_runtime_base_revision": "a7413aae3351703429eba518657b08894afae3e7",
-  "published_snapshot_at_runtime": "d667ac8050bd225b7f1ae3dff09c64d714c6d4d2",
+  "checked_at_utc": "2026-11-04T10:25:22.113135+00:00",
+  "runtime_fingerprint": "62d64f51adb9969dded64647a812b05f6d250518e5532c6f7a8e79a4b2d88c7c",
+  "audit_runtime_base_revision": "06526d63614747e903715b9737016415b4088435",
+  "published_snapshot_at_runtime": "06526d63614747e903715b9737016415b4088435",
   "e1_runtime_base_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
+  "publication_note": "Runtime base/upstream capture is immutable. The later publication commit is identified by Git history/branch HEAD; it is not substituted for a training or analysis runtime revision.",
   "integration": {
     "pr5_merge_commit": "0054a1b1844ce12b84030e52952106488b0cbc10",
     "main_merge_commit": "a7413aae3351703429eba518657b08894afae3e7",
-    "hy_sources_identical_to_main": true
+    "pr6_state_checked": "open / unmerged",
+    "pr6_head": "b230fd6ebe33d43b8bd64d2b83653d546156fe1a",
+    "producer_checkout_tracked_files_clean": true,
+    "producer_code_merged_or_modified": false,
+    "hy_sources_identical_to_main": true,
+    "independent_review": "https://github.com/phuctran33/PhishGuardVN/pull/6#pullrequestreview-5766640293"
+  },
+  "statuses": {
+    "H5.1": "DONE",
+    "H5.2": "OFFLINE DONE / HUMAN_REVIEW_PENDING",
+    "H5.3": "DONE",
+    "H5.4_feature": "DONE / PASS / PRELIMINARY",
+    "H5.4_model": "DONE / PASS / PRELIMINARY",
+    "E2_robustness": "E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT",
+    "KD_protocol": "PREPARED"
   },
   "pytest": {
     "command": ".venv/bin/python -m pytest -q",
-    "passed": 182,
+    "passed": 198,
     "skipped": 0,
-    "summary": "182 passed in 5.49s",
+    "summary": "198 passed in 6.40s",
     "test_source_sha256": {
       "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
       "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
       "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
       "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_audit.py": "ad7b13205224771c5277f36cad79eb1fe0d0ac56714de28654e1e2e3569d53d8"
+      "tests/test_week5_audit.py": "df4eb6b30285bba59b8e58900156701aa51f8e4d0c8f80d4fb4116aa3f98ff31"
     }
   },
   "commands": {
+    "evaluation": {
+      "command": "PHISHGUARD_E2_PRODUCER_ROOT=/tmp/PhishGuardVN-pr6-b230fd6 .venv/bin/python scripts/run_week5_evaluation.py",
+      "exit_code": 0,
+      "cached_e1": true
+    },
+    "notebook": {
+      "command": "PHISHGUARD_E2_PRODUCER_ROOT=/tmp/PhishGuardVN-pr6-b230fd6 .venv/bin/python -m nbconvert --to notebook --execute --inplace notebooks/05_error_robustness.ipynb --ExecutePreprocessor.timeout=600",
+      "exit_code": 0,
+      "code_cells_executed": 6,
+      "errors": 0,
+      "sha256": "4e55a0d7ebdd50118003c716c0c40e11f943b3625db3f9ddb0a466bd1d8ca91d"
+    },
+    "pip_check": {
+      "exit_code": 0,
+      "summary": "No broken requirements found."
+    }
+  },
+  "previous_unchanged_feature_builder_verification": {
+    "checked_at_utc": "2026-11-04T03:53:14.883119+00:00",
     "native_extraction": {
       "command": ".venv/bin/python scripts/05_build_matrix_x_brand.py --partition trainval",
       "exit_code": 0,
@@ -32,19 +66,127 @@
       "command": ".venv/bin/python scripts/run_week5_evaluation.py --feature-only",
       "exit_code": 0,
       "status": "PASS"
-    },
-    "evaluation": {
-      "command": ".venv/bin/python scripts/run_week5_evaluation.py",
-      "exit_code": 0,
-      "cached_e1": true
-    },
-    "notebook": {
-      "command": ".venv/bin/python -m nbconvert --to notebook --execute --inplace notebooks/05_error_robustness.ipynb --ExecutePreprocessor.timeout=600",
-      "exit_code": 0,
-      "code_cells_executed": 6,
-      "errors": 0,
-      "sha256": "facb1b879c817b9506d435280d128e5b22498142318f4bb59b062bd879884820"
     }
+  },
+  "native_e2": {
+    "report_sha256": "9bfd3a3073ee19b86e1b32d4aec333ce5de33dffdc6ad956012e847831eeafaa",
+    "status": "PASS",
+    "feature_status": "PRELIMINARY",
+    "n_features": 20,
+    "rows_by_split": {
+      "train": {
+        "x": 13078,
+        "excluded": 2
+      },
+      "val": {
+        "x": 1585,
+        "excluded": 0
+      }
+    },
+    "brand_reference_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+    "draft_records": 37,
+    "missing_source_accessed": 37,
+    "model_comparison_status": "DONE / PASS / PRELIMINARY"
+  },
+  "native_model_audit": {
+    "status": "PASS",
+    "feature_status": "PRELIMINARY",
+    "producer_revision": "b230fd6ebe33d43b8bd64d2b83653d546156fe1a",
+    "producer_runtime_base_revision": "a4f8a1892237c3d9b3c1bb2a3243928b453744bd",
+    "producer_runtime_dirty": true,
+    "protocol": "week5_e1_e2_readable_v1",
+    "feature_schema_version": "e2-brand-v0",
+    "producer_versions": {
+      "numpy": "2.4.6",
+      "pandas": "3.1.0",
+      "scikit-learn": "1.9.1",
+      "joblib": "1.6.0",
+      "tldextract": "5.4.0",
+      "idna": "3.20"
+    },
+    "artifact_sha256": {
+      "reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+      "reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+      "reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8",
+      "reports/tables/06_ablation_metadata.json": "03b2137b9f53b3e189549414456534798ddb432d4f1bdf13e2f7172aca20e96f",
+      "reports/tables/06_comparison.csv": "ec2903fdce515ab0821297e085a57d857a3c40f2b17787e19d90cd52d1a9d074",
+      "reports/tables/06_paired_folds.csv": "dd1ac5f23f387da25a428ed4751a92b2508e1024c7affde4a56e0eda6bfe2a12",
+      "reports/tables/06_cv_metrics.csv": "e823e724fb8b52e183c92412f2a0d72b70524e7b93b301aee79a02971307e522",
+      "reports/tables/06_validation.csv": "51f5c2ebf98cc942aaa7bd886137ce7be8a57402de195c9190f1684ae3e8b57f",
+      "reports/tables/06_verification.json": "3da54df1617f92f83cdad3b2c4280d5457e03ec514b5713d2c83313d012d48c4"
+    },
+    "reference_lf_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+    "producer_reference": {
+      "file": "brand_reference_v1.csv",
+      "sha256": "b40f66bbad8327d1e022a5dcb8869ad7ee4a6f46bcfea48ccec20545a91d50bd",
+      "n_brands": 37,
+      "status_counts": {
+        "draft": 37
+      },
+      "n_missing_source_accessed": 37,
+      "n_missing_source_url": 0,
+      "fully_verified": false,
+      "n_brands_with_official_suffixes": 0,
+      "n_brands_with_typo_ignore": 0
+    },
+    "extractor_source_lf_sha256": {
+      "features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+      "url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
+      "brand_features.py": "58c41d9451bd3e4409400e10a038523fff106178b4ea160c56835efaecb7bc7c"
+    },
+    "notebook_code_sha256": "a2b148cd126daa53ae91e2769c04f584f7aa3edca1932078c16c97bf9c8e79da",
+    "rows": {
+      "oof": 130780,
+      "validation": 15850,
+      "training_partitions": 52312
+    },
+    "partition_supports": [
+      {
+        "context": "0",
+        "fitting": 8719,
+        "held_out": 4359
+      },
+      {
+        "context": "1",
+        "fitting": 8719,
+        "held_out": 4359
+      },
+      {
+        "context": "2",
+        "fitting": 8718,
+        "held_out": 4360
+      },
+      {
+        "context": "full_train",
+        "fitting": 13078,
+        "held_out": 0
+      }
+    ],
+    "table_max_abs_errors": {
+      "06_cv_metrics.csv": 0.0,
+      "06_validation.csv": 0.0,
+      "06_comparison.csv": 2.220446049250313e-16,
+      "06_paired_folds.csv": 0.0
+    },
+    "teacher_candidates_train_only": [
+      "E2__mlp",
+      "E2__hist_gradient_boosting"
+    ],
+    "e2_robustness": "E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT",
+    "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds."
+  },
+  "human_review": {
+    "checklist": "reports/annotations/week5_human_review.csv",
+    "sha256": "30ea5aae9010e5f69b9e8bee652422c1c26e7e8a75a46f279ea11c6eb594581e",
+    "cases": 40,
+    "pending": 40,
+    "priority_first_30": 30,
+    "priority_covers_all_partition_fold_outcome_strata": true,
+    "priority_validation_cases": 5,
+    "minimum_personal_reviews_required": 30,
+    "codex_offline_notes_retained": true,
+    "case_signature_revalidation": "All 40 passed during CLI and notebook; no annotation edits or label changes",
+    "max_score_reconstruction_abs_error": 3.3306690738754696e-16
   },
   "baseline_annotations_and_robustness_unchanged": {
     "identical_hashes": true,
@@ -72,69 +214,22 @@
     },
     "parser_alias_compatibility": "PR #5 deprecated-property spelling only; reversed source hash matches E1, and regenerated feature/domain/fold handoffs agree"
   },
-  "native_e2": {
-    "report_sha256": "37acb691ed908114a4472326de9a053b5fa018f238b7d0a45775a57d0a99f847",
-    "status": "PASS",
-    "feature_status": "PRELIMINARY",
-    "rows_by_split": {
-      "train": {
-        "x": 13078,
-        "excluded": 2
-      },
-      "val": {
-        "x": 1585,
-        "excluded": 0
-      }
-    },
-    "n_features": 20,
-    "brand_reference_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
-    "draft_records": 37,
-    "missing_source_accessed": 37,
-    "model_comparison_status": "PENDING_PRODUCER_E2_PREDICTIONS"
-  },
-  "producer_discovery": {
-    "ref": "origin/phuc-week5-models",
-    "commit": "a4f8a1892237c3d9b3c1bb2a3243928b453744bd",
-    "metadata_path": "reports/tables/05_readable_metadata.json",
-    "feature_set": "lexical_12",
-    "feature_names": [
-      "url_len",
-      "dom_len",
-      "is_ip",
-      "subdom_cnt",
-      "letter_cnt",
-      "digit_cnt",
-      "dot_cnt",
-      "dash_cnt",
-      "under_cnt",
-      "slash_cnt",
-      "entropy",
-      "path_len"
-    ],
-    "score_kinds": {
-      "logistic_regression": "probability",
-      "logistic_regression_balanced": "probability",
-      "svm_rbf": "decision_function",
-      "mlp": "probability",
-      "hist_gradient_boosting": "probability"
-    },
-    "decision_rule": "estimator.predict",
-    "e2_predictions": "No native 20-feature E2 predictions found in local artifacts or tracked producer tree; ignored producer files not delivered."
-  },
-  "human_review": {
-    "checklist": "reports/annotations/week5_human_review.csv",
-    "sha256": "7a6dffb6e083452f9b3c493e04b185897864e9add22acaed67d725abc67fe6c8",
-    "cases": 40,
-    "pending": 40,
-    "minimum_personal_reviews_required": 30,
-    "codex_offline_notes_retained": true
-  },
   "original_tracked_data_and_e1_training_sources_unchanged": true,
   "kd_protocol_unchanged": true,
   "official_test_predicted_or_scored": false,
+  "fitted_e2_model_discovery": {
+    "status": "E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT",
+    "searched": [
+      "Hung models/ and data/interim/",
+      "Phuc models/ and all tracked/ignored joblib/pkl/pickle/skops/onnx/pt/pth files"
+    ],
+    "found": "Only Hung E1 result and explanation caches; Phuc inference source but no E2 fitted weights",
+    "original_full_data_training_repeated": false
+  },
   "current_output_sha256": {
     "reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
     "reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
+    "reports/tables/week5/e2_paired_folds.csv": "8396915c52e5d772fa85aa8bcc45888e3bf9af294cdc96add089f653a0e31af4",
     "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
     "reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
     "reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
@@ -155,6 +250,10 @@
     "reports/figures/week5/robustness_shift.png": "1533e268865e315e0d7f2dc7b143f3d3dc88c98842a14973625ef3e74df6c118",
     "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
   },
-  "pip_check": "No broken requirements found.",
-  "historical_verification": "Previous 140-test review and 126-test publication records remain in Git history; no baseline training was repeated for this integration."
+  "report_and_handoff_sha256": {
+    "reports/week5_evaluation.md": "5f7a5135b70b13eaee76270fdd0f0ae2fe75e83c1e5455972395ac85b4022ff9",
+    "reports/week5_robustness.md": "8a7afa85ca9dbbc5e5fc8a6ec9914d2dddbc9f2bf9542d6f3d76b8bd6a02b172",
+    "docs/week5_hung_handoff.md": "6ae22c6b0b0fa6450b00233c51ba7a271f028584c539d5e7000354aabaf67141"
+  },
+  "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds."
 }

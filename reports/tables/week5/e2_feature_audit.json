@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-04T03:48:09.901385+00:00",
+  "checked_at_utc": "2026-11-04T10:22:14.052303+00:00",
   "status": "PASS",
   "checks": {
     "partition_version": {
@@ -63,7 +63,7 @@
       "detail": "A draft reference cannot claim frozen/verified status"
     }
   },
-  "model_comparison_status": "PENDING_PRODUCER_E2_PREDICTIONS",
+  "model_comparison_status": "DONE / PASS / PRELIMINARY",
   "limitations": "Feature checks do not verify reference truth or model training; no E2 metrics calculated.",
   "feature_status": "PRELIMINARY",
   "feature_schema_version": "e2-brand-v0",

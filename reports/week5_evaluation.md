@@ -2,9 +2,9 @@
 
 ## Status and provenance
 
-H5.1 DONE; H5.2 OFFLINE REVIEW DONE / HUMAN REVIEW PENDING; H5.3 DONE. H5.4 FEATURE AUDIT DONE: native e2-brand-v0 technical PASS, PRELIMINARY. MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS: no matched 20-feature OOF/Validation bundle supplied. Hy's draft reference still requires review; KD PROTOCOL PREPARED.
+H5.1 DONE; H5.2 OFFLINE REVIEW DONE / HUMAN REVIEW PENDING; H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
 
-Upstream snapshot at runtime: `d667ac8050bd225b7f1ae3dff09c64d714c6d4d2` on week5/hung-evaluation-robustness. Current audit runtime base: `a7413aae3351703429eba518657b08894afae3e7`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
+Upstream snapshot at runtime: `06526d63614747e903715b9737016415b4088435` on week5/hung-evaluation-robustness. Current audit runtime base: `06526d63614747e903715b9737016415b4088435`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
 
 Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.
 
@@ -115,7 +115,7 @@ Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hash
 
 Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.
 
-Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. The checklist is created only if absent and never overwritten. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.
+Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. Suggested review order covers every partition/fold/FP-FN stratum before repeating a stratum; the first 30 span all of them. Case-specific observations, unverified hypotheses and exact fitting-context evidence accompany each row. Human reviewer/date/checks/notes/status are preserved on regeneration. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.
 
 ## H5.3 — static robustness
 
@@ -127,14 +127,52 @@ No transformed ground truth, accuracy or F1. Prediction flips are sensitivity fi
 
 ## H5.4 — E2 audit and KD readiness
 
-H5.4 FEATURE AUDIT DONE: native e2-brand-v0 technical PASS, PRELIMINARY. MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS: no matched 20-feature OOF/Validation bundle supplied. Hy's draft reference still requires review; KD PROTOCOL PREPARED.
+H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
 
 Native Hy feature audit: **PASS / PRELIMINARY**; 14663 rows, 20 features, split counts {'train': {'x': 13078, 'excluded': 2}, 'val': {'x': 1585, 'excluded': 0}}; excluded=2. Reference SHA256 `32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf`, statuses={'draft': 37}. [Checks and provenance](tables/week5/e2_feature_audit.json). Draft reference provenance remains pending Hy review; this is not frozen E2 v1.
+
+**Native model audit PASS / PRELIMINARY**, producer commit `b230fd6ebe33d43b8bd64d2b83653d546156fe1a`, protocol `week5_e1_e2_readable_v1`, schema `e2-brand-v0`. Rows: {'oof': 130780, 'validation': 15850, 'training_partitions': 52312}. IDs, labels and outer folds match Hưng's canonical eligible Train/Validation data. All four fitting contexts and their two seeded inner domain folds were reconstructed without model fitting; no held-out/Validation/Test IDs enter fitting or tuning records.
+
+Recomputed 30 outer-fold metrics, 10 Validation rows, 10 mean/sample-SD summaries and 15 paired-fold comparisons. Maximum absolute discrepancy against Phúc's tables: 2.22e-16. AP uses original ranking scores; SVM uses signed decision_function with boundary 0, other models use class-1 probabilities with estimator.predict boundary 0.5. No sigmoid, threshold tuning or changes to H5.1 E1.
+
+Mean outer AP ± sample SD, F1 and FPR (proportions), paired by model:
+
+| model | pr_auc_mean_e1 | pr_auc_std_e1 | pr_auc_mean_e2 | pr_auc_std_e2 | f1_phishing_mean_e1 | f1_phishing_mean_e2 | false_positive_rate_mean_e1 | false_positive_rate_mean_e2 |
+|---|---|---|---|---|---|---|---|---|
+| hist_gradient_boosting | 0.6979 | 0.0226 | 0.7224 | 0.0173 | 0.6066 | 0.6272 | 0.0201 | 0.0192 |
+| logistic_regression | 0.5942 | 0.0158 | 0.6417 | 0.0046 | 0.4500 | 0.4944 | 0.0230 | 0.0227 |
+| logistic_regression_balanced | 0.5577 | 0.0155 | 0.6306 | 0.0124 | 0.4831 | 0.5439 | 0.2894 | 0.1828 |
+| mlp | 0.6992 | 0.0140 | 0.7335 | 0.0142 | 0.5989 | 0.6315 | 0.0232 | 0.0176 |
+| svm_rbf | 0.6426 | 0.0318 | 0.6545 | 0.0420 | 0.5596 | 0.5961 | 0.0145 | 0.0155 |
+
+Teacher shortlist rederived exclusively from Train CV: ['E2__mlp', 'E2__hist_gradient_boosting']. All 15 paired AP/F1 deltas are positive. Shortlist fold details below; all models are in [paired folds](tables/week5/e2_paired_folds.csv). HistGB has one additional FP in each of folds 0 and 2 despite lower mean FPR; MLP recall declines in fold 1. Three correlated folds and one seed support descriptive comparisons, not formal significance or independent-population confidence intervals.
+
+| model | fold_id | pr_auc_e1 | pr_auc_e2 | delta_pr_auc | delta_f1_phishing | delta_recall_phishing | delta_false_positive_rate |
+|---|---|---|---|---|---|---|---|
+| hist_gradient_boosting | 0 | 0.7070 | 0.7261 | 0.0191 | 0.0219 | 0.0260 | 0.0003 |
+| hist_gradient_boosting | 1 | 0.7146 | 0.7376 | 0.0230 | 0.0249 | 0.0217 | -0.0033 |
+| hist_gradient_boosting | 2 | 0.6721 | 0.7035 | 0.0314 | 0.0152 | 0.0173 | 0.0003 |
+| mlp | 0 | 0.7153 | 0.7322 | 0.0169 | 0.0191 | 0.0116 | -0.0046 |
+| mlp | 1 | 0.6929 | 0.7200 | 0.0271 | 0.0110 | -0.0116 | -0.0104 |
+| mlp | 2 | 0.6894 | 0.7482 | 0.0588 | 0.0676 | 0.0708 | -0.0016 |
+
+Supplementary untouched Validation (24 phishing positives): both shortlisted E2 models have lower AP than E1, even while fixed-boundary F1 improves. AP depends on full ranking and prevalence; F1 measures one operating point, so these outcomes can coexist. Source-label confounding and Train/Validation shift limit generalization; the draft 37-brand reference limits feature claims. Do not select/tune models, thresholds or references using these Validation findings.
+
+| candidate | pr_auc | f1_phishing | tn | fp | fn | tp |
+|---|---|---|---|---|---|---|
+| E1__hist_gradient_boosting | 0.4338 | 0.4062 | 1534 | 27 | 11 | 13 |
+| E1__mlp | 0.4314 | 0.3288 | 1524 | 37 | 12 | 12 |
+| E2__hist_gradient_boosting | 0.4278 | 0.4590 | 1538 | 23 | 10 | 14 |
+| E2__mlp | 0.3762 | 0.3824 | 1530 | 31 | 11 | 13 |
+
+Producer runtime base `a4f8a1892237c3d9b3c1bb2a3243928b453744bd` (dirty=True) differs from the published artifact commit above. Exact compressed/metadata/table hashes, code/reference LF hashes and producer versions are recorded in run_manifest.json → native_model_audit. Raw producer input hashes are retained, without claiming byte equality to regenerated local files; normalized LF reference/source content matches. [Independent PR review](https://github.com/phuctran33/PhishGuardVN/pull/6#pullrequestreview-5766640293) covers committed fitting/selection code; prediction records alone cannot prove original execution or reference independence.
+
+**E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT**: no fitted E2 MLP/HistGB bundle or matching local predictor was delivered in either checkout's models/artifact directories. Phúc must supply trusted fitted preprocessing+model weights, SHA256, training commit/config, exact 20-feature order/schema, embedded reference snapshot/hash and extractor hashes, plus class order/score semantics. Then reuse the existing 144-case suite. Native inference code alone is insufficient; no E2 or KD training was performed.
 
 The handoff records the producer branch/metadata reviewed for this run. Advanced models using lexical_12 must not be relabeled as 20-feature E2 results. Model comparison requires actual matched E2 OOF/Validation predictions, declared score kind/decision rule, fitting/preprocessing/tuning lineage and reference/version hashes. No producer model is trained by this audit.
 
 Loaders/adapters enforce artifact hashes, exact feature order/dictionary, eligible IDs, fixed folds, finite values, lexical-contract consistency, fold-local or independent external brand references, producer training-ID lineage and matched E1/E2 comparisons. Producer declarations still need code/reference review; schema checks alone do not prove leakage absence. Synthetic fixtures validate logic only and contribute no reported experimental metrics.
 
-The existing optional model-bundle adapter is for declared phishing probabilities only; its common-0.5 comparison is not a universal score rule. Phúc v2 SVM uses decision_function margins and estimator.predict (default margin boundary 0): do not range-check margins as probabilities, threshold them at 0.5 or apply an arbitrary sigmoid. An E2 margin adapter will be added only when the actual E2 prediction format and producer decision rule arrive. AP accepts ranking scores, including margins. E1 remains at 0.5; Validation/Test never select an operating point.
+The optional generic model-bundle adapter remains probability-only; the native Phúc adapter separately validates actual probability/margin semantics and recorded estimator.predict labels. AP accepts ranking margins. H5.1 E1 remains at 0.5; Validation/Test never select an operating point. Synthetic test fixtures supply no experimental results.
 
 [KD evaluation protocol](../docs/kd_evaluation_protocol.md); [handoff and continuation prompt](../docs/week5_hung_handoff.md). Optional source-bias/pilot evidence from Khiêm remains separate from X; source bias is not claimed resolved.

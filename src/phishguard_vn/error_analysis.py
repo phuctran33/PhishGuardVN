@@ -3,10 +3,44 @@ from __future__ import annotations
 
 import hashlib
 import re
+from pathlib import Path
 
 import pandas as pd
 
 from phishguard_vn.url_parser import parse_url
+
+
+def update_human_checklist(cases, evidence, path):
+    """Refresh offline suggestions by ID while preserving every human-owned field."""
+    path = Path(path)
+    checklist = cases[["id", "url_safe", "evaluation_partition", "fold_id", "outcome", "score"]].copy()
+    # Round-robin within the already fixed diversity sample; include every stratum
+    # before taking another case from any stratum. This does not resample errors.
+    keys = ["evaluation_partition", "fold_id", "outcome"]
+    order = checklist.assign(turn=checklist.groupby(keys, dropna=False).cumcount()).sort_values("turn", kind="stable").id
+    ranks = dict(zip(order, range(1, len(order) + 1)))
+    checklist["suggested_review_order"] = checklist.id.map(ranks)
+    checklist["priority_first_30"] = checklist.suggested_review_order.le(30)
+    checklist["suggested_observation"] = cases.observation
+    checklist["unverified_hypothesis"] = cases.hypothesis
+    lookup = evidence.set_index("id")
+    checklist["offline_evidence"] = [
+        f"context={r.context}; fit={r.fit_rows}; opposite-label identical vectors={r.opposite_label_fitting_rows}; "
+        f"positive logit terms: {r.positive_contributions}; negative: {r.negative_contributions}"
+        for r in lookup.loc[checklist.id].itertuples()]
+    checklist["next_verification"] = cases.next_verification
+    fields = ["reviewer", "reviewed_at", "observation_checked", "hypothesis_assessed", "evidence_checked", "notes", "review_status"]
+    if path.is_file():
+        prior = pd.read_csv(path, dtype=str, keep_default_na=False).set_index("id")
+        if not prior.index.is_unique or set(prior.index) != set(checklist.id):
+            raise ValueError("Human checklist IDs changed; preserve and reconcile manually")
+        for field in fields:
+            checklist[field] = checklist.id.map(prior[field])
+    else:
+        for field in fields:
+            checklist[field] = "pending" if field == "review_status" else ""
+    checklist.to_csv(path, index=False)
+    return checklist
 
 TAXONOMY = {
     "brand_cues": "Visible generic brand-like tokens; no proof of impersonation",

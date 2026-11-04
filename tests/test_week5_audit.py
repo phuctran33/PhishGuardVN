@@ -405,3 +405,126 @@ def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
         result = audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
         assert result["status"] == "PASS" and result["feature_status"] == "PRELIMINARY"
         assert result["n_features"] == 20 and result["model_comparison_status"] == "PENDING_PRODUCER_E2_PREDICTIONS"
+
+
+@pytest.mark.parametrize('defect', ['', 'missing', 'duplicate', 'fold', 'label', 'score_kind', 'prediction', 'test_id'])
+def test_native_probability_and_margin_predictions(inputs, defect):
+    from phishguard_vn.e2_audit import _validate_native_predictions
+    metadata, folds, original = inputs
+    frames = []
+    for arm in ['E1', 'E2']:
+        for model in ['logistic_regression', 'svm_rbf']:
+            rows = original.loc[original.evaluation_partition.eq('group_cv')].copy()
+            rows['model'], rows['feature_set'], rows['candidate'] = model, arm, arm + '__' + model
+            rows['decision_rule'] = 'estimator.predict'
+            rows['score_kind'] = 'decision_function' if model == 'svm_rbf' else 'probability'
+            if model == 'svm_rbf': rows['score'] = (rows.score - .5) * 20  # Real signed margins, not probabilities.
+            frames.append(rows)
+    frame = pd.concat(frames, ignore_index=True)
+    if defect == 'missing': frame = frame.iloc[1:]
+    if defect == 'duplicate': frame = pd.concat([frame, frame.iloc[[0]]])
+    if defect == 'fold': frame.loc[0, 'fold_id'] = 1
+    if defect == 'label': frame.loc[0, 'true_label'] = 1
+    if defect == 'score_kind': frame.loc[0, 'score_kind'] = 'decision_function'
+    if defect == 'prediction': frame.loc[0, 'predicted_label'] = 0
+    if defect == 'test_id': frame.loc[0, 'id'] = 'unexpected_official_test'
+    if defect:
+        with pytest.raises(ValueError): _validate_native_predictions(frame, metadata, folds, 'group_cv', ['logistic_regression', 'svm_rbf'])
+    else:
+        _validate_native_predictions(frame, metadata, folds, 'group_cv', ['logistic_regression', 'svm_rbf'])
+        # Native Validation file legitimately omits fold_id entirely.
+        val = pd.concat([r.iloc[:6].copy() for r in frames], ignore_index=True).drop(columns='fold_id')
+        val['id'] = list(metadata.loc[metadata.split.eq('val'), 'id']) * 4
+        val['evaluation_partition'] = 'official_validation'
+        _validate_native_predictions(val, metadata, folds, 'official_validation', ['logistic_regression', 'svm_rbf'])
+
+
+def test_native_metrics_ranked_margins_and_fpr():
+    from phishguard_vn.e2_audit import _native_metrics
+    rows = pd.DataFrame({'true_label': [1, 0, 1, 0], 'predicted_label': [1, 1, 1, 0], 'score': [3., 2., 1., -2.]})
+    result = _native_metrics(rows)
+    assert (result['tn'], result['fp'], result['fn'], result['tp']) == (1, 1, 0, 2)
+    assert result['false_positive_rate'] == .5
+    assert result['pr_auc'] == pytest.approx(5 / 6)
+
+
+def test_human_checklist_preserves_manual_fields(inputs, tmp_path):
+    from phishguard_vn.error_analysis import update_human_checklist
+    metadata, folds, pred = inputs
+    cases = case_manifest(sample_errors(validate_predictions(pred, metadata, folds), model='E1', n=24))
+    evidence = pd.DataFrame({'id': cases.id, 'context': -1, 'fit_rows': 18, 'opposite_label_fitting_rows': 0,
+                             'positive_contributions': 'dot_cnt=+1', 'negative_contributions': 'entropy=-1'})
+    path = tmp_path / 'human.csv'
+    first = update_human_checklist(cases, evidence, path)
+    assert first.reviewer.eq('').all() and first.reviewed_at.eq('').all() and first.review_status.eq('pending').all()
+    first.loc[0, ['reviewer', 'reviewed_at', 'notes']] = ['real reviewer fixture', '2026-01-01', 'keep literal NA']
+    first.to_csv(path, index=False)
+    second = update_human_checklist(cases.iloc[::-1].reset_index(drop=True), evidence, path).set_index('id')
+    assert second.loc[first.id.iloc[0], 'notes'] == 'keep literal NA'
+    assert second.loc[first.id.iloc[0], 'reviewer'] == 'real reviewer fixture'
+    assert second.review_status.eq('pending').all()
+
+
+@pytest.mark.parametrize('defect', ['', 'schema', 'hash', 'inner', 'ap', 'fpr'])
+def test_native_gzip_handoff_contract(inputs, tmp_path, monkeypatch, defect):
+    from phishguard_vn.brand_features import E2_FEATURES, FEATURE_SCHEMA_VERSION
+    from phishguard_vn.e2_audit import audit_native_model_handoff
+    from sklearn.model_selection import StratifiedGroupKFold
+    metadata, folds, original = inputs
+    tables = tmp_path / 'reports/tables'; tables.mkdir(parents=True)
+    source = tmp_path / 'src/phishguard_vn'; source.mkdir(parents=True)
+    source_hash = hashlib.sha256(b'fixture').hexdigest()
+    for name in ['features.py', 'url_parser.py', 'brand_features.py', 'resources/brand_reference_v1.csv']:
+        p = source / name; p.parent.mkdir(exist_ok=True); p.write_bytes(b'fixture')
+    notebooks = tmp_path / 'notebooks'; notebooks.mkdir()
+    (notebooks / '05_e2_ablation.ipynb').write_text(json.dumps({'cells': []}))
+    monkeypatch.setattr('phishguard_vn.e2_audit.subprocess.check_output', lambda *a, **k: 'fixture-commit\n')
+    models = ['logistic_regression', 'logistic_regression_balanced', 'svm_rbf', 'mlp', 'hist_gradient_boosting']
+    frames = []
+    for arm in ['E1', 'E2']:
+        for model in models:
+            r = original.copy(); r['candidate'], r['feature_set'], r['model'] = arm + '__' + model, arm, model
+            r['predicted_label'] = r.true_label
+            r['score'] = r.true_label * 4 - 2 if model == 'svm_rbf' else .1 + .8 * r.true_label
+            r['score_kind'] = 'decision_function' if model == 'svm_rbf' else 'probability'
+            r['decision_rule'] = 'estimator.predict'; frames.append(r)
+    rows = pd.concat(frames)
+    rows.loc[rows.evaluation_partition.eq('group_cv')].to_csv(tables / '06_oof_predictions.csv.gz', index=False)
+    rows.loc[rows.evaluation_partition.eq('official_validation')].drop(columns='fold_id').to_csv(tables / '06_validation_predictions.csv.gz', index=False)
+    memberships = []
+    for context in ['0', '1', '2', 'full_train']:
+        fit = metadata.iloc[:18].loc[~metadata.id.isin(folds.loc[folds.fold_id.eq(int(context)), 'id'])] if context != 'full_train' else metadata.iloc[:18]
+        assignments = {}
+        for j, (_, b) in enumerate(StratifiedGroupKFold(n_splits=2, shuffle=True, random_state=42).split(np.zeros(len(fit)), fit.label, fit.registrable_domain)):
+            assignments.update({i: j for i in fit.iloc[b].id})
+        memberships += [{'id': i, 'context': context, 'role': 'fitting' if i in assignments else 'held_out', 'inner_fold_id': assignments.get(i, -1)} for i in metadata.id[:18]]
+    part = pd.DataFrame(memberships)
+    if defect == 'inner': part.loc[part.role.eq('held_out'), 'inner_fold_id'] = 0
+    part.to_csv(tables / '06_training_partitions.csv.gz', index=False)
+    metrics = dict(accuracy=1., tn=3, fp=0, fn=0, tp=3, pr_auc=1., precision_phishing=1., recall_phishing=1., f1_phishing=1., false_positive_rate=0.)
+    names = ['pr_auc', 'precision_phishing', 'recall_phishing', 'f1_phishing', 'false_positive_rate']
+    candidates = rows.candidate.unique()
+    cv = pd.DataFrame([dict(candidate=c, fold_id=f, **metrics) for c in candidates for f in range(3)])
+    if defect == 'ap': cv.loc[0, 'pr_auc'] = .8
+    if defect == 'fpr': cv.loc[0, 'false_positive_rate'] = .1
+    cv.to_csv(tables / '06_cv_metrics.csv', index=False)
+    pd.DataFrame([dict(candidate=c, **metrics) for c in candidates]).to_csv(tables / '06_validation.csv', index=False)
+    pd.DataFrame([{'candidate': c, **{m + s: metrics[m] if s == '_mean' else 0. for m in names for s in ['_mean', '_std']}} for c in candidates]).to_csv(tables / '06_comparison.csv', index=False)
+    pd.DataFrame([{'model': m, 'fold_id': f, **{n + s: metrics[n] for n in names for s in ['_e1', '_e2']}, **{'delta_' + n: 0. for n in names}} for m in models for f in range(3)]).to_csv(tables / '06_paired_folds.csv', index=False)
+    (tables / '06_verification.json').write_text('{}')  # Not trusted as evidence by the auditor.
+    meta = dict(protocol='week5_e1_e2_readable_v1', feature_schema_version=FEATURE_SCHEMA_VERSION, feature_sets={'E1': list(CANDIDATE_FEATURES), 'E2': list(E2_FEATURES)},
+                class_order=[0, 1], decision_rule='estimator.predict', boundaries={'svm_rbf': 0., 'other_models': .5}, seed=42, outer_folds=3, inner_folds=2, test_evaluated=False,
+                extractor_source_lf_sha256={n: source_hash for n in ['features.py', 'url_parser.py', 'brand_features.py']}, reference_lf_sha256=source_hash,
+                notebook_code_sha256=hashlib.sha256(b'').hexdigest(), train_rows=18, validation_rows=6, status='PRELIMINARY', runtime_git_revision='fixture-runtime', runtime_git_dirty=True,
+                versions={}, reference={}, input_sha256={}, teacher_candidates=['E1__hist_gradient_boosting', 'E1__logistic_regression'],
+                score_kinds={m: 'decision_function' if m == 'svm_rbf' else 'probability' for m in models},
+                artifact_sha256={'reports/tables/' + p.name: sha256(p) for p in tables.glob('*.gz')})
+    if defect == 'schema': meta['feature_sets']['E2'].reverse()
+    if defect == 'hash': meta['reference_lf_sha256'] = 'wrong'
+    (tables / '06_ablation_metadata.json').write_text(json.dumps(meta))
+    if defect:
+        with pytest.raises(ValueError): audit_native_model_handoff(tmp_path, metadata, folds, tmp_path)
+    else:
+        audit, paired = audit_native_model_handoff(tmp_path, metadata, folds, tmp_path)
+        assert audit['status'] == 'PASS' and len(paired) == 15
+        assert max(audit['table_max_abs_errors'].values()) == 0.
