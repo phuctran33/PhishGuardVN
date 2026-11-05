@@ -1,35 +1,64 @@
-External URL Evaluation Datasheet (v1)
-1. Mục đích
-Tạo một tập URL độc lập để kiểm tra khả năng tổng quát hóa của mô hình trên dữ liệu ngoài Core. Tập này được giữ riêng, không tự động nhập vào train, validation hoặc test hiện tại.
-2. Phạm vi và nhãn
-Pilot tập trung vào URL liên quan đến website/dịch vụ tại Việt Nam, ưu tiên có nguồn và bằng chứng có thể kiểm tra. Cần có cả hai nhãn:
-- phishing: URL được nguồn chống lừa đảo/abuse xác nhận hoặc được người rà soát xác minh có bằng chứng.
-- benign: URL thuộc website chính thức/nguồn đáng tin cậy và đã được xác minh. Việc URL không xuất hiện trong danh sách phishing không đủ để gán nhãn benign.
-Dự kiến thu thập khoảng 150–300 URL ứng viên cho pilot ban đầu. Đây là mục tiêu thu thập, không phải số lượng đã hoàn thành. Cần có nhiều nguồn cho mỗi lớp để tránh lặp lại tình trạng một nguồn tương ứng duy nhất với một nhãn như trong audit Core.
-3. Thông tin cần lưu cho mỗi URL
-Trường	Ý nghĩa
-id	Mã định danh duy nhất của bản ghi
-url	URL gốc
-url_norm	URL sau chuẩn hóa theo quy tắc dự án
-domain	Hostname/domain được trích xuất
-label	phishing hoặc benign
-source	Tên nguồn thu thập
-label_source	Căn cứ tạo nhãn: feed, danh sách tin cậy hoặc rà soát thủ công
-evidence_ref	Liên kết hoặc ghi chú bằng chứng cho nhãn
-collected_at	Thời điểm nguồn ghi nhận URL/sự kiện, nếu có
-scraped_at	Thời điểm nhóm thu thập dữ liệu
-review_status	pending, accepted, rejected hoặc disputed
-license_note	Giấy phép/điều khoản và ghi chú quyền sử dụng
+# External URL Evaluation Datasheet (v1)
 
+## 1. Mục đích và trạng thái
 
-Các trường trên là đề xuất cho pilot; không có nghĩa tất cả đã tồn tại trong dataset_url.csv hiện tại.
-4. Quy trình chọn và rà soát
-    1. Ghi nhận nguồn, ngày thu thập và điều khoản sử dụng trước khi đưa URL vào pilot.
-    2. Chỉ chấp nhận nhãn có căn cứ. Bản ghi chưa rõ hoặc có nhãn mâu thuẫn được giữ ở trạng thái pending/`disputed`, không dùng làm dữ liệu đánh giá.
-    3. Chuẩn hóa URL, loại trùng theo url/`url_norm` và rà soát domain/campaign lặp lại.
-    4. Kiểm tra overlap với Core và các split hiện tại. Tập external phải được giữ tách biệt; không dùng để huấn luyện hoặc điều chỉnh threshold trước lần đánh giá cuối.
-    5. Lưu nhật ký thay đổi nhãn và quyết định rà soát để có thể truy vết.
-    5. Quyền sử dụng và chia sẻ
-    Chỉ đưa dữ liệu thô vào repository khi giấy phép/điều khoản nguồn và chính sách Git của dự án cho phép. Nếu không được phép phân phối lại, giữ dữ liệu ở vị trí được quản lý phù hợp và chỉ công bố metadata hoặc thông tin nguồn có thể chia sẻ. Không suy diễn rằng dữ liệu công khai đồng nghĩa với quyền tái phân phối.
-    6. Lưu ý từ kiểm toán Core
-    Audit hiện tại trên dataset_url.csv ghi nhận 53.116 bản ghi và 7 nguồn; mỗi nguồn chỉ chứa một nhãn. Ngoài ra, collected_at thiếu 91,32% và scraped_at thiếu 79,69% bản ghi. Vì vậy, pilot cần ghi rõ nguồn, căn cứ nhãn và thời gian ngay từ đầu; đồng thời nên có nhiều nguồn cho mỗi lớp để giảm phụ thuộc vào source-label correlation.
+Tập external được xây dựng nhằm đánh giá khả năng tổng quát hóa của mô hình trên các URL mới, độc lập với Core train/validation/official Test. Tập này không được sử dụng để huấn luyện hoặc lựa chọn mô hình/threshold.
+
+Trạng thái hiện tại: BLOCKED — Chưa có pilot URL thực tế được thu thập và xác minh.
+
+Tài liệu này chỉ mô tả protocol và schema dự kiến, chưa phải dataset pilot.
+Theo đề cương đồ án (trang 2), quy mô dự kiến khoảng 100–300 URL có nhãn và nguồn kiểm chứng nếu thu thập đủ dữ liệu đáng tin cậy; đây là mục tiêu có điều kiện, không phải quota bắt buộc.
+## 2. Phạm vi và tiêu chí nhãn
+
+Pilot dự kiến tập trung vào URL liên quan đến website/dịch vụ tại Việt Nam, gồm hai lớp:
+
+phishing: URL có bằng chứng từ nguồn cảnh báo phishing hoặc được người rà soát xác minh.
+
+benign: URL thuộc website chính thức, có thể xác minh nguồn gốc và đơn vị sở hữu.
+
+pending / disputed: URL chưa đủ bằng chứng hoặc có thông tin nhãn mâu thuẫn; không đưa vào tập đánh giá.
+
+Không suy luận nhãn benign chỉ từ việc URL không xuất hiện trên feed phishing.
+
+## 3. Schema pilot CSV
+
+| Trường | Ý nghĩa |
+|---|---|
+| id | Mã bản ghi duy nhất |
+| url, url_norm | URL thu thập và URL chuẩn hóa |
+| hostname, registrable_domain | Host chuẩn hóa và nhóm theo PSL |
+| label | phishing hoặc benign; để trống khi chưa xác minh |
+| source | Tên feed/danh sách/đầu mối thu thập |
+| label_source | Feed, danh sách tin cậy hoặc review thủ công |
+| evidence_ref | URL/ID tham chiếu hoặc ghi chú bằng chứng |
+| collected_at | Thời điểm sự kiện theo nguồn |
+| scraped_at | Thời điểm nhóm thu thập (ISO-8601 UTC) |
+| review_status | pending, accepted, rejected hoặc disputed |
+| review_note | Lý do quyết định và case bị loại |
+| license_note | Điều khoản lưu/chia sẻ và hạn chế |
+| core_overlap | Cờ overlap URL/hostname/registrable domain với Core |
+| exclusion_reason | Lý do loại; trống nếu chưa loại |
+
+Chỉ lưu URL thô trong repository nếu giấy phép/điều khoản cho phép. Nếu không, lưu metadata được phép và ghi rõ vị trí quản lý dữ liệu.
+
+## 4. Quy trình thu thập, rà soát và loại
+
+1. Lấy ứng viên từ nguồn ngoài Core; có thể thu thập theo feed/danh sách, không cần tìm từng URL thủ công.
+2. Ghi source, thời điểm thu thập, điều khoản sử dụng và bằng chứng nhãn.
+3. Chuẩn hóa URL, loại trùng URL/URL chuẩn hóa và rà soát domain/campaign lặp.
+4. Đối chiếu membership với toàn bộ Core để cách ly URL/hostname/registrable-domain overlap; phép so sánh không dùng nhãn hay metric Official Test.
+5. Chỉ chấp nhận case có đủ bằng chứng, review status rõ và quyền sử dụng phù hợp; ghi từng case cùng lý do giữ/loại.
+6. Giữ pilot tách khỏi train/validation/Test; không dùng để huấn luyện hoặc chọn threshold trước đánh giá cuối.
+
+## 5. Blocker và dữ liệu cần có
+
+Hiện trạng: Thư mục data/external/ đang trống, chưa có pilot CSV hoặc danh sách URL ứng viên để kiểm tra. Do đó, chưa thể đánh giá coverage, phân bố nhãn hoặc overlap với Core.
+
+Blocker: Chưa thu thập được URL mới có đủ hai nhãn phishing và benign, nguồn rõ ràng và bằng chứng nhãn có thể xác minh.
+
+Để tiếp tục, cần thu thập URL từ các nguồn phù hợp, ghi nhận nguồn, bằng chứng nhãn, thời điểm thu thập và quyền sử dụng. Sau đó, kiểm tra overlap theo URL, hostname và registrable domain với Core trước khi đưa các bản ghi đã được review vào tập external evaluation.
+
+Các URL chưa đủ bằng chứng hoặc có nhãn mâu thuẫn sẽ không được sử dụng.
+## 6. Parser và PSL policy
+
+Notebook audit dùng parser tự chứa với urllib.parse, ipaddress và tldextract 5.4.0; PSL chạy offline, không tính private suffix. Hostname được chuẩn hóa chữ thường, bỏ dấu chấm cuối, IDN chuyển sang Punycode. IP hợp lệ không có registrable domain để làm group. Lỗi parser được giữ cùng ID/URL để rà soát.
