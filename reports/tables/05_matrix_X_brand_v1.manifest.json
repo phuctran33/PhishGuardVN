@@ -78,7 +78,7 @@
   "e1_feature_dictionary_sha256": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
   "tldextract_version": "5.4.0",
   "python": "3.12.6",
-  "git_commit": "9819ba3feba443253464b8cfa7e1f0e96412b285",
+  "git_commit": "16f641f0d706481be91486152faf51a4ba6e9f01",
   "git_dirty": false,
-  "created_utc": "2026-11-06T13:54:04+00:00"
+  "created_utc": "2026-11-06T15:58:58+00:00"
 }
