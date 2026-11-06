@@ -1,42 +1,42 @@
 {
   "schema_version": "e2-brand-v1",
-  "reference_sha256": "3934171a334df0612d75af8a3d01edd26e29f4bea76c23350a6f82677ed17891",
+  "reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
   "n_urls": 5000,
-  "cold_start_s_new_process": 0.274,
+  "cold_start_s_new_process": 0.282,
   "stages": {
     "parse_url": {
-      "median_ms": 0.0104,
-      "p95_ms": 0.013,
-      "p99_ms": 0.0156,
-      "mean_ms": 0.0109,
-      "throughput_per_s": 91341.9
+      "median_ms": 0.0103,
+      "p95_ms": 0.0122,
+      "p99_ms": 0.0149,
+      "mean_ms": 0.0108,
+      "throughput_per_s": 92513.6
     },
     "lexical_e1_from_parsed": {
-      "median_ms": 0.0047,
-      "p95_ms": 0.0069,
-      "p99_ms": 0.0106,
-      "mean_ms": 0.005,
-      "throughput_per_s": 200322.8
+      "median_ms": 0.0046,
+      "p95_ms": 0.0063,
+      "p99_ms": 0.0075,
+      "mean_ms": 0.0048,
+      "throughput_per_s": 208824.4
     },
     "brand_from_parsed": {
-      "median_ms": 0.3674,
-      "p95_ms": 0.572,
-      "p99_ms": 0.9463,
-      "mean_ms": 0.3498,
-      "throughput_per_s": 2858.4
+      "median_ms": 0.3671,
+      "p95_ms": 0.5461,
+      "p99_ms": 0.8426,
+      "mean_ms": 0.3419,
+      "throughput_per_s": 2925.1
     },
     "e2_total_from_raw_url": {
-      "median_ms": 0.3894,
-      "p95_ms": 0.597,
-      "p99_ms": 0.8899,
-      "mean_ms": 0.3667,
-      "throughput_per_s": 2726.8
+      "median_ms": 0.3928,
+      "p95_ms": 0.5841,
+      "p99_ms": 0.923,
+      "mean_ms": 0.3697,
+      "throughput_per_s": 2704.6
     }
   },
   "memory": {
     "python_heap_peak_mb_during_extraction": 5.01,
-    "process_max_rss_mb_before": 148.3,
-    "process_max_rss_mb_after": 154.8,
+    "process_max_rss_mb_before": 145.1,
+    "process_max_rss_mb_after": 148.4,
     "note": "ru_maxrss là đỉnh toàn tiến trình (gồm pandas, đọc CSV), không phải riêng extractor"
   },
   "environment": {
