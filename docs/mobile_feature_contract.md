@@ -61,7 +61,7 @@ Kiểu: tất cả là số thực, không có NaN/Inf với URL hợp lệ.
 
 ## 6. Tám đặc trưng brand
 - `brand_in_domain` / `brand_in_subdomain` / `brand_in_path`: 1 nếu một key brand bất kỳ khớp ở vùng tương ứng.
-- `brand_domain_mismatch`: 1 nếu có brand khớp ở một trong ba vùng, và registrable domain **không** thuộc `official_domains` của bất kỳ brand nào, và không thuộc `official_suffixes` của chính brand đó (cột tùy chọn, mặc định rỗng).
+- `brand_domain_mismatch`: 1 nếu có brand khớp ở một trong ba vùng, và registrable domain **không** thuộc `official_domains` của bất kỳ brand nào, và không thuộc ngoại lệ `official_suffixes` của chính brand đó (cột tùy chọn, mặc định rỗng; chỉ miễn trừ khi brand khớp DUY NHẤT ở subdomain và registrable domain kết thúc bằng suffix đó).
 - `brand_typo_score`: duyệt token (độ dài ≥ 5) của SLD và subdomain mà **không** trùng key nào (kể cả brand khác) và không nằm trong `typo_ignore_tokens` của brand đó; với key dài ≥ 5 và chênh độ dài ≤ 2, tính khoảng cách OSA `d`. Nếu `1 ≤ d ≤ 2` và `d/len(key) ≤ 0.25` thì ứng viên điểm `1 − d/len(key)`; kết quả là điểm lớn nhất, không có thì 0. Bỏ qua nếu registrable domain là domain chính thức của một brand bất kỳ.
 - `susp_token_cnt`: số từ khóa KHÁC NHAU trong danh sách dưới đây khớp ở bất kỳ vùng nào (cùng quy tắc khớp như key brand): `login`, `signin`, `verify`, `secure`, `security`, `account`, `update`, `confirm`, `wallet`, `otp`, `bonus`, `gift`, `promo`, `refund`, `support`, `helpdesk`, `ebanking`, `internetbanking`, `payment`, `billing`, `dangnhap`, `xacminh`, `xacthuc`, `taikhoan`, `baomat`, `capnhat`, `khuyenmai`, `uudai`, `trungthuong`, `nhanqua`, `hoantien`, `thanhtoan`, `hotro`.
 - `idna_flag`: 1 nếu một nhãn của hostname đã chuẩn hóa bắt đầu bằng `xn--`.

@@ -15,6 +15,7 @@ import hashlib
 import re
 import unicodedata
 from dataclasses import dataclass
+from datetime import date
 from functools import lru_cache
 from pathlib import Path
 from urllib.parse import unquote
@@ -148,6 +149,14 @@ class Brand:
     typo_ignore: frozenset[str] = frozenset() # token đã xác nhận KHÔNG phải lỗi gõ của brand này (vd. địa danh)
 
 
+# Provenance bắt buộc cho mọi brand status=verified (kiểm khi nạp reference và khi --freeze).
+REQUIRED_PROVENANCE = ("source_url", "source_url_2", "source_accessed", "verified_by")
+# Cụm cố định của các mẫu ghi chú chờ xác minh; so khớp PHÂN BIỆT hoa/thường để không bắt nhầm lời văn bình thường
+# (vd. "khớp bản nháp" trong ghi chú xác minh là hợp lệ).
+PENDING_MARKERS = ("ỨNG VIÊN", "CHƯA TRA", "BẢN NHÁP:", "(AI tra", "Bạn cần", "cần người kiểm tra", "TODO",
+                   "needs_fix:", "unverifiable:")
+
+
 @dataclass(frozen=True)
 class BrandReference:
     brands: tuple[Brand, ...]
@@ -158,13 +167,14 @@ class BrandReference:
     statuses: tuple[tuple[str, int], ...]  # (status, số brand)
     n_missing_source_accessed: int
     n_missing_source_url: int
+    provenance_issues: tuple[str, ...] = ()
 
     @property
     def is_fully_verified(self) -> bool:
-        """Điều kiện để freeze E2 v1: mọi brand verified và đủ provenance."""
+        """Điều kiện để freeze E2 v1: mọi brand verified, đủ provenance và không còn ghi chú chờ xác minh."""
         counts = dict(self.statuses)
         return (set(counts) == {"verified"} and self.n_missing_source_accessed == 0
-                and self.n_missing_source_url == 0)
+                and self.n_missing_source_url == 0 and not self.provenance_issues)
 
     def summary(self) -> dict:
         return {
@@ -175,6 +185,8 @@ class BrandReference:
             "n_missing_source_accessed": self.n_missing_source_accessed,
             "n_missing_source_url": self.n_missing_source_url,
             "fully_verified": self.is_fully_verified,
+            "n_provenance_issues": len(self.provenance_issues),
+            "provenance_issues": list(self.provenance_issues[:20]),
             "n_brands_with_official_suffixes": sum(1 for b in self.brands if b.official_suffixes),
             "n_brands_with_typo_ignore": sum(1 for b in self.brands if b.typo_ignore),
         }
@@ -182,6 +194,39 @@ class BrandReference:
 
 def _split(value: str) -> list[str]:
     return [v.strip() for v in (value or "").split("|") if v.strip()]
+
+
+def _provenance_issues(rows: list[dict]) -> list[str]:
+    """Liệt kê mọi chỗ provenance của brand chưa đạt chuẩn verified."""
+    issues: list[str] = []
+    for row in rows:
+        bid = (row.get("brand_id") or "").strip()
+        status = (row.get("status") or "").strip()
+        if status != "verified":
+            issues.append(f"{bid}: status={status!r} (chưa verified)")
+            continue
+        for col in REQUIRED_PROVENANCE:
+            if not (row.get(col) or "").strip():
+                issues.append(f"{bid}: thiếu {col}")
+        urls = [(row.get(c) or "").strip() for c in ("source_url", "source_url_2")]
+        for col, url in zip(("source_url", "source_url_2"), urls):
+            if url and not url.startswith("https://"):
+                issues.append(f"{bid}: {col} phải bắt đầu bằng https://")
+        if urls[0] and urls[0] == urls[1]:
+            issues.append(f"{bid}: source_url và source_url_2 trùng nhau")
+        accessed = (row.get("source_accessed") or "").strip()
+        if accessed:
+            try:
+                if date.fromisoformat(accessed) > date.today():
+                    issues.append(f"{bid}: source_accessed ở tương lai")
+            except ValueError:
+                issues.append(f"{bid}: source_accessed phải dạng YYYY-MM-DD")
+        notes = row.get("notes") or ""
+        for marker in PENDING_MARKERS:
+            if marker in notes:
+                issues.append(f"{bid}: notes còn nội dung chờ xác minh ({marker})")
+                break
+    return issues
 
 
 @lru_cache(maxsize=4)
@@ -232,6 +277,7 @@ def load_reference(path: Path = REFERENCE_PATH) -> BrandReference:
         statuses=tuple(sorted(counts.items())),
         n_missing_source_accessed=sum(1 for r in rows if not r["source_accessed"].strip()),
         n_missing_source_url=sum(1 for r in rows if not r["source_url"].strip()),
+        provenance_issues=tuple(_provenance_issues(rows)),
     )
 
 
@@ -270,7 +316,10 @@ def _scan(parsed: ParsedURL, ref: BrandReference, events: list[dict] | None = No
                                    "text": dict(zones)[name].joined, "value": 1.0})
         # Domain chính thức của BẤT KỲ brand nào không bị coi là mismatch (vd. viettelpost.vn
         # chứa key 'viettel' nhưng là domain chính thức của Viettel Post).
-        brand_suffix_ok = bool(reg and brand.official_suffixes and reg.endswith(brand.official_suffixes))
+        # official_suffixes chỉ miễn trừ khi brand khớp DUY NHẤT ở subdomain (vd. dichvucong.<đơn vị>.gov.vn);
+        # khớp ở nhãn domain đăng ký hoặc ở path vẫn bị gán mismatch.
+        brand_suffix_ok = bool(reg and brand.official_suffixes and reg.endswith(brand.official_suffixes)
+                               and hit_s and not hit_d and not hit_p)
         if (hit_d or hit_s or hit_p) and not on_known_official and reg not in brand.official_domains \
                 and not brand_suffix_ok:
             mismatch = 1
