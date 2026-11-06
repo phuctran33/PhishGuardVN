@@ -1,6 +1,6 @@
 # Hợp đồng trích xuất đặc trưng E2 cho mobile (bản nháp)
 
-**Schema:** `e2-brand-v0` · **Trạng thái:** bản nháp cho v0, đóng băng cùng bản v1 (reference đã xác minh).
+**Schema:** `e2-brand-v1` · **Trạng thái:** bản nháp cho v0, đóng băng cùng bản v1 (reference đã xác minh).
 **Nguồn chuẩn:** `src/phishguard_vn/url_parser.py`, `features.py`, `brand_features.py`. Khi tài liệu và code lệch nhau, code là đúng và tài liệu phải sửa.
 **Kiểm chứng:** `docs/mobile_parity_cases.json` (sinh bằng `scripts/05_make_parity_vectors.py`). Một bản port chỉ được coi là khớp khi mọi ca khớp trong dung sai.
 
