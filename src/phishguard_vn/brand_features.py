@@ -25,7 +25,7 @@ import pandas as pd
 from phishguard_vn.features import CANDIDATE_FEATURES, extract_features_from_parsed
 from phishguard_vn.url_parser import ParsedURL, parse_url
 
-FEATURE_SCHEMA_VERSION = "e2-brand-v0"
+FEATURE_SCHEMA_VERSION = "e2-brand-v1"
 REFERENCE_PATH = Path(__file__).resolve().parent / "resources" / "brand_reference_v1.csv"
 
 BRAND_FEATURES = (

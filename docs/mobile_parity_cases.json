@@ -1,5 +1,5 @@
 {
-  "schema_version": "e2-brand-v0",
+  "schema_version": "e2-brand-v1",
   "feature_order": [
     "url_len",
     "dom_len",
@@ -26,16 +26,16 @@
   "tldextract_version": "5.4.0",
   "brand_reference": {
     "file": "brand_reference_v1.csv",
-    "sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
-    "n_brands": 37,
+    "sha256": "3934171a334df0612d75af8a3d01edd26e29f4bea76c23350a6f82677ed17891",
+    "n_brands": 45,
     "status_counts": {
-      "draft": 37
+      "verified": 45
     },
-    "n_missing_source_accessed": 37,
+    "n_missing_source_accessed": 0,
     "n_missing_source_url": 0,
-    "fully_verified": false,
-    "n_brands_with_official_suffixes": 0,
-    "n_brands_with_typo_ignore": 0
+    "fully_verified": true,
+    "n_brands_with_official_suffixes": 1,
+    "n_brands_with_typo_ignore": 1
   },
   "n_cases": 47,
   "cases": [
