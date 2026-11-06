@@ -18,7 +18,7 @@ import pandas as pd
 
 from phishguard_vn.data import load_dataset, prepare_core
 from phishguard_vn.evaluation_audit import check_ids, distribution_shift, metrics_table, stratified_metrics, validate_predictions
-from phishguard_vn.error_analysis import apply_case_reviews, explain_error_cases, sample_errors, taxonomy_summary, update_human_checklist
+from phishguard_vn.error_analysis import apply_case_reviews, explain_error_cases, sample_errors, taxonomy_summary, update_human_checklist, render_h52_report
 from phishguard_vn.e2_audit import audit_native_brand_features, audit_native_model_handoff, load_e2_bundle, sha256
 from phishguard_vn.features import CANDIDATE_FEATURES, build_feature_table
 from phishguard_vn.modeling import predict_url, run_baseline
@@ -27,7 +27,7 @@ from phishguard_vn.splits import make_group_folds
 
 
 def _json(path, value):
-    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
+    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8", newline="\n")
 
 
 def _markdown(frame, columns=None):
@@ -46,6 +46,9 @@ def _input_fingerprint(root, config_path, dataset_path, baseline_path):
     paths = [dataset_path, config_path, baseline_path, root / "pyproject.toml", root / "requirements.txt",
              root / "reports/templates/feature_dictionary.csv", root / "scripts/run_week5_evaluation.py"]
     paths += sorted((root / "src/phishguard_vn").glob("*.py"))
+    paths += [p for p in [root / "reports/templates/week5_h52.md",
+                         root / "reports/annotations/week5_human_review.csv",
+                         root / "reports/annotations/week5_ai_review.csv"] if p.is_file()]
     reviews = root / "reports/annotations/week5_error_reviews.json"
     if reviews.is_file():
         paths.append(reviews)
@@ -54,6 +57,13 @@ def _input_fingerprint(root, config_path, dataset_path, baseline_path):
     files = {str(p.relative_to(root) if p.is_relative_to(root) else p): sha256(p) for p in paths}
     versions = {p: version(p) for p in ["numpy", "pandas", "scipy", "scikit-learn", "tldextract", "idna", "joblib", "matplotlib"]}
     value = {"files_sha256": files, "versions": versions, "python": platform.python_version()}
+    confirmation_path = root / "reports/tables/week5/verification.json"
+    if confirmation_path.is_file():
+        confirmation = json.loads(confirmation_path.read_text(encoding="utf-8")).get("human_review", {})
+        keys = ["confirmed_ids", "reviewer", "confirmation_recorded_at_utc", "confirmation_quote", "minimum_personal_reviews_required"]
+        # Exclude mutable verification outputs to avoid a self-referential file hash.
+        value["human_confirmation_sha256"] = hashlib.sha256(json.dumps(
+            {key: confirmation.get(key) for key in keys}, sort_keys=True).encode("utf-8")).hexdigest()
     # PR #5 replaces only a deprecated tldextract alias. Preserve cached E1 only
     # when reversing that exact spelling change reproduces its original source hash.
     parser = root / "src/phishguard_vn/url_parser.py"
@@ -101,14 +111,14 @@ def prepare_inputs(root, dataset_path, config, output):
         if not path.is_file():
             comparisons[name] = "absent; regenerated from merged pipeline"
             continue
-        prior = pd.read_csv(path, dtype={"id": "string"})
+        prior = pd.read_csv(path, dtype={"id": "string"}, encoding="utf-8")
         check_ids(prior, name)
         prior = prior.loc[prior.id.isin(fresh.id), ["id", *columns]]
         pd.testing.assert_frame_equal(fresh[["id", *columns]].sort_values("id").reset_index(drop=True),
                                       prior.sort_values("id").reset_index(drop=True), check_dtype=False, atol=1e-10, rtol=0)
         comparisons[name] = {"status": "exact eligible-ID match", "sha256": sha256(path)}
     for name, frame in [("metadata", metadata), ("features", features), ("folds", folds), ("exclusions", exclusions)]:
-        frame.to_csv(output / f"{name}.csv", index=False)
+        frame.to_csv(output / f"{name}.csv", index=False, encoding="utf-8", lineterminator="\n")
     return features, metadata, folds, exclusions, comparisons
 
 
@@ -174,11 +184,12 @@ def _robustness_report(root, summary, predictor_name, stress, feature_deltas):
               "Finite-feature coverage uses all transformed cases as denominator; malformed cases correctly yield missing features. Expected-validity pass rate distinguishes intended rejection from failures. Paired-prediction denominators are explicit; undefined flip/shift means no valid prediction pair.", "",
               "Flip rate is threshold stability, not classification error. Scores are uncalibrated and no accuracy/F1 is computed. Six synthetic bases are a small stress suite, not an estimate of real-world robustness. Some malformed transformations generate the same string for multiple bases, so 144 rows are not 144 independent inputs. Long paths and IPs probe inputs uncommon or absent in E1 training. Encoding may change server routing; no label preservation is asserted for it.", "",
               "Full specifications, safe strings, parser reasons and paired scores: tables/week5/robustness_cases.csv. Reuse run_robustness(predictor) with any local E2 score adapter; do not perform network lookups.", ""]
-    (root / "reports/week5_robustness.md").write_text("\n".join(report), encoding="utf-8")
+    (root / "reports/week5_robustness.md").write_text("\n".join(report), encoding="utf-8", newline="\n")
 
 
 def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numerical_shift, manifest, e2_status):
     selected = manifest["selected_model"]
+    h52_status, h52_body = render_h52_report(root, cases, taxonomy, _markdown)
     chosen = metrics.loc[metrics.model.eq(selected)]
     cv = chosen.loc[chosen.evaluation_partition.eq("group_cv")].iloc[0]
     val = chosen.loc[chosen.evaluation_partition.eq("official_validation")].iloc[0]
@@ -188,7 +199,7 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
     archived_path = root / "reports/tables/week5/archived_e1_comparison.csv"
     archive_note = "No archived Week-4 metric comparison available."
     if archived_path.is_file() and archived_path.stat().st_size > 1:
-        archived_delta = pd.read_csv(archived_path)
+        archived_delta = pd.read_csv(archived_path, encoding="utf-8")
         ap_delta = archived_delta.pr_auc_delta.abs().max()
         counts_same = archived_delta[[m + "_delta" for m in ["tn", "fp", "fn", "tp"]]].eq(0).all().all()
         archive_note = (f"Archived Week-4 comparison: identical confusion counts={bool(counts_same)}; maximum absolute per-fold AP difference={ap_delta:.9f}. "
@@ -201,7 +212,7 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
         summary["model"] = summary.candidate.str.split("__").str[1]
         comparison = summary.loc[summary.candidate.str.startswith("E1__")].merge(
             summary.loc[summary.candidate.str.startswith("E2__")], on="model", suffixes=("_e1", "_e2"))
-        paired = pd.read_csv(root / "reports/tables/week5/e2_paired_folds.csv")
+        paired = pd.read_csv(root / "reports/tables/week5/e2_paired_folds.csv", encoding="utf-8")
         supplementary = pd.DataFrame(model_audit["validation"])
         supplementary = supplementary.loc[supplementary.candidate.str.contains("mlp|hist_gradient_boosting")]
         model_note = "\n\n".join([
@@ -218,7 +229,7 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
     native_path = root / "reports/tables/week5/e2_feature_audit.json"
     native_note = "Native E2 feature audit has not run."
     if native_path.is_file():
-        native = json.loads(native_path.read_text())
+        native = json.loads(native_path.read_text(encoding="utf-8"))
         native_note = (f"Native Hy feature audit: **{native['status']} / {native.get('feature_status', 'PENDING')}**; "
                        f"{native.get('rows_x')} rows, {native.get('n_features')} features, split counts {native.get('rows_by_split')}; "
                        f"excluded={native.get('rows_excluded')}. Reference SHA256 `{native.get('brand_reference', {}).get('sha256')}`, "
@@ -227,12 +238,12 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
     source_path = root / "reports/tables/week5/source_audit_review.json"
     source_note = "No supporting source-audit snapshot has been reviewed in this checkout."
     if source_path.is_file():
-        source_review = json.loads(source_path.read_text())
+        source_review = json.loads(source_path.read_text(encoding="utf-8"))
         source_note = (f"Khiêm's unmerged source audit reviewed at `{source_review['producer_revision']}`; frozen file links/hashes and local corroboration are in [source audit review](tables/week5/source_audit_review.json). "
                        f"{source_review['limitations']} {source_review['parser_reconciliation']} {source_review['external_pilot_status']}")
     lines = ["# PhishGuardVN — Week 5 evaluation (Hưng)", "",
              "## Status and provenance", "",
-             "H5.1 DONE; H5.2 OFFLINE REVIEW DONE / HUMAN REVIEW PENDING; H5.3 DONE. " + readiness, "",
+             "H5.1 DONE; " + h52_status + "; H5.3 DONE. " + readiness, "",
              f"Upstream snapshot at runtime: `{manifest['published_commit']}` on week5/hung-evaluation-robustness. Current audit runtime base: `{manifest['audit_runtime_base_revision']}`; original E1 generation base: `{manifest['e1_runtime_base_revision']}`. Runtime source state: `{manifest['runtime_source_state']}`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.", "",
              "Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.", "",
              "12 lexical features; 13,078 eligible core train IDs; 3 unchanged domain folds; seed=42; scaler fit separately on each fitting fold; threshold=0.5. Two unresolved train/phishing URLs remain in the raw dataset, excluded with reasons. No official test features or predictions generated. Metadata (including source/tier) stays outside X.", "",
@@ -254,15 +265,7 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
              "2. Sparse path/query coverage in train limits stability on complex URLs. Compare train-only nested-group CV errors across fixed complexity bins and a separately labeled static challenge set; current unlabeled flips cannot verify errors.",
              "3. Domain lexical patterns interact with single-label sources. Use source-held-out diagnostics where both classes are supported and matched-length/entropy train OOF comparisons; lack of source class overlap makes some effects unidentifiable.",
              "4. IDNA/brand cues add information beyond 12 lexical features. Compare E2 with E1 on exactly the same outer folds and an independent predeclared reference list; audit reference fitting before interpreting gains.", "",
-             "## H5.2 — manual error analysis", "",
-             f"{len(cases)} FP/FN cases selected using seed=42, SHA256-ranked IDs, round robin across partition/fold/type/source/tier and then distinct domains within queues. No ranking by score; selection is a diversity sample, not a population estimate. Sampling pool, coverage and limitations are recorded; if a stratum has no errors it contributes no cases.", "",
-             _markdown(support), "", _markdown(taxonomy), "",
-             "Each case has static observations, an explicitly unverified hypothesis, offline next verification, original labels and review status. Safe URL text is fully defanged and prefixed to prevent spreadsheet formulas; no suspicious URL was visited. Source effects and label uncertainty have explicit review fields; zero direct cue counts do not assert absence of those phenomena. No model output verifies a label error or individual causal mechanism.", "",
-             f"All {len(cases)} cases now have case-specific offline engineering notes, preserved read-only in [durable annotations](annotations/week5_error_reviews.json). Case signatures bind notes to ID, context, original label, URL, score and all 12 features; changed evidence fails as stale instead of silently reusing a review. Taxonomy describes observed representations, not verified root causes; all human semantic verification remains pending.", "",
-             f"Exact correct-context LR arithmetic is verified for every case. Opposite-label full-vector collisions in fitting data are observed for {int(cases.taxonomy.str.contains('representation_collision', regex=False).sum())}/{len(cases)} cases (absolute feature tolerance 1e-12). The selected model is refitted only in its three existing fitting folds for explanation when those models are unavailable; no new model selection, thresholds or baseline experiments are introduced. Validation explanations use the original full-Train pipeline. Contributions are relative to each fitting mean, with correlated dot/subdomain/length terms often cancelling; they are not independent causal effects.", "",
-             "Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hashes and collision supports) and error_feature_attributions.csv (all 12 raw/scaled terms per case). Collision searches use fitting IDs only, not held-out labels. The coarse representation can be ambiguous under original labels, but this does not verify maliciousness, label correctness or a source shortcut.", "",
-             "Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Human semantic verification remains pending; original labels are retained.", "",
-             "Hưng must directly review at least 30 cases using [human checklist](annotations/week5_human_review.csv), alongside the existing case observations and evidence tables. Suggested review order covers every partition/fold/FP-FN stratum before repeating a stratum; the first 30 span all of them. Case-specific observations, unverified hypotheses and exact fitting-context evidence accompany each row. Human reviewer/date/checks/notes/status are preserved on regeneration. Current notes originate from Codex offline engineering analysis; no human sign-off is inferred from this file or from a model score.", "",
+             h52_body, "",
              "## H5.3 — static robustness", "",
              f"{int(robust.n_cases.sum())} static cases; expected parser-validity checks passed {int((robust.expected_validity_pass_rate * robust.n_cases).sum())}/{int(robust.n_cases.sum())}. Full results/specifications and limitations: [robustness report](week5_robustness.md).", "",
              "![Score shifts](figures/week5/robustness_shift.png)", "",
@@ -274,7 +277,7 @@ def _report(root, metrics, folds_metric, cases, taxonomy, robust, shift, numeric
              "Loaders/adapters enforce artifact hashes, exact feature order/dictionary, eligible IDs, fixed folds, finite values, lexical-contract consistency, fold-local or independent external brand references, producer training-ID lineage and matched E1/E2 comparisons. Producer declarations still need code/reference review; schema checks alone do not prove leakage absence. Synthetic fixtures validate logic only and contribute no reported experimental metrics.", "",
              "The optional generic model-bundle adapter remains probability-only; the native Phúc adapter separately validates actual probability/margin semantics and recorded estimator.predict labels. AP accepts ranking margins. H5.1 E1 remains at 0.5; Validation/Test never select an operating point. Synthetic test fixtures supply no experimental results.", "",
              "[KD evaluation protocol](../docs/kd_evaluation_protocol.md); [handoff and continuation prompt](../docs/week5_hung_handoff.md). Optional source-bias/pilot evidence from Khiêm remains separate from X; source bias is not claimed resolved.", ""]
-    (root / "reports/week5_evaluation.md").write_text("\n".join(lines), encoding="utf-8")
+    (root / "reports/week5_evaluation.md").write_text("\n".join(lines), encoding="utf-8", newline="\n")
 
 
 def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False, feature_only=False):
@@ -285,7 +288,7 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     paths = {k: root / value for k, value in config["paths"].items()}
     output, tables, figures = (paths[k] for k in ["artifacts", "tables", "figures"])
     previous_path = tables / "run_manifest.json"
-    previous_manifest = json.loads(previous_path.read_text()) if previous_path.is_file() else {}
+    previous_manifest = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.is_file() else {}
     revision = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, text=True, capture_output=True).stdout.strip()
     published = subprocess.run(["git", "rev-parse", "@{upstream}"], cwd=root, text=True, capture_output=True)
     worktree = subprocess.run(["git", "status", "--porcelain"], cwd=root, text=True, capture_output=True).stdout.strip()
@@ -294,8 +297,8 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     if robustness_only:
         stress = run_robustness()
         summary = robustness_summary(stress)
-        stress.to_csv(tables / "robustness_parser_only_cases.csv", index=False)
-        summary.to_csv(tables / "robustness_parser_only_summary.csv", index=False)
+        stress.to_csv(tables / "robustness_parser_only_cases.csv", index=False, encoding="utf-8", lineterminator="\n")
+        summary.to_csv(tables / "robustness_parser_only_summary.csv", index=False, encoding="utf-8", lineterminator="\n")
         # Avoid replacing a completed E1 report with a parser-only report.
         return {"status": "parser/extractor-only", "cases": len(stress), "validity_pass": bool(stress.validity_check_pass.all())}
     if config["audit"]["seed"] != 42:
@@ -320,7 +323,7 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     cached = False
     lineage_path = output / "e1_training_lineage.json"
     if result_path.is_file() and prior_path.is_file() and lineage_path.is_file() and not rebuild_e1:
-        prior = json.loads(prior_path.read_text())
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
         dataset_key = str(paths["dataset"].relative_to(root) if paths["dataset"].is_relative_to(root) else paths["dataset"])
         config_key = str(paths["baseline_config"].relative_to(root) if paths["baseline_config"].is_relative_to(root) else paths["baseline_config"])
         if (_baseline_cache_matches(prior, fingerprint, dataset_key, config_key) and prior["result_sha256"] == sha256(result_path)
@@ -343,19 +346,19 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
                            "runtime_base_revision": revision,
                            "lineage_sha256": sha256(lineage_path),
                            "method": "merged run_baseline; each held-out domain fold predicted by a fresh clone fitted only on other folds"})
-    provenance = json.loads(prior_path.read_text())
+    provenance = json.loads(prior_path.read_text(encoding="utf-8"))
     e1_revision = provenance.get("runtime_base_revision") or previous_manifest.get("e1_runtime_base_revision") or previous_manifest.get("git_revision")
     predictions = pd.concat([result["cv_predictions"], result["validation_predictions"]], ignore_index=True)
     # Concatenation gives fold_id float due to NA in official validation.
     predictions = validate_predictions(predictions, metadata, folds, threshold=result["decision_threshold"])
     raw_columns = ["id", "model", "fold_id", "evaluation_partition", "true_label", "predicted_label", "score"]
-    predictions[raw_columns].to_csv(output / "e1_predictions.csv", index=False)
+    predictions[raw_columns].to_csv(output / "e1_predictions.csv", index=False, encoding="utf-8", lineterminator="\n")
     metrics = metrics_table(predictions, ["model", "evaluation_partition"])
     fold_metrics = metrics_table(predictions.loc[predictions.evaluation_partition.eq("group_cv")], ["model", "fold_id"])
     archived_path = root / "reports/tables/04_cv_metrics.csv"
     archived_comparison = pd.DataFrame()
     if archived_path.is_file():
-        archived = pd.read_csv(archived_path)
+        archived = pd.read_csv(archived_path, encoding="utf-8")
         compared = archived.merge(fold_metrics, on=["model", "fold_id"], suffixes=("_archived", "_recomputed"), validate="one_to_one")
         archived_comparison = compared[["model", "fold_id"]].copy()
         for metric in ["tn", "fp", "fn", "tp", "precision_phishing", "recall_phishing", "f1_phishing", "pr_auc", "false_positive_rate"]:
@@ -385,7 +388,7 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
         raise ValueError("Fewer than 30 available errors; report shortage rather than silently accepting")
     pool = predictions.loc[predictions.model.eq(selected) & predictions.outcome.isin(["FP", "FN"])].copy()
     pool["selected_for_review"] = pool.id.isin(cases.id)
-    pool[["id", "evaluation_partition", "fold_id", "source", "tier", "outcome", "selected_for_review"]].to_csv(tables / "error_sampling_pool.csv", index=False)
+    pool[["id", "evaluation_partition", "fold_id", "source", "tier", "outcome", "selected_for_review"]].to_csv(tables / "error_sampling_pool.csv", index=False, encoding="utf-8", lineterminator="\n")
     taxonomy = taxonomy_summary(cases)
     stress = run_robustness(lambda url: predict_url(url, result["pipeline"], result["feature_names"], result["decision_threshold"])["score"])
     robust = robustness_summary(stress)
@@ -396,7 +399,7 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
                "archived_e1_comparison": archived_comparison}
     outputs.update(error_model_evidence=evidence, error_feature_attributions=attributions, robustness_feature_deltas=feature_deltas)
     for name, frame in outputs.items():
-        frame.to_csv(tables / f"{name}.csv", index=False)
+        frame.to_csv(tables / f"{name}.csv", index=False, encoding="utf-8", lineterminator="\n")
     e2_status = (f"H5.4 FEATURE AUDIT DONE: native {native_feature_audit['feature_schema_version']} technical PASS, {native_feature_audit['feature_status']}. "
                  "MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS: no matched 20-feature OOF/Validation bundle supplied. "
                  "Hy's draft reference still requires review; KD PROTOCOL PREPARED.") if native_feature_audit else "H5.4 FEATURE AUDIT PENDING; MODEL COMPARISON PENDING / PENDING_PRODUCER_E2_PREDICTIONS. KD PROTOCOL PREPARED."
@@ -404,9 +407,9 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     if config.get("e2", {}).get("manifest"):
         bundle = load_e2_bundle(root / config["e2"]["manifest"], metadata, folds,
                                 predictions.loc[predictions.model.eq(selected)], threshold=result["decision_threshold"])
-        bundle["comparison"].to_csv(tables / "e2_comparison.csv", index=False)
-        bundle["operating_point_comparison"].to_csv(tables / "e2_operating_point_comparison.csv", index=False)
-        metrics_table(bundle["predictions"], ["model", "evaluation_partition"]).to_csv(tables / "e2_metrics.csv", index=False)
+        bundle["comparison"].to_csv(tables / "e2_comparison.csv", index=False, encoding="utf-8", lineterminator="\n")
+        bundle["operating_point_comparison"].to_csv(tables / "e2_operating_point_comparison.csv", index=False, encoding="utf-8", lineterminator="\n")
+        metrics_table(bundle["predictions"], ["model", "evaluation_partition"]).to_csv(tables / "e2_metrics.csv", index=False, encoding="utf-8", lineterminator="\n")
         _json(tables / "e2_audit_checks.json", {"manifest_sha256": sha256(root / config["e2"]["manifest"]),
                                                "features": bundle["feature_check"], "source_evidence": bundle["source_evidence"],
                                                "thresholds": bundle["thresholds"],
@@ -420,15 +423,15 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
             module, function = config["e2"]["predictor"].split(":", 1)
             predictor = getattr(importlib.import_module(module), function)
             e2_stress = run_robustness(predictor, threshold=bundle["thresholds"][predictor_model]["-1"])
-            e2_stress.to_csv(tables / "e2_robustness_cases.csv", index=False)
-            robustness_summary(e2_stress).to_csv(tables / "e2_robustness_summary.csv", index=False)
+            e2_stress.to_csv(tables / "e2_robustness_cases.csv", index=False, encoding="utf-8", lineterminator="\n")
+            robustness_summary(e2_stress).to_csv(tables / "e2_robustness_summary.csv", index=False, encoding="utf-8", lineterminator="\n")
             current_csvs += [tables / "e2_robustness_cases.csv", tables / "e2_robustness_summary.csv"]
             e2_status += "; supplied predictor robustness measured (verify adapter matches candidate)."
     native_model_audit = None
     producer_root = os.environ.get("PHISHGUARD_E2_PRODUCER_ROOT") or config.get("e2", {}).get("producer_root")
     if producer_root or (root / "reports/tables/06_ablation_metadata.json").is_file():
         native_model_audit, paired = audit_native_model_handoff(root / producer_root if producer_root else root, metadata, folds, root)
-        paired.to_csv(tables / "e2_paired_folds.csv", index=False)
+        paired.to_csv(tables / "e2_paired_folds.csv", index=False, encoding="utf-8", lineterminator="\n")
         current_csvs.append(tables / "e2_paired_folds.csv")
         e2_status = ("H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. "
                      "E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.")

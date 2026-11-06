@@ -16,15 +16,15 @@ TABLES = ROOT / 'reports/tables/week5'
 
 
 def test_ai_review_exact_priority_selection_and_explicit_human_confirmation():
-    human = pd.read_csv(ANNOTATIONS / 'week5_human_review.csv', keep_default_na=False)
+    human = pd.read_csv(ANNOTATIONS / 'week5_human_review.csv', keep_default_na=False, encoding="utf-8")
     expected = human.loc[human.priority_first_30].sort_values('suggested_review_order')
-    ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv', keep_default_na=False)
+    ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv', keep_default_na=False, encoding="utf-8")
     assert len(ai) == 30 and ai.id.is_unique
     assert list(ai.id) == list(expected.id)
     assert list(ai.suggested_review_order) == list(expected.suggested_review_order)
     assert ai.hypothesis_status.isin(['plausible_unverified', 'unsupported']).all()
     assert ai.review_status.eq('ai_review_complete').all()
-    confirmation = json.loads((TABLES / 'verification.json').read_text())['human_review']
+    confirmation = json.loads((TABLES / 'verification.json').read_text(encoding="utf-8"))['human_review']
     verified = human.loc[human.review_status.eq('human_verified')]
     assert set(verified.id) == set(ai.id) == set(confirmation['confirmed_ids'])
     assert len(verified) == confirmation['verified'] == 30
@@ -45,11 +45,11 @@ def test_ai_review_exact_priority_selection_and_explicit_human_confirmation():
 
 
 def test_ai_review_sources_features_and_score_arithmetic():
-    ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv')
-    cases = pd.read_csv(TABLES / 'error_cases.csv').set_index('id')
-    facts = pd.read_csv(TABLES / 'error_model_evidence.csv').set_index('id')
-    terms = pd.read_csv(TABLES / 'error_feature_attributions.csv')
-    notes = {r['id']: r for r in json.loads((ANNOTATIONS / 'week5_error_reviews.json').read_text())['cases']}
+    ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv', encoding="utf-8")
+    cases = pd.read_csv(TABLES / 'error_cases.csv', encoding="utf-8").set_index('id')
+    facts = pd.read_csv(TABLES / 'error_model_evidence.csv', encoding="utf-8").set_index('id')
+    terms = pd.read_csv(TABLES / 'error_feature_attributions.csv', encoding="utf-8")
+    notes = {r['id']: r for r in json.loads((ANNOTATIONS / 'week5_error_reviews.json').read_text(encoding="utf-8"))['cases']}
     for row in ai.itertuples():
         case, fact, note = cases.loc[row.id], facts.loc[row.id], notes[row.id]
         assert row.url_safe == case.url_safe and row.outcome == case.outcome
@@ -90,13 +90,13 @@ def test_ai_review_sources_features_and_score_arithmetic():
 
 
 def test_ai_review_verification_counts_and_protected_inputs():
-    ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv')
-    verification = json.loads((TABLES / 'verification.json').read_text())['ai_review']
+    ai = pd.read_csv(ANNOTATIONS / 'week5_ai_review.csv', encoding="utf-8")
+    verification = json.loads((TABLES / 'verification.json').read_text(encoding="utf-8"))['ai_review']
     assert ai.hypothesis_status.value_counts().to_dict() == verification['hypothesis_status']
     assert ai.outcome.value_counts().to_dict() == verification['outcomes']
     assert len(ai) == verification['cases'] == verification['needs_further_semantic_evidence']
     assert verification['human_file_unchanged'] is False
-    human_confirmation = json.loads((TABLES / 'verification.json').read_text())['human_review']
+    human_confirmation = json.loads((TABLES / 'verification.json').read_text(encoding="utf-8"))['human_review']
     assert human_confirmation['confirmation_quote']
     assert human_confirmation['previous_checklist_sha256'] == verification['protected_sha256']['reports/annotations/week5_human_review.csv']
     # Validate committed inputs only; ignored model caches are checked in the actual local audit.

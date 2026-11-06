@@ -1,4 +1,4 @@
-# Hưng — Week 5 handoff (2026-11-04)
+# Hưng — Week 5 handoff (review fixes 2026-11-06)
 
 | Task | Current status | Evidence / remaining work |
 |---|---|---|
@@ -60,7 +60,7 @@ Hưng has explicitly confirmed his own independent analysis matches the 30 prior
 
 `reports/annotations/week5_ai_review.csv` reviews exactly the 30 priority IDs in suggested order (17 FP, 13 FN). Each has an individual Vietnamese conclusion, evidence, limitations and next verification. All **30 hypotheses are plausible_unverified**, **0 unsupported**; all 30 still require evidence for semantic/label/root-cause verification. Offline observations/features and arithmetic are consistent; maximum score reconstruction error is 3.33e-16. Recounted fitting collisions: 22 opposite-label cases, six without any exact match, two with only same-label matches. No opposite-label collision is asserted for those eight.
 
-The AI preparation supplements the earlier evaluation snapshot; no model/evaluation/notebook rerun is claimed. A subsequent explicit user statement supplies human confirmation for the same 30 priority IDs. The human checklist is updated only in its authorized review fields; all non-review fields and the original evidence/model artifacts remain unchanged. `verification.json` records the statement, current checklist hash and the historical pending-checklist hash. Keep the current human-confirmation overlay if regenerating the old report.
+The AI preparation supplements the earlier evaluation snapshot; no model/evaluation/notebook rerun is claimed. A subsequent explicit user statement supplies human confirmation for the same 30 priority IDs. The human checklist is updated only in its authorized review fields; all non-review fields and the original evidence/model artifacts remain unchanged. `verification.json` records the statement, current checklist hash and the historical pending-checklist hash. The generator now validates confirmed IDs/reviewer/timestamp against the checklist and renders current status plus the full H5.2 section from reports/templates/week5_h52.md; no manual report overlay is required.
 
 ### Final H5.2 handoff and acceptance
 
@@ -84,6 +84,16 @@ export PHISHGUARD_E2_PRODUCER_ROOT=/tmp/PhishGuardVN-pr6-b230fd6
 ```
 
 Reuse the worktree if it already exists at that commit. `[e2].producer_root` is an optional root-relative/absolute alternative; the environment variable takes precedence. With neither configured, the runner uses native 06_* artifacts only when they exist in the current checkout (e.g. after an authorized main integration). Feature-only mode deliberately does not require or audit model artifacts. Use the exact publication's commit to reproduce its hashes; do not substitute a newer mutable producer head silently.
+
+## PR #7 reviewer fixes — 2026-11-06
+
+All three requested fixes are confined to Week-5 text I/O and reporting. JSON/notebook/Markdown reads and writes use explicit UTF-8; text writes use LF, and CSV writes specify UTF-8 plus `lineterminator="\n"`. Binary/gzip/model hashes still use original raw bytes. `.gitattributes` pins LF for `reports/annotations/*.csv`, `reports/annotations/*.json` and generated `reports/tables/week5` CSV/JSON; original `/data` policies remain `-text`. The three annotation files retain their existing SHA256 values.
+
+`render_h52_report` reads the live checklist and validates each verified ID, reviewer, timestamp and nonempty review fields against the existing explicit confirmation record. It does not trust the AI ledger's human flag or a cached aggregate count. The minimum comes from the confirmation record; insufficient human review renders PENDING. The full scientific narrative, evidence, four testable hypotheses, conclusions and acceptance matrix are controlled by `reports/templates/week5_h52.md`. The template, annotations and a digest of confirmation fields are included in analysis provenance; changing reports does not invalidate an unchanged E1 training cache.
+
+Regression tests repeat the complete report generator for the actual 30/40 status and for reduced 29/40 and 0/40 checklists, reject mismatched confirmation evidence, and preserve human-owned fields. Simulations cover CP1252 text defaults, CRLF output defaults and Git checkout with core.autocrlf=true/false. These run on macOS; no actual Windows execution is claimed. For an older Windows worktree that already has CRLF annotations, canonicalize line endings only in these three UTF-8 annotation files before raw-byte hash checks; retain reviewer content, do not change expected hashes and do not normalize datasets, gzip or model files.
+
+Actual results for this fix: **211 passed, 0 failed, 0 skipped**; CLI exited 0 with cached E1; notebook Run All executed all six code cells without errors. All **36 captured hashes** for annotations, data, model/cache, metrics, robustness and producer gzip files remain identical. Only report/source/template/notebook and run/verification provenance hashes change for the reviewed fixes. Full commands and evidence are in `reports/tables/week5/verification.json → pr7_review_fixes`. Verification was captured before publication at runtime base `fb203dd`; subsequent publication is identified by branch history. Runtime provenance is retained unchanged; no PR merge was performed.
 
 ## Verification and remaining owners
 

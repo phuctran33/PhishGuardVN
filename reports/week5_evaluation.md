@@ -4,7 +4,7 @@
 
 H5.1 DONE; H5.2 DONE / HUMAN VERIFIED OFFLINE (30/40); H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
 
-Upstream snapshot at runtime: `06526d63614747e903715b9737016415b4088435` on week5/hung-evaluation-robustness. Current audit runtime base: `06526d63614747e903715b9737016415b4088435`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
+Upstream snapshot at runtime: `fb203dd5dc825bd1ad17b271faa7b691fe66b369` on week5/hung-evaluation-robustness. Current audit runtime base: `fb203dd5dc825bd1ad17b271faa7b691fe66b369`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
 
 Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.
 
@@ -115,59 +115,59 @@ Evidence: error_model_evidence.csv (reconstructed logits/scores, fitting-ID hash
 
 Case-level annotations: tables/week5/error_cases.csv; pool: error_sampling_pool.csv; taxonomy: error_taxonomy.csv. Original labels are retained; independent semantic/label verification remains pending. Offline human review is recorded separately in the checklist.
 
-Hưng explicitly confirmed that his independent analysis matches these 30 priority cases. Codex recorded that user confirmation at **2026-11-04T12:43:24Z** in the [human checklist](annotations/week5_human_review.csv): **30 human_verified, 10 pending**. The confirmation covers offline observations, evidence interpretation and agreement with qualified hypotheses. `reviewed_at` records the confirmation-recording time; the earlier independent-work date was not supplied. IDs, scores, labels and all non-review checklist fields are preserved. Regeneration preserves reviewer/date/checks/notes/status by ID.
+Current checklist: **30 human_verified, 10 pending**. Verified IDs were matched to explicit confirmation data, including reviewer, confirmation timestamp and review fields. Minimum required: 30. The confirmation covers offline observations, evidence interpretation and agreement with qualified hypotheses. reviewed_at records the confirmation-recording time; the prior independent-work date was not supplied. Regeneration preserves reviewer/date/checks/notes/status by ID. Reviewer: Hưng; recorded at 2026-11-04T12:43:24Z.
 
 ### Separate AI review of the 30 priority cases
 
-[AI review ledger](annotations/week5_ai_review.csv) contains exactly the 30 IDs marked `priority_first_30=True`, in `suggested_review_order`: 17 FP and 13 FN. Each row has an individual Vietnamese conclusion, concrete evidence, limitations and next verification. The ledger was prepared by AI and subsequently confirmed by Hưng as matching his independent offline analysis; human confirmation is recorded in the separate checklist.
+[AI-prepared review ledger](annotations/week5_ai_review.csv) contains the exact 30 priority IDs in suggested order: 17 FP, 13 FN. Each has a Vietnamese conclusion, evidence, limitations and next check. Live human review status is taken from the separate checklist.
 
 | Assessment | Cases |
-|---|---:|
+|---|---|
 | Observations consistent with offline strings/features and original metadata | 30 |
 | Twelve feature contributions and score arithmetic checked | 30 |
-| Hypothesis `plausible_unverified` | 30 |
-| Hypothesis `unsupported` | 0 |
-| Still need evidence to verify semantic/root cause or dataset label | 30 |
-| Human reviews confirmed from the explicit user statement | 30 |
+| Hypothesis plausible_unverified | 30 |
+| Hypothesis unsupported | 0 |
+| Still need semantic/root-cause or label evidence | 30 |
+| Human reviews confirmed from explicit user evidence | 30 |
 | Human reviews still pending across the original sample | 10 |
 
 The plausible and evidence-needed rows overlap: every plausible hypothesis remains unverified. No factual/numerical inconsistency was found in the 30 observations. Dataset labels describe the retained source annotation, not independently established website behavior.
 
 The audit rejoined durable notes, cases, fitting-context evidence and all 12 attribution rows by ID. Original metadata/URL features and case signatures were rechecked offline. Every standardized value, coefficient multiplication, intercept and sigmoid score was recomputed; maximum score reconstruction error is 3.33e-16. The existing trusted local explanation cache passed its recorded hash check; coefficients/scaler/intercepts matched without fitting a model. Fitting-only ID hashes, exact-vector matches and opposite-label counts were independently recounted from the existing Train metadata; no held-out label enters a fitting count.
 
-**22/30** have opposite-label fitting collisions; **6** have no exact fitting match and **2** have matches only with the same original label. These findings constrain the individual conclusions: an opposite-label collision explanation is unsupported for the latter eight cases. This does not make their existing hypotheses unsupported, because those hypotheses explicitly avoid claiming such collisions. Correlated feature terms explain the model arithmetic but do not establish independent causal effects or imply that extra token/suffix features would fix an error.
+**22/30** have opposite-label fitting collisions; **6** have no exact fitting match and **2** have matches only with the same original label. These findings constrain the individual conclusions: an opposite-label collision explanation is unsupported for the latter 8 cases. This does not make their existing hypotheses unsupported, because those hypotheses explicitly avoid claiming such collisions. Correlated feature terms explain the model arithmetic but do not establish independent causal effects or imply that extra token/suffix features would fix an error.
 
 Additional precision in the AI ledger: hostname lengths for tuantaynguyen/dltp include their suffixes; repeated x in xfcf includes the xyz suffix. For abo2sadam, removing a digit also changes lengths and entropy, so the suggested future check cannot be interpreted as changing only `digit_cnt`. No perturbation experiment or model training was run here.
 
-All AI rows retain `ai_review_complete` for their AI preparation and now have `human_verification_status=human_verified` based on Hưng's direct statement. Hypotheses remain `plausible_unverified`; human review of an analysis does not establish website behavior, label correctness or individual causality. The original 40-row checklist has 30 explicitly confirmed reviews and 10 untouched pending rows. No suspect URL was requested, no original label changed and no unreported review date was invented.
+AI preparation and human review are recorded separately. Current checklist: **30 human_verified, 10 pending**. Verified IDs were matched to explicit confirmation data, including reviewer, confirmation timestamp and review fields. Minimum required: 30. The confirmation covers offline observations, evidence interpretation and agreement with qualified hypotheses. reviewed_at records the confirmation-recording time; the prior independent-work date was not supplied. Regeneration preserves reviewer/date/checks/notes/status by ID. Reviewer: Hưng; recorded at 2026-11-04T12:43:24Z. Hypotheses remain plausible_unverified; no original label is changed or semantic cause certified.
 
-The AI-prepared ledger and human checklist are separate artifacts. This update records a later user confirmation and does not replace the earlier evaluation runtime or claim the notebook was rerun. Current checks, input hashes and the exact user statement are in `verification.json`; original AI-review input hashes retain the earlier pending-checklist snapshot, while `human_review.sha256` identifies the current authorized checklist. Retain the current confirmation overlay when regenerating the old report.
+The AI-prepared ledger and human checklist are preserved as separate input artifacts. This section is rendered from the controlled UTF-8/LF template `reports/templates/week5_h52.md`, case evidence, checklist and ID-scoped confirmation data. Regeneration preserves human review fields. Original AI-review hashes remain historical; current annotation hashes and executed checks are in verification.json. Model arithmetic and human review do not establish website behavior or label/root-cause correctness.
 
 ### H5.2 handoff, conclusions and acceptance
 
-**Method: Human-assessed offline error analysis (AI-assisted preparation). Human review: confirmed for 30 priority cases.** Hưng stated: “tôi muốn thay đổi là human verified bởi vì tôi cũng tự làm và trùng với những gì bạn làm”. The existing handoff scope is the same 30 priority cases. Codex records this direct user confirmation at 2026-11-04T12:43:24Z; the reviewer's prior independent-work date is unknown. Original AI authorship remains documented, and human confirmation does not convert qualified hypotheses into verified causes or labels.
+**Method: Human-assessed error analysis (AI-assisted preparation).** Current checklist: **30 human_verified, 10 pending**. Verified IDs were matched to explicit confirmation data, including reviewer, confirmation timestamp and review fields. Minimum required: 30. The confirmation covers offline observations, evidence interpretation and agreement with qualified hypotheses. reviewed_at records the confirmation-recording time; the prior independent-work date was not supplied. Regeneration preserves reviewer/date/checks/notes/status by ID. Reviewer: Hưng; recorded at 2026-11-04T12:43:24Z. Confirmation statement: “tôi muốn thay đổi là human verified bởi vì tôi cũng tự làm và trùng với những gì bạn làm”.
 
 The [same 30-row ledger](annotations/week5_ai_review.csv) now serves as the H5.2 handoff table, with explicit `id`, `fold`, `source`, `label`, `prediction`, `score`, `observation`, `hypothesis`, `next_check`, plus partition/tier, defanged URL, evidence, limitations and review status. `label` and `prediction` use phishing=1/benign=0. A blank `fold` means official Validation (full-Train prediction), not an extra CV fold. `next_check` replaces the former `next_verification` column in this AI ledger only; original durable annotations/checklist retain their schemas.
 
 All 30 observations, hypotheses and next checks are case-specific Vietnamese text. Numeric observations were rejoined to all 12 attribution rows and original metadata; label/prediction/outcome/score/context and the full standardized-LR arithmetic were checked again. Re-audit preserves the same priority IDs and order. Corrections tighten two conclusions: abo2sadam's positive digit contribution is relative to the fitting mean and does not establish the effect of adding/removing a digit; vieclambencat's 22 fitting matches are all benign, so no opposite-label collision is claimed. The next check for abo2sadam explicitly recalculates all features when changing a digit. No perturbation run, refit or threshold selection was performed.
 
-Priority selection remains a round-robin subset of the original fixed diversity sample, with no score-based selection. The five sources contribute tinnhiemmang=13, tinnhiem_org=5, tinnhiem_web=4, tranco=4, tranco_vn=4. Coverage is:
+Priority selection remains a round-robin subset of the original fixed diversity sample, with no score-based selection. Source supports: tinnhiemmang=13, tinnhiem_org=5, tinnhiem_web=4, tranco=4, tranco_vn=4. Coverage is:
 
-| Partition | Fold | Outcome | Cases |
-|---|---|---|---:|
-| group_cv | 0 | FN | 4 |
-| group_cv | 0 | FP | 5 |
-| group_cv | 1 | FN | 4 |
-| group_cv | 1 | FP | 4 |
-| group_cv | 2 | FN | 4 |
-| group_cv | 2 | FP | 4 |
-| official_validation | — | FN | 1 |
-| official_validation | — | FP | 4 |
+| evaluation_partition | fold_id | outcome | cases |
+|---|---|---|---|
+| group_cv | 0.0000 | FN | 4 |
+| group_cv | 0.0000 | FP | 5 |
+| group_cv | 1.0000 | FN | 4 |
+| group_cv | 1.0000 | FP | 4 |
+| group_cv | 2.0000 | FN | 4 |
+| group_cv | 2.0000 | FP | 4 |
+| official_validation | undefined | FN | 1 |
+| official_validation | undefined | FP | 4 |
 
 The error patterns overlap; their counts are descriptive of this selected sample, not population error rates:
 
 | Taxonomy | Priority cases |
-|---|---:|
+|---|---|
 | brand_cues | 3 |
 | domain_subdomain | 5 |
 | lexical_patterns | 3 |
@@ -181,12 +181,12 @@ The error patterns overlap; their counts are descriptive of this selected sample
 | near_threshold | 17 |
 | subdomain_count_sensitivity | 5 |
 
-The dominant measured limitations are aggregate lexical ambiguity (22 opposite-label exact-vector collision cases), decisions near the fixed threshold (17 cases within 0.05), and subdomain/count sensitivity (five cases). Of the hierarchy cases, four are FP and one is FN (dangkyonline/vietcombank247); subdomain presence is therefore not a universal phishing mechanism. Six cases lack exact fitting matches and two have only same-label matches. Source effects remain population hypotheses because the sources are single-label; neither identity-like tokens nor organization-like strings validate the dataset label. No path/query/IDNA/IP error example is present in these 30 cases. The taxonomy still defines those categories with zero counts; no synthetic cases were added to satisfy coverage.
+Measured patterns overlap: 22 opposite-label fitting collision cases, 17 cases within 0.05 of the fixed threshold, and 5 hierarchy cases (4 FP, 1 FN). 6 cases have no exact fitting match; 2 have only same-label matches. Single-label sources cannot identify source effects independently of labels. Zero-count categories are retained; no synthetic error cases are added.
 
 #### Testable hypotheses (proposed, not executed here)
 
 1. **H52-A — mixed-label lexical vectors concentrate errors.** Evidence: 22 reviewed cases have opposite-label fitting collisions, including the dieniex/gateswq/wefinex and winbank/daubao groups. Check: on existing Train OOF only, assign each held-out record collision status using its own fitting folds, then compare FP/FN rates and supports for mixed-label versus unambiguous vectors within predeclared length/entropy/source strata; account for domain dependence and report unsupported single-class strata. A similar or lower error rate after matched-support comparisons weakens the concentration hypothesis. This tests a distributional association; it cannot identify an individual URL's cause or establish that adding a token feature would fix it.
-2. **H52-B — correlated hierarchy counts contribute to high benign scores.** Evidence: four reviewed hierarchy FPs have large positive subdomain terms; the banking-like hierarchy is a counterexample with a low FN score. Check: predeclare benign Train OOF records with www/one subdomain and matched bare-host controls, inspect the complete logit balance and, if performing a separate sensitivity study, recompute all 12 features under a www-removal string perturbation (resource and label equivalence unknown) with the same cached fitting-context model. Report score/logit deltas and parser checks, without assigning transformed ground truth. No systematic matched-group difference or consistently contrary deltas would weaken the hypothesis. Do not isolate one correlated term as a causal effect.
+2. **H52-B — correlated hierarchy counts contribute to high benign scores.** Evidence: 4 reviewed hierarchy FPs have large positive subdomain terms; the banking-like hierarchy is a counterexample with a low FN score. Check: predeclare benign Train OOF records with www/one subdomain and matched bare-host controls, inspect the complete logit balance and, if performing a separate sensitivity study, recompute all 12 features under a www-removal string perturbation (resource and label equivalence unknown) with the same cached fitting-context model. Report score/logit deltas and parser checks, without assigning transformed ground truth. No systematic matched-group difference or consistently contrary deltas would weaken the hypothesis. Do not isolate one correlated term as a causal effect.
 3. **H52-C — near-boundary errors are sensitive to the lexical balance.** Evidence: 17/30 lie within 0.05 of 0.5; dltp is 0.000805 below the boundary. Check: use the full predeclared Train OOF pool to compare the share of FP/FN versus correct predictions inside the same margin band, within class and fold, and report denominator supports. No enrichment of errors in the band would weaken this population hypothesis. Keep E1's 0.5 threshold fixed; the present diversity sample cannot estimate that enrichment, and proximity is not calibrated uncertainty or evidence of a wrong label.
 4. **H52-D — source/label confounding limits transport of these explanations.** Evidence: all 13 reviewed FNs are from tinnhiemmang while FP sources carry benign labels. Check: request an independently reviewed, provenance-recorded pilot with both classes represented across sources, predeclare prevalence/source matching and evaluate the unchanged E1; report AP, FPR and class supports without selecting features/thresholds. If the proposed performance/lexical association gaps do not persist under matching, that weakens a transport-gap explanation. Current single-label sources cannot separate source from label effects; no independent pilot experiment is claimed.
 
@@ -194,16 +194,17 @@ The dominant measured limitations are aggregate lexical ambiguity (22 opposite-l
 
 | Criterion | Assessment and evidence |
 |---|---|
-| At least 30 reproducibly selected FP/FN | PASS — exact 30 priority IDs; 17 FP, 13 FN; all three folds and five Validation cases |
+| At least 30 reproducibly selected FP/FN | PASS — 30 exact priority IDs; 17 FP, 13 FN; observed coverage shown above |
 | ID, split/fold, source/tier, label, prediction, score, safe URL | PASS — explicit columns and ID joins in the handoff ledger |
 | Per-case observation, hypothesis, next check, review status | PASS — 30 distinct case-specific rows; hypotheses remain plausible_unverified |
 | Taxonomy and summary without forced coverage | PASS — all declared categories shown; zero counts retained and overlapping counts disclosed |
 | Original evidence, model arithmetic and provenance | PASS — all 360 attribution terms rechecked; max score error 3.33e-16; source/case/model hashes retained |
 | Conclusions, limitations and at least three testable hypotheses | PASS — four falsifiable protocols above; no experiments/results invented |
-| Regression checks and no baseline/robustness/model-audit changes | PASS — 201 tests, 0 skipped; no H5.1/H5.3/H5.4 source or artifact changes |
-| Human-assessed/human-verified acceptance | PASS — Hưng explicitly confirms matching independent offline review of the 30 priority cases; 10 additional cases remain pending |
+| Regression checks and no baseline/robustness/model-audit changes | Execution results and unchanged-artifact checks are recorded in verification.json |
+| Human-assessed/human-verified acceptance | PASS — 30 ID-backed human offline reviews meet the minimum 30; 10 additional cases pending |
 
-**Conclusion:** the technical/offline deliverable and the minimum 30-case human review requirement are complete on the basis of Hưng's explicit confirmation. Ten additional cases remain pending beyond that minimum. Website behavior, original-label correctness and individual root causes remain unverified where evidence is missing; all hypotheses retain their qualified status. The user confirmation is review of the analysis, not independent certification of those semantic claims.
+**Conclusion:** The technical/offline deliverable and minimum 30-case human review requirement are complete based on explicit confirmation. 10 cases remain pending. Website behavior, original-label correctness and individual root causes remain unverified where evidence is missing. Human review of the analysis does not promote a plausible hypothesis into verified causality or label certification.
+
 
 ## H5.3 — static robustness
 

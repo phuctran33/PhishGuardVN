@@ -1,8 +1,8 @@
 {
-  "checked_at_utc": "2026-11-04T10:25:22.113135+00:00",
-  "runtime_fingerprint": "62d64f51adb9969dded64647a812b05f6d250518e5532c6f7a8e79a4b2d88c7c",
-  "audit_runtime_base_revision": "06526d63614747e903715b9737016415b4088435",
-  "published_snapshot_at_runtime": "06526d63614747e903715b9737016415b4088435",
+  "checked_at_utc": "2026-11-06T07:04:27.455933+00:00",
+  "runtime_fingerprint": "00361898e2710d3910fee60e6254aedb4ceb364a98bf231416bc7c5c6b831d12",
+  "audit_runtime_base_revision": "fb203dd5dc825bd1ad17b271faa7b691fe66b369",
+  "published_snapshot_at_runtime": "fb203dd5dc825bd1ad17b271faa7b691fe66b369",
   "e1_runtime_base_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
   "publication_note": "Runtime base/upstream capture is immutable. The later publication commit is identified by Git history/branch HEAD; it is not substituted for a training or analysis runtime revision.",
   "integration": {
@@ -35,7 +35,8 @@
       "exit_code": 0,
       "code_cells_executed": 6,
       "errors": 0,
-      "sha256": "4e55a0d7ebdd50118003c716c0c40e11f943b3625db3f9ddb0a466bd1d8ca91d"
+      "sha256": "0a8f078ffea5bf279b6b46ce62b4efc7e2c6decdc637bf8c79797013c6f579d9",
+      "code_sources_sha256": "e0f0bb5af0283ac506f62d698f8d80d664f733a643289c7870dc6a3e349a6b5c"
     },
     "pip_check": {
       "exit_code": 0,
@@ -56,7 +57,7 @@
     }
   },
   "native_e2": {
-    "report_sha256": "9bfd3a3073ee19b86e1b32d4aec333ce5de33dffdc6ad956012e847831eeafaa",
+    "report_sha256": "0d58d88a10674c339ce8a3b91bb7eeaf17f633c76b58baf5b1283a0e66671b23",
     "status": "PASS",
     "feature_status": "PRELIMINARY",
     "n_features": 20,
@@ -282,9 +283,9 @@
     "reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362"
   },
   "report_and_handoff_sha256": {
-    "reports/week5_evaluation.md": "cc4c064bc8ba1b3fc96fb201f4fcbb5b31acb13ee0bf087a5039503f8b761a46",
+    "reports/week5_evaluation.md": "05b11964407491c5dcd2f55532b77568cccaf9b2344e4d7a48a189447f7b38ed",
     "reports/week5_robustness.md": "8a7afa85ca9dbbc5e5fc8a6ec9914d2dddbc9f2bf9542d6f3d76b8bd6a02b172",
-    "docs/week5_hung_handoff.md": "053e7cb18114a11808dc09b1c77a3460708d0fa8939f4b10cd56538c48b02380"
+    "docs/week5_hung_handoff.md": "9c036b400760562b751bcd92ef22ed6b1b85e57973b8047586c75ff909cdc56b"
   },
   "limitations": "Prediction/partition and committed-code audit; original fitting execution/weights not replayed. Raw Windows input hashes are not asserted equal to regenerated local CSV bytes. Draft reference; source-label confounding; 24 Validation positives; one seed and 3 correlated folds.",
   "ai_review": {
@@ -340,10 +341,11 @@
     "notebook_rerun": false,
     "e1_e2_sources_or_results_modified": false,
     "tests": {
-      "passed": 201,
+      "passed": 211,
       "skipped": 0,
       "new_ai_review_tests": 3,
-      "summary": "201 passed in 6.42s"
+      "summary": "211 passed in 7.18s",
+      "failed": 0
     },
     "final_hash_and_scope_verification": "Authorized human review fields/status and AI-ledger method/status updated from explicit user confirmation; all case facts/model evidence and H5.1/H5.3/H5.4 remain unchanged.",
     "handoff_rechecked_at_utc": "2026-11-04T12:34:42.957873+00:00",
@@ -427,17 +429,162 @@
   },
   "pytest": {
     "command": ".venv/bin/python -m pytest -q",
-    "checked_at_utc": "2026-11-04T12:48:27.654562+00:00",
-    "passed": 201,
+    "checked_at_utc": "2026-11-06T07:04:27.455933+00:00",
+    "passed": 211,
     "skipped": 0,
-    "summary": "201 passed in 6.42s",
+    "summary": "211 passed in 7.18s",
     "test_source_sha256": {
       "tests/test_baseline.py": "fe052a6e0427eba05d98a7e961162f0a274774a2fcaa2a987970529167222a4e",
       "tests/test_brand_features.py": "d3a5d710f82ff3107ec4ec4d0f2ba07472a5692a900b972c740fa72afc0059f2",
       "tests/test_robustness.py": "f9dee1cbaad3382d225511e2b9cc1758154e542151c2c64f34ab97bda8e479d2",
       "tests/test_splits.py": "5f1c55d80ad40226c218981afe864c15ba4838787cd1522b4c38b4374a38a7e5",
-      "tests/test_week5_ai_review.py": "dcac19f542f6d00678bdd0b0eb12fe7b186c0225a62851e6230b1865af24cc64",
-      "tests/test_week5_audit.py": "408f9d0de2a60a3c903c54fb2178a0e3d7d62a5df3f1c43dc71df58598311203"
-    }
+      "tests/test_week5_ai_review.py": "45f26356e225994e651253b1c8ddeda26910ba3ab1cd87be5c3f8ea7c9f5b7e4",
+      "tests/test_week5_audit.py": "b5195ced6f84310496c10ce2bc12e898496fb73e5a85027e071f0b68bfd03516",
+      "tests/test_week5_reporting.py": "d9eef3382a995a0212e7c73c55380913935068b1cd1658627fdbf1f1624088e8"
+    },
+    "failed": 0
+  },
+  "pr7_review_fixes": {
+    "reviewer": "phuctran33",
+    "review_id": 5795571901,
+    "review_state": "CHANGES_REQUESTED",
+    "review_submitted_at_utc": "2026-11-06T04:00:40Z",
+    "reviewed_head": "fb203dd5dc825bd1ad17b271faa7b691fe66b369",
+    "checked_at_utc": "2026-11-06T07:04:27.455933+00:00",
+    "status": "PASS",
+    "root_causes": [
+      "Locale-dependent text reads/writes for UTF-8 JSON and notebooks.",
+      "Git autocrlf and platform-default text line endings changed raw bytes of protected annotations.",
+      "The report generator hardcoded pending H5.2 and omitted the manually maintained analysis/acceptance content."
+    ],
+    "fixes": [
+      "Explicit UTF-8/LF in Week-5 pipeline/notebook and fixtures.",
+      "Scoped LF checkout rules plus deterministic CSV/JSON writers; raw-byte hashing unchanged.",
+      "One controlled H5.2 Markdown template and a read-only renderer with live checklist counts and ID/reviewer/timestamp-backed confirmation."
+    ],
+    "template": "reports/templates/week5_h52.md",
+    "template_sha256": "88948c1c44ced602943bdd6485de5f72f9b06ea2ac890fc36bdcd0ae9ffab41f",
+    "human_confirmation_sha256": "2bd1ec978d51885575b0283cd88341e495e8c68fe5bb026280396834885462cc",
+    "human_status": {
+      "verified": 30,
+      "pending": 10,
+      "all_human_fields_and_annotation_bytes_unchanged": true,
+      "four_hypotheses_and_acceptance_retained": true
+    },
+    "regression_tests": "tests/test_week5_reporting.py plus UTF-8 fixture checks in tests/test_week5_audit.py",
+    "regression_scenarios": [
+      "Repeated full report generation at 30 verified.",
+      "Repeated full report generation at 29 and 0 verified, without false DONE.",
+      "Unconfirmed IDs/reviewers/timestamps rejected.",
+      "CP1252 locale and CRLF writer-default simulation with actual Vietnamese text.",
+      "Git core.autocrlf=true/false actual checkout in disposable repositories; original data raw bytes retained.",
+      "Raw binary/model hashing remains byte-exact."
+    ],
+    "pytest": {
+      "passed": 211,
+      "failed": 0,
+      "skipped": 0,
+      "summary": "211 passed in 7.18s"
+    },
+    "cli_exit_code": 0,
+    "cached_e1": true,
+    "notebook_exit_code": 0,
+    "notebook_code_cells": 6,
+    "notebook_errors": 0,
+    "platform": "macOS-14.6.1-arm64-arm-64bit-Mach-O",
+    "windows_actual_tested": false,
+    "windows_limit": "Locale, line ending and Git-checkout behaviors were simulated on macOS; no actual Windows run is claimed.",
+    "preserved_hashes": {
+      "count": 36,
+      "identical": true,
+      "before": {
+        "/Users/nguyenduchung/PhishGuardVN/reports/annotations/week5_ai_review.csv": "2aec25865c880cdb658f3ea7e94c85bb4a1e95f59c761c2b263c0871b7451795",
+        "/Users/nguyenduchung/PhishGuardVN/reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+        "/Users/nguyenduchung/PhishGuardVN/reports/annotations/week5_human_review.csv": "d1bef9ecd1cb6b155718b07a11b6db9db9f9266c05fadf801ee8e32cb50e0ac4",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/robustness_feature_deltas.csv": "6881acb212daa72ebbeb1c5d663068deb73f1dfcf519b6a0603f6f2af5046426",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_taxonomy.csv": "40a4926d646d3792f48002fa045aa2705b3b08cd3c1710d69ef5bd7515ec164f",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/stratified_metrics.csv": "dc11f515fc5f52f0e1655bb7f923a5d296e7b3cf50be2b446f465f19b0b08a13",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/e2_paired_folds.csv": "8396915c52e5d772fa85aa8bcc45888e3bf9af294cdc96add089f653a0e31af4",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/numerical_shift.csv": "a6790e0525f77340d8a6e8d37acd05e3264b3468b6618ffc07aeabd4eac5d8ae",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/robustness_shift.png": "1533e268865e315e0d7f2dc7b143f3d3dc88c98842a14973625ef3e74df6c118",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/confusion_matrices.png": "633878b9833bc1d53a4b0167aa4aa457b9c2995af5543f067d2f13712e14465e",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/precision_recall.png": "316a42d5b342c2bb03514a8f320809b6b19274e7547476e613c15092dc685f7e",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_training_lineage.json": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_explanation_models.joblib": "b423bba186d37b2b460cecca1a9c3de00f596ad1e5d965746ee055561d4b8a91",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/features.csv": "b3eae0749a55b32bff738d15958f6837065353e3837b4c23642c1c9660fe741e",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/folds.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863",
+        "/Users/nguyenduchung/PhishGuardVN/data/splits/url_test.csv": "b692882e8ae26b2c0b217c090e92d3a19307a26acbfb3c8c89692db26d409bc9",
+        "/Users/nguyenduchung/PhishGuardVN/data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+        "/Users/nguyenduchung/PhishGuardVN/data/splits/url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f",
+        "/Users/nguyenduchung/PhishGuardVN/data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+        "/tmp/PhishGuardVN-pr6-b230fd6/reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+        "/tmp/PhishGuardVN-pr6-b230fd6/reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+        "/tmp/PhishGuardVN-pr6-b230fd6/reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8"
+      },
+      "after": {
+        "/Users/nguyenduchung/PhishGuardVN/reports/annotations/week5_ai_review.csv": "2aec25865c880cdb658f3ea7e94c85bb4a1e95f59c761c2b263c0871b7451795",
+        "/Users/nguyenduchung/PhishGuardVN/reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+        "/Users/nguyenduchung/PhishGuardVN/reports/annotations/week5_human_review.csv": "d1bef9ecd1cb6b155718b07a11b6db9db9f9266c05fadf801ee8e32cb50e0ac4",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/robustness_feature_deltas.csv": "6881acb212daa72ebbeb1c5d663068deb73f1dfcf519b6a0603f6f2af5046426",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_taxonomy.csv": "40a4926d646d3792f48002fa045aa2705b3b08cd3c1710d69ef5bd7515ec164f",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/stratified_metrics.csv": "dc11f515fc5f52f0e1655bb7f923a5d296e7b3cf50be2b446f465f19b0b08a13",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/e2_paired_folds.csv": "8396915c52e5d772fa85aa8bcc45888e3bf9af294cdc96add089f653a0e31af4",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/numerical_shift.csv": "a6790e0525f77340d8a6e8d37acd05e3264b3468b6618ffc07aeabd4eac5d8ae",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
+        "/Users/nguyenduchung/PhishGuardVN/reports/tables/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/robustness_shift.png": "1533e268865e315e0d7f2dc7b143f3d3dc88c98842a14973625ef3e74df6c118",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/source_shift.png": "3c4d82a29b5a72dadb46aff5e29bc06e2dfcac9d819800b43324779727bac362",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/confusion_matrices.png": "633878b9833bc1d53a4b0167aa4aa457b9c2995af5543f067d2f13712e14465e",
+        "/Users/nguyenduchung/PhishGuardVN/reports/figures/week5/precision_recall.png": "316a42d5b342c2bb03514a8f320809b6b19274e7547476e613c15092dc685f7e",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_training_lineage.json": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/e1_explanation_models.joblib": "b423bba186d37b2b460cecca1a9c3de00f596ad1e5d965746ee055561d4b8a91",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/features.csv": "b3eae0749a55b32bff738d15958f6837065353e3837b4c23642c1c9660fe741e",
+        "/Users/nguyenduchung/PhishGuardVN/data/interim/week5/folds.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863",
+        "/Users/nguyenduchung/PhishGuardVN/data/splits/url_test.csv": "b692882e8ae26b2c0b217c090e92d3a19307a26acbfb3c8c89692db26d409bc9",
+        "/Users/nguyenduchung/PhishGuardVN/data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+        "/Users/nguyenduchung/PhishGuardVN/data/splits/url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f",
+        "/Users/nguyenduchung/PhishGuardVN/data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+        "/tmp/PhishGuardVN-pr6-b230fd6/reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+        "/tmp/PhishGuardVN-pr6-b230fd6/reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+        "/tmp/PhishGuardVN-pr6-b230fd6/reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8"
+      }
+    },
+    "annotation_hashes": {
+      "reports/annotations/week5_ai_review.csv": "2aec25865c880cdb658f3ea7e94c85bb4a1e95f59c761c2b263c0871b7451795",
+      "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+      "reports/annotations/week5_human_review.csv": "d1bef9ecd1cb6b155718b07a11b6db9db9f9266c05fadf801ee8e32cb50e0ac4"
+    },
+    "hash_changes": "Source, controlled template, regenerated report/notebook and run/verification provenance changed legitimately; annotation, model, gzip, data, metrics, figures and robustness bytes did not change.",
+    "official_test_used": false,
+    "models_trained_or_tuned": false,
+    "team_owned_sources_unchanged": true,
+    "uncommitted_at_verification": true,
+    "commit_push_merge_performed_during_verification": false,
+    "publication_note": "User subsequently authorized commit/push. This record captures the pre-publication validation; the published commit is identified by Git history, not substituted for the runtime base."
   }
 }

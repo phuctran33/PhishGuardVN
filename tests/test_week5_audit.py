@@ -1,6 +1,7 @@
 """Synthetic fixtures test validation logic only; never experimental evidence."""
 import hashlib
 import json
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -165,12 +166,12 @@ def test_hashed_bundle_and_tamper(inputs, tmp_path):
     artifacts = {}
     for key, value in {**frames, "references": refs, "configs": configs, "lineage": lineage}.items():
         path = tmp_path / (key + (".csv" if isinstance(value, pd.DataFrame) else ".json"))
-        if isinstance(value, pd.DataFrame): value.to_csv(path, index=False)
-        else: path.write_text(json.dumps(value))
+        if isinstance(value, pd.DataFrame): value.to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
+        else: path.write_text(json.dumps(value), encoding="utf-8", newline="\n")
         artifacts[key] = {"path": path.name, "sha256": sha256(path)}
     manifest = {"schema_version": 1, "feature_version": "test_v1", "feature_names": names, "producer_revision": "fixture",
                 "threshold": 0.5, "score_definition": "phishing_probability", "artifacts": artifacts, "teacher_candidates": ["E2"]}
-    manifest_path = tmp_path / "manifest.json"; manifest_path.write_text(json.dumps(manifest))
+    manifest_path = tmp_path / "manifest.json"; manifest_path.write_text(json.dumps(manifest), encoding="utf-8", newline="\n")
     e1 = validate_predictions(inputs[2], metadata, folds)
     bundle = load_e2_bundle(manifest_path, metadata, folds, e1)
     assert bundle["comparison"].pr_auc_delta.eq(0).all()
@@ -180,15 +181,15 @@ def test_hashed_bundle_and_tamper(inputs, tmp_path):
     threshold_path = threshold_files["threshold_evidence"]
     manifest["artifacts"]["threshold_evidence"] = {"path": threshold_path.name, "sha256": sha256(threshold_path)}
     pred["predicted_label"] = 0  # all synthetic scores are below the fixture threshold 0.95
-    pred.to_csv(tmp_path / "predictions.csv", index=False)
+    pred.to_csv(tmp_path / "predictions.csv", index=False, encoding="utf-8", lineterminator="\n")
     manifest["artifacts"]["predictions"]["sha256"] = sha256(tmp_path / "predictions.csv")
-    manifest_path.write_text(json.dumps(manifest))
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8", newline="\n")
     bundle = load_e2_bundle(manifest_path, metadata, folds, e1)
     assert bundle["comparison"].false_positive_rate_delta.eq(0).all()
     assert bundle["comparison"].operating_point.eq("fixed_0.5").all()
     assert bundle["operating_point_comparison"].false_positive_rate_delta.eq(-1).all()
     assert bundle["predictions"].decision_threshold.eq(0.95).all()
-    (tmp_path / "features.csv").write_text("tampered")
+    (tmp_path / "features.csv").write_text("tampered", encoding="utf-8", newline="\n")
     with pytest.raises(ValueError, match="SHA256"): load_e2_bundle(manifest_path, metadata, folds, e1)
 
 
@@ -228,20 +229,24 @@ def test_brand_only_adapter_aligns_by_id(inputs):
     with pytest.raises(ValueError, match="ineligible"): assemble_brand_features(brands, names, metadata)
 
 
-def test_review_overlay_is_durable_bound_and_never_semantically_verified(inputs, tmp_path):
+def test_review_overlay_is_durable_bound_and_never_semantically_verified(inputs, tmp_path, monkeypatch):
     from phishguard_vn.error_analysis import apply_case_reviews, case_signature
     metadata, folds, pred = inputs
     sample = sample_errors(validate_predictions(pred, metadata, folds), model="E1", n=3)
     reviews = {"schema_version": 1, "cases": [
         {"id": r.id, "case_signature": case_signature(r), "taxonomy": ["unknown"],
-         "observation": "Specific offline observation for " + r.id, "hypothesis": "Unverified hypothesis for " + r.id,
+         "observation": "Tiếng Việt: Hưng, Phúc, Đặng — observation for " + r.id, "hypothesis": "Unverified hypothesis for " + r.id,
          "next_verification": "Inspect original evidence for " + r.id, "review_status": "human_verified"}
         for _, r in sample.iterrows()]}
     evidence = pd.DataFrame([{"id": r.id, "case_signature": case_signature(r), "context": int(r.sampling_fold),
                              "intercept": 0.1, "positive_contributions": "toy=0.2", "negative_contributions": "toy=-0.1",
                              "opposite_label_fitting_rows": 0} for _, r in sample.iterrows()])
-    path = tmp_path / "reviews.json"; path.write_text(json.dumps(reviews)); original = path.read_bytes()
+    path = tmp_path / "reviews.json"; path.write_text(json.dumps(reviews, ensure_ascii=False), encoding="utf-8", newline="\n"); original = path.read_bytes()
+    original_read = Path.read_text
+    monkeypatch.setattr(Path, "read_text", lambda self, encoding=None, errors=None: original_read(
+        self, encoding=encoding or "cp1252", errors=errors))
     cases = apply_case_reviews(sample, evidence, path)
+    assert cases.observation.str.contains("Tiếng Việt: Hưng, Phúc, Đặng", regex=False).all()
     assert cases.observation.nunique() == len(cases)
     assert cases.review_status.str.contains("human_semantic_verification_pending").all()
     assert not cases.review_status.eq("human_verified").any()
@@ -303,7 +308,7 @@ def threshold_fixture(inputs, tmp_path):
         records[context] = {"value": 0.95, "selection_scope": "inner_train_only", "prediction_kind": "inner_oof", "selection_ids": ordered,
                             "method": "synthetic protocol fixture only", "evidence_artifact": "threshold_evidence",
                             "inner_fit_ids": {str(f): [i for i in ordered if inner[i] != f] for f in (0, 1)}}
-    path = tmp_path / "threshold.csv"; pd.DataFrame(rows).to_csv(path, index=False)
+    path = tmp_path / "threshold.csv"; pd.DataFrame(rows).to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
     return {"decision_thresholds": {"E2": records}}, {"threshold_evidence": path}
 
 
@@ -318,7 +323,7 @@ def test_candidate_threshold_provenance(inputs, tmp_path, defect):
     if defect == "scope": record["selection_scope"] = "official_validation"
     if defect == "inner_leak": record["inner_fit_ids"]["0"].append(record["selection_ids"][0])
     if defect == "evidence_label":
-        table = pd.read_csv(files["threshold_evidence"]); table.loc[0, "true_label"] = 1-table.loc[0, "true_label"]; table.to_csv(files["threshold_evidence"], index=False)
+        table = pd.read_csv(files["threshold_evidence"], encoding="utf-8"); table.loc[0, "true_label"] = 1-table.loc[0, "true_label"]; table.to_csv(files["threshold_evidence"], index=False, encoding="utf-8", lineterminator="\n")
     if defect == "missing_evidence": files = {}
     if defect:
         with pytest.raises(ValueError): validate_candidate_thresholds(manifest, ["E2"], metadata, folds, files)
@@ -372,13 +377,13 @@ def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
     for filename in ["brand_feature_dictionary.csv", "feature_dictionary.csv"]:
         (templates / filename).write_bytes((original_root / "reports/templates" / filename).read_bytes())
     excluded = pd.DataFrame({"id": ["excluded_1", "excluded_2"], "error_reason": ["unresolved_domain"]*2, "split": ["train"]*2})
-    excluded[["id", "error_reason"]].to_csv(interim / "05_excluded_rows_trainval.csv", index=False)
+    excluded[["id", "error_reason"]].to_csv(interim / "05_excluded_rows_trainval.csv", index=False, encoding="utf-8", lineterminator="\n")
     matrix = metadata[["id", *CANDIDATE_FEATURES]].copy()
     for name in BRAND_FEATURES: matrix[name] = 0.0
     for split in ["train", "val"]:
-        metadata.loc[metadata.split.eq(split), ["id"]].to_csv(splits / f"url_{split}.csv", index=False)
+        metadata.loc[metadata.split.eq(split), ["id"]].to_csv(splits / f"url_{split}.csv", index=False, encoding="utf-8", lineterminator="\n")
     # No Test file or model/prediction/config/lineage files exist in this fixture.
-    metadata[["id", "url"]].to_csv(interim / "core_gold_silver.csv", index=False)
+    metadata[["id", "url"]].to_csv(interim / "core_gold_silver.csv", index=False, encoding="utf-8", lineterminator="\n")
     ids_hash = lambda ids: hashlib.sha256("\n".join(sorted(ids)).encode()).hexdigest()
     native = {"feature_schema_version": FEATURE_SCHEMA_VERSION, "partition": "trainval", "test_excluded_from_this_artifact": True,
               "frozen": False, "columns": ["id", *E2_FEATURES], "e1_columns": list(CANDIDATE_FEATURES), "brand_columns": list(BRAND_FEATURES),
@@ -395,12 +400,12 @@ def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
     if defect == "lexical_drift": matrix.loc[0, "url_len"] += 1
     if defect == "reference": native["brand_reference"]["sha256"] = "wrong"
     if defect == "false_freeze": native["frozen"] = True
-    matrix.to_csv(interim / "05_matrix_X_brand_trainval.csv", index=False)
-    manifest = interim / "05_matrix_X_brand_trainval.manifest.json"; manifest.write_text(json.dumps(native))
+    matrix.to_csv(interim / "05_matrix_X_brand_trainval.csv", index=False, encoding="utf-8", lineterminator="\n")
+    manifest = interim / "05_matrix_X_brand_trainval.manifest.json"; manifest.write_text(json.dumps(native), encoding="utf-8", newline="\n")
     report = tmp_path / "audit.json"
     if defect:
         with pytest.raises(ValueError): audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
-        assert json.loads(report.read_text())["status"] == "FAIL"
+        assert json.loads(report.read_text(encoding="utf-8"))["status"] == "FAIL"
     else:
         result = audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
         assert result["status"] == "PASS" and result["feature_status"] == "PRELIMINARY"
@@ -459,7 +464,7 @@ def test_human_checklist_preserves_manual_fields(inputs, tmp_path):
     assert first.reviewer.eq('').all() and first.reviewed_at.eq('').all() and first.review_status.eq('pending').all()
     first.loc[0, ['reviewer', 'reviewed_at', 'notes']] = ['real reviewer fixture', '2026-01-01', 'keep literal NA']
     first.loc[0, 'review_status'] = 'human_verified'
-    first.to_csv(path, index=False)
+    first.to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
     second = update_human_checklist(cases.iloc[::-1].reset_index(drop=True), evidence, path).set_index('id')
     assert second.loc[first.id.iloc[0], 'notes'] == 'keep literal NA'
     assert second.loc[first.id.iloc[0], 'reviewer'] == 'real reviewer fixture'
@@ -479,7 +484,8 @@ def test_native_gzip_handoff_contract(inputs, tmp_path, monkeypatch, defect):
     for name in ['features.py', 'url_parser.py', 'brand_features.py', 'resources/brand_reference_v1.csv']:
         p = source / name; p.parent.mkdir(exist_ok=True); p.write_bytes(b'fixture')
     notebooks = tmp_path / 'notebooks'; notebooks.mkdir()
-    (notebooks / '05_e2_ablation.ipynb').write_text(json.dumps({'cells': []}))
+    notebook_code = '# Tiếng Việt: Hưng, Phúc, Đặng\n'
+    (notebooks / '05_e2_ablation.ipynb').write_text(json.dumps({'cells': [{'cell_type': 'code', 'source': [notebook_code]}]}, ensure_ascii=False), encoding="utf-8", newline="\n")
     monkeypatch.setattr('phishguard_vn.e2_audit.subprocess.check_output', lambda *a, **k: 'fixture-commit\n')
     models = ['logistic_regression', 'logistic_regression_balanced', 'svm_rbf', 'mlp', 'hist_gradient_boosting']
     frames = []
@@ -491,8 +497,8 @@ def test_native_gzip_handoff_contract(inputs, tmp_path, monkeypatch, defect):
             r['score_kind'] = 'decision_function' if model == 'svm_rbf' else 'probability'
             r['decision_rule'] = 'estimator.predict'; frames.append(r)
     rows = pd.concat(frames)
-    rows.loc[rows.evaluation_partition.eq('group_cv')].to_csv(tables / '06_oof_predictions.csv.gz', index=False)
-    rows.loc[rows.evaluation_partition.eq('official_validation')].drop(columns='fold_id').to_csv(tables / '06_validation_predictions.csv.gz', index=False)
+    rows.loc[rows.evaluation_partition.eq('group_cv')].to_csv(tables / '06_oof_predictions.csv.gz', index=False, encoding="utf-8", lineterminator="\n")
+    rows.loc[rows.evaluation_partition.eq('official_validation')].drop(columns='fold_id').to_csv(tables / '06_validation_predictions.csv.gz', index=False, encoding="utf-8", lineterminator="\n")
     memberships = []
     for context in ['0', '1', '2', 'full_train']:
         fit = metadata.iloc[:18].loc[~metadata.id.isin(folds.loc[folds.fold_id.eq(int(context)), 'id'])] if context != 'full_train' else metadata.iloc[:18]
@@ -502,28 +508,31 @@ def test_native_gzip_handoff_contract(inputs, tmp_path, monkeypatch, defect):
         memberships += [{'id': i, 'context': context, 'role': 'fitting' if i in assignments else 'held_out', 'inner_fold_id': assignments.get(i, -1)} for i in metadata.id[:18]]
     part = pd.DataFrame(memberships)
     if defect == 'inner': part.loc[part.role.eq('held_out'), 'inner_fold_id'] = 0
-    part.to_csv(tables / '06_training_partitions.csv.gz', index=False)
+    part.to_csv(tables / '06_training_partitions.csv.gz', index=False, encoding="utf-8", lineterminator="\n")
     metrics = dict(accuracy=1., tn=3, fp=0, fn=0, tp=3, pr_auc=1., precision_phishing=1., recall_phishing=1., f1_phishing=1., false_positive_rate=0.)
     names = ['pr_auc', 'precision_phishing', 'recall_phishing', 'f1_phishing', 'false_positive_rate']
     candidates = rows.candidate.unique()
     cv = pd.DataFrame([dict(candidate=c, fold_id=f, **metrics) for c in candidates for f in range(3)])
     if defect == 'ap': cv.loc[0, 'pr_auc'] = .8
     if defect == 'fpr': cv.loc[0, 'false_positive_rate'] = .1
-    cv.to_csv(tables / '06_cv_metrics.csv', index=False)
-    pd.DataFrame([dict(candidate=c, **metrics) for c in candidates]).to_csv(tables / '06_validation.csv', index=False)
-    pd.DataFrame([{'candidate': c, **{m + s: metrics[m] if s == '_mean' else 0. for m in names for s in ['_mean', '_std']}} for c in candidates]).to_csv(tables / '06_comparison.csv', index=False)
-    pd.DataFrame([{'model': m, 'fold_id': f, **{n + s: metrics[n] for n in names for s in ['_e1', '_e2']}, **{'delta_' + n: 0. for n in names}} for m in models for f in range(3)]).to_csv(tables / '06_paired_folds.csv', index=False)
-    (tables / '06_verification.json').write_text('{}')  # Not trusted as evidence by the auditor.
+    cv.to_csv(tables / '06_cv_metrics.csv', index=False, encoding="utf-8", lineterminator="\n")
+    pd.DataFrame([dict(candidate=c, **metrics) for c in candidates]).to_csv(tables / '06_validation.csv', index=False, encoding="utf-8", lineterminator="\n")
+    pd.DataFrame([{'candidate': c, **{m + s: metrics[m] if s == '_mean' else 0. for m in names for s in ['_mean', '_std']}} for c in candidates]).to_csv(tables / '06_comparison.csv', index=False, encoding="utf-8", lineterminator="\n")
+    pd.DataFrame([{'model': m, 'fold_id': f, **{n + s: metrics[n] for n in names for s in ['_e1', '_e2']}, **{'delta_' + n: 0. for n in names}} for m in models for f in range(3)]).to_csv(tables / '06_paired_folds.csv', index=False, encoding="utf-8", lineterminator="\n")
+    (tables / '06_verification.json').write_text('{}', encoding="utf-8", newline="\n")  # Not trusted as evidence by the auditor.
     meta = dict(protocol='week5_e1_e2_readable_v1', feature_schema_version=FEATURE_SCHEMA_VERSION, feature_sets={'E1': list(CANDIDATE_FEATURES), 'E2': list(E2_FEATURES)},
                 class_order=[0, 1], decision_rule='estimator.predict', boundaries={'svm_rbf': 0., 'other_models': .5}, seed=42, outer_folds=3, inner_folds=2, test_evaluated=False,
                 extractor_source_lf_sha256={n: source_hash for n in ['features.py', 'url_parser.py', 'brand_features.py']}, reference_lf_sha256=source_hash,
-                notebook_code_sha256=hashlib.sha256(b'').hexdigest(), train_rows=18, validation_rows=6, status='PRELIMINARY', runtime_git_revision='fixture-runtime', runtime_git_dirty=True,
+                notebook_code_sha256=hashlib.sha256(notebook_code.encode('utf-8')).hexdigest(), train_rows=18, validation_rows=6, status='PRELIMINARY', runtime_git_revision='fixture-runtime', runtime_git_dirty=True,
                 versions={}, reference={}, input_sha256={}, teacher_candidates=['E1__hist_gradient_boosting', 'E1__logistic_regression'],
                 score_kinds={m: 'decision_function' if m == 'svm_rbf' else 'probability' for m in models},
                 artifact_sha256={'reports/tables/' + p.name: sha256(p) for p in tables.glob('*.gz')})
     if defect == 'schema': meta['feature_sets']['E2'].reverse()
     if defect == 'hash': meta['reference_lf_sha256'] = 'wrong'
-    (tables / '06_ablation_metadata.json').write_text(json.dumps(meta))
+    (tables / '06_ablation_metadata.json').write_text(json.dumps(meta), encoding="utf-8", newline="\n")
+    original_read = Path.read_text
+    monkeypatch.setattr(Path, "read_text", lambda self, encoding=None, errors=None: original_read(
+        self, encoding=encoding or "cp1252", errors=errors))
     if defect:
         with pytest.raises(ValueError): audit_native_model_handoff(tmp_path, metadata, folds, tmp_path)
     else:

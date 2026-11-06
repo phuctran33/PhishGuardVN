@@ -89,8 +89,8 @@ def audit_native_model_handoff(producer_root, metadata, folds, root):
     if producer_root != root and git("status", "--porcelain", "--untracked-files=no"):
         raise ValueError("Native producer checkout has modified tracked files")
     tables = producer_root / "reports/tables"
-    read = lambda name: pd.read_csv(tables / name, dtype={"id": "string"})
-    meta = json.loads((tables / "06_ablation_metadata.json").read_text())
+    read = lambda name: pd.read_csv(tables / name, dtype={"id": "string"}, encoding="utf-8")
+    meta = json.loads((tables / "06_ablation_metadata.json").read_text(encoding="utf-8"))
     if (meta.get("protocol") != "week5_e1_e2_readable_v1" or meta.get("feature_schema_version") != FEATURE_SCHEMA_VERSION
             or meta.get("feature_sets") != {"E1": list(CANDIDATE_FEATURES), "E2": list(E2_FEATURES)}
             or meta.get("class_order") != [0, 1] or meta.get("decision_rule") != "estimator.predict"
@@ -106,7 +106,7 @@ def audit_native_model_handoff(producer_root, metadata, folds, root):
     reference = "src/phishguard_vn/resources/brand_reference_v1.csv"
     if any(lf_sha(base / reference) != meta["reference_lf_sha256"] for base in (root, producer_root)):
         raise ValueError("Native reference hash mismatch")
-    notebook = json.loads((producer_root / "notebooks/05_e2_ablation.ipynb").read_text())
+    notebook = json.loads((producer_root / "notebooks/05_e2_ablation.ipynb").read_text(encoding="utf-8"))
     code = "\n".join("".join(c["source"]) for c in notebook["cells"] if c["cell_type"] == "code")
     if hashlib.sha256(code.encode()).hexdigest() != meta["notebook_code_sha256"]:
         raise ValueError("Native notebook code hash mismatch")
@@ -414,7 +414,7 @@ def validate_candidate_thresholds(manifest, models, metadata, folds, verified_ar
             artifact = record.get("evidence_artifact", "")
             if not artifact.startswith("threshold_") or artifact not in verified_artifacts or not isinstance(record.get("method"), str) or not record["method"].strip():
                 raise ValueError("Missing hashed threshold-selection evidence/method")
-            evidence = pd.read_csv(verified_artifacts[artifact], dtype={"id": "string", "context": "string"})
+            evidence = pd.read_csv(verified_artifacts[artifact], dtype={"id": "string", "context": "string"}, encoding="utf-8")
             required = {"id", "model", "context", "true_label", "score", "inner_fold_id"}
             if not required.issubset(evidence):
                 raise ValueError("Threshold evidence must contain inner-OOF predictions")
@@ -450,7 +450,7 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
     path = Path(manifest_path)
     if threshold != 0.5 or not e1.predicted_label.eq(e1.score.ge(0.5).astype(int)).all():
         raise ValueError("E1 reference threshold must remain fixed at 0.5")
-    manifest = json.loads(path.read_text())
+    manifest = json.loads(path.read_text(encoding="utf-8"))
     if manifest.get("schema_version") != 1 or not manifest.get("feature_version") or not manifest.get("producer_revision"):
         raise ValueError("Missing E2 schema/feature version/producer revision")
     if manifest.get("threshold") != threshold or manifest.get("score_definition") != "phishing_probability":
@@ -465,13 +465,13 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
         if not target.is_file() or sha256(target) != record["sha256"]:
             raise ValueError(f"Missing artifact or SHA256 mismatch: {key}")
         files[key] = target
-    incoming_folds = pd.read_csv(files["folds"], dtype={"id": "string"})
+    incoming_folds = pd.read_csv(files["folds"], dtype={"id": "string"}, encoding="utf-8")
     check_ids(incoming_folds, "E2 folds")
     pd.testing.assert_frame_equal(incoming_folds.sort_values("id").reset_index(drop=True),
                                   folds.sort_values("id").reset_index(drop=True), check_dtype=False)
-    dictionary = pd.read_csv(files["dictionary"])
-    references = json.loads(files["references"].read_text())
-    matrix = pd.read_csv(files["features"], dtype={"id": "string"})
+    dictionary = pd.read_csv(files["dictionary"], encoding="utf-8")
+    references = json.loads(files["references"].read_text(encoding="utf-8"))
+    matrix = pd.read_csv(files["features"], dtype={"id": "string"}, encoding="utf-8")
     layout = manifest.get("feature_layout", "combined")
     if layout == "brand_only":
         matrix = assemble_brand_features(matrix, manifest["feature_names"], metadata)
@@ -483,9 +483,9 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
         canonical = metadata.set_index("id").loc[block.id, list(CANDIDATE_FEATURES)].to_numpy(dtype=float)
         if not np.allclose(block[list(CANDIDATE_FEATURES)].to_numpy(dtype=float), canonical, rtol=0, atol=1e-10):
             raise ValueError("E1 lexical features changed under E2 contract")
-    predictions = adapt_predictions(pd.read_csv(files["predictions"], dtype={"id": "string"}), **manifest.get("adapter", {}))
-    configs = json.loads(files["configs"].read_text())
-    lineage = json.loads(files["lineage"].read_text())
+    predictions = adapt_predictions(pd.read_csv(files["predictions"], dtype={"id": "string"}, encoding="utf-8"), **manifest.get("adapter", {}))
+    configs = json.loads(files["configs"].read_text(encoding="utf-8"))
+    lineage = json.loads(files["lineage"].read_text(encoding="utf-8"))
     if set(configs) != set(predictions.model) or set(lineage) != set(predictions.model):
         raise ValueError("Model/config/lineage mismatch")
     candidates = manifest.get("teacher_candidates", [])
@@ -505,7 +505,7 @@ def load_e2_bundle(manifest_path, metadata, folds, e1, *, threshold=0.5):
     fixed = predictions.copy()
     fixed["predicted_label"] = fixed.score.ge(0.5).astype(int)
     fixed["decision_threshold"] = 0.5
-    source_checks = {key: validate_source_evidence(json.loads(files[key].read_text()), metadata)
+    source_checks = {key: validate_source_evidence(json.loads(files[key].read_text(encoding="utf-8")), metadata)
                      for key in ("source_bias", "external_pilot") if key in files}
     return {"manifest": manifest, "predictions": predictions, "feature_check": feature_check,
             "source_evidence": source_checks,
@@ -534,11 +534,11 @@ def audit_native_brand_features(manifest_path, metadata, folds, exclusions, root
             raise ValueError(f"Native E2 audit: {name}: {detail}")
 
     try:
-        native = json.loads(path.read_text())
+        native = json.loads(path.read_text(encoding="utf-8"))
         matrix_path = path.with_name(path.name.replace(".manifest.json", ".csv"))
         excluded_path = path.parent / "05_excluded_rows_trainval.csv"
-        matrix = pd.read_csv(matrix_path, dtype={"id": "string"})
-        excluded = pd.read_csv(excluded_path, dtype={"id": "string"})
+        matrix = pd.read_csv(matrix_path, dtype={"id": "string"}, encoding="utf-8")
+        excluded = pd.read_csv(excluded_path, dtype={"id": "string"}, encoding="utf-8")
         check("partition_version", native.get("partition") == "trainval" and native.get("test_excluded_from_this_artifact") is True
               and native.get("feature_schema_version") == FEATURE_SCHEMA_VERSION, "Require native trainval / e2-brand-v0 contract")
         check_ids(metadata, "eligible metadata"); check_ids(folds, "folds"); check_ids(matrix, "native E2")
@@ -574,7 +574,7 @@ def audit_native_brand_features(manifest_path, metadata, folds, exclusions, root
               and native.get("ids_sha256_excluded") == id_hash(excluded.id), "Native counts, split supports and ID digests agree")
         brand_dict = root / "reports/templates/brand_feature_dictionary.csv"
         e1_dict = root / "reports/templates/feature_dictionary.csv"
-        dictionary = pd.read_csv(brand_dict)
+        dictionary = pd.read_csv(brand_dict, encoding="utf-8")
         check("dictionary", list(dictionary.feature) == list(BRAND_FEATURES) and dictionary.schema_version.eq(FEATURE_SCHEMA_VERSION).all()
               and dictionary[["formula", "count_scope"]].notna().all().all()
               and native.get("brand_feature_dictionary_sha256") == sha256(brand_dict)
@@ -599,5 +599,5 @@ def audit_native_brand_features(manifest_path, metadata, folds, exclusions, root
         raise
     finally:
         report_path.parent.mkdir(parents=True, exist_ok=True)
-        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8", newline="\n")
     return report
