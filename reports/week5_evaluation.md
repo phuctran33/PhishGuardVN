@@ -4,7 +4,7 @@
 
 H5.1 DONE; H5.2 DONE / HUMAN VERIFIED OFFLINE (30/40); H5.3 DONE. H5.4 FEATURE AUDIT DONE / PRELIMINARY; MODEL AUDIT DONE / PASS / PRELIMINARY. E2_ROBUSTNESS_PENDING_MODEL_ARTIFACT. KD PROTOCOL PREPARED.
 
-Upstream snapshot at runtime: `fb203dd5dc825bd1ad17b271faa7b691fe66b369` on week5/hung-evaluation-robustness. Current audit runtime base: `fb203dd5dc825bd1ad17b271faa7b691fe66b369`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
+Upstream snapshot at runtime: `62b3f8ba85367dd0409ac4e34eeb07cf6ea3fb98` on week5/hung-evaluation-robustness. Current audit runtime base: `62b3f8ba85367dd0409ac4e34eeb07cf6ea3fb98`; original E1 generation base: `3e9001cac54f5027637e713c2d5f65d130bb17e3`. Runtime source state: `modified_from_head`. Source/config/annotation hashes identify the working sources; a later publication commit does not retroactively change this runtime capture. Main/PR #5 integration and publication history are recorded in the handoff.
 
 Exact input/source hashes, versions, analysis fingerprint, immutable E1 generation provenance and artifact hashes: tables/week5/run_manifest.json. E1 cache reuse checks actual dataset, training-source/config/environment and model/lineage hashes; analysis/report changes do not force retraining. Original archived Week-4 tables are unchanged.
 

@@ -1,0 +1,331 @@
+{
+  "protocol": "week5_e1_e2_readable_v1",
+  "status": "PRELIMINARY",
+  "created_utc": "2026-11-04T05:04:03.091796+00:00",
+  "runtime_git_revision": "a4f8a1892237c3d9b3c1bb2a3243928b453744bd",
+  "runtime_git_dirty": true,
+  "upstream_main_integrated": "0054a1b1844ce12b84030e52952106488b0cbc10",
+  "primary_metric": "mean_outer_average_precision",
+  "seed": 42,
+  "outer_folds": 3,
+  "inner_folds": 2,
+  "train_rows": 13078,
+  "validation_rows": 1585,
+  "test_evaluated": false,
+  "feature_sets": {
+    "E1": [
+      "url_len",
+      "dom_len",
+      "is_ip",
+      "subdom_cnt",
+      "letter_cnt",
+      "digit_cnt",
+      "dot_cnt",
+      "dash_cnt",
+      "under_cnt",
+      "slash_cnt",
+      "entropy",
+      "path_len"
+    ],
+    "E2": [
+      "url_len",
+      "dom_len",
+      "is_ip",
+      "subdom_cnt",
+      "letter_cnt",
+      "digit_cnt",
+      "dot_cnt",
+      "dash_cnt",
+      "under_cnt",
+      "slash_cnt",
+      "entropy",
+      "path_len",
+      "brand_in_domain",
+      "brand_in_subdomain",
+      "brand_in_path",
+      "brand_domain_mismatch",
+      "brand_typo_score",
+      "susp_token_cnt",
+      "idna_flag",
+      "homoglyph_brand_hit"
+    ]
+  },
+  "feature_schema_version": "e2-brand-v0",
+  "reference": {
+    "file": "brand_reference_v1.csv",
+    "sha256": "b40f66bbad8327d1e022a5dcb8869ad7ee4a6f46bcfea48ccec20545a91d50bd",
+    "n_brands": 37,
+    "status_counts": {
+      "draft": 37
+    },
+    "n_missing_source_accessed": 37,
+    "n_missing_source_url": 0,
+    "fully_verified": false,
+    "n_brands_with_official_suffixes": 0,
+    "n_brands_with_typo_ignore": 0
+  },
+  "reference_lf_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+  "score_kinds": {
+    "logistic_regression": "probability",
+    "logistic_regression_balanced": "probability",
+    "svm_rbf": "decision_function",
+    "mlp": "probability",
+    "hist_gradient_boosting": "probability"
+  },
+  "class_order": [
+    0,
+    1
+  ],
+  "decision_rule": "estimator.predict",
+  "boundaries": {
+    "svm_rbf": 0.0,
+    "other_models": 0.5
+  },
+  "calibration": "none",
+  "early_stopping": false,
+  "tuning_scope": "inner Group CV within outer fitting; full_train Group CV only for final artifacts",
+  "partitions_file": "reports/tables/06_training_partitions.csv.gz",
+  "partition_roles": "fitting only; inner_fold_id is inner validation membership; held_out never used to fit/tune",
+  "selection_rule": "Within each family then between families: mean AP desc, F1 desc, FPR asc, candidate asc; max 2 distinct families",
+  "teacher_candidates": [
+    "E2__mlp",
+    "E2__hist_gradient_boosting"
+  ],
+  "selected_candidate": "E2__mlp",
+  "uncertainty": "Paired fold delta mean/std/min/max, descriptive only; 3 correlated folds, no formal CI",
+  "python": "3.11.7",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "tldextract": "5.4.0",
+    "idna": "3.20"
+  },
+  "parameters": [
+    {
+      "candidate": "E1__logistic_regression",
+      "context": "0",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__logistic_regression",
+      "context": "1",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__logistic_regression",
+      "context": "2",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__logistic_regression_balanced",
+      "context": "0",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__logistic_regression_balanced",
+      "context": "1",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__logistic_regression_balanced",
+      "context": "2",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__svm_rbf",
+      "context": "0",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "candidate": "E1__svm_rbf",
+      "context": "1",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "candidate": "E1__svm_rbf",
+      "context": "2",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "candidate": "E1__mlp",
+      "context": "0",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "candidate": "E1__mlp",
+      "context": "1",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "candidate": "E1__mlp",
+      "context": "2",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "candidate": "E1__hist_gradient_boosting",
+      "context": "0",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E1__hist_gradient_boosting",
+      "context": "1",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E1__hist_gradient_boosting",
+      "context": "2",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E2__logistic_regression",
+      "context": "0",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__logistic_regression",
+      "context": "1",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__logistic_regression",
+      "context": "2",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__logistic_regression_balanced",
+      "context": "0",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__logistic_regression_balanced",
+      "context": "1",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__logistic_regression_balanced",
+      "context": "2",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__svm_rbf",
+      "context": "0",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "candidate": "E2__svm_rbf",
+      "context": "1",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "candidate": "E2__svm_rbf",
+      "context": "2",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "candidate": "E2__mlp",
+      "context": "0",
+      "parameters": "{\"model__hidden_layer_sizes\": [32, 16]}"
+    },
+    {
+      "candidate": "E2__mlp",
+      "context": "1",
+      "parameters": "{\"model__hidden_layer_sizes\": [32, 16]}"
+    },
+    {
+      "candidate": "E2__mlp",
+      "context": "2",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "candidate": "E2__hist_gradient_boosting",
+      "context": "0",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E2__hist_gradient_boosting",
+      "context": "1",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E2__hist_gradient_boosting",
+      "context": "2",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E1__logistic_regression",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__logistic_regression_balanced",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E1__svm_rbf",
+      "context": "full_train",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "candidate": "E1__mlp",
+      "context": "full_train",
+      "parameters": "{\"model__hidden_layer_sizes\": [32, 16]}"
+    },
+    {
+      "candidate": "E1__hist_gradient_boosting",
+      "context": "full_train",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "candidate": "E2__logistic_regression",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__logistic_regression_balanced",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "candidate": "E2__svm_rbf",
+      "context": "full_train",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "candidate": "E2__mlp",
+      "context": "full_train",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "candidate": "E2__hist_gradient_boosting",
+      "context": "full_train",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    }
+  ],
+  "input_sha256": {
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb",
+    "data/interim/05_matrix_X_brand_trainval.csv": "4256a4fa9580a8cd2ba202c7b2caa1d66362e552001568d57cbe3c295e6cc7d1",
+    "data/interim/05_matrix_X_brand_trainval.manifest.json": "e46352aa689df6abe5cd3335e400e75efd21a632d409e987cd23e8a525eb2077",
+    "data/interim/05_excluded_rows_trainval.csv": "a79df1bac6e29e0354ad619cf6425616f4d2ee0dceff5d835ec5044e4f2b3736",
+    "data/interim/03_registrable_domains.csv": "926cafce69aaee4347923e21ea3aab0b1def25d814b9d0db504529788c13ab1f",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
+  },
+  "extractor_source_lf_sha256": {
+    "features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
+    "brand_features.py": "58c41d9451bd3e4409400e10a038523fff106178b4ea160c56835efaecb7bc7c"
+  },
+  "notebook_code_sha256": "a2b148cd126daa53ae91e2769c04f584f7aa3edca1932078c16c97bf9c8e79da",
+  "artifact_sha256": {
+    "reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+    "reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+    "reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8"
+  },
+  "handoff_notes": "Export simplified to three csv.gz files. Original CSV bytes compressed unchanged; only save cell/runner messages/docs edited. Training cells, model bytes, predictions and runtime provenance preserved; no retraining. Notebook renamed to 05_e2_ablation.ipynb; only the save-cell self-reference changed, no retraining.",
+  "original_notebook_code_sha256": "ab3bddc4a7cbacb43b549fe56e478e3cbfa337a7bcd492d6e76ac6fca7b2d7ee",
+  "export_updated_utc": "2026-11-04T06:08:50.394497+00:00"
+}

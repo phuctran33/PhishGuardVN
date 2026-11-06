@@ -1,11 +1,17 @@
-# Local baseline artifacts
+# Model local
 
-Sau khi chạy notebook 04 hoặc scripts/train_baseline.py:
-- week4_lr_baseline.joblib: pipeline, feature names, threshold và cấu hình.
-- week4_lr_baseline_metadata.json: scope, phiên bản thư viện, hash source/handoff và model.
+Notebook E2 ablation tạo `week5_e1_ablation.joblib` và `week5_e2_ablation.joblib`, mỗi bundle chứa năm model full Train,
+feature order/set, selected_model, score_kinds/protocol. E2 có reference snapshot và extractor source hashes.
+Shortlist là E2 MLP / HistGB; model full Train dùng cho inference/Validation, không phải Teacher OOF cho KD.
 
-Artifact chỉ fit core train. Official validation là báo cáo bổ sung; test chưa được dùng.
-Model được bỏ qua trong Git; bàn giao riêng. Xem reports/week4_baseline.md trước khi diễn giải score.
+```powershell
+.\.venv\Scripts\python.exe scripts/predict_week5.py https://example.com/a --feature-set E2 --model mlp
+```
 
-Bản metadata có thể quản lý phiên bản nằm ở reports/tables/04_run_metadata.json.
-Source hashes chuẩn hóa CRLF về LF; input hashes kiểm tra byte gốc của các handoff.
+Web/API có thể load một lần và gọi `phishguard_vn.prediction.predict_url`. SVM trả margin, không phải xác suất.
+Joblib cần môi trường/code tương thích; không chạy trực tiếp offline trên mobile.
+
+`week5_readable_models.joblib` từ notebook 05 v2; CLI mặc định vẫn dùng file này.
+`week4_lr_baseline.joblib` và `week5_lexical_models.joblib` giữ đối chiếu, không bị ablation ghi đè.
+Model giữ local và bị Git bỏ qua. Ba bảng OOF/Validation/partitions dạng `.csv.gz` trong `reports/tables/` được đưa vào repo để Hưng audit; không đóng gói bản sao model/code/reference.
+Đọc `reports/week5_ablation.md`, `reports/week5_teacher_cards.md`, `docs/week5_phuc_handoff.md`.

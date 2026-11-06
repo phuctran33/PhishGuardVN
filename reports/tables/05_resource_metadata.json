@@ -1,0 +1,110 @@
+{
+  "captured_at_utc": "2026-11-01T02:03:37.261676+00:00",
+  "artifact_sha256": "e7c3c254cb787ccadcb9efa51e192e3aa56145733f7f92116763f8176c61261e",
+  "artifact_path": "models/week5_lexical_models.joblib",
+  "experiment_source_manifest_sha256": "e4999ae0a0555e6a0edf86f84b7d8cdc35a3505f5683172ec95d756ee67d1f5d",
+  "experiment_source_sha256_lf": {
+    "configs/e2_models.toml": "4e317f13607bc6cd10725a66ca61160d0646975347fe9d1774d561b948d25b8c",
+    "reports/templates/feature_dictionary.csv": "bfcb84e18c818b3ef0ba0a8086956385b638c0b592b8182f2e15e5c6496a52cc",
+    "scripts/predict_week5.py": "c99f17eb4e542384169088fa8ab8baff1b1abe277437d6f4242b96f91c621de2",
+    "scripts/train_week5.py": "32892697c2605a02212fc3dbdaca5c7c694f0b800794d5ef6925f5a30b2d678a",
+    "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
+    "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
+    "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
+    "src/phishguard_vn/experiments.py": "093789a02f55471389c1b5b5660e609be9fba161f450260efd1be677b00f4a17",
+    "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
+    "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
+    "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
+    "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
+    "src/phishguard_vn/url_parser.py": "0ca974ef204ec025aeeb599d2f6460153b2e46f5f2af021b688d06c4e907102b",
+    "src/phishguard_vn/week5_reporting.py": "f549c81abdaedd051d7f974e406aea206d60b25f97aa21abc85723e4435f84af"
+  },
+  "experiment_metadata_sha256": "6fee9dd2a873737b51adf66e8dc2e040f681f1b7f6c637823870896116f45992",
+  "benchmark_script_sha256_lf": "7e12a13d1b697b04679227af0d200e3b4a69843c7213da7aec4e8fe8da8ff4c9",
+  "input_sha256": {
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb",
+    "data/interim/03_registrable_domains.csv": "926cafce69aaee4347923e21ea3aab0b1def25d814b9d0db504529788c13ab1f",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
+  },
+  "python": "3.11.7",
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0"
+  },
+  "platform": {
+    "system": "Windows",
+    "release": "10",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "logical_cpu_count": 16
+  },
+  "thread_policy": {
+    "threadpool_limit": 1,
+    "parallel_measurements": false,
+    "effective_libraries_during_measurement": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "D:\\PhishGuardVN\\.venv\\Lib\\site-packages\\numpy.libs\\libscipy_openblas64_-63c857e738469261263c764a36be9436.dll",
+        "version": "0.3.31.188.0",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "vcomp",
+        "filepath": "D:\\PhishGuardVN\\.venv\\Lib\\site-packages\\sklearn\\.libs\\vcomp140.dll",
+        "version": null
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "D:\\PhishGuardVN\\.venv\\Lib\\site-packages\\scipy.libs\\libscipy_openblas-64eda39e79589aedb16f58e5547eb599.dll",
+        "version": "0.3.30",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      }
+    ]
+  },
+  "sample": {
+    "seed": 42,
+    "population": "eligible official train IDs only; labels not inspected",
+    "eligible_train_rows": 13078,
+    "batch_sizes": [
+      1,
+      128
+    ],
+    "method": "sort by ID, pandas.sample(n=128, random_state=42); batch 1 is the first sampled row",
+    "sample_ids_sha256": "b70ed7c9e388c4dae53fa5e1056e60b61abb00c5c256b48153ab92bc7e6fa2ca",
+    "batch1_ids_sha256": "765f9fa28ac2e1c6964977fbde72ae5035501f89833078df3df2633589e9b5e5",
+    "id_hash_convention": "IDs in measurement order, UTF-8, one ID per line including final LF"
+  },
+  "measurement": {
+    "warmups_per_model_batch": 3,
+    "repetitions_per_model_batch": 20,
+    "clock": "time.perf_counter_ns",
+    "percentile_method": "numpy.percentile default linear",
+    "timed_call": "estimator.predict_proba(precomputed_feature_dataframe)",
+    "size_method": "joblib.dump(each estimator, BytesIO, compress=0); independent per-model serialization",
+    "bundle_size_note": "bundle_bytes includes all estimators/schema/config and is not per-model size"
+  },
+  "limitations": [
+    "PC CPU inference measurement only, not Android/iOS latency or RAM.",
+    "Predict-proba duration excludes URL parsing/feature extraction, artifact disk loading, network and GUI.",
+    "Single shared process; cache state, OS scheduling and hardware affect timings; no latency-based model selection.",
+    "Batch-128 numbers are duration of the whole batch, not latency for one URL.",
+    "Model bytes exclude dependencies, Python runtime and bundled PSL/brand reference costs.",
+    "Three warmups precede twenty sequential timed calls per model and batch; validation labels/test are not used."
+  ]
+}
