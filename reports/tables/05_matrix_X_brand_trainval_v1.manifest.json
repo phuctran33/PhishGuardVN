@@ -86,11 +86,11 @@
     "n_brands_with_official_suffixes": 1,
     "n_brands_with_typo_ignore": 1
   },
-  "brand_feature_dictionary_sha256": "72009507d9b8da87f8a410dc5cfd4a1edea8dd60a048bdf47faf5752c12524dd",
+  "brand_feature_dictionary_sha256": "8fdc9d897810956fb04031969a2473f2aff82faa81e71ad72819b7957bd004ea",
   "e1_feature_dictionary_sha256": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
   "tldextract_version": "5.4.0",
-  "python": "3.12.6",
-  "git_commit": "16f641f0d706481be91486152faf51a4ba6e9f01",
+  "python": "3.14.0",
+  "git_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
   "git_dirty": false,
-  "created_utc": "2026-11-06T15:59:33+00:00"
+  "created_utc": "2026-11-07T02:16:33+00:00"
 }

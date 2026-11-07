@@ -1056,5 +1056,38 @@
   "train_check_command": "python scripts/05_train_only_check.py --matrix data/interim/05_matrix_X_brand_trainval.csv --write-dictionary",
   "matrix_command": "python scripts/05_build_matrix_x_brand.py --partition trainval",
   "dictionary_change_scope": "Only train_check text changes; all formulas/keys/scope/version/owner/reference and E1 dictionary unchanged.",
-  "exclusion_scope": "Only the 13,080 Gold/Silver Core Train IDs, not Bronze or other IDs in the official Train split."
+  "exclusion_scope": "Only the 13,080 Gold/Silver Core Train IDs, not Bronze or other IDs in the official Train split.",
+  "freeze": {
+    "source_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+    "source_worktree_was_clean": true,
+    "all_exit_code": 0,
+    "trainval_exit_code": 0,
+    "brand_dictionary_sha256": "8fdc9d897810956fb04031969a2473f2aff82faa81e71ad72819b7957bd004ea",
+    "e1_dictionary_sha256": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
+    "manifest_files": {
+      "05_matrix_X_brand_v1.manifest.json": {
+        "sha256": "6ca6e20bc04c6a10f95756673dd72f1bc37852c18c67c2af6134fe522e97f546",
+        "partition": "all",
+        "rows_x": 18995,
+        "rows_excluded": 2,
+        "git_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+        "git_dirty": false,
+        "frozen": true
+      },
+      "05_matrix_X_brand_trainval_v1.manifest.json": {
+        "sha256": "3d34c8f842f35e41cf80deb68c35cb7b93f7a89f37ec0e39f83615acf93f267a",
+        "partition": "trainval",
+        "rows_x": 14663,
+        "rows_excluded": 2,
+        "git_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+        "git_dirty": false,
+        "frozen": true
+      }
+    },
+    "trainval_matrix_identical_after_refreeze": true,
+    "all_matrix_sha256": "68a0572843d917b74c57b7de383162c4abe4b88d5a1048eb0a60f8097d47cc5a",
+    "parity_check": "PASS: 05_make_parity_vectors.py --check regenerated values in memory and matched the committed parity file exactly",
+    "parity_sha256": "e51c67f853c5424c1c7dfc2df33c0354a12bdb30b91fc40df5a84389bce7e00a",
+    "final_verification_command": "python scripts/05_verify_e2_artifacts.py (run after committing these artifacts)"
+  }
 }
