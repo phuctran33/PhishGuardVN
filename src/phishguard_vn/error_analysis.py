@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from pathlib import Path
 from string import Template
@@ -125,6 +126,15 @@ def update_human_checklist(cases, evidence, path):
         prior = pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8").set_index("id")
         if not prior.index.is_unique or set(prior.index) != set(checklist.id):
             raise ValueError("Human checklist IDs changed; preserve and reconcile manually")
+        # Match the existing 1e-12 absolute evidence tolerance. Preserve the
+        # original CSV spelling across float parsing/platform roundoff, while
+        # rejecting real score changes before carrying human review forward.
+        scores = checklist.id.map(prior.score)
+        for previous, current in zip(scores, checklist.score):
+            if not (math.isfinite(float(previous)) and math.isfinite(float(current))
+                    and math.isclose(float(previous), float(current), rel_tol=0, abs_tol=1e-12)):
+                raise ValueError("Human checklist scores changed; preserve and reconcile manually")
+        checklist["score"] = scores
         for field in fields:
             checklist[field] = checklist.id.map(prior[field])
     else:

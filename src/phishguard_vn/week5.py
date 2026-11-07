@@ -54,7 +54,7 @@ def _input_fingerprint(root, config_path, dataset_path, baseline_path):
         paths.append(reviews)
     paths += [p for p in [root / "reports/templates/brand_feature_dictionary.csv",
                          root / "src/phishguard_vn/resources/brand_reference_v1.csv"] if p.is_file()]
-    files = {str(p.relative_to(root) if p.is_relative_to(root) else p): sha256(p) for p in paths}
+    files = {(p.relative_to(root) if p.is_relative_to(root) else p).as_posix(): sha256(p) for p in paths}
     versions = {p: version(p) for p in ["numpy", "pandas", "scipy", "scikit-learn", "tldextract", "idna", "joblib", "matplotlib"]}
     value = {"files_sha256": files, "versions": versions, "python": platform.python_version()}
     confirmation_path = root / "reports/tables/week5/verification.json"
@@ -73,14 +73,31 @@ def _input_fingerprint(root, config_path, dataset_path, baseline_path):
     return value
 
 
+def _normalized_file_hashes(files):
+    """Read legacy Windows cache keys without rewriting their provenance."""
+    normalized = {}
+    for key, digest in files.items():
+        key = key.replace("\\", "/")
+        if key in normalized and normalized[key] != digest:
+            raise ValueError(f"Conflicting cache hashes for {key}")
+        normalized[key] = digest
+    return normalized
+
+
 def _baseline_cache_matches(prior, current, dataset_key, config_key):
     """Analysis/report/E2 edits must not retrain an unchanged E1 experiment."""
     modules = ["__init__", "data", "features", "url_parser", "splits", "modeling", "evaluation"]
-    keys = {dataset_key, config_key, *[f"src/phishguard_vn/{name}.py" for name in modules]}
+    keys = {dataset_key.replace("\\", "/"), config_key.replace("\\", "/"),
+            *[f"src/phishguard_vn/{name}.py" for name in modules]}
+    try:
+        old_files = _normalized_file_hashes(prior.get("files_sha256", {}))
+        new_files = _normalized_file_hashes(current["files_sha256"])
+    except ValueError:
+        return False
     return (prior.get("versions") == current["versions"] and prior.get("python") == current["python"]
-            and all(k in current["files_sha256"] and (
-                prior.get("files_sha256", {}).get(k) == current["files_sha256"][k]
-                or (k == "src/phishguard_vn/url_parser.py" and prior.get("files_sha256", {}).get(k)
+            and all(k in new_files and (
+                old_files.get(k) == new_files[k]
+                or (k == "src/phishguard_vn/url_parser.py" and old_files.get(k)
                     == current.get("parser_legacy_alias_sha256") is not None)) for k in keys))
 
 
@@ -324,8 +341,8 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
     lineage_path = output / "e1_training_lineage.json"
     if result_path.is_file() and prior_path.is_file() and lineage_path.is_file() and not rebuild_e1:
         prior = json.loads(prior_path.read_text(encoding="utf-8"))
-        dataset_key = str(paths["dataset"].relative_to(root) if paths["dataset"].is_relative_to(root) else paths["dataset"])
-        config_key = str(paths["baseline_config"].relative_to(root) if paths["baseline_config"].is_relative_to(root) else paths["baseline_config"])
+        dataset_key = (paths["dataset"].relative_to(root) if paths["dataset"].is_relative_to(root) else paths["dataset"]).as_posix()
+        config_key = (paths["baseline_config"].relative_to(root) if paths["baseline_config"].is_relative_to(root) else paths["baseline_config"]).as_posix()
         if (_baseline_cache_matches(prior, fingerprint, dataset_key, config_key) and prior["result_sha256"] == sha256(result_path)
                 and prior.get("lineage_sha256") == sha256(lineage_path)):
             result = joblib.load(result_path)  # Only this runner's local artifact, never a downloaded model.
@@ -446,7 +463,7 @@ def run_week5(root, config_path=None, *, rebuild_e1=False, robustness_only=False
                 "git_worktree_status_at_start": worktree,
                 "provenance_note": "Audit hashes identify the current runtime sources, including uncommitted review changes; published_commit identifies the existing upstream snapshot, not publication of this review. E1 generation sources and runtime base remain the original immutable training record.",
                 "selected_model": selected, "threshold": result["decision_threshold"], "cached_e1": cached,
-                "e1_parser_alias_compatibility": "PR #5 deprecated-property spelling only; reversed source hash matches E1, and regenerated feature/domain/fold handoffs agree" if cached and provenance["files_sha256"]["src/phishguard_vn/url_parser.py"] != fingerprint["files_sha256"]["src/phishguard_vn/url_parser.py"] else "not needed",
+                "e1_parser_alias_compatibility": "PR #5 deprecated-property spelling only; reversed source hash matches E1, and regenerated feature/domain/fold handoffs agree" if cached and _normalized_file_hashes(provenance["files_sha256"])["src/phishguard_vn/url_parser.py"] != fingerprint["files_sha256"]["src/phishguard_vn/url_parser.py"] else "not needed",
                 "e2_feature_audit_sha256": sha256(tables / "e2_feature_audit.json") if native_feature_audit else None,
                 "native_model_audit": native_model_audit,
                 "e1_generation": provenance, "handoff_comparisons": comparisons,

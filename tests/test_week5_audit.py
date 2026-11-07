@@ -295,6 +295,47 @@ def test_analysis_edit_reuses_e1_but_training_edit_does_not():
     assert not _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
 
 
+@pytest.mark.parametrize("old_separator,new_separator", [("\\", "\\"), ("\\", "/"), ("/", "\\"), ("/", "/")])
+def test_e1_cache_accepts_legacy_windows_keys_without_weakening_checks(old_separator, new_separator):
+    from phishguard_vn.week5 import _baseline_cache_matches, _normalized_file_hashes
+    modules = ["__init__", "data", "features", "url_parser", "splits", "modeling", "evaluation"]
+    files = {f"src/phishguard_vn/{name}.py": "source" for name in modules}
+    files.update({"data/raw.csv": "data", "configs/baseline.toml": "config"})
+    prior = {"files_sha256": {k.replace("/", old_separator): v for k, v in files.items()},
+             "versions": {"numpy": "test"}, "python": "test"}
+    current = {**prior, "files_sha256": {k.replace("/", new_separator): v for k, v in files.items()}}
+    before = json.dumps(prior, sort_keys=True)
+    keys = ["data\\raw.csv", "configs\\baseline.toml"]
+    assert _baseline_cache_matches(prior, prior, *keys)
+    assert _baseline_cache_matches(prior, current, *keys)
+    # The post-cache manifest must also read the legacy parser key safely.
+    assert _normalized_file_hashes(prior["files_sha256"])["src/phishguard_vn/url_parser.py"] == "source"
+    parser_key = "src/phishguard_vn/url_parser.py".replace("/", new_separator)
+    current["files_sha256"][parser_key] = "alias-renamed"
+    assert not _baseline_cache_matches(prior, current, *keys)
+    current["parser_legacy_alias_sha256"] = "source"
+    assert _baseline_cache_matches(prior, current, *keys)
+    for key in ["data/raw.csv", "configs/baseline.toml", "src/phishguard_vn/modeling.py"]:
+        changed = {**current, "files_sha256": {**current["files_sha256"], key.replace("/", new_separator): "changed"}}
+        assert not _baseline_cache_matches(prior, changed, *keys)
+    assert not _baseline_cache_matches(prior, {**current, "versions": {"numpy": "changed"}}, *keys)
+    assert not _baseline_cache_matches(prior, {**current, "python": "changed"}, *keys)
+    assert json.dumps(prior, sort_keys=True) == before
+
+
+@pytest.mark.parametrize("side", ["prior", "current"])
+def test_e1_cache_rejects_conflicting_normalized_keys(side):
+    from phishguard_vn.week5 import _baseline_cache_matches
+    modules = ["__init__", "data", "features", "url_parser", "splits", "modeling", "evaluation"]
+    files = {f"src/phishguard_vn/{name}.py": "source" for name in modules}
+    files.update({"raw.csv": "raw", "baseline.toml": "config"})
+    prior = {"files_sha256": files, "versions": {}, "python": "test"}
+    current = json.loads(json.dumps(prior))
+    target = prior if side == "prior" else current
+    target["files_sha256"]["src\\phishguard_vn\\modeling.py"] = "conflicting-source"
+    assert not _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
+
+
 def threshold_fixture(inputs, tmp_path):
     metadata, folds, _ = inputs
     allowed = {str(f): set(folds.id if f == -1 else folds.loc[folds.fold_id.ne(f), "id"]) for f in (-1, 0, 1, 2)}

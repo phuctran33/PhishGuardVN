@@ -1,4 +1,4 @@
-# Hưng — Week 5 handoff (review fixes 2026-11-06)
+# Hưng — Week 5 handoff (review fixes 2026-11-07)
 
 | Task | Current status | Evidence / remaining work |
 |---|---|---|
@@ -12,7 +12,7 @@
 
 ## Branch and provenance
 
-Work continues from published Hưng commit `06526d63614747e903715b9737016415b4088435` on `week5/hung-evaluation-robustness`. Hy PR #5 was already integrated through `a7413aae3351703429eba518657b08894afae3e7`; main is `0054a1b1844ce12b84030e52952106488b0cbc10`. PR #6 was checked open/unmerged at `b230fd6ebe33d43b8bd64d2b83653d546156fe1a`. Its separate detached worktree is used read-only; no unmerged Phúc code is merged into Hưng, and no Phúc/Hy source, main, or PR merge is changed.
+The initial model audit started from published Hưng commit `06526d63614747e903715b9737016415b4088435` on `week5/hung-evaluation-robustness`, with main then at `0054a1b1844ce12b84030e52952106488b0cbc10`. Hy PR #5 was already integrated through `a7413aae3351703429eba518657b08894afae3e7`. At that time PR #6 was open/unmerged at `b230fd6ebe33d43b8bd64d2b83653d546156fe1a`; the subsequent main integration below includes its merge. Its pinned detached worktree remains read-only for auditing the same published artifacts. The current reproducibility fixes start from `e9539fd9eee98b22f1b485ae4fdc19d25d228bdd` and do not change teammate sources or merge any PR.
 
 Native artifacts were independently reviewed and [approved on the exact producer commit](https://github.com/phuctran33/PhishGuardVN/pull/6#pullrequestreview-5766640293). This integration reruns data/partition/metric checks directly, without fitting original models. The previous independent PR review executed 152 producer tests; this integration's own checks and current test count are recorded in `reports/tables/week5/verification.json`.
 
@@ -102,6 +102,14 @@ Fetched `origin/main` at `f78c0247c88676f6074e212f84898b211c87053f` (already inc
 After resolution: **259 passed, 0 failed, 0 skipped**. UTF-8/CP1252 and LF/CRLF simulations, raw checksums, repeated report regeneration at 30/29/0 human reviews, confirmation guards and all new main tests pass. CLI exits 0 with `cached_e1=True`; notebook Run All executes all six code cells without error. All 36 captured annotation/data/fold/model/cache/metrics/robustness/gzip hashes remain identical. Newly merged native gzip files also match the pinned reviewed producer bytes. Pytest fits only its small synthetic fixtures; the research E1/E2 models are not retrained or tuned, and no actual Official Test evaluation is performed. Actual Windows execution remains untested.
 
 The audit still uses the existing read-only producer checkout through `PHISHGUARD_E2_PRODUCER_ROOT`; its native artifacts match the newly merged main files. Source/config hashes in the run manifest reflect the staged main integration at runtime base `62b3f8b`; the subsequent merge publication is identified by Git history. Full actual outcomes, file hashes and collection checks are recorded in `verification.json → main_merge_resolution`. PR #7 is not merged or approved by this workflow.
+
+## Follow-up: Windows cache and checklist reproducibility
+
+The [follow-up review of e9539fd](https://github.com/phuctran33/PhishGuardVN/pull/7#pullrequestreview-5802851736) confirmed the prior three fixes on Windows and reported two remaining regeneration issues. Fingerprints now write POSIX path keys; cache comparison and the parser-provenance lookup normalize legacy backslashes without rewriting original E1 generation metadata. Conflicting hashes for equivalent keys invalidate the cache. Data/config/training-source/environment/model/lineage checks remain enforced.
+
+Checklist regeneration now preserves each existing score's exact CSV spelling by ID when finite values match within absolute tolerance `1e-12` (relative tolerance zero). Larger differences or non-finite values stop regeneration before writing the checklist, requiring reconciliation of the reviewed evidence. Human fields, IDs and raw-byte SHA256 checks remain intact. Regressions cover legacy Windows self/mixed-platform comparisons, real dependency changes, duplicate-key conflicts, repeated score roundtrips/one-ULP perturbations, invalid or changed scores, and full checklist byte equality under simulated Windows text defaults. Actual Windows execution of this new patch remains for the reviewer; local execution uses macOS.
+
+Executed in the requested order: **269 passed, 0 failed, 0 skipped** before regeneration; CLI exit 0 with `cached_e1=True`; notebook Run All exit 0 with six executed code cells, zero errors and `cached_e1=True`; then **269 passed, 0 failed, 0 skipped** again. All **37 captured hashes** remain identical, including original E1 provenance/model/explanation cache, predictions/folds, dataset/splits, all annotations, metrics, robustness, figures and producer gzip files. The checklist remains 30 human-verified and 10 pending; all four testable hypotheses, conclusions and acceptance matrix survive regeneration. No research model is retrained/tuned and no Official Test is evaluated. The run manifest captures audit base `e9539fd`, separate from original E1 generation base `3e9001c` and the later publication commit. Exact results/hashes are in `verification.json → pr7_reproducibility_fixes`.
 
 ## Verification and remaining owners
 

@@ -7,6 +7,7 @@ import shutil
 import subprocess
 
 import pandas as pd
+import numpy as np
 import pytest
 
 from phishguard_vn.e2_audit import sha256
@@ -115,6 +116,7 @@ def test_utf8_lf_generation_under_simulated_windows_defaults(report_inputs, monk
     assert json.loads(path.read_text(encoding='utf-8')) == value
     assert b'\r' not in path.read_bytes() and 'Hưng'.encode('utf-8') in path.read_bytes()
     human_path = root / 'reports/annotations/week5_human_review.csv'
+    original_bytes = human_path.read_bytes()
     before = pd.read_csv(human_path, dtype=str, keep_default_na=False, encoding='utf-8')
     evidence = pd.read_csv(root / 'reports/tables/week5/error_model_evidence.csv', encoding='utf-8')
     for _ in range(2):
@@ -123,9 +125,40 @@ def test_utf8_lf_generation_under_simulated_windows_defaults(report_inputs, monk
     after = pd.read_csv(human_path, dtype=str, keep_default_na=False, encoding='utf-8')
     fields = ['id', 'reviewer', 'reviewed_at', 'observation_checked', 'hypothesis_assessed', 'evidence_checked', 'notes', 'review_status']
     pd.testing.assert_frame_equal(before[fields], after[fields])
+    assert human_path.read_bytes() == original_bytes
     assert b'\r' not in human_path.read_bytes()
     assert b'\r' not in (root / 'reports/week5_evaluation.md').read_bytes()
     assert_h52_narrative((root / 'reports/week5_evaluation.md').read_text(encoding='utf-8'))
+
+
+def test_checklist_preserves_score_spelling_and_raw_hash_after_float_roundtrip(report_inputs):
+    root = report_inputs['root']
+    path = root / 'reports/annotations/week5_human_review.csv'
+    human = pd.read_csv(path, dtype=str, keep_default_na=False, encoding='utf-8')
+    # Include a distinct but equivalent CSV spelling, not just default float output.
+    human.loc[0, 'score'] += '00'
+    human.to_csv(path, index=False, encoding='utf-8', lineterminator='\n')
+    before, digest = path.read_bytes(), sha256(path)
+    cases = report_inputs['cases'].copy()  # Real 40-case CSV parsed back into floats.
+    cases['score'] = np.nextafter(cases.score.to_numpy(), np.inf)
+    evidence = pd.read_csv(root / 'reports/tables/week5/error_model_evidence.csv', encoding='utf-8')
+    for _ in range(2):
+        update_human_checklist(cases, evidence, path)
+        assert path.read_bytes() == before
+        assert sha256(path) == digest
+
+
+@pytest.mark.parametrize('score', [0.123456789, float('nan'), float('inf')])
+def test_checklist_rejects_real_or_invalid_score_changes_without_writing(report_inputs, score):
+    root = report_inputs['root']
+    path = root / 'reports/annotations/week5_human_review.csv'
+    before = path.read_bytes()
+    cases = report_inputs['cases'].copy()
+    cases.loc[cases.index[0], 'score'] = score
+    evidence = pd.read_csv(root / 'reports/tables/week5/error_model_evidence.csv', encoding='utf-8')
+    with pytest.raises(ValueError, match='Human checklist scores changed'):
+        update_human_checklist(cases, evidence, path)
+    assert path.read_bytes() == before
 
 
 @pytest.mark.parametrize('autocrlf', ['true', 'false'])
