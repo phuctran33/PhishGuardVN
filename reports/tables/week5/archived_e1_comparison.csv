@@ -1,0 +1,10 @@
+model,fold_id,tn_delta,fp_delta,fn_delta,tp_delta,precision_phishing_delta,recall_phishing_delta,f1_phishing_delta,pr_auc_delta,false_positive_rate_delta
+dummy_most_frequent,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0
+dummy_most_frequent,1,0,0,0,0,0.0,0.0,0.0,0.0,0.0
+dummy_most_frequent,2,0,0,0,0,0.0,0.0,0.0,0.0,0.0
+logistic_regression,0,0,0,0,0,0.0,0.0,0.0,-0.00010190998171266674,0.0
+logistic_regression,1,0,0,0,0,0.0,0.0,0.0,-0.00020265596863999757,0.0
+logistic_regression,2,0,0,0,0,0.0,0.0,0.0,-0.00011733254910317736,0.0
+logistic_regression_balanced,0,0,0,0,0,0.0,0.0,0.0,-8.712842813418664e-05,0.0
+logistic_regression_balanced,1,0,0,0,0,0.0,0.0,0.0,-0.00011108937763915083,0.0
+logistic_regression_balanced,2,0,0,0,0,0.0,0.0,0.0,-0.0001317353977097202,0.0

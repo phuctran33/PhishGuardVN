@@ -1,0 +1,26 @@
+[paths]
+dataset = "data/dataset_url.csv"
+baseline_config = "configs/baseline.toml"
+artifacts = "data/interim/week5"
+tables = "reports/tables/week5"
+figures = "reports/figures/week5"
+
+[audit]
+seed = 42
+sample_cases = 40
+expected_train_rows = 13078
+expected_validation_rows = 1585
+
+[e2]
+# Native Hy feature audit runs independently of the optional model bundle below.
+native_manifest = "data/interim/05_matrix_X_brand_trainval.manifest.json"
+# Optional clean producer checkout; env PHISHGUARD_E2_PRODUCER_ROOT overrides.
+# Empty: use this checkout only if native 06_* artifacts have been merged.
+producer_root = ""
+# Relative to project root. Artifact paths inside manifest are relative to manifest.
+manifest = ""
+# Optional trusted local module:function accepting one URL and returning phishing score.
+# Example: phishguard_local_e2:predict_score; must use the declared E2 extractor/order.
+predictor = ""
+# Required when a predictor bundle contains multiple candidate models.
+predictor_model = ""
