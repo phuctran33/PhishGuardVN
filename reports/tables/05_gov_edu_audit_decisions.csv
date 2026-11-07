@@ -1,0 +1,4 @@
+rule,brand_id,key,domain_pattern,verdict,note
+brand_domain_mismatch,dvcquocgia,dichvucong,\.gov\.vn$,missing_official_domain,"Subdomain dichvucong thuộc các cổng thông tin địa phương/bộ ngành chạy trên tên miền .gov.vn chính chủ hợp pháp (ví dụ: hanoi.gov.vn xác minh qua VNNIC). Cần thêm official_suffixes=.gov.vn"
+brand_typo_score,vinaphone,vinaphone,,false_match,"Từ khóa vinhphong là tên địa danh hành chính cấp cơ sở (xã Vĩnh Phong). Xác minh đây là va chạm từ vựng ngẫu nhiên theo địa lý Việt Nam không phải hành vi typosquatting."
+brand_domain_mismatch,bhxh,bhxh,^bhxh\.gov\.vn$,missing_official_domain,"Tên miền viết tắt chính thức của cơ quan Bảo hiểm xã hội Việt Nam. Tra cứu hệ thống VNNIC xác nhận chủ thể đăng ký hợp pháp là Trung tâm công nghệ thông tin-Bảo hiểm xã hội Việt Nam."

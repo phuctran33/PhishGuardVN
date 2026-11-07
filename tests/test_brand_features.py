@@ -234,3 +234,6 @@ def test_typo_ignore_token_removes_confirmed_false_match(tmp_path):
 def test_official_suffix_must_start_with_dot(tmp_path):
     with pytest.raises(ValueError, match="bắt đầu bằng"):
         _ref(tmp_path, ["a,Alpha Corp,,alpha.vn,bank,u,d,draft,,gov.vn,"])
+
+def test_other_brand_on_gov_vn_is_still_flagged():
+    assert extract_brand_features("https://vietcombank.caobang.gov.vn/")["brand_domain_mismatch"] == 1.0

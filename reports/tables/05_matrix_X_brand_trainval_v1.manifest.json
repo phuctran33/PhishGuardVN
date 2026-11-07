@@ -1,0 +1,96 @@
+{
+  "feature_schema_version": "e2-brand-v1",
+  "frozen": true,
+  "partition": "trainval",
+  "test_excluded_from_this_artifact": true,
+  "columns": [
+    "id",
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len",
+    "brand_in_domain",
+    "brand_in_subdomain",
+    "brand_in_path",
+    "brand_domain_mismatch",
+    "brand_typo_score",
+    "susp_token_cnt",
+    "idna_flag",
+    "homoglyph_brand_hit"
+  ],
+  "e1_columns": [
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len"
+  ],
+  "brand_columns": [
+    "brand_in_domain",
+    "brand_in_subdomain",
+    "brand_in_path",
+    "brand_domain_mismatch",
+    "brand_typo_score",
+    "susp_token_cnt",
+    "idna_flag",
+    "homoglyph_brand_hit"
+  ],
+  "e1_columns_verified_identical_to_e1_matrix": true,
+  "rows_x": 14663,
+  "rows_excluded": 2,
+  "rows_by_split": {
+    "train": {
+      "x": 13078,
+      "excluded": 2
+    },
+    "val": {
+      "x": 1585,
+      "excluded": 0
+    }
+  },
+  "ids_sha256_x": "4fd813b6d8edc00b5f7aa36aaf9c2e74a73be0d5fc3031bb97ca96331c5eada5",
+  "ids_sha256_excluded": "b50695d8e86bc6b136cec078f50c13584c40d6b282915af956bdb4ff946f7969",
+  "input_file": "core_gold_silver.csv",
+  "input_sha256": "140d6a4837c4b18730b6d87555eca1ac86b89139255964ab11a2536ca5a1ed9f",
+  "splits_sha256": {
+    "url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+    "url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f"
+  },
+  "brand_reference": {
+    "file": "brand_reference_v1.csv",
+    "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+    "n_brands": 45,
+    "status_counts": {
+      "verified": 45
+    },
+    "n_missing_source_accessed": 0,
+    "n_missing_source_url": 0,
+    "fully_verified": true,
+    "n_provenance_issues": 0,
+    "provenance_issues": [],
+    "n_brands_with_official_suffixes": 1,
+    "n_brands_with_typo_ignore": 1
+  },
+  "brand_feature_dictionary_sha256": "8fdc9d897810956fb04031969a2473f2aff82faa81e71ad72819b7957bd004ea",
+  "e1_feature_dictionary_sha256": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
+  "tldextract_version": "5.4.0",
+  "python": "3.14.0",
+  "git_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+  "git_dirty": false,
+  "created_utc": "2026-11-07T02:16:33+00:00"
+}

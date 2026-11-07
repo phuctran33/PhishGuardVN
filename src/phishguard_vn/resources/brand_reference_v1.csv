@@ -1,38 +1,46 @@
-brand_id,canonical_name,aliases,official_domains,sector,source_url,source_accessed,status,notes
-vietcombank,Vietcombank,vcb|vietcom bank,vietcombank.com.vn,bank,https://vietcombank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vietinbank,VietinBank,vietin bank,vietinbank.vn,bank,https://vietinbank.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-bidv,BIDV,,bidv.com.vn,bank,https://bidv.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-agribank,Agribank,,agribank.com.vn,bank,https://agribank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-techcombank,Techcombank,tcb,techcombank.com|techcombank.com.vn,bank,https://techcombank.com,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-mbbank,MB Bank,mbbank,mbbank.com.vn,bank,https://mbbank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-acb,ACB,,acb.com.vn,bank,https://acb.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vpbank,VPBank,vp bank,vpbank.com.vn,bank,https://vpbank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-sacombank,Sacombank,,sacombank.com.vn,bank,https://sacombank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-tpbank,TPBank,tpb,tpb.vn|tpbank.com.vn,bank,https://tpb.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vib,VIB,,vib.com.vn,bank,https://vib.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-hdbank,HDBank,,hdbank.com.vn,bank,https://hdbank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-shb,SHB,,shb.com.vn,bank,https://shb.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-ocb,OCB,,ocb.com.vn,bank,https://ocb.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-msb,MSB,,msb.com.vn,bank,https://msb.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-seabank,SeABank,,seabank.com.vn,bank,https://seabank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-eximbank,Eximbank,,eximbank.com.vn,bank,https://eximbank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-lpbank,LPBank,lienvietpostbank|lienviet post bank,lpbank.com.vn,bank,https://lpbank.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-momo,MoMo,,momo.vn,ewallet,https://momo.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-zalopay,ZaloPay,,zalopay.vn,ewallet,https://zalopay.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vnpay,VNPAY,,vnpay.vn,ewallet,https://vnpay.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-viettel,Viettel,viettelpay,viettel.vn|viettel.com.vn|viettelpay.vn,telecom,https://viettel.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vnpt,VNPT,,vnpt.vn|vnpt.com.vn,telecom,https://vnpt.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-mobifone,MobiFone,,mobifone.vn,telecom,https://mobifone.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vinaphone,VinaPhone,,vinaphone.com.vn,telecom,https://vinaphone.com.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-shopee,Shopee,,shopee.vn,ecommerce,https://shopee.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-lazada,Lazada,,lazada.vn,ecommerce,https://lazada.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-tiki,Tiki,,tiki.vn,ecommerce,https://tiki.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vneid,VNeID,,vneid.gov.vn,gov,https://vneid.gov.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-dvcquocgia,Dịch vụ công quốc gia,dichvucong|dichvucongquocgia,dichvucong.gov.vn,gov,https://dichvucong.gov.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-thuedientu,Thuế điện tử,thue dien tu|tongcucthue|gdt,gdt.gov.vn,gov,https://gdt.gov.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-bhxh,Bảo hiểm xã hội Việt Nam,bhxh|baohiemxahoi,baohiemxahoi.gov.vn|vss.gov.vn,gov,https://baohiemxahoi.gov.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-vnpost,VNPost,,vnpost.vn,delivery,https://vnpost.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-viettelpost,Viettel Post,,viettelpost.vn|viettelpost.com.vn,delivery,https://viettelpost.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-ghn,Giao Hàng Nhanh,ghn|giaohangnhanh,ghn.vn,delivery,https://ghn.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-ghtk,Giao Hàng Tiết Kiệm,ghtk|giaohangtietkiem,ghtk.vn,delivery,https://ghtk.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
-jtexpress,J&T Express,jtexpress,jtexpress.vn,delivery,https://jtexpress.vn,,draft,BẢN NHÁP: cần người kiểm tra domain trên trang chính thức rồi đổi status=verified
+brand_id,canonical_name,aliases,official_domains,sector,source_url,source_accessed,status,notes,official_suffixes,typo_ignore_tokens,source_url_2,verified_by
+vietcombank,Vietcombank,vcb|vietcom bank,vietcombank.com.vn,bank,https://www.vietcombank.com.vn/,2026-11-06,verified,Đối chiếu VNBA và trang chính thức,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-ngoai-thuong-viet-nam--vietcombank-4.htm,Hy
+vietinbank,VietinBank,vietin bank,vietinbank.vn,bank,https://www.vietinbank.vn,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-cong-thuong-viet-nam--vietinbank-5.htm,Hy
+bidv,BIDV,,bidv.com.vn,bank,https://www.bidv.com.vn,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-dau-tu-va-phat-trien-viet-nam--bidv-86.htm,Hy
+agribank,Agribank,,agribank.com.vn,bank,https://www.agribank.com.vn,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-nong-nghiep-va-phat-trien-nong-thon-viet-nam--agribank-7.htm,Hy
+techcombank,Techcombank,tcb,techcombank.com|techcombank.com.vn,bank,https://www.techcombank.com,2026-11-04,verified,"Nguồn VNBA liệt kê website http://www.techcombank.com, nâng cấp chuẩn https://www.techcombank.com theo quy tắc strict validation của dự án; khớp tên miền chính thức.",,,https://tracuutenmien.gov.vn/tra-cuu-thong-tin-ten-mien,Hy
+mbbank,MB Bank,mbbank,mbbank.com.vn,bank,https://mbbank.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-quan-doi--mb-26.htm,Hy
+acb,ACB,,acb.com.vn,bank,https://www.acb.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-thuong-mai-co-phan-a-chau--acb-11.htm,Hy
+vpbank,VPBank,vp bank,vpbank.com.vn,bank,https://www.vpbank.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-viet-nam-thinh-vuong--vpbank-35.htm,Hy
+sacombank,Sacombank,,sacombank.com.vn,bank,https://www.sacombank.com.vn,2026-11-04,verified,"Trang chủ tự chuyển sang /ca-nhan.html, cùng domain gốc; VNBA khớp bản nháp.",,,https://vnba.org.vn/vi/vnba/member/ngan-hang-thuong-mai-co-phan-sai-gon-tai-loc--sacombank-31.htm,Hy
+tpbank,TPBank,tpb,tpb.vn|tpbank.com.vn,bank,https://tpb.vn,2026-11-04,verified,Tra sở hữu trên tracuutenmien.gov.vn cả 2 đều thuộc Ngân Hàng Thương Mại Cổ Phần Tiên Phong,,,https://tracuutenmien.gov.vn/tra-cuu-thong-tin-ten-mien,Hy
+vib,VIB,,vib.com.vn,bank,https://www.vib.com.vn,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-thuong-mai-co-phan-quoc-te-viet-nam--vib-28.htm,Hy
+hdbank,HDBank,,hdbank.com.vn,bank,https://www.hdbank.com.vn,2026-11-04,verified,"Nguồn VNBA liệt kê http://www.hdbank.com.vn, nâng cấp chuẩn https://www.hdbank.com.vn theo quy tắc strict validation của dự án; khớp tên miền chính thức.",,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-phat-trien-thanh-pho-ho-chi-minh--hdbank-24.htm,Hy
+shb,SHB,,shb.com.vn,bank,https://www.shb.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-sai-gon---ha-noi--shb-32.htm,Hy
+ocb,OCB,,ocb.com.vn,bank,https://www.ocb.com.vn,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-phuong-dong--ocb-25.htm,Hy
+msb,MSB,,msb.com.vn,bank,https://www.msb.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-hang-hai-viet-nam--msb-19.htm,Hy
+seabank,SeABank,,seabank.com.vn,bank,https://www.seabank.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-dong-nam-a--seabank-18.htm,Hy
+eximbank,Eximbank,,eximbank.com.vn,bank,https://eximbank.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-xuat-nhap-khau-viet-nam--eximbank-37.htm,Hy
+lpbank,LPBank,lienvietpostbank|lienviet post bank,lpbank.com.vn,bank,https://lpbank.com.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-loc-phat-viet-nam--lpbank-22.htm,Hy
+momo,MoMo,,momo.vn,ewallet,https://momo.vn/,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/cong-ty-co-phan-dich-vu-di-dong-truc-tuyen--momo-52.htm,Hy
+zalopay,ZaloPay,,zalopay.vn,ewallet,https://zalopay.vn,2026-11-04,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/cong-ty-co-phan-zion--zalopay-57.htm,Hy
+vnpay,VNPAY,,vnpay.vn,ewallet,https://vnpay.vn/,2026-11-05,verified,VNBA và trang chủ khớp bản nháp,,,https://vnba.org.vn/vi/vnba/member/cong-ty-co-phan-giai-phap-thanh-toan-viet-nam--vnpay-58.htm,Hy
+viettel,Viettel,viettelpay,viettel.vn|viettel.com.vn|viettelpay.vn,telecom,https://viettel.com.vn,2026-11-05,verified,"Cả 3 tên miền đều do Tập đoàn Viettel và Tổng Công ty Viễn thông Viettel đứng tên đăng ký (xác minh qua tracuutenmien.gov.vn), phục vụ các cổng thông tin và dịch vụ số khác nhau.",,,https://tracuutenmien.gov.vn,Hy
+vnpt,VNPT,,vnpt.vn|vnpt.com.vn,telecom,https://vnpt.vn,2026-11-05,verified,Cả 2 tên miền đều do Tập đoàn/Tổng công ty VNPT đứng tên đăng ký (xác minh qua tracuutenmien.gov.vn),,,https://tracuutenmien.gov.vn,Hy
+mobifone,MobiFone,,mobifone.vn|mobifone.com.vn,telecom,https://www.mobifone.vn/,2026-11-05,verified,Cả 2 tên miền đều do Tổng Công ty Viễn thông Mobifone đứng tên đăng ký (xác minh qua tracuutenmien.gov.vn),,,https://tracuutenmien.gov.vn,Hy
+vinaphone,VinaPhone,,vinaphone.vn|vinaphone.com.vn,telecom,https://vnpt.vn,2026-11-05,verified,"Cả 2 tên miền vinaphone.vn và vinaphone.com.vn đều do Tổng Công ty Dịch vụ Viễn thông đăng ký (theo tracuutenmien.gov.vn), nhưng khi truy cập đều tự động chuyển hướng về cổng chung vnpt.vn.",,vinhphong,https://tracuutenmien.gov.vn,Hy
+shopee,Shopee,,shopee.vn,ecommerce,https://shopee.vn,2026-11-05,verified,Tra cứu khớp bản nháp,,,https://tracuutenmien.gov.vn,Hy
+lazada,Lazada,,lazada.vn,ecommerce,https://lazada.vn,2026-11-05,verified,Tra cứu khớp bản nháp,,,https://tracuutenmien.gov.vn,Hy
+tiki,Tiki,,tiki.vn,ecommerce,https://tiki.vn,2026-11-05,verified,Xác minh chính chủ Công ty TNHH Ti Ki qua tracuutenmien.gov.vn,,,https://tracuutenmien.gov.vn,Hy
+vneid,VNeID,,vneid.gov.vn,gov,https://vneid.gov.vn,2026-11-05,verified,Xác minh chính chủ Cục Cảnh sát QLHC về TTXH qua tracuutenmien.gov.vn,,,https://tracuutenmien.gov.vn,Hy
+dvcquocgia,Dịch vụ công quốc gia,dichvucong|dichvucongquocgia,dichvucong.gov.vn,gov,https://dichvucong.gov.vn,2026-11-05,verified,Xác minh chính chủ Trung tâm Dữ liệu Quốc gia qua tracuutenmien.gov.vn,.gov.vn,,https://tracuutenmien.gov.vn,Hy
+thuedientu,Thuế điện tử,thue dien tu|tongcucthue|gdt,gdt.gov.vn,gov,https://gdt.gov.vn,2026-11-05,verified,Xác minh chính chủ Tổng cục Thuế qua tracuutenmien.gov.vn,,,https://tracuutenmien.gov.vn,Hy
+bhxh,Bảo hiểm xã hội Việt Nam,bhxh|baohiemxahoi,baohiemxahoi.gov.vn|vss.gov.vn|bhxh.gov.vn,gov,https://baohiemxahoi.gov.vn,2026-11-06,verified,"Cả 3 tên miền đều do BHXH Việt Nam đăng ký (theo tracuutenmien.gov.vn). vss.gov.vn là bản tiếng Anh, baohiemxahoi.gov.vn là bản tiếng Việt.",,,https://tracuutenmien.gov.vn,Hy
+vnpost,VNPost,,vnpost.vn,delivery,https://vnpost.vn,2026-11-05,verified,Xác minh chính chủ Tổng công ty Bưu điện Việt Nam qua tracuutenmien.gov.vn.,,,https://tracuutenmien.gov.vn,Hy
+viettelpost,Viettel Post,,viettelpost.com.vn|viettelpost.vn,delivery,https://viettelpost.com.vn,2026-11-05,verified,"Cả hai tên miền đều thuộc sở hữu của Viettel Post. viettelpost.com.vn là trang chủ, truy cập viettelpost.vn dẫn thẳng vào trang đăng nhập hệ thống",,,https://tracuutenmien.gov.vn,Hy
+ghn,Giao Hàng Nhanh,ghn|giaohangnhanh,ghn.vn,delivery,https://ghn.vn,2026-11-05,verified,Xác minh chính chủ Công ty CP Đầu tư Scommerce (công ty mẹ của GHN) qua tracuutenmien.gov.vn,,,https://tracuutenmien.gov.vn,Hy
+ghtk,Giao Hàng Tiết Kiệm,ghtk|giaohangtietkiem,ghtk.vn,delivery,https://ghtk.vn,2026-11-05,verified,Xác minh chính chủ Công ty CP Giao Hàng Tiết Kiệm qua tracuutenmien.gov.vn,,,https://tracuutenmien.gov.vn,Hy
+jtexpress,J&T Express,jtexpress,jtexpress.vn,delivery,https://jtexpress.vn,2026-11-05,verified,Xác minh chính chủ Công ty TNHH MTV Chuyển phát nhanh Thuận Phong (pháp nhân của J&T tại VN) qua tracuutenmien.gov.vn,,,https://tracuutenmien.gov.vn,Hy
+vcbneo,VCBNeo,vcbneo|vietcombank neo,vcbneo.com.vn,bank,https://vcbneo.com.vn,2026-11-05,verified,CBBank đã sáp nhập và đổi tên thành VCBNeo (website vcbneo.com.vn ra mắt 17/01/2025 theo VNBA). Chờ nhóm quyết định cách xử lý alias 'cbbank' và domain cũ cbbank.vn.,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-thuong-mai-tnhh-mtv-ngoai-thuong-cong-nghe-so--vcbneo-9.htm,Hy
+abbank,ABBANK,,abbank.vn,bank,https://www.abbank.vn/,2026-11-05,verified,Thêm brand mới. VNBA và trang chủ dùng abbank.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tcmp-an-binh--abbank-12.htm,Hy
+gpbank,GPBank,,gpbank.com.vn,bank,https://www.gpbank.com.vn/,2026-11-05,verified,Thêm brand mới. VNBA và trang chủ dùng gpbank.com.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tm-tnhh-mtv-ky-nguyen-thinh-vuong--gpbank-10.htm,Hy
+vietbank,VietBank,,vietbank.com.vn,bank,https://www.vietbank.com.vn/,2026-11-05,verified,Thêm brand mới. VNBA và trang chủ dùng vietbank.com.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-viet-nam-thuong-tin--vietbank-38.htm,Hy
+vietabank,VietABank,,vietabank.com.vn,bank,https://www.vietabank.com.vn/,2026-11-05,verified,Thêm brand mới. VNBA và trang chủ dùng vietabank.com.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-viet-a--vietabank-34.htm,Hy
+pvcombank,PVcomBank,,pvcombank.com.vn,bank,https://www.pvcombank.com.vn/,2026-11-05,verified,Thêm brand mới. VNBA và trang chủ dùng pvcombank.com.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-dai-chung-viet-nam--pvcombank-16.htm,Hy
+baovietbank,BAOVIETBank,,baovietbank.vn,bank,https://www.baovietbank.vn/,2026-11-06,verified,Thêm brand mới. VNBA và trang chủ dùng baovietbank.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-bao-viet--baoviet-bank-13.htm,Hy
+pgbank,PGBank,,pgbank.com.vn,bank,https://www.pgbank.com.vn/,2026-11-06,verified,Thêm brand mới. VNBA và trang chủ dùng pgbank.com.vn,,,https://vnba.org.vn/vi/vnba/member/ngan-hang-tmcp-thinh-vuong-va-phat-trien--pgbank-36.htm,Hy
