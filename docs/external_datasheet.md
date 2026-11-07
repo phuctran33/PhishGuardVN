@@ -1,64 +1,109 @@
-# External URL Evaluation Datasheet (v1)
+# External URL Pilot Datasheet
 
-## 1. Mục đích và trạng thái
+**Trạng thái:** Đã tạo và kiểm toán hai candidate CSV. Danh sách phục vụ rà soát thủ công; nhãn chưa được review cuối và chưa dùng để tính metric external.
 
-Tập external được xây dựng nhằm đánh giá khả năng tổng quát hóa của mô hình trên các URL mới, độc lập với Core train/validation/official Test. Tập này không được sử dụng để huấn luyện hoặc lựa chọn mô hình/threshold.
+## 1. Mục đích và tiêu chí lấy mẫu
 
-Trạng thái hiện tại: BLOCKED — Chưa có pilot URL thực tế được thu thập và xác minh.
+Pilot thu thập URL mới nhằm rà soát khả năng tổng quát hóa ngoài Core. Không dùng candidate để huấn luyện, chọn đặc trưng/mô hình hoặc điều chỉnh threshold. Chỉ mẫu được review và chấp nhận mới có thể chuyển thành external evaluation set.
 
-Tài liệu này chỉ mô tả protocol và schema dự kiến, chưa phải dataset pilot.
-Theo đề cương đồ án (trang 2), quy mô dự kiến khoảng 100–300 URL có nhãn và nguồn kiểm chứng nếu thu thập đủ dữ liệu đáng tin cậy; đây là mục tiêu có điều kiện, không phải quota bắt buộc.
-## 2. Phạm vi và tiêu chí nhãn
 
-Pilot dự kiến tập trung vào URL liên quan đến website/dịch vụ tại Việt Nam, gồm hai lớp:
+## 2. Tệp và kết quả audit
 
-phishing: URL có bằng chứng từ nguồn cảnh báo phishing hoặc được người rà soát xác minh.
+| Tệp | Nhãn ứng viên | Đầu vào | Giữ sau audit độc lập | Overlap Core | Trùng/xung đột | Pending |
+|---|---|---:|---:|---:|---:|---:|
+| `phishing_candidates.csv` | phishing | 138 | 138 | 0 | 0 | 138 |
+| `benign_candidates.csv` | benign | 29 | 29 | 0 | 0 | 29 |
+| **Tổng** |  | **167** | **167** | **0** | **0** | **167** |
 
-benign: URL thuộc website chính thức, có thể xác minh nguồn gốc và đơn vị sở hữu.
+Audit chuẩn hóa URL rồi so URL, hostname và registrable domain với `dataset_url.csv`, `vn_compphish.csv` và `abuse_type.csv`. Không phát hiện URL lỗi parse, thiếu `evidence_ref`, overlap Core, trùng nội bộ hoặc xung đột khóa giữa hai nhãn.
 
-pending / disputed: URL chưa đủ bằng chứng hoặc có thông tin nhãn mâu thuẫn; không đưa vào tập đánh giá.
+### Audit log
 
-Không suy luận nhãn benign chỉ từ việc URL không xuất hiện trên feed phishing.
+| Ngày | Phạm vi | Kiểm tra | Kết quả |
+|---|---|---|---|
+| 2026-11-07 | 138 phishing + 29 benign | URL chuẩn hóa, hostname, registrable domain với ba tệp Core | 0 overlap |
+| 2026-11-07 | Trong từng tệp và giữa hai nhãn | ID/URL/hostname/registrable-domain trùng hoặc xung đột nhãn | 0 |
+| 2026-11-07 | Tất cả candidate rows | URL parse và `evidence_ref` | 0 lỗi parse; 167/167 có `evidence_ref` |
+| 2026-11-07 | Hai CSV hiện tại | Số dòng giữ/loại trong lần audit độc lập | Giữ 167; loại 0 |
 
-## 3. Schema pilot CSV
+Notebook 05 tính lại audit log từ hai CSV hiện tại khi chạy. Kết quả “giữ 167, loại 0” chỉ áp dụng cho lần audit độc lập trên snapshot này; không đại diện cho số URL có thể đã bị loại ở các bước tuyển chọn trước đó.
+
+## 3. Nguồn, phương thức thu thập và bằng chứng nhãn
+
+### Phishing
+
+| Nguồn ghi trong CSV | Số dòng | Căn cứ nhãn |
+|---|---:|---|
+| NCSC warning republished by Dak Lak government | 44 | `historical_public_fraud_warning` |
+| ACB official list of fake websites | 38 | `historical_public_fraud_warning` |
+| NCSC warning republished by Nghe An tech centre | 33 | `historical_public_fraud_warning` |
+| Quang Ngai police publication of NCSC warning | 10 | `historical_public_fraud_warning` |
+| Agribank official warning of spoofed domains | 6 | `historical_public_fraud_warning` |
+| BIDV official consumer fraud warning | 4 | `historical_public_fraud_warning` |
+| Bac Ninh government local public-service scam alert | 1 | `historical_public_fraud_warning` |
+| NCSC weekly scam warnings on Ministry portal | 1 | `historical_public_fraud_warning` |
+| VNCERT/CC warning on Ministry portal | 1 | `historical_public_fraud_warning` |
+| **Tổng** | **138** | |
+
+Các cảnh báo được công bố bởi cơ quan, ngân hàng hoặc được đăng lại từ cảnh báo NCSC. Những bản đăng lại không được xem là các feed độc lập. Đây là bằng chứng về cảnh báo/lừa đảo được ghi nhận trong quá khứ, không xác nhận URL hiện còn hoạt động hoặc đang độc hại. Mỗi dòng có `evidence_ref` trỏ tới tài liệu nguồn; tất cả vẫn cần review thủ công.
+
+### Benign
+
+| Nguồn ghi trong CSV | Số dòng | Căn cứ nhãn |
+|---|---:|---|
+| Website doanh nghiệp chính thức (`official_business_site`) | 18 | `official_site_or_authoritative_listing` |
+| Danh bạ hội viên VNBA (`vnba_member_directory`) | 6 | `official_site_or_authoritative_listing` |
+| Cổng thông tin Chính phủ (`government_portal`) | 4 | `official_site_or_authoritative_listing` |
+| Hồ sơ doanh nghiệp AEON (`aeon_official_corporate_profile`) | 1 | `official_site_or_authoritative_listing` |
+| **Tổng** | **29** | |
+
+**Tách nguồn:** File benign hiện không còn URL nào có nguồn Tín Nhiệm Mạng; 29 ứng viên còn lại đến từ website doanh nghiệp, cổng chính phủ, danh bạ VNBA và hồ sơ AEON.
+
+Các URL tham chiếu được lưu trong `evidence_ref`, gồm [Cổng thông tin Chính phủ](https://vietnam.gov.vn/default.aspx?countryId=501&typeId=1), [danh bạ hội viên VNBA](https://vnba.org.vn/vi/vnba/member) và trang/hồ sơ của từng tổ chức. Bằng chứng giúp truy nguyên website nhưng không thay việc kiểm tra chủ sở hữu, trang đích, chuyển hướng và nội dung hiện tại.
+
+Cả 167 dòng có `evidence_ref` và `label_source`; `label` là nhãn ứng viên, toàn bộ `review_status` vẫn `pending`.
+
+## 4. Thời gian thu thập
+
+| Trường | Phishing | Benign | Diễn giải |
+|---|---:|---:|---|
+| `scraped_at` | 138/138: 2026-11-07 04:50:10.940448 UTC | 29/29: 2026-11-07 04:50:10.940448 UTC | Thời điểm snapshot được ghi nhận trong CSV |
+| `collected_at` | 138/138 để trống | 29/29 để trống | Nguồn không cung cấp ngày URL được phát hiện/sự kiện |
+
+
+
+## 5. Schema CSV
 
 | Trường | Ý nghĩa |
 |---|---|
-| id | Mã bản ghi duy nhất |
-| url, url_norm | URL thu thập và URL chuẩn hóa |
-| hostname, registrable_domain | Host chuẩn hóa và nhóm theo PSL |
-| label | phishing hoặc benign; để trống khi chưa xác minh |
-| source | Tên feed/danh sách/đầu mối thu thập |
-| label_source | Feed, danh sách tin cậy hoặc review thủ công |
-| evidence_ref | URL/ID tham chiếu hoặc ghi chú bằng chứng |
-| collected_at | Thời điểm sự kiện theo nguồn |
-| scraped_at | Thời điểm nhóm thu thập (ISO-8601 UTC) |
-| review_status | pending, accepted, rejected hoặc disputed |
-| review_note | Lý do quyết định và case bị loại |
-| license_note | Điều khoản lưu/chia sẻ và hạn chế |
-| core_overlap | Cờ overlap URL/hostname/registrable domain với Core |
-| exclusion_reason | Lý do loại; trống nếu chưa loại |
+| `id` | Mã bản ghi duy nhất; dùng dạng `ext_pilot_phishing_NNNN` hoặc `ext_pilot_benign_NNNN` |
+| `url`, `url_norm` | URL ứng viên nguyên dạng và URL chuẩn hóa; phishing có thể chỉ có hostname nếu nguồn không cung cấp scheme/path |
+| `hostname`, `registrable_domain` | Host và domain gốc theo PSL |
+| `label` | Nhãn ứng viên: phishing hoặc benign |
+| `source` | Nguồn phát hiện/nhận diện URL |
+| `label_source` | Loại căn cứ đề xuất nhãn |
+| `evidence_ref` | URL tham chiếu danh sách/hồ sơ/trang bằng chứng |
+| `collected_at` | Thời gian sự kiện theo nguồn; hiện thiếu ở cả hai lớp |
+| `scraped_at` | Thời điểm snapshot được ghi nhận, ISO-8601 UTC |
+| `review_status` | Trạng thái review; cả 167 dòng hiện `pending` |
+| `review_note` | Ghi chú rà soát và giới hạn bằng chứng |
+| `license_note` | Ghi chú quyền lưu/chia sẻ |
+| `core_overlap` | Kết quả đối chiếu với ba tệp Core; hiện là `No overlap detected` |
 
-Chỉ lưu URL thô trong repository nếu giấy phép/điều khoản cho phép. Nếu không, lưu metadata được phép và ghi rõ vị trí quản lý dữ liệu.
+Hai CSV có cùng 15 cột theo cùng thứ tự. `core_overlap` dùng giá trị dễ đọc; notebook 05 lưu chi tiết audit theo URL, hostname và registrable domain.
 
-## 4. Quy trình thu thập, rà soát và loại
+## 6. Quyền sử dụng, rủi ro và giới hạn
 
-1. Lấy ứng viên từ nguồn ngoài Core; có thể thu thập theo feed/danh sách, không cần tìm từng URL thủ công.
-2. Ghi source, thời điểm thu thập, điều khoản sử dụng và bằng chứng nhãn.
-3. Chuẩn hóa URL, loại trùng URL/URL chuẩn hóa và rà soát domain/campaign lặp.
-4. Đối chiếu membership với toàn bộ Core để cách ly URL/hostname/registrable-domain overlap; phép so sánh không dùng nhãn hay metric Official Test.
-5. Chỉ chấp nhận case có đủ bằng chứng, review status rõ và quyền sử dụng phù hợp; ghi từng case cùng lý do giữ/loại.
-6. Giữ pilot tách khỏi train/validation/Test; không dùng để huấn luyện hoặc chọn threshold trước đánh giá cuối.
+Các `license_note` yêu cầu kiểm tra điều khoản nguồn và attribution; đây không phải xác nhận đã có quyền tái phân phối. Trước khi phát hành CSV cần rà điều khoản của từng nguồn. Nếu không được phép chia sẻ URL thô, chỉ chia sẻ metadata được phép và ghi nơi quản lý dữ liệu.
 
-## 5. Blocker và dữ liệu cần có
+- Phishing hiện dựa trên cảnh báo công khai trong quá khứ; một số nguồn là bản đăng lại cảnh báo NCSC, không phải feed độc lập. Nhãn chưa xác minh tình trạng hiện tại.
+- Benign được nhận diện qua danh bạ/cổng chính thức và trang doanh nghiệp; cần xác minh tổ chức sở hữu và đích đến hiện tại.
+- Tất cả mẫu còn `pending`; chưa có nhãn accepted để tính metric.
+- Snapshot 167 ứng viên nằm trong mức tham khảo 150–300, nhưng số lượng không thay thế yêu cầu review nhãn và quyền sử dụng.
+- Không có `collected_at`, nên chưa phân tích temporal drift hay tạo temporal holdout.
+- Số bị loại ở bước tuyển chọn trước audit không được ghi nhận; số 0 bị loại chỉ áp dụng cho audit độc lập trên hai CSV hiện tại.
+- Domain-level dedup không loại trừ mọi campaign hoặc shared-infrastructure leakage.
 
-Hiện trạng: Thư mục data/external/ đang trống, chưa có pilot CSV hoặc danh sách URL ứng viên để kiểm tra. Do đó, chưa thể đánh giá coverage, phân bố nhãn hoặc overlap với Core.
+## 7. Điều kiện chuyển sang external evaluation
 
-Blocker: Chưa thu thập được URL mới có đủ hai nhãn phishing và benign, nguồn rõ ràng và bằng chứng nhãn có thể xác minh.
-
-Để tiếp tục, cần thu thập URL từ các nguồn phù hợp, ghi nhận nguồn, bằng chứng nhãn, thời điểm thu thập và quyền sử dụng. Sau đó, kiểm tra overlap theo URL, hostname và registrable domain với Core trước khi đưa các bản ghi đã được review vào tập external evaluation.
-
-Các URL chưa đủ bằng chứng hoặc có nhãn mâu thuẫn sẽ không được sử dụng.
-## 6. Parser và PSL policy
-
-Notebook audit dùng parser tự chứa với urllib.parse, ipaddress và tldextract 5.4.0; PSL chạy offline, không tính private suffix. Hostname được chuẩn hóa chữ thường, bỏ dấu chấm cuối, IDN chuyển sang Punycode. IP hợp lệ không có registrable domain để làm group. Lỗi parser được giữ cùng ID/URL để rà soát.
+Rà từng URL về trang đích/chuyển hướng, đơn vị sở hữu, bằng chứng nhãn và ngày quan sát; ghi quyết định cùng lý do trong `review_status`/`review_note`. Chỉ mẫu accepted có căn cứ và quyền sử dụng phù hợp mới đưa vào external evaluation. Không dùng pilot để train, chọn mô hình hay threshold. Không suy luận benign chỉ vì URL không có trong feed phishing.
