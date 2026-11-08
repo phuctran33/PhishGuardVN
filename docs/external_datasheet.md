@@ -4,7 +4,7 @@
 
 **Cập nhật K5.3 (2026-11-08): PILOT / PREPARED–BLOCKED.** Audit bổ sung phát hiện format/scheme và `slash_cnt/path_len` phân tách đúng 167/167 **nhãn ứng viên** trên cùng snapshot; đây là collection artifact, không phải khả năng phát hiện phishing. Biểu diễn host-only đã thống nhất cho cả hai lớp bằng parser/feature extractor chính thức, nhưng 13/13 nhóm nguồn vẫn chỉ có một nhãn. Không tuyên bố đã loại source/campaign leakage.
 
-Xem [báo cáo K5.3](../reports/k53_external_pilot_audit.md), [data dictionary và lệnh tái lập](../data/external/README.md), `reports/tables/external_pilot/` và `data/external/derived/`. Hai CSV 15 cột bên dưới vẫn là nguồn nguyên trạng, không bị ghi đè hoặc đổi nhãn. Ledger canonical mới có đủ raw_url/normalized_url/model input/source reference/review evidence; raw CSV vẫn pending; ledger overlay đã review tài liệu lịch sử 99 verified (92 phishing / 7 benign), 68 pending, 0 rejected, human verified = 0. Chưa có Teacher bundle đã chốt để chấm metric.
+Xem [báo cáo K5.3](../reports/k53_external_pilot_audit.md), [data dictionary và lệnh tái lập](../data/external/README.md), `reports/tables/external_pilot/` và `data/external/derived/`. Hai CSV 15 cột bên dưới vẫn là nguồn nguyên trạng, không bị ghi đè hoặc đổi nhãn. Ledger canonical mới có đủ raw_url/normalized_url/model input/source reference/review evidence; raw CSV vẫn pending; ledger overlay có 99 verified theo tài liệu lịch sử (92 phishing / 7 benign), 68 pending, 0 rejected. Sau xác nhận kiểm tra lại của Hưng, trình bày hiện tại là **99 human-checked**, ghi riêng trong `reports/annotations/k53_human_check_confirmation.csv` theo ID/signature. Đây là xác nhận do reviewer tự báo cáo, không mở rộng sang 68 pending hoặc xác minh website hiện tại/full URL. Các trường method/reviewer trong ledger PR #13 giữ lịch sử lần đối chiếu tài liệu ban đầu, không bị đổi tên để giả thành một quy trình khác. Chưa có Teacher bundle đã chốt để chấm metric.
 
 Lịch sử Git phục hồi riêng **74 phishing + 32 benign** tại `data/external/history/2026-11-07/`. File phishing có 75 dòng gồm header; không tìm thấy manifest chứng minh một cohort đúng 75 URL. 74 phishing cũ đến từ tinnhiemmang và 29 benign trùng snapshot mới; không gộp thành benchmark độc lập hoặc nhận tất cả đã verified.
 
@@ -104,7 +104,7 @@ Các `license_note` yêu cầu kiểm tra điều khoản nguồn và attributio
 
 - Phishing hiện dựa trên cảnh báo công khai trong quá khứ; một số nguồn là bản đăng lại cảnh báo NCSC, không phải feed độc lập. Nhãn chưa xác minh tình trạng hiện tại.
 - Benign được nhận diện qua danh bạ/cổng chính thức và trang doanh nghiệp; cần xác minh tổ chức sở hữu và đích đến hiện tại.
-- Hai CSV gốc còn `pending`; ledger có subset nhãn lịch sử được AI đối chiếu tài liệu. Đây không phải xác minh trang đích hiện tại; xem phương pháp và giới hạn trong báo cáo K5.3.
+- Hai CSV gốc còn `pending`; ledger có subset nhãn lịch sử và xác nhận human-checked riêng của Hưng. Đây không phải xác minh trang đích hiện tại; xem phương pháp và giới hạn trong báo cáo K5.3.
 - Snapshot 167 ứng viên nằm trong mức tham khảo 150–300, nhưng số lượng không thay thế yêu cầu review nhãn và quyền sử dụng.
 - Không có `collected_at`, nên chưa phân tích temporal drift hay tạo temporal holdout.
 - Số bị loại ở bước tuyển chọn trước audit không được ghi nhận; số 0 bị loại chỉ áp dụng cho audit độc lập trên hai CSV hiện tại.

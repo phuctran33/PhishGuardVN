@@ -1,0 +1,219 @@
+{
+  "checked_at_utc": "2026-11-08T13:08:07.882422+00:00",
+  "reviewed_main_revision": "d7a5a6644a6118690c6e8306b6c66e181e08e361",
+  "runtime_worktree_dirty": true,
+  "publication_note": "Verification performed before documentation commit. Numeric runtime manifests keep original producer revisions; publication commit is separate.",
+  "scope": "Documentation, editorial manifest overlay and human check confirmation only; no tracked code, tests or notebook changes.",
+  "merged_prs": {
+    "7": "b7c5b16cbd104322a8386702b5f9087c68250493",
+    "12": "83ccbb33ed481bdc4c4c70236069bd4ab832804b",
+    "13": "d7a5a6644a6118690c6e8306b6c66e181e08e361"
+  },
+  "external": {
+    "raw_candidates": 167,
+    "raw_pending": 167,
+    "ledger_verified_historical": 99,
+    "ledger_pending": 68,
+    "human_verified_in_original_producer_snapshot": 0,
+    "human_checked_after_user_confirmation": 99,
+    "confirmation_basis": "User group-level self-attestation; reviewer Hưng; actual checking date/actions not supplied. Does not attest to live-site/full-URL safety or the 68 pending.",
+    "confirmation_ids_and_candidate_signatures_bound": true,
+    "original_ledger_bytes_unchanged": true,
+    "benchmark": {
+      "status": "PREPARED_BLOCKED",
+      "official": false,
+      "blockers": [
+        "NO_FINALIZED_TRUSTED_TEACHER_ARTIFACT"
+      ],
+      "metrics": null,
+      "n_candidates": 167,
+      "n_evaluated": 0,
+      "representation": "host_only",
+      "note": "No candidate/model-predicted labels used as ground truth. No inference or training performed."
+    }
+  },
+  "rubric": {
+    "criteria_count": 21,
+    "evidence_covered": 21,
+    "teacher_pdf_pages": 3,
+    "teacher_pdf_sha256": "bdca1f269200cb77ed591a5e669af50e05d44077b58b952f8b3a4155282def63",
+    "mapping": "reports/post_merge_eda_review.md",
+    "no_new_eda_required": true,
+    "grade_guaranteed": false
+  },
+  "pytest": {
+    "command": "python -m pytest -q -rs",
+    "exit_code": 0,
+    "passed": 387,
+    "failed": 0,
+    "skipped": 1,
+    "summary": "387 passed, 1 skipped in 22.46s",
+    "skip_reason": "Pre-existing empty parameter set at tests/test_brand_regressions.py:58",
+    "initial_isolated_checkout_run": "386 passed, 2 skipped in 17.41s; extra skip was missing ignored core handoff, resolved by copying existing file without regenerating data.",
+    "real_fold_handoff_integration_test": "1 passed in 2.18s and included in final full-suite pass"
+  },
+  "e2_verifier": {
+    "command": "python scripts/05_verify_e2_artifacts.py",
+    "run_on_clean_main_before_doc_edits": true,
+    "exit_code": 1,
+    "passed": 35,
+    "failed": 2,
+    "local_matrix_skips": 1,
+    "skip_reason": "No existing local all-partition matrix; trainval existing handoff copied and checked.",
+    "failure_lines": [
+      "FAIL  05_matrix_X_brand_trainval_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]",
+      "FAIL  05_matrix_X_brand_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]"
+    ],
+    "producer_comparisons": [
+      {
+        "path": "src/phishguard_vn/url_parser.py",
+        "sha256": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
+        "matches_freeze": true,
+        "matches_manifest": true
+      },
+      {
+        "path": "src/phishguard_vn/features.py",
+        "sha256": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+        "matches_freeze": true,
+        "matches_manifest": true
+      },
+      {
+        "path": "src/phishguard_vn/brand_features.py",
+        "sha256": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b",
+        "matches_freeze": true,
+        "matches_manifest": true
+      },
+      {
+        "path": "src/phishguard_vn/resources/brand_reference_v1.csv",
+        "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+        "matches_freeze": true,
+        "matches_manifest": true
+      },
+      {
+        "path": "reports/templates/feature_dictionary.csv",
+        "sha256": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
+        "matches_freeze": true,
+        "matches_manifest": true
+      },
+      {
+        "path": "reports/templates/brand_feature_dictionary.csv",
+        "sha256": "8fdc9d897810956fb04031969a2473f2aff82faa81e71ad72819b7957bd004ea",
+        "matches_freeze": true,
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/05_build_matrix_x_brand.py",
+        "sha256": "232a9dc54dff4f38881fe2208fa3e290776e5f709d85e8d47ce527e6efc54ff9",
+        "matches_freeze": true,
+        "matches_manifest": true
+      }
+    ],
+    "input_hash_checks": {
+      "data/dataset_url.csv": true,
+      "data/abuse_type.csv": true,
+      "data/splits/url_train.csv": true,
+      "data/splits/url_val.csv": true,
+      "data/splits/url_test.csv": true,
+      "data/interim/03_matrix_X_features.csv": true,
+      "data/interim/03_registrable_domains.csv": true,
+      "data/interim/02_group_folds_train.csv": true,
+      "data/interim/05_matrix_X_brand_trainval.csv": true,
+      "data/interim/05_matrix_X_brand_trainval.manifest.json": true,
+      "reports/tables/05_matrix_X_brand_trainval_v1.manifest.json": true,
+      "reports/templates/feature_dictionary.csv": true,
+      "reports/templates/brand_feature_dictionary.csv": true,
+      "src/phishguard_vn/resources/brand_reference_v1.csv": true,
+      "data/external/benign_candidates.csv": true,
+      "data/external/phishing_candidates.csv": true
+    },
+    "parity_regenerated_identically": true,
+    "verifier_logic_modified": false,
+    "frozen_artifacts_refrozen_or_edited": false,
+    "safe_fix_proposal": "reports/post_merge_eda_review.md; separate PR if implemented, not claimed tested here"
+  },
+  "notebook_inspection": {
+    "run_all_repeated": false,
+    "reason": "No computation/source changes; preserve valid outputs. Inspected source/saved outputs and ran tests.",
+    "files": {
+      "notebooks/01_data_quality.ipynb": {
+        "sha256": "ab866f4086c3d1fb653b0e811cc2091ba62940b920148e71099df0906a0287e8",
+        "code_cells": 7,
+        "cells_with_execution_count": 6,
+        "saved_error_outputs": 0
+      },
+      "notebooks/02_eda_and_splits.ipynb": {
+        "sha256": "b278bb59e61c34d1b86e0bc13f13bd277f0dcd925b61d675a665a7b2458230c8",
+        "code_cells": 10,
+        "cells_with_execution_count": 10,
+        "saved_error_outputs": 0
+      },
+      "notebooks/03_url_features.ipynb": {
+        "sha256": "f27e796ed16fb59862a37b3ff4338e074353dcea211d24f15ead148677a3bab2",
+        "code_cells": 7,
+        "cells_with_execution_count": 7,
+        "saved_error_outputs": 0
+      },
+      "notebooks/04_baseline_ml.ipynb": {
+        "sha256": "54ed1f55e1393249f8cddb4e45045ae7fd5a5d30323f5ea66c12e31b22282ff3",
+        "code_cells": 8,
+        "cells_with_execution_count": 8,
+        "saved_error_outputs": 0
+      },
+      "notebooks/05_advanced_models.ipynb": {
+        "sha256": "41a594215083e9747b528d08471b584b0ae49198c052fbdca75b88775f8edd11",
+        "code_cells": 11,
+        "cells_with_execution_count": 11,
+        "saved_error_outputs": 0
+      },
+      "notebooks/05_e2_ablation.ipynb": {
+        "sha256": "d9cdbe17896be35840db59edc3d1a48f23bac351e266f400feec82bc28a4cad9",
+        "code_cells": 12,
+        "cells_with_execution_count": 11,
+        "saved_error_outputs": 0
+      },
+      "notebooks/05_error_robustness.ipynb": {
+        "sha256": "5c2bdb096c641fd63ac25b692e780d4acf1286648161e1afb66a6138a07deefe",
+        "code_cells": 6,
+        "cells_with_execution_count": 6,
+        "saved_error_outputs": 0
+      },
+      "notebooks/05_source_bias.ipynb": {
+        "sha256": "60db57780623bb4075926aece8a103d9acccdc8986ba3b55c627aac7278e676e",
+        "code_cells": 21,
+        "cells_with_execution_count": 21,
+        "saved_error_outputs": 0
+      }
+    },
+    "note": "01-cell-10 has no execution count in committed source; do not claim fresh execution. Other saved notebook executions are historical."
+  },
+  "preservation": {
+    "tracked_files_unchanged": 257,
+    "all_existing_markdown_report_tables_identical": true,
+    "protected_file_set_sha256": "003dfba212f59700a8e26919ae75fb7ca6ff2a04fd137af638bdd4b65092c3fe",
+    "existing_e1_cache_files_unchanged": 9,
+    "raw_labels_splits_folds_extractors_models_experiment_results_unchanged": true,
+    "code_tests_notebooks_unchanged": true,
+    "research_training_or_tuning": false,
+    "official_test_used_for_selection_or_new_feature_statistics": false
+  },
+  "changed_existing_paths": [
+    "data/external/README.md",
+    "docs/external_datasheet.md",
+    "reports/data_report_final.md",
+    "reports/k53_external_pilot_audit.md",
+    "reports/tables/data_report/eda_report_manifest.json",
+    "reports/tables/external_pilot/manifest.json",
+    "reports/week5_data_reliability.md"
+  ],
+  "updated_documentation_sha256": {
+    "data/external/README.md": "5f787204f5ebcb632d31ceb47782d882b213d083356d2e55d3984de5e4049179",
+    "docs/external_datasheet.md": "e3d5257b83d601199adb5d977a1303198f0880c327eed63cd14d039f099a67da",
+    "reports/annotations/k53_human_check_confirmation.csv": "af003a69f169671cb3600578ca08f4a442dd80887b60cbc0212703cf6749e912",
+    "reports/data_report_final.md": "5b5d90a86455edfbd7682a2729c84066869c8004238afb6a4e0617a8a727dfe4",
+    "reports/k53_external_pilot_audit.md": "77bfc80dca21a2700ee18a293e7acedfcd862c4ea48bddb507f7a4d41f25c9ad",
+    "reports/post_merge_eda_review.md": "1cc3d0a7d13ba0cc1e3dcb02881bcef7ec57a150a07ecab0ecb92a60b5ea320f",
+    "reports/tables/data_report/eda_report_manifest.json": "84adb57902a0a14d09850a15145163d0286a0bea28ca39d5b1034fe2398bfd27",
+    "reports/tables/external_pilot/manifest.json": "af70aa4aa1819ba60ef98af84e1c8ac78a3e12132e1052a5aed0c3580b25d1b3",
+    "reports/week5_data_reliability.md": "663f0db04326549affb082960b0b38b8caaf2821da5dfbcaf9009142b772dee2"
+  }
+}

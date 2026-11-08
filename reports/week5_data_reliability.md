@@ -81,7 +81,7 @@ Các bản đăng lại cảnh báo NCSC không được xem là nguồn/feed đ
 
 **Tách nguồn:** File benign hiện không còn URL nào có nguồn Tín Nhiệm Mạng; 29 ứng viên còn lại đến từ website doanh nghiệp, cổng chính phủ, danh bạ VNBA và hồ sơ AEON.
 
-Cả 167 dòng có `evidence_ref` và đang `pending`. Trang tham chiếu hỗ trợ truy nguyên nhưng chưa thay việc kiểm tra thủ công chủ sở hữu, trang đích, chuyển hướng và nội dung hiện tại.
+Trong hai CSV nguồn nguyên trạng, cả 167 dòng có `evidence_ref` và đang `pending`; ledger sau PR #13 và xác nhận human check bổ sung được mô tả ở cuối báo cáo. Trang tham chiếu hỗ trợ truy nguyên nhưng chưa thay việc kiểm tra thủ công chủ sở hữu, trang đích, chuyển hướng và nội dung hiện tại.
 
 ### Thời gian, quyền sử dụng và tính đại diện
 
@@ -100,7 +100,7 @@ Các `license_note` yêu cầu kiểm tra điều khoản nguồn/attribution; c
 
 Core audit không phát hiện overlap train/validation hoặc lỗi cấu trúc ngoài hai unresolved URL đã liệt kê. Hai candidate CSV hiện có cùng schema 15 cột, ID duy nhất, URL, label ứng viên, source, review status, evidence reference và kết quả `core_overlap`; audit đối chiếu với ba tệp Core không phát hiện overlap.
 
-Danh sách có **167 candidate**, nằm trong mức tham khảo 150–300 nhưng vẫn là candidate chờ rà soát. Cả 167 dòng còn `pending`, nên chưa phải bộ external evaluation có nhãn accepted và chưa có metric. Ưu tiên provenance/bằng chứng hơn việc bổ sung URL thiếu căn cứ.
+Danh sách có **167 candidate**, nằm trong mức tham khảo 150–300 nhưng vẫn là candidate chờ rà soát. CSV nguồn vẫn có 167 pending; trạng thái ledger sau review nằm ở phần cập nhật K5.3 bên dưới. Chưa có external metric hoặc benchmark chính thức. Ưu tiên provenance/bằng chứng hơn việc bổ sung URL thiếu căn cứ.
 
 ## 5. Việc cần hoàn tất trước khi báo cáo metric
 
@@ -120,4 +120,4 @@ Ledger/review records, kiểm tra overlap với cả snapshot cũ và gate Teach
 
 ### K5.3 — review tài liệu bổ sung ngày 2026-11-08
 
-`k53_reviews.csv` đã có quyết định theo từng ID: 99 verified trong phạm vi tài liệu lịch sử (92 phishing, 7 benign), 68 pending, 0 rejected. Reviewer là Codex, method `ai_document_review`; không có human verification mới. Tài liệu nguồn có SHA256, thời điểm đọc và locator ở `k53_document_sources.csv`. Không thay CSV gốc hoặc label; không xác nhận site hiện tại/full URL. 13 candidate bỏ `www.` so với nguồn vẫn pending, cùng các reference không đủ căn cứ. Chi tiết/định nghĩa nhãn/giới hạn xem báo cáo K5.3 được tái tạo từ ledger. Cohort lịch sử trong Git xác định đúng 74 bản ghi, 75 dòng gồm header; không tạo thêm một URL. Còn thiếu Teacher finalized để chạy recall; source–label confounding chưa được giải quyết nên không công bố FPR/generalization chính thức.
+`k53_reviews.csv` đã có quyết định theo từng ID: 99 verified trong phạm vi tài liệu lịch sử (92 phishing, 7 benign), 68 pending, 0 rejected. Sau đó Hưng xác nhận đã check lại 99 trường hợp: trạng thái trình bày hiện tại là **99 human-checked**, ghi riêng tại `reports/annotations/k53_human_check_confirmation.csv`. Đây là xác nhận tự báo cáo theo nhóm, không phải lần kiểm tra độc lập mới của Codex. Ledger PR #13 giữ method/reviewer của lần đối chiếu tài liệu ban đầu để truy vết; 68 pending không được nâng trạng thái. Tài liệu nguồn có SHA256, thời điểm đọc và locator ở `k53_document_sources.csv`. Không thay CSV gốc hoặc label; không xác nhận site hiện tại/full URL. 13 candidate bỏ `www.` so với nguồn vẫn pending, cùng các reference không đủ căn cứ. Chi tiết/định nghĩa nhãn/giới hạn xem báo cáo K5.3 được tái tạo từ ledger. Cohort lịch sử trong Git xác định đúng 74 bản ghi, 75 dòng gồm header; không tạo thêm một URL. Còn thiếu Teacher finalized để chạy recall; source–label confounding chưa được giải quyết nên không công bố FPR/generalization chính thức.
