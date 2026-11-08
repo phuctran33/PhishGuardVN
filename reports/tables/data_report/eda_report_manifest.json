@@ -1,5 +1,5 @@
 {
-  "audit_base_revision": "bc0fe37faec452e215a00e4d9c4be94a67c3f874",
+  "audit_base_revision": "f84a823e362b69e4ce2043c0c39b267b81c08d73",
   "publication_note": "Runtime base captured before publication; later PR/commit does not rewrite this source snapshot.",
   "scope": {
     "lexical_and_brand": "eligible core train only",
@@ -91,7 +91,7 @@
     "data/interim/03_registrable_domains.csv": "881dbc1a80a8a736395e774a9b0f36944e2f82df6cb682ab346c0d841c96705e",
     "data/interim/02_group_folds_train.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863",
     "data/interim/05_matrix_X_brand_trainval.csv": "9b7abe866a4546dceb55ed4fbd3755bd4e87afc03b2e35d8698b97a89e737c7b",
-    "data/interim/05_matrix_X_brand_trainval.manifest.json": "9101a34bd84e6ae9246c42c2eacec2b7fb36b144084b8ff06a23d31379b009eb",
+    "data/interim/05_matrix_X_brand_trainval.manifest.json": "3689aca3fd756dbdce97460cde7859c82e1043c02d564603089ed2820daecc4f",
     "reports/tables/05_matrix_X_brand_trainval_v1.manifest.json": "3d34c8f842f35e41cf80deb68c35cb7b93f7a89f37ec0e39f83615acf93f267a",
     "reports/templates/feature_dictionary.csv": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
     "reports/templates/brand_feature_dictionary.csv": "8fdc9d897810956fb04031969a2473f2aff82faa81e71ad72819b7957bd004ea",

@@ -1,7 +1,7 @@
 {
-  "checked_at_utc": "2026-11-08T04:38:10.125863+00:00",
+  "checked_at_utc": "2026-11-08T04:43:43.052827+00:00",
   "platform": "Darwin",
-  "audit_base_revision": "bc0fe37faec452e215a00e4d9c4be94a67c3f874",
+  "audit_base_revision": "f84a823e362b69e4ce2043c0c39b267b81c08d73",
   "publication_note": "Executed analysis before publication; frozen producer and later publication revisions remain distinct.",
   "pr7_at_start": {
     "state": "open",
@@ -40,7 +40,7 @@
       "executed_code_cells": 10,
       "errors": 0,
       "code_sha256": "dd49dabc7fac7234fcd00c168a706d5975628afc7fe1d9fc037224dcfc201000",
-      "executed_notebook_sha256": "d9239aa12e109d426267e635087f60511572627c1578e2069407dbc7b16356fb",
+      "executed_notebook_sha256": "eca73e8621b53ba903f37cf77a5e326b3750f52bbdb14b939d4ad7eb33c4dccc",
       "local_executed_output": "/tmp/phishguard-eda-notebooks/02_eda_and_splits.executed.ipynb",
       "publication_policy": "Only new/changed small output cells are included; existing unchanged outputs are preserved."
     },
@@ -49,7 +49,7 @@
       "executed_code_cells": 21,
       "errors": 0,
       "code_sha256": "88492a00cf64ddf0ede19e63487ed1cc36515866d049c8c7f547d6577b1085aa",
-      "executed_notebook_sha256": "b4684854aa894a85bd250b7c618a8117d239549133733e411cd70be7c59448ac",
+      "executed_notebook_sha256": "4d585e0a1533b2d8854d4a1f793239070b18c3e907a34d7ac075ed14d1aa0515",
       "local_executed_output": "/tmp/phishguard-eda-notebooks/05_source_bias.executed.ipynb",
       "publication_policy": "Only new/changed small output cells are included; existing unchanged outputs are preserved."
     }
@@ -60,7 +60,7 @@
     "cached_v0_reused": false,
     "partition": "trainval",
     "local_frozen": true,
-    "created_from_clean_revision": "bc0fe37faec452e215a00e4d9c4be94a67c3f874",
+    "created_from_clean_revision": "f84a823e362b69e4ce2043c0c39b267b81c08d73",
     "matrix_sha256": "9b7abe866a4546dceb55ed4fbd3755bd4e87afc03b2e35d8698b97a89e737c7b",
     "row_counts": {
       "raw": 53116,
@@ -72,17 +72,20 @@
       "e2_trainval": 14663,
       "external_pending": 167
     },
-    "all_8_train_checks_match_frozen_brand_dictionary": true
+    "all_8_train_checks_match_frozen_brand_dictionary": true,
+    "rerun_after_main_integration_matrix_bytes_unchanged": true
   },
   "pytest": {
     "exit_code": 0,
-    "passed": 228,
+    "passed": 346,
     "failed": 0,
     "skipped": 1,
-    "summary": "228 passed, 1 skipped in 14.21s",
+    "summary": "346 passed, 1 skipped in 21.47s",
     "skip_reason": "Pre-existing tests/test_brand_regressions.py:58 empty parameter set for CONFIRMED_STILL_FLAGGED; no new tests skipped.",
     "new_data_report_tests_passed": 12,
-    "test_source_sha256": "8ab78eb060e9dc5226c1880be535eb688e9d1f06c4cdbd8eb8f64e9e4da91d82"
+    "test_source_sha256": "8ab78eb060e9dc5226c1880be535eb688e9d1f06c4cdbd8eb8f64e9e4da91d82",
+    "native_audit_fixture_sha256": "ffad412446b47af29c2449a81d06dbe13ee7c0adb626e46d4c083fc0a0b4bac3",
+    "additional_valid_freeze_case_passed": true
   },
   "independent_recalculation": {
     "lexical_descriptive_rows": 36,
@@ -256,5 +259,51 @@
     "Only 7/33 keywords reach 5 observed Train URLs; do not invent 10–15 well-supported terms.",
     "Labels inherited, source-label confounding unresolved, collected_at missing, external candidates pending; no semantic/site verification or temporal-generalization claim.",
     "Local execution on macOS, not newly validated on Windows."
-  ]
+  ],
+  "initial_audit_base_revision": "bc0fe37faec452e215a00e4d9c4be94a67c3f874",
+  "pytest_before_main_integration": {
+    "exit_code": 0,
+    "passed": 228,
+    "failed": 0,
+    "skipped": 1,
+    "summary": "228 passed, 1 skipped in 14.21s",
+    "skip_reason": "Pre-existing tests/test_brand_regressions.py:58 empty parameter set for CONFIRMED_STILL_FLAGGED; no new tests skipped.",
+    "new_data_report_tests_passed": 12,
+    "test_source_sha256": "8ab78eb060e9dc5226c1880be535eb688e9d1f06c4cdbd8eb8f64e9e4da91d82"
+  },
+  "e2_verifier_current_clean_integration": {
+    "command": "python scripts/05_verify_e2_artifacts.py",
+    "revision": "f84a823e362b69e4ce2043c0c39b267b81c08d73",
+    "worktree_clean": true,
+    "exit_code": 1,
+    "passed": 35,
+    "total": 37,
+    "failed": 2,
+    "failed_checks": [
+      "FAIL  05_matrix_X_brand_trainval_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]",
+      "FAIL  05_matrix_X_brand_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]"
+    ],
+    "reason": "Same two repository-wide freeze guards as clean baseline; producer sources/reference/dictionaries remain byte-identical. No guard/assertion bypassed."
+  },
+  "main_integration": {
+    "main_revision": "b7c5b16cbd104322a8386702b5f9087c68250493",
+    "local_merge_revision": "f84a823e362b69e4ce2043c0c39b267b81c08d73",
+    "pr7_state_now": "MERGED by maintainer; synced from origin/main, not merged via PR API by this task",
+    "incoming_paths": 47,
+    "unchanged_incoming_files": 46,
+    "only_changed_incoming_path": "tests/test_week5_audit.py",
+    "fixture_reason": "Previously false_freeze relied on packaged v0 being draft. With verified v1 this is a valid freeze. Test now uses a temporary draft CSV, asserts freeze_claim FAIL, and adds valid_freeze PASS; production audit untouched.",
+    "test_run_before_fixture_fix": {
+      "passed": 344,
+      "failed": 1,
+      "skipped": 1
+    },
+    "all_27_report_output_hashes_unchanged_after_integration": true,
+    "h52_annotation_sha256": {
+      "reports/annotations/week5_ai_review.csv": "2aec25865c880cdb658f3ea7e94c85bb4a1e95f59c761c2b263c0871b7451795",
+      "reports/annotations/week5_error_reviews.json": "e0b0307d3c233732a4dd778b803b0a78a32f78113fed0784a327e09f167da240",
+      "reports/annotations/week5_human_review.csv": "d1bef9ecd1cb6b155718b07a11b6db9db9f9266c05fadf801ee8e32cb50e0ac4"
+    },
+    "h52_checklist_or_model_sources_modified": false
+  }
 }
