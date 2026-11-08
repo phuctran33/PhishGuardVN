@@ -2,7 +2,6 @@
   "status": "PREPARED_BLOCKED",
   "official": false,
   "blockers": [
-    "NO_VERIFIED_LABELS",
     "NO_FINALIZED_TRUSTED_TEACHER_ARTIFACT"
   ],
   "metrics": null,

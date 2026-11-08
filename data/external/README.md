@@ -6,7 +6,7 @@ Hai CSV nguồn `phishing_candidates.csv` / `benign_candidates.csv` được gi�
 
 | Tệp | Vai trò |
 |---|---|
-| `derived/k53_candidates.csv` | Ledger canonical 24 cột, giữ mọi ID/raw_url/label/status; không tự loại pending |
+| `derived/k53_candidates.csv` | Ledger canonical 28 cột, giữ mọi ID/raw_url/label; overlay review tách biệt, không loại pending |
 | `derived/k53_host_only_pilot.csv` | Input thử nghiệm host-only thống nhất hai lớp; chưa đủ điều kiện chấm metric |
 | `derived/k53_full_url_inventory.csv` | Kiểm kê full URL quan sát được; có scheme không đồng nghĩa URL/nhãn đã verified |
 | `derived/k53_host_only_features.csv` | `id` + đúng 20 features E2 v1 từ extractor chính thức; không có metadata/nhãn trong X |
@@ -26,16 +26,18 @@ Không ghép lịch sử 106 với snapshot 167 thành một external test mới
 | `source`, `source_family` | Nguồn ghi nhận và nhóm provenance; NCSC republications gộp riêng, không gọi là feed độc lập |
 | `source_reference` | `evidence_ref` nguồn; link/host mention không tự chứng minh nhãn |
 | `review_status` | `verified`, `pending`, `rejected`; không tự chuyển trạng thái bằng dự đoán/brand/format |
-| `review_evidence` | Căn cứ/giới hạn của nhãn; pending giữ review note gốc, không biến note chung thành xác nhận |
+| `review_evidence` | Căn cứ/giới hạn của nhãn; pending ghi rõ lý do chưa xác nhận, note gốc vẫn giữ trong CSV nguồn |
 | `normalized_url` | Host chuẩn hóa theo parser, path/query giữ case, giữ scheme **chỉ nếu quan sát được**; không tự thêm `/` |
 | `hostname`, `registrable_domain` | Host PSL/IDNA chính thức; domain không resolve được giữ rỗng và có lỗi, không tạo group giả |
 | `model_input_host` | Host chuẩn hóa, giữ subdomain; bỏ scheme, port, userinfo, path/query/fragment cho **mọi** lớp. IPv6 có brackets để parser đọc đúng |
 | `model_input_full` | URL HTTP(S) quan sát được; rỗng khi thiếu scheme. Chỉ dùng nếu scope/full_url_verified và các gate khác hợp lệ |
 | `parse_valid`, `parse_error` | Boolean / mã lỗi parser; IP có thể hợp lệ nhưng không có registrable domain |
 | `candidate_signature` | SHA256 của ID/raw_url/label/source/reference; review cũ bị từ chối nếu facts đổi |
-| `reviewer`, `reviewed_at` | Danh tính người chịu trách nhiệm và thời điểm review ISO-8601; đang trống, không ghi tên người dùng tự động |
+| `reviewer`, `reviewed_at` | Danh tính reviewer và thời điểm review ISO-8601; AI ghi Codex, không ghi tên người dùng hoặc tự nhận human |
 | `label_scope` | `unconfirmed`, `hostname_historical`, `hostname_current`, `full_url`; không mặc định chuyển label URL sang host |
 | `full_url_verified` | Boolean; không thể có full-URL benchmark chỉ nhờ thêm scheme giả |
+| `review_method` | `human` hoặc `ai_document_review`; không đánh đồng hai phương pháp |
+| `evidence_document_sha256`, `evidence_locator`, `evidence_limitations` | AI verified bắt buộc có hash tài liệu, vị trí đối chiếu và giới hạn; hash phải khớp `k53_document_sources.csv` |
 | `source_independence` | Ghi nhận review provenance; hiện `unresolved`, không tự gọi source-disjoint |
 | `eligible_host_only`, `eligible_full_url` | Boolean gate **suy ra**, không thay review status. Pending/rejected/Core overlap/representation không hợp lệ không được chấm |
 
@@ -57,6 +59,12 @@ python scripts/evaluate_external_pilot.py
 python -m pytest -q -rs
 ```
 
-Review được lưu riêng tại `reports/annotations/k53_reviews.csv`, không sửa CSV nguồn; cột/ID/signature/evidence/time được kiểm tra. Không điền reviewer hoặc verified nếu chưa có review thật. Teacher lock mẫu ở `configs/external_teacher_lock.example.json` có `teacher_finalized=false`, không phải artifact đã được cung cấp. Thiếu Teacher đã chốt, nhãn phù hợp, feature version/reference hoặc hash thì phải dừng; không tự train hay thay v0 thành v1.
+Review được lưu riêng tại `reports/annotations/k53_reviews.csv`, không sửa CSV nguồn; cột/ID/signature/evidence/time được kiểm tra. Review tài liệu đã thực hiện do AI được ghi rõ `ai_document_review`, chỉ scope `hostname_historical`, không current/full URL hoặc human verification. Hash/locator/limitations được kiểm tra; HTTP/host mention tự động không đủ để promote. Quyết định pending cũng giữ lý do theo ID. `k53_document_sources.csv` chốt tài liệu chính thức đã đọc và đoạn đối chiếu, tách khỏi bước source availability. Teacher lock mẫu ở `configs/external_teacher_lock.example.json` có `teacher_finalized=false`, không phải artifact đã được cung cấp. Thiếu Teacher đã chốt, nhãn phù hợp, feature version/reference hoặc hash thì phải dừng; không tự train hay thay v0 thành v1.
 
 Mặc định benchmark chỉ báo recall phishing đã verified theo từng nguồn. `--two-class` chỉ tạo kết quả **exploratory**, cần cả hai nhãn verified hợp lệ; không tự gọi official và không chạy leave-source-out training. Protocol Core hiện có dùng estimator.predict, probability boundary 0.5 / margin 0; không chọn threshold từ external hoặc tune lại Validation. `scraped_at` trong CSV nguồn là thời điểm snapshot, không thay `collected_at` còn thiếu.
+
+## Review tài liệu bổ sung — 2026-11-08
+
+Ledger hiện có 99 verified theo tài liệu lịch sử (92 phishing, 7 benign), 68 pending, 0 rejected; human verified = 0. Nhãn gốc không đổi. Nhãn phishing ở đây kế thừa lớp giả mạo/lừa đảo rộng, chưa chứng minh từng host có credential theft. Benign chỉ ghi nhận danh tính website tổ chức được VNBA liệt kê hoặc hồ sơ corporate AEON chỉ rõ, không bảo đảm tình trạng an toàn hôm nay. 13 candidate thiếu `www.` so với nguồn vẫn pending; không tự đồng nhất host. 33 candidate nguồn lỗi TLS, 4 reference danh bạ nay trả homepage, 18 self-site chưa đối chiếu độc lập cũng pending.
+
+Cohort cũ trong Git chốt được 74 records / 75 lines kể header; không thêm URL thứ 75. Source bias còn nguyên nên giữ recall pilot, không tuyên bố benchmark official. Thiếu Teacher finalized là blocker chạy inference; audit/review/feature matrix không cần train để hoàn thành.

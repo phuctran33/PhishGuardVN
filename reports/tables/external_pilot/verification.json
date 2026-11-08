@@ -1,23 +1,28 @@
 {
-  "checked_at_utc": "2026-11-08T08:37:12.951801+00:00",
+  "checked_at_utc": "2026-11-08T11:06:17.857353+00:00",
   "platform": "Darwin",
-  "audit_runtime_base_revision": "b7c5b16cbd104322a8386702b5f9087c68250493",
+  "audit_runtime_base_revision": "597222147b84b6ff128b945f0bb9558dcc7a5dea",
   "runtime_worktree_dirty": true,
   "publication_note": "Run before publication; source/input hashes bind this execution. Published commit is separate.",
   "pytest": {
     "command": ".venv/bin/python -m pytest -q -rs",
     "exit_code": 0,
-    "passed": 368,
+    "passed": 375,
     "failed": 0,
     "skipped": 1,
-    "summary": "368 passed, 1 skipped in 13.09s",
-    "external_tests_added": 34,
+    "summary": "375 passed, 1 skipped in 13.12s",
+    "external_tests_added": 41,
     "skip_reason": "Existing empty parameter set CONFIRMED_STILL_FLAGGED in tests/test_brand_regressions.py:58",
     "test_source_sha256": {
-      "tests/test_external_pilot.py": "d48d25c799b55f5fe314d1fda0b233e697f1efb2f6bb6db7ebc2c570487de7e8",
+      "tests/test_external_pilot.py": "dc9752e59219455a69d95de4485e510d59cb8a418fa80ea4471fe7d321048837",
       "tests/test_week5_audit.py": "ffad412446b47af29c2449a81d06dbe13ee7c0adb626e46d4c083fc0a0b4bac3"
     },
-    "baseline_fixture_fix": "Same draft-reference fixture fix as PR #12; no production audit/feature/model logic modified."
+    "baseline_fixture_fix": "Same draft-reference fixture fix as PR #12; no production audit/feature/model logic modified.",
+    "verification_sequence": {
+      "before_cli_notebook": "375 passed, 1 skipped in 14.72s",
+      "after_cli_notebook": "375 passed, 1 skipped in 13.29s",
+      "after_pdf_review_final_audit": "375 passed, 1 skipped in 13.12s"
+    }
   },
   "cli": {
     "source_checks": {
@@ -36,7 +41,8 @@
         "benign": 9
       },
       "labels_promoted_to_verified": 0,
-      "network_scope": "Existing allowlisted official references only, no candidate hyperlinks/target phishing pages. Python CA issue handled via curl OS trust, never disabling TLS verification."
+      "network_scope": "Existing allowlisted official references only, no candidate hyperlinks/target phishing pages. Python CA issue handled via curl OS trust, never disabling TLS verification.",
+      "scope_note": "Earlier availability-only snapshot retained; content review/PDF retrieval recorded separately in document_review, not silently promoted by this checker."
     },
     "audit": {
       "command": ".venv/bin/python scripts/audit_external_pilot.py",
@@ -52,22 +58,21 @@
       "metrics": null,
       "n_evaluated": 0,
       "blockers": [
-        "NO_VERIFIED_LABELS",
         "NO_FINALIZED_TRUSTED_TEACHER_ARTIFACT"
       ]
     }
   },
   "notebook": {
-    "command": ".venv/bin/python -m nbconvert --to notebook --execute notebooks/05_source_bias.ipynb --output 05_source_bias.k53.executed.ipynb --output-dir /tmp/phishguard-k53-notebooks --ExecutePreprocessor.timeout=600",
+    "command": ".venv/bin/python -m nbconvert --to notebook --execute notebooks/05_source_bias.ipynb --output 05_source_bias.k53-followup.executed.ipynb --output-dir /tmp/phishguard-k53-notebooks --ExecutePreprocessor.timeout=600",
     "exit_code": 0,
     "code_cells": 21,
     "errors": 0,
     "code_sha256": "d25fef9e9aeab776da6b2f5055738f0c5a336042377ade9eeeba2e395ecfe75b",
     "code_hash_definition": "SHA256 of UTF-8 JSON array of joined code-cell source texts, independent of ipynb line-list serialization",
-    "executed_output_sha256": "a30d877246639a30cc64e30708f350fd742f67cfe195a3108d91a0a5c7c57bf3",
+    "executed_output_sha256": "21d1b43fcfae3e7d656442f35cfd1c96e8e638ca735cbe1961839fb68fcb1894",
     "rows_reported_removed": 0,
     "metadata_url_norm_warnings": 1,
-    "publication_policy": "Only changed external-audit cell outputs are refreshed; existing figures/other outputs preserved."
+    "publication_policy": "Notebook source/committed outputs unchanged in follow-up; Run All repeated successfully into /tmp."
   },
   "idempotence": {
     "command": "rerun offline audit without source refresh",
@@ -232,7 +237,8 @@
     "benign_rows": 32,
     "requested_75_manifest_found": false,
     "all_original_archive_bytes_match_git": true,
-    "never_pooled_with_current_cohort": true
+    "never_pooled_with_current_cohort": true,
+    "in_repository_resolution": "74 phishing records / 75 physical lines including header. No evidence of a separate exactly-75 manifest; no invented row."
   },
   "scientific_scope": {
     "research_training_or_tuning": false,
@@ -241,13 +247,15 @@
     "scheme_path_artifact_unified": true,
     "all_leakage_or_source_bias_claimed_removed": false,
     "official_benchmark_ready": false,
-    "current_real_external_metrics": null
+    "current_real_external_metrics": null,
+    "new_ai_historical_document_reviews": true,
+    "core_test_scope": "Core released URLs read only for overlap checks; no Official Test labels used for training/tuning/selection/external scoring"
   },
   "artifact_sha256": {
-    "audit_manifest": "1d476f471875739186522ddf1ced587ec57e615ef216b2d8efb5b0e05e6c9e36",
-    "audit_summary": "a1e04a1ba5b53a9ffedcfbd5a711265aefa87481ad5c8e6f9fd1a3e56d8bded9",
-    "benchmark_status": "776ff232ed7ea37a9cc8390fb798a073fa8f2109fcc3f9877076229ed9bc0e84",
-    "report": "8428e4b1f7f65b78b27478551331604ec3bf8cf82dc1f0e4ebe539c5e1975e76"
+    "audit_manifest": "84d0bc5466eb59f1e6f3dd34b7eca4fd63cb3fd0b634becb69a6802ee8e99b23",
+    "audit_summary": "440c138ae216d69e785369aeb7aa2750dc9971db8dd6f2403923d0acf7dc64a7",
+    "benchmark_status": "fd01f08beb89572bc0e0ba8ccec362a4a165d7cb620d0c682a2dcb40c1d22c37",
+    "report": "c00fe55a21d43e31cc60f9faba5621155d310f168b64a8f7580ae3e9622aeb12"
   },
   "python": "3.14.0",
   "versions": {
@@ -258,5 +266,52 @@
     "idna": "3.20",
     "joblib": "1.6.0",
     "nbclient": "0.11.0"
+  },
+  "document_review": {
+    "method": "ai_document_review",
+    "reviewer": "Codex (AI document review)",
+    "rows_reviewed": 167,
+    "review_status": {
+      "verified": 99,
+      "pending": 68,
+      "rejected": 0
+    },
+    "verified_by_label": {
+      "phishing": 92,
+      "benign": 7
+    },
+    "new_human_verification": false,
+    "human_verified": 0,
+    "scope": "hostname_historical",
+    "documents_with_hash_time_locator": 17,
+    "pending_reason_counts": {
+      "reference_tls_failure": 33,
+      "source_www_candidate_bare": 13,
+      "directory_now_portal_homepage": 4,
+      "self_site_without_independent_identity_evidence": 18
+    },
+    "verified_reviews_bound_to_assessed_documents": true,
+    "full_url_verified": 0,
+    "label_policy": "Inherited phishing class is historically warned impersonation/fraud, not proof of per-host credential theft. Benign is documented organizational identity, not current safety guarantee.",
+    "pdf_review": {
+      "source_reference": "https://corp.aeon.com.vn/wp-content/uploads/2024/09/AEON-Vietnam-Corporate-Profile-2024-English.pdf",
+      "file_sha256": "fb641fd39a7e04092741a1a4a8a068cceec4abc7ee3cc36917f0e75f5d087c53",
+      "page_reviewed": 6,
+      "total_pages": 10,
+      "hostname": "aeoneshop.com",
+      "no_candidate_url_visited": true
+    },
+    "source_sha256": {
+      "reports/annotations/k53_reviews.csv": "5b624117d7ea39f09144dc8467ecdf2fd460305d584587813e8a3044c2e22066",
+      "reports/annotations/k53_document_sources.csv": "7073d3dda40294befa66a7f6c5c4fc400d2d1727abe59d63029ec8b76c1c4fb2"
+    }
+  },
+  "teacher_discovery": {
+    "local_finalized_bundle_found": false,
+    "github_release_count": 0,
+    "github_actions_artifact_count": 0,
+    "cache_e1_not_substituted": true,
+    "v0_weights_not_relabelled_v1": true,
+    "result": "BLOCKED awaiting trusted finalized bundle and Core-CV selection provenance"
   }
 }

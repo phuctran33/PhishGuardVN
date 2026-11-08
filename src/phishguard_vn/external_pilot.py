@@ -14,7 +14,22 @@ from phishguard_vn.url_parser import SCHEME_RE, parse_url
 
 LABELS = {"benign", "phishing"}
 REVIEW_FIELDS = ["id", "candidate_signature", "review_status", "reviewer", "reviewed_at",
-                 "review_evidence", "label_scope", "full_url_verified", "source_independence"]
+                 "review_evidence", "label_scope", "full_url_verified", "source_independence",
+                 "review_method", "evidence_document_sha256", "evidence_locator", "evidence_limitations"]
+
+
+def validate_review_method(review):
+    """Document verification is explicitly distinct from human/live-site review."""
+    if review["review_method"] not in {"human", "ai_document_review"}:
+        raise ValueError("Review method must distinguish human from AI document review")
+    if review["review_status"] == "verified" and review["review_method"] == "ai_document_review":
+        if (review["label_scope"] != "hostname_historical"
+                or str(review["full_url_verified"]).lower() != "false"):
+            raise ValueError("AI historical document review cannot verify current/full-URL state")
+        if (not re.fullmatch(r"[0-9a-f]{64}", str(review["evidence_document_sha256"]))
+                or not str(review["evidence_locator"]).strip()
+                or not str(review["evidence_limitations"]).strip()):
+            raise ValueError("AI document review requires document hash, locator and limitations")
 
 
 def sha256(path):
@@ -103,6 +118,7 @@ def build_ledger(candidates, core_keys, legacy_keys=None, reviews=None):
     ledger["reviewer"] = ""; ledger["reviewed_at"] = ""
     ledger["label_scope"] = "unconfirmed"; ledger["full_url_verified"] = False
     ledger["source_independence"] = "unresolved"
+    for field in REVIEW_FIELDS[9:]: ledger[field] = ""
     # Never turn a source link/AI observation into a verified label automatically.
     if not ledger.review_status.isin(["pending", "verified", "rejected"]).all():
         raise ValueError("Unknown review status; do not silently promote legacy 'accepted'")
@@ -113,6 +129,7 @@ def build_ledger(candidates, core_keys, legacy_keys=None, reviews=None):
             raise ValueError("Review IDs/schema invalid")
         lookup = ledger.set_index("id")
         for r in reviews.to_dict("records"):
+            validate_review_method(r)
             if r["candidate_signature"] != lookup.loc[r["id"], "candidate_signature"]:
                 raise ValueError("Stale review: candidate facts changed")
             if r["review_status"] not in {"pending", "verified", "rejected"}:
@@ -180,6 +197,7 @@ def evaluate_verified(ledger, predictor, *, representation="host_only", two_clas
     column = "model_input_host" if representation=="host_only" else "model_input_full"
     if selected[["reviewer","reviewed_at","review_evidence"]].eq("").any().any():
         raise ValueError("Eligible flags cannot replace review identity/time/evidence")
+    for review in selected.to_dict("records"): validate_review_method(review)
     if pd.to_datetime(selected.reviewed_at,errors="coerce",utc=True).isna().any():
         raise ValueError("Invalid review timestamp")
     scopes={"hostname_historical","hostname_current"} if representation=="host_only" else {"full_url"}
@@ -214,6 +232,7 @@ def evaluate_verified(ledger, predictor, *, representation="host_only", two_clas
     return {"status":"EXPLORATORY_TWO_CLASS" if two_class else "PHISHING_RECALL_PILOT", "official":False,
             "representation":representation,"metrics":metrics(pred,two_class),"n_candidates":len(ledger),
             "n_evaluated":len(pred),"by_source":per_source,
+            "review_methods":selected.review_method.value_counts().to_dict(),
             "limitations":["No source-disjoint generalization claim; source-label confounding remains.",
                            "Host-only is lossy and needs host-scoped reviewed labels; no live-site verification implied."]}, pred
 

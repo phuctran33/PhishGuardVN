@@ -1,10 +1,10 @@
 # External URL Pilot Datasheet
 
-**Trạng thái:** Đã tạo và kiểm toán hai candidate CSV. Danh sách phục vụ rà soát thủ công; nhãn chưa được review cuối và chưa dùng để tính metric external.
+**Trạng thái:** PILOT. Hai CSV gốc giữ nguyên; ledger tách biệt ghi review tài liệu lịch sử do AI thực hiện, chưa có metric external hoặc human verification mới.
 
 **Cập nhật K5.3 (2026-11-08): PILOT / PREPARED–BLOCKED.** Audit bổ sung phát hiện format/scheme và `slash_cnt/path_len` phân tách đúng 167/167 **nhãn ứng viên** trên cùng snapshot; đây là collection artifact, không phải khả năng phát hiện phishing. Biểu diễn host-only đã thống nhất cho cả hai lớp bằng parser/feature extractor chính thức, nhưng 13/13 nhóm nguồn vẫn chỉ có một nhãn. Không tuyên bố đã loại source/campaign leakage.
 
-Xem [báo cáo K5.3](../reports/k53_external_pilot_audit.md), [data dictionary và lệnh tái lập](../data/external/README.md), `reports/tables/external_pilot/` và `data/external/derived/`. Hai CSV 15 cột bên dưới vẫn là nguồn nguyên trạng, không bị ghi đè hoặc đổi nhãn. Ledger canonical mới có đủ raw_url/normalized_url/model input/source reference/review evidence; toàn bộ 167 vẫn pending, không có Teacher bundle đã chốt để chấm metric.
+Xem [báo cáo K5.3](../reports/k53_external_pilot_audit.md), [data dictionary và lệnh tái lập](../data/external/README.md), `reports/tables/external_pilot/` và `data/external/derived/`. Hai CSV 15 cột bên dưới vẫn là nguồn nguyên trạng, không bị ghi đè hoặc đổi nhãn. Ledger canonical mới có đủ raw_url/normalized_url/model input/source reference/review evidence; raw CSV vẫn pending; ledger overlay đã review tài liệu lịch sử 99 verified (92 phishing / 7 benign), 68 pending, 0 rejected, human verified = 0. Chưa có Teacher bundle đã chốt để chấm metric.
 
 Lịch sử Git phục hồi riêng **74 phishing + 32 benign** tại `data/external/history/2026-11-07/`. File phishing có 75 dòng gồm header; không tìm thấy manifest chứng minh một cohort đúng 75 URL. 74 phishing cũ đến từ tinnhiemmang và 29 benign trùng snapshot mới; không gộp thành benchmark độc lập hoặc nhận tất cả đã verified.
 
@@ -51,7 +51,7 @@ Notebook 05 tính lại audit log từ hai CSV hiện tại khi chạy. Kết qu
 | VNCERT/CC warning on Ministry portal | 1 | `historical_public_fraud_warning` |
 | **Tổng** | **138** | |
 
-Các cảnh báo được công bố bởi cơ quan, ngân hàng hoặc được đăng lại từ cảnh báo NCSC. Những bản đăng lại không được xem là các feed độc lập. Đây là bằng chứng về cảnh báo/lừa đảo được ghi nhận trong quá khứ, không xác nhận URL hiện còn hoạt động hoặc đang độc hại. Mỗi dòng có `evidence_ref` trỏ tới tài liệu nguồn; tất cả vẫn cần review thủ công.
+Các cảnh báo được công bố bởi cơ quan, ngân hàng hoặc được đăng lại từ cảnh báo NCSC. Những bản đăng lại không được xem là các feed độc lập. Đây là bằng chứng về cảnh báo/lừa đảo được ghi nhận trong quá khứ, không xác nhận URL hiện còn hoạt động hoặc đang độc hại. Mỗi dòng có `evidence_ref` trỏ tới tài liệu nguồn; review theo ID và scope trong ledger mới; không mặc định đồng nghĩa human verification.
 
 ### Benign
 
@@ -67,7 +67,7 @@ Các cảnh báo được công bố bởi cơ quan, ngân hàng hoặc được
 
 Các URL tham chiếu được lưu trong `evidence_ref`, gồm [Cổng thông tin Chính phủ](https://vietnam.gov.vn/default.aspx?countryId=501&typeId=1), [danh bạ hội viên VNBA](https://vnba.org.vn/vi/vnba/member) và trang/hồ sơ của từng tổ chức. Bằng chứng giúp truy nguyên website nhưng không thay việc kiểm tra chủ sở hữu, trang đích, chuyển hướng và nội dung hiện tại.
 
-Cả 167 dòng có `evidence_ref` và `label_source`; `label` là nhãn ứng viên, toàn bộ `review_status` vẫn `pending`.
+Trong hai CSV nguồn nguyên trạng, cả 167 dòng có `evidence_ref` và `label_source`; `label` là nhãn ứng viên và `review_status` vẫn `pending`. Trạng thái sau đối chiếu tài liệu được overlay riêng trong ledger K5.3, không ghi đè nguồn.
 
 ## 4. Thời gian thu thập
 
@@ -104,7 +104,7 @@ Các `license_note` yêu cầu kiểm tra điều khoản nguồn và attributio
 
 - Phishing hiện dựa trên cảnh báo công khai trong quá khứ; một số nguồn là bản đăng lại cảnh báo NCSC, không phải feed độc lập. Nhãn chưa xác minh tình trạng hiện tại.
 - Benign được nhận diện qua danh bạ/cổng chính thức và trang doanh nghiệp; cần xác minh tổ chức sở hữu và đích đến hiện tại.
-- Tất cả mẫu còn `pending`; chưa có nhãn accepted để tính metric.
+- Hai CSV gốc còn `pending`; ledger có subset nhãn lịch sử được AI đối chiếu tài liệu. Đây không phải xác minh trang đích hiện tại; xem phương pháp và giới hạn trong báo cáo K5.3.
 - Snapshot 167 ứng viên nằm trong mức tham khảo 150–300, nhưng số lượng không thay thế yêu cầu review nhãn và quyền sử dụng.
 - Không có `collected_at`, nên chưa phân tích temporal drift hay tạo temporal holdout.
 - Số bị loại ở bước tuyển chọn trước audit không được ghi nhận; số 0 bị loại chỉ áp dụng cho audit độc lập trên hai CSV hiện tại.

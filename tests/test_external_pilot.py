@@ -25,7 +25,8 @@ def verified(c, core=None, scope='hostname_historical', full=False):
         records.append({'id':r['id'],'candidate_signature':r['candidate_signature'],'review_status':'verified',
             'reviewer':'synthetic reviewer fixture','reviewed_at':'2026-01-01T00:00:00Z',
             'review_evidence':'synthetic fixture evidence, not real labels','label_scope':scope,
-            'full_url_verified':str(full).lower(),'source_independence':'unresolved'})
+            'full_url_verified':str(full).lower(),'source_independence':'unresolved','review_method':'human',
+            'evidence_document_sha256':'','evidence_locator':'','evidence_limitations':''})
     return build_ledger(c,core or {},reviews=pd.DataFrame(records,columns=REVIEW_FIELDS))
 
 
@@ -102,7 +103,8 @@ def test_review_binding_rejects_stale_or_incomplete_annotations(defect):
     c=candidates();first=build_ledger(c,{})
     review={'id':'c0','candidate_signature':first.loc[0,'candidate_signature'],'review_status':'verified',
             'reviewer':'fixture','reviewed_at':'2026-01-01Z','review_evidence':'fixture evidence',
-            'label_scope':'hostname_historical','full_url_verified':'false','source_independence':'unresolved'}
+            'label_scope':'hostname_historical','full_url_verified':'false','source_independence':'unresolved',
+            'review_method':'human','evidence_document_sha256':'','evidence_locator':'','evidence_limitations':''}
     review['reviewed_at']='2026-01-01T00:00:00Z'
     if defect=='signature':review['candidate_signature']='stale'
     if defect in ['reviewer','reviewed_at','review_evidence']:review[defect]=''
@@ -114,6 +116,39 @@ def test_pending_rows_are_never_scored_and_no_zero_recall_is_fabricated():
     def forbidden(_):raise AssertionError('No inference on pending ground truth')
     result,pred=evaluate_verified(build_ledger(candidates(),{}),forbidden)
     assert result['metrics'] is None and result['n_evaluated']==0 and pred.empty
+
+
+@pytest.mark.parametrize('defect',['method','hash','locator','limitations','current_scope','full_url'])
+def test_ai_document_reviews_cannot_claim_human_or_live_full_url_verification(defect):
+    c=candidates()
+    first=verified(c)
+    review=first.loc[[0],REVIEW_FIELDS].copy()
+    review['review_method']='ai_document_review'
+    review['evidence_document_sha256']='a'*64
+    review['evidence_locator']='synthetic article warning list, exact hostname'
+    review['evidence_limitations']='Synthetic fixture; not human or live-site verification'
+    if defect=='method':review['review_method']='unspecified'
+    if defect=='hash':review['evidence_document_sha256']='missing'
+    if defect=='locator':review['evidence_locator']=''
+    if defect=='limitations':review['evidence_limitations']=''
+    if defect=='current_scope':review['label_scope']='hostname_current'
+    if defect=='full_url':review['full_url_verified']=True
+    with pytest.raises(ValueError):build_ledger(c,{},reviews=review)
+
+
+def test_ai_historical_document_review_is_transparent_and_pending_is_not_scored():
+    c=candidates()
+    review=verified(c).loc[[0],REVIEW_FIELDS].copy()
+    review['reviewer']='AI fixture'
+    review['review_method']='ai_document_review'
+    review['evidence_document_sha256']='a'*64
+    review['evidence_locator']='synthetic source section'
+    review['evidence_limitations']='Historical identity only, not human or current verification'
+    ledger=build_ledger(c,{},reviews=review)
+    result,pred=evaluate_verified(ledger,lambda _:dict(label='phishing',score=.9,score_kind='probability'))
+    assert result['review_methods']=={'ai_document_review':1}
+    assert pred.id.tolist()==['c0'] and ledger.review_status.eq('pending').sum()==2
+    assert not ledger.full_url_verified.any() and not ledger.eligible_full_url.any()
 
 
 def fixture_predictor(url):
