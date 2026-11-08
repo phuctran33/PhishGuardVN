@@ -1,0 +1,113 @@
+{
+  "checked_at_utc": "2026-11-07T02:38:52.520304+00:00",
+  "status": "PASS",
+  "checks": {
+    "partition_version": {
+      "status": "PASS",
+      "detail": "Require native trainval / e2-brand-v0 contract"
+    },
+    "schema_order": {
+      "status": "PASS",
+      "detail": "Exactly id + unchanged 12 lexical + 8 brand columns; metadata excluded"
+    },
+    "eligible_ids": {
+      "status": "PASS",
+      "detail": "Exact eligible Core Train/Validation IDs; Test rejected by Train/Validation whitelist"
+    },
+    "numeric_finite": {
+      "status": "PASS",
+      "detail": "All 20 features numeric; no NaN/Inf"
+    },
+    "brand_value_contract": {
+      "status": "PASS",
+      "detail": "Native binary flags, typo range and nonnegative integer token counts"
+    },
+    "excluded_ids": {
+      "status": "PASS",
+      "detail": "Excluded IDs exactly match E1 exclusions and have nonblank reasons"
+    },
+    "excluded_reasons": {
+      "status": "PASS",
+      "detail": "E2 exclusion reasons match the unchanged E1 parser policy"
+    },
+    "lexical_parity_by_id": {
+      "status": "PASS",
+      "detail": "Compare 12 E1 columns by ID, absolute tolerance 1e-10"
+    },
+    "fold_ids": {
+      "status": "PASS",
+      "detail": "Same three eligible domain folds"
+    },
+    "domain_groups": {
+      "status": "PASS",
+      "detail": "No domain crosses outer folds or official Train/Validation"
+    },
+    "manifest_counts_ids": {
+      "status": "PASS",
+      "detail": "Native counts, split supports and ID digests agree"
+    },
+    "dictionary": {
+      "status": "PASS",
+      "detail": "Native brand definitions/order/version and both dictionary hashes match"
+    },
+    "reference_hash": {
+      "status": "PASS",
+      "detail": "Reference summary/hash matches the actual packaged reference"
+    },
+    "input_provenance": {
+      "status": "PASS",
+      "detail": "Input and Train/Validation split-file hashes match; no Test file opened"
+    },
+    "freeze_claim": {
+      "status": "PASS",
+      "detail": "A draft reference cannot claim frozen/verified status"
+    }
+  },
+  "model_comparison_status": "DONE / PASS / PRELIMINARY",
+  "limitations": "Feature checks do not verify reference truth or model training; no E2 metrics calculated.",
+  "feature_status": "PRELIMINARY",
+  "feature_schema_version": "e2-brand-v0",
+  "n_features": 20,
+  "rows_by_split": {
+    "train": {
+      "x": 13078,
+      "excluded": 2
+    },
+    "val": {
+      "x": 1585,
+      "excluded": 0
+    }
+  },
+  "rows_x": 14663,
+  "rows_excluded": 2,
+  "excluded_reasons": {
+    "unresolved_domain": 2
+  },
+  "brand_reference": {
+    "file": "brand_reference_v1.csv",
+    "sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+    "n_brands": 37,
+    "status_counts": {
+      "draft": 37
+    },
+    "n_missing_source_accessed": 37,
+    "n_missing_source_url": 0,
+    "fully_verified": false,
+    "n_brands_with_official_suffixes": 0,
+    "n_brands_with_typo_ignore": 0
+  },
+  "producer_git_commit": "a7413aae3351703429eba518657b08894afae3e7",
+  "producer_git_dirty": false,
+  "artifact_sha256": {
+    "data/interim/05_matrix_X_brand_trainval.manifest.json": "e1e5c79c285015516f771305ea3804f17388c9f2df172d947da1c1bec4f98bcf",
+    "data/interim/05_matrix_X_brand_trainval.csv": "67b62651af1c7dc0cca9c0886d2dedda67287588e2a7e8ab480f7ffa868e7fee",
+    "data/interim/05_excluded_rows_trainval.csv": "4eaf4d54829a0a3a2dffb2d2e609ef4ce63d48cf88db74e032dc7ebca911b722",
+    "reports/templates/brand_feature_dictionary.csv": "1f76fa1100684ce0769ce6d62da52e55638647e77c9af6fd7fbec2e845aee2f7",
+    "reports/templates/feature_dictionary.csv": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
+    "src/phishguard_vn/resources/brand_reference_v1.csv": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf"
+  },
+  "pending": {
+    "reference_review": "PENDING_HY_REFERENCE_REVIEW",
+    "e2_predictions": "PENDING_PRODUCER_E2_PREDICTIONS"
+  }
+}

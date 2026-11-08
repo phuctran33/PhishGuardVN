@@ -4,6 +4,12 @@
 *.md text eol=lf
 *.toml text eol=lf
 
+# Week-5 text artifacts have raw-byte SHA256 checks; keep checkout bytes stable.
+/reports/annotations/*.csv text eol=lf
+/reports/annotations/*.json text eol=lf
+/reports/tables/week5/*.csv text eol=lf
+/reports/tables/week5/*.json text eol=lf
+
 # Preserve original dataset bytes if explicitly added later.
 /data/*.csv -text
 /data/splits/*.csv -text
