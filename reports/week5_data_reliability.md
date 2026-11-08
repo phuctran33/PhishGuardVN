@@ -7,7 +7,7 @@ Trong thiết kế thí nghiệm, E1 dùng URL features truyền thống làm ba
 
 ## 1. Source-label audit trong Core
 
-Audit dùng 14.665 dòng Core eligible gold/silver trong train/validation. Năm nguồn trong phạm vi này mỗi nguồn chỉ có một nhãn:
+Audit nguồn dùng 14.665 dòng Core gold/silver trong train/validation **trước lọc parser**. Có 2 dòng Train `unresolved_domain`, nên representation X hợp lệ có 14.663 dòng (13.078 Train + 1.585 Validation). Năm nguồn trong bảng dưới dùng mẫu số trước lọc parser, mỗi nguồn chỉ có một nhãn:
 
 | Nhãn | Nguồn | Số dòng |
 |---|---|---:|
@@ -21,7 +21,7 @@ Audit dùng 14.665 dòng Core eligible gold/silver trong train/validation. Năm 
 
 ## 2. Reliability của Core
 
-Parser PSL offline chạy trên 14.665 dòng Core eligible train/validation. Kết quả:
+Parser PSL offline chạy trên 14.665 dòng Core train/validation trước lọc parser, giữ cả các dòng lỗi để audit. Kết quả:
 
 - 0 hostname overlap và 0 registrable-domain overlap giữa train và validation.
 - Không có mismatch giữa hostname parse từ URL và hostname lưu trong cột domain.

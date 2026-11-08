@@ -7,6 +7,8 @@ trong bối cảnh Việt Nam.
 Baseline là kết quả ban đầu; chưa đánh giá official test và chưa chọn mô hình cuối kỳ.
 Xem [báo cáo baseline](reports/week4_baseline.md), [phân tích FP/FN và chênh lệch CV–Validation](reports/week4_error_analysis.md) và notebook `04_baseline_ml.ipynb`.
 
+Phần EDA/preprocessing được tổng hợp tại [báo cáo dữ liệu](reports/data_report_final.md), gồm thống kê Train-only cho 12 lexical + 8 brand features v1, URL text/keywords, quality, multicollinearity và bảng đối chiếu yêu cầu môn học. Không train model khi tái lập báo cáo này.
+
 **Mặc định chạy hoàn toàn local** bằng VS Code/Jupyter và môi trường `.venv` riêng.
 GitHub dùng để quản lý code; từng thành viên có thể chọn môi trường chạy khác nhau.
 Google Colab là tùy chọn, không cần tài khoản Colab hay Google Drive để chạy local.
@@ -104,7 +106,18 @@ Trên macOS/Linux dùng `.venv/bin/python`.
 ```
 
 Notebook tự tìm root repo, đọc dữ liệu ở `data/` và config ở `configs/`.
-Chạy notebook theo thứ tự **01 → 03 → 02 → 04**. Mỗi bước tạo artifact cho bước kế tiếp.
+Chuỗi dữ liệu hiện tại là **01 → 03 → build E2 v1 Train/Validation → 02 → 05_source_bias**. Bước build bổ sung là dependency của phần brand EDA trong notebook 02; không dùng ma trận v0 cũ. Để checkout vẫn sạch khi build `--freeze`, lưu notebook đã chạy ở thư mục local bị Git bỏ qua:
+
+```bash
+python -m nbconvert --to notebook --execute notebooks/01_data_quality.ipynb --output-dir data/interim/eda_execution
+python -m nbconvert --to notebook --execute notebooks/03_url_features.ipynb --output-dir data/interim/eda_execution
+python scripts/05_build_matrix_x_brand.py --partition trainval --freeze
+python -m nbconvert --to notebook --execute notebooks/02_eda_and_splits.ipynb --output-dir data/interim/eda_execution
+python -m nbconvert --to notebook --execute notebooks/05_source_bias.ipynb --output-dir data/interim/eda_execution
+python -m pytest -q -rs
+```
+
+`--freeze` yêu cầu checkout sạch và reference đã verified. Bảng/hình báo cáo được tái tạo ở `reports/`; không sửa dữ liệu gốc hay manifest freeze đã commit. Notebook **04** thuộc bước train baseline riêng, không cần chạy để hoàn thiện báo cáo dữ liệu.
 
 ### 4. Dữ liệu ở ổ đĩa khác — tùy chọn
 
