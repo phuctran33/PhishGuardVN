@@ -1,0 +1,123 @@
+{
+  "status": "PILOT_ONLY_NOT_OFFICIAL_GROUND_TRUTH",
+  "n_candidates": 167,
+  "labels": {
+    "phishing": 138,
+    "benign": 29
+  },
+  "review_status": {
+    "verified": 99,
+    "pending": 68,
+    "rejected": 0
+  },
+  "verified_by_label": {
+    "phishing": 92,
+    "benign": 7
+  },
+  "verified_review_methods": {
+    "ai_document_review": 99
+  },
+  "human_verified": 0,
+  "internal_duplicates_after_first": {
+    "raw_url": 0,
+    "normalized_url": 0,
+    "model_input_host": 0,
+    "registrable_domain": 0
+  },
+  "core_overlap_rows": {
+    "normalized_url": 0,
+    "comparison_url_key": 0,
+    "hostname": 0,
+    "registrable_domain": 0
+  },
+  "legacy_overlap_rows": {
+    "normalized_url": 29,
+    "comparison_url_key": 29,
+    "hostname": 29,
+    "registrable_domain": 29
+  },
+  "parser_invalid_rows": 0,
+  "candidates_retained": 167,
+  "automatically_rejected_or_deleted": 0,
+  "stored_url_norm_mismatch_rows": 1,
+  "host_only_feature_rows": 167,
+  "host_only_feature_exclusions": 0,
+  "source_groups": 13,
+  "single_label_source_groups": 13,
+  "source_families": 10,
+  "single_label_source_families": 10,
+  "ncsc_warning_or_republication_rows": 88,
+  "brand_cue_rows_by_label": {
+    "benign": 1,
+    "phishing": 69
+  },
+  "format_before": {
+    "n": 167,
+    "format_strata": 2,
+    "pure_strata": 2,
+    "apparent_majority_label_matches": 167,
+    "definition": "Resubstitution purity of candidate labels using only format; no model/ground-truth performance claim."
+  },
+  "format_host_only": {
+    "n": 167,
+    "format_strata": 1,
+    "pure_strata": 0,
+    "apparent_majority_label_matches": 138,
+    "definition": "Resubstitution purity of candidate labels using only format; no model/ground-truth performance claim."
+  },
+  "frozen_lexical_format_diagnostic": {
+    "raw_slash_path_candidate_label_purity_matches": 167,
+    "host_only_slash_path_candidate_label_purity_matches": 138,
+    "host_only_slash_and_path_all_zero": true,
+    "not_model_performance": true
+  },
+  "observed_full_http_urls": 29,
+  "verified_full_urls": 0,
+  "eligible_host_only": 99,
+  "eligible_full_url": 0,
+  "historical_priority": {
+    "requested_size": 75,
+    "recovered_phishing_rows": 74,
+    "recovered_benign_rows": 32,
+    "manifest_for_exactly_75_found": false,
+    "status": "RESOLVED_IN_REPOSITORY_74_RECORDS_75_LINES; any different out-of-repository cohort unestablished",
+    "source_counts": [
+      {
+        "label": "benign",
+        "source": "aeon_official_corporate_profile",
+        "n": 1
+      },
+      {
+        "label": "benign",
+        "source": "government_portal",
+        "n": 4
+      },
+      {
+        "label": "benign",
+        "source": "official_business_site",
+        "n": 18
+      },
+      {
+        "label": "benign",
+        "source": "tinnhiem_trusted_directory",
+        "n": 3
+      },
+      {
+        "label": "benign",
+        "source": "vnba_member_directory",
+        "n": 6
+      },
+      {
+        "label": "phishing",
+        "source": "tinnhiemmang",
+        "n": 74
+      }
+    ]
+  },
+  "limits": [
+    "Format-specific scheme/path fields are unified by construction; host spelling/source-label confounding remains.",
+    "NCSC warning republications are not independent feeds; URL/domain disjointness does not prove source/campaign independence.",
+    "Observed source links/host mentions do not auto-verify labels, current site state, or full-URL semantics.",
+    "Existing Core protocol fixes probability boundary .5/margin 0; no new threshold is chosen from Validation or external."
+  ]
+}

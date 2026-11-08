@@ -111,3 +111,13 @@ Danh sách có **167 candidate**, nằm trong mức tham khảo 150–300 nhưng
 5. Báo cáo metric theo nguồn và nêu source-label confounding; giữ Official Test cho đánh giá cuối.
 
 **Giới hạn:** Kết quả hiện tại là kiểm toán metadata và reference links. Chưa xác minh nội dung trực tiếp từng URL, chưa chứng minh loại trừ mọi campaign leakage và chưa có metric external.
+
+## 6. K5.3 follow-up — format và benchmark gate
+
+Audit ngày 2026-11-08 giữ nguyên 167 candidates nhưng xác nhận scheme/format và cặp feature `slash_cnt/path_len` có thể phân tách 167/167 nhãn ứng viên. Không được dùng kết quả đó làm metric phát hiện phishing. Host-only mới dùng cùng phép biến đổi không phụ thuộc nhãn; slash/path bằng 0 cho cả hai lớp. Source–label confounding vẫn còn ở 13/13 nhóm nguồn, và 88 phishing là cảnh báo NCSC/republication, không phải 88 quan sát từ feed độc lập với Core.
+
+Ledger/review records, kiểm tra overlap với cả snapshot cũ và gate Teacher/verified labels nằm ở [báo cáo K5.3](k53_external_pilot_audit.md), [data dictionary](../data/external/README.md) và `reports/tables/external_pilot/`. Cohort cũ phục hồi được 74 phishing (75 dòng kể header) + 32 benign, đều pending, được giữ riêng; không tự nhận có manifest 75 URL. Benchmark hiện PREPARED/BLOCKED, không có metric thật. Trạng thái snapshot trước review được giữ trong các bảng nguồn phía trên.
+
+### K5.3 — review tài liệu bổ sung ngày 2026-11-08
+
+`k53_reviews.csv` đã có quyết định theo từng ID: 99 verified trong phạm vi tài liệu lịch sử (92 phishing, 7 benign), 68 pending, 0 rejected. Reviewer là Codex, method `ai_document_review`; không có human verification mới. Tài liệu nguồn có SHA256, thời điểm đọc và locator ở `k53_document_sources.csv`. Không thay CSV gốc hoặc label; không xác nhận site hiện tại/full URL. 13 candidate bỏ `www.` so với nguồn vẫn pending, cùng các reference không đủ căn cứ. Chi tiết/định nghĩa nhãn/giới hạn xem báo cáo K5.3 được tái tạo từ ledger. Cohort lịch sử trong Git xác định đúng 74 bản ghi, 75 dòng gồm header; không tạo thêm một URL. Còn thiếu Teacher finalized để chạy recall; source–label confounding chưa được giải quyết nên không công bố FPR/generalization chính thức.

@@ -1,0 +1,16 @@
+brand_id,canonical_name,label,candidate_hosts
+acb,ACB,phishing,23
+agribank,Agribank,phishing,6
+dvcquocgia,Dịch vụ công quốc gia,phishing,15
+ghtk,Giao Hàng Tiết Kiệm,phishing,6
+hdbank,HDBank,phishing,3
+lazada,Lazada,phishing,1
+ocb,OCB,phishing,1
+shb,SHB,phishing,1
+shopee,Shopee,phishing,5
+vcbneo,VCBNeo,benign,1
+vib,VIB,phishing,3
+vietcombank,Vietcombank,phishing,1
+viettel,Viettel,phishing,1
+vneid,VNeID,phishing,1
+vpbank,VPBank,phishing,2

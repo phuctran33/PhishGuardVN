@@ -1,0 +1,168 @@
+id,model_input_full,label,source,review_status,observed_http_scheme,full_url_verified,eligible_full_url
+ext_pilot_phishing_0001,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0002,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0003,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0004,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0005,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0006,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0007,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0008,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0009,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0010,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0011,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0012,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0013,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0014,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0015,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0016,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0017,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0018,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0019,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0020,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0021,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0022,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0023,,phishing,Agribank official warning of spoofed domains,pending,False,False,False
+ext_pilot_phishing_0024,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0025,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0026,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0027,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0028,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0029,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0030,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0031,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0032,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0033,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0034,,phishing,BIDV official consumer fraud warning,verified,False,False,False
+ext_pilot_phishing_0035,,phishing,ACB official list of fake websites,pending,False,False,False
+ext_pilot_phishing_0036,,phishing,BIDV official consumer fraud warning,verified,False,False,False
+ext_pilot_phishing_0037,,phishing,BIDV official consumer fraud warning,verified,False,False,False
+ext_pilot_phishing_0038,,phishing,Agribank official warning of spoofed domains,verified,False,False,False
+ext_pilot_phishing_0039,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0040,,phishing,BIDV official consumer fraud warning,verified,False,False,False
+ext_pilot_phishing_0041,,phishing,Agribank official warning of spoofed domains,verified,False,False,False
+ext_pilot_phishing_0042,,phishing,Agribank official warning of spoofed domains,pending,False,False,False
+ext_pilot_phishing_0043,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0044,,phishing,Agribank official warning of spoofed domains,pending,False,False,False
+ext_pilot_phishing_0045,,phishing,Agribank official warning of spoofed domains,pending,False,False,False
+ext_pilot_phishing_0046,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0047,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0048,,phishing,ACB official list of fake websites,verified,False,False,False
+ext_pilot_phishing_0049,,phishing,Bac Ninh government local public-service scam alert,verified,False,False,False
+ext_pilot_phishing_0050,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0051,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0052,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0053,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0054,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0055,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0056,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0057,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0058,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0059,,phishing,Quang Ngai police publication of NCSC warning,verified,False,False,False
+ext_pilot_phishing_0060,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0061,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0062,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0063,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0064,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0065,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0066,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0067,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0068,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0069,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0070,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0071,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0072,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0073,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0074,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0075,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0076,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0077,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0078,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0079,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0080,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0081,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0082,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0083,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0084,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0085,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0086,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0087,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0088,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0089,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0090,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0091,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0092,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0093,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0094,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0095,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0096,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0097,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0098,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0099,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0100,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0101,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0102,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0103,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0104,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0105,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0106,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0107,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0108,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0109,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0110,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0111,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0112,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0113,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0114,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0115,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0116,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0117,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0118,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0119,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0120,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0121,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0122,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0123,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0124,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0125,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0126,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0127,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0128,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0129,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0130,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0131,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0132,,phishing,NCSC warning republished by Dak Lak government,pending,False,False,False
+ext_pilot_phishing_0133,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0134,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0135,,phishing,NCSC warning republished by Nghe An tech centre,pending,False,False,False
+ext_pilot_phishing_0136,,phishing,NCSC warning republished by Dak Lak government,verified,False,False,False
+ext_pilot_phishing_0137,,phishing,NCSC weekly scam warnings on Ministry portal,verified,False,False,False
+ext_pilot_phishing_0138,,phishing,VNCERT/CC warning on Ministry portal,verified,False,False,False
+ext_pilot_benign_0004,https://vietnam.gov.vn/,benign,government_portal,pending,True,False,False
+ext_pilot_benign_0005,https://ubgialai.gov.vn/,benign,government_portal,pending,True,False,False
+ext_pilot_benign_0006,https://kttv.gov.vn/,benign,government_portal,pending,True,False,False
+ext_pilot_benign_0007,https://news.gov.vn/,benign,government_portal,pending,True,False,False
+ext_pilot_benign_0008,https://vcbneo.com.vn/,benign,vnba_member_directory,verified,True,False,False
+ext_pilot_benign_0009,https://sbvamc.vn/,benign,vnba_member_directory,verified,True,False,False
+ext_pilot_benign_0010,https://mbv.com.vn/,benign,vnba_member_directory,verified,True,False,False
+ext_pilot_benign_0011,https://www.co-opbank.vn/,benign,vnba_member_directory,verified,True,False,False
+ext_pilot_benign_0012,https://www.niceinfo.com.vn/vi/about,benign,vnba_member_directory,verified,True,False,False
+ext_pilot_benign_0013,https://vrbank.com.vn/,benign,vnba_member_directory,verified,True,False,False
+ext_pilot_benign_0014,https://7-eleven.vn/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0015,https://www.ministop.vn/vi/corporate,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0016,https://shop.annam-gourmet.com/vi/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0017,https://farmersmarket.vn/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0018,https://coopxtra.net/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0019,https://coopsmile.vn/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0020,https://famima.vn/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0021,https://mmvietnam.com/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0022,https://namanmarket.com/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0023,https://fujimart.vn/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0024,https://aeoneshop.com/,benign,aeon_official_corporate_profile,verified,True,False,False
+ext_pilot_benign_0025,https://www.fahasa.com/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0026,https://gearvn.com/gioi-thieu,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0027,https://hoanghamobile.com/gioi-thieu-cong-ty,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0028,https://concung.com/ho-tro-khach-hang/dieu-khoan-su-dung-bv56.html,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0029,https://bachlongmobile.com/gioi-thieu-ve-bach-long-mobile/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0030,https://ahamove.com/about-us,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0031,https://vexere.com/en-US/gioi-thieu.html/,benign,official_business_site,pending,True,False,False
+ext_pilot_benign_0032,https://futaexpress.vn/,benign,official_business_site,pending,True,False,False
