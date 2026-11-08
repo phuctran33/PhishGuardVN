@@ -1,0 +1,11 @@
+feature,vif,status
+url_len,240324.51388940908,finite
+dom_len,4.261772743710135,finite
+subdom_cnt,11.256044519418683,finite
+letter_cnt,193558.68211661623,finite
+digit_cnt,2657.7070572107386,finite
+dot_cnt,4595.807685653339,finite
+dash_cnt,512.8054840325563,finite
+slash_cnt,29.858892513121873,finite
+entropy,2.244599784747519,finite
+path_len,3.956891535053916,finite

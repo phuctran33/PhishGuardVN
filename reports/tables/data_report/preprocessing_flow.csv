@@ -1,0 +1,5 @@
+stage,input_rows,retained_rows,not_used_in_this_stage,affected_split,decision
+Raw → Core Gold/Silver,53116,18997,34119,mọi split,Bronze giữ riêng; không xóa raw
+Core → representation X hợp lệ,18997,18995,2,train,unresolved_domain ngoài X; vẫn còn trong Core
+Core X → Train cho EDA/CV,18995,13078,5917,val + test,"Holdouts giữ riêng, không phải dữ liệu lỗi"
+Riêng Core Train → Train hợp lệ,13080,13078,2,train,Cùng 2 unresolved_domain; không đếm loại thêm
