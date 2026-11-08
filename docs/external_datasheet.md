@@ -2,6 +2,12 @@
 
 **Trạng thái:** Đã tạo và kiểm toán hai candidate CSV. Danh sách phục vụ rà soát thủ công; nhãn chưa được review cuối và chưa dùng để tính metric external.
 
+**Cập nhật K5.3 (2026-11-08): PILOT / PREPARED–BLOCKED.** Audit bổ sung phát hiện format/scheme và `slash_cnt/path_len` phân tách đúng 167/167 **nhãn ứng viên** trên cùng snapshot; đây là collection artifact, không phải khả năng phát hiện phishing. Biểu diễn host-only đã thống nhất cho cả hai lớp bằng parser/feature extractor chính thức, nhưng 13/13 nhóm nguồn vẫn chỉ có một nhãn. Không tuyên bố đã loại source/campaign leakage.
+
+Xem [báo cáo K5.3](../reports/k53_external_pilot_audit.md), [data dictionary và lệnh tái lập](../data/external/README.md), `reports/tables/external_pilot/` và `data/external/derived/`. Hai CSV 15 cột bên dưới vẫn là nguồn nguyên trạng, không bị ghi đè hoặc đổi nhãn. Ledger canonical mới có đủ raw_url/normalized_url/model input/source reference/review evidence; toàn bộ 167 vẫn pending, không có Teacher bundle đã chốt để chấm metric.
+
+Lịch sử Git phục hồi riêng **74 phishing + 32 benign** tại `data/external/history/2026-11-07/`. File phishing có 75 dòng gồm header; không tìm thấy manifest chứng minh một cohort đúng 75 URL. 74 phishing cũ đến từ tinnhiemmang và 29 benign trùng snapshot mới; không gộp thành benchmark độc lập hoặc nhận tất cả đã verified.
+
 ## 1. Mục đích và tiêu chí lấy mẫu
 
 Pilot thu thập URL mới nhằm rà soát khả năng tổng quát hóa ngoài Core. Không dùng candidate để huấn luyện, chọn đặc trưng/mô hình hoặc điều chỉnh threshold. Chỉ mẫu được review và chấp nhận mới có thể chuyển thành external evaluation set.
@@ -103,6 +109,8 @@ Các `license_note` yêu cầu kiểm tra điều khoản nguồn và attributio
 - Không có `collected_at`, nên chưa phân tích temporal drift hay tạo temporal holdout.
 - Số bị loại ở bước tuyển chọn trước audit không được ghi nhận; số 0 bị loại chỉ áp dụng cho audit độc lập trên hai CSV hiện tại.
 - Domain-level dedup không loại trừ mọi campaign hoặc shared-infrastructure leakage.
+- Bản audit K5.3 chỉ gắn cờ domain/hostname chung để review; không tự xóa candidate chỉ vì cùng registrable domain. Core overlap làm dừng eligibility cho evaluation, không xóa dữ liệu nguồn hay đổi nhãn.
+- Cảnh báo NCSC được đăng lại có thể vẫn liên quan cơ chế nguồn của Core, dù hostname/domain không giao. 88/138 phishing hiện thuộc nhóm cảnh báo NCSC/republication; nguồn xuất bản mới không chứng minh feed hoặc campaign độc lập.
 
 ## 7. Điều kiện chuyển sang external evaluation
 

@@ -111,3 +111,9 @@ Danh sách có **167 candidate**, nằm trong mức tham khảo 150–300 nhưng
 5. Báo cáo metric theo nguồn và nêu source-label confounding; giữ Official Test cho đánh giá cuối.
 
 **Giới hạn:** Kết quả hiện tại là kiểm toán metadata và reference links. Chưa xác minh nội dung trực tiếp từng URL, chưa chứng minh loại trừ mọi campaign leakage và chưa có metric external.
+
+## 6. K5.3 follow-up — format và benchmark gate
+
+Audit ngày 2026-11-08 giữ nguyên 167 candidates nhưng xác nhận scheme/format và cặp feature `slash_cnt/path_len` có thể phân tách 167/167 nhãn ứng viên. Không được dùng kết quả đó làm metric phát hiện phishing. Host-only mới dùng cùng phép biến đổi không phụ thuộc nhãn; slash/path bằng 0 cho cả hai lớp. Source–label confounding vẫn còn ở 13/13 nhóm nguồn, và 88 phishing là cảnh báo NCSC/republication, không phải 88 quan sát từ feed độc lập với Core.
+
+Ledger/review records, kiểm tra overlap với cả snapshot cũ và gate Teacher/verified labels nằm ở [báo cáo K5.3](k53_external_pilot_audit.md), [data dictionary](../data/external/README.md) và `reports/tables/external_pilot/`. Cohort cũ phục hồi được 74 phishing (75 dòng kể header) + 32 benign, đều pending, được giữ riêng; không tự nhận có manifest 75 URL. Benchmark hiện PREPARED/BLOCKED, không có metric thật hoặc nhãn tự xác nhận.

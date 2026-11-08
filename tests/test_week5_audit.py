@@ -405,9 +405,10 @@ def test_pr5_parser_alias_cache_compatibility_is_narrow():
     assert not _baseline_cache_matches(prior, current, "raw.csv", "baseline.toml")
 
 
-@pytest.mark.parametrize("defect", [None, "duplicate", "test_id", "order", "nan", "lexical_drift", "reference", "false_freeze"])
-def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
+@pytest.mark.parametrize("defect", [None, "duplicate", "test_id", "order", "nan", "lexical_drift", "reference", "false_freeze", "valid_freeze"])
+def test_native_hy_feature_audit_without_models(inputs, tmp_path, monkeypatch, defect):
     from pathlib import Path
+    from phishguard_vn import brand_features
     from phishguard_vn.brand_features import BRAND_FEATURES, E2_FEATURES, FEATURE_SCHEMA_VERSION, load_reference
     from phishguard_vn.e2_audit import audit_native_brand_features
     metadata, folds, _ = inputs
@@ -415,6 +416,16 @@ def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
     splits = tmp_path / "data/splits"; splits.mkdir()
     templates = tmp_path / "reports/templates"; templates.mkdir(parents=True)
     original_root = Path(__file__).resolve().parents[1]
+    reference = load_reference()
+    if defect == "false_freeze":
+        # Exercise a genuinely draft reference even after the packaged v1 is verified.
+        draft_path = tmp_path / "draft_reference.csv"
+        draft = pd.read_csv(brand_features.REFERENCE_PATH, dtype=str, keep_default_na=False, encoding="utf-8")
+        draft["status"] = "draft"
+        draft.to_csv(draft_path, index=False, encoding="utf-8", lineterminator="\n")
+        monkeypatch.setattr(brand_features, "REFERENCE_PATH", draft_path)
+        reference = load_reference(draft_path)
+        assert not reference.is_fully_verified
     for filename in ["brand_feature_dictionary.csv", "feature_dictionary.csv"]:
         (templates / filename).write_bytes((original_root / "reports/templates" / filename).read_bytes())
     excluded = pd.DataFrame({"id": ["excluded_1", "excluded_2"], "error_reason": ["unresolved_domain"]*2, "split": ["train"]*2})
@@ -429,7 +440,7 @@ def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
     native = {"feature_schema_version": FEATURE_SCHEMA_VERSION, "partition": "trainval", "test_excluded_from_this_artifact": True,
               "frozen": False, "columns": ["id", *E2_FEATURES], "e1_columns": list(CANDIDATE_FEATURES), "brand_columns": list(BRAND_FEATURES),
               "rows_x": len(matrix), "rows_excluded": 2, "rows_by_split": {"train": {"x": 18, "excluded": 2}, "val": {"x": 6, "excluded": 0}},
-              "ids_sha256_x": ids_hash(matrix.id), "ids_sha256_excluded": ids_hash(excluded.id), "brand_reference": load_reference().summary(),
+              "ids_sha256_x": ids_hash(matrix.id), "ids_sha256_excluded": ids_hash(excluded.id), "brand_reference": reference.summary(),
               "input_file": "core_gold_silver.csv", "input_sha256": sha256(interim / "core_gold_silver.csv"),
               "splits_sha256": {f"url_{s}.csv": sha256(splits / f"url_{s}.csv") for s in ["train", "val"]},
               "brand_feature_dictionary_sha256": sha256(templates / "brand_feature_dictionary.csv"),
@@ -440,16 +451,18 @@ def test_native_hy_feature_audit_without_models(inputs, tmp_path, defect):
     if defect == "nan": matrix.loc[0, "brand_in_domain"] = np.nan
     if defect == "lexical_drift": matrix.loc[0, "url_len"] += 1
     if defect == "reference": native["brand_reference"]["sha256"] = "wrong"
-    if defect == "false_freeze": native["frozen"] = True
+    if defect in ("false_freeze", "valid_freeze"): native["frozen"] = True
     matrix.to_csv(interim / "05_matrix_X_brand_trainval.csv", index=False, encoding="utf-8", lineterminator="\n")
     manifest = interim / "05_matrix_X_brand_trainval.manifest.json"; manifest.write_text(json.dumps(native), encoding="utf-8", newline="\n")
     report = tmp_path / "audit.json"
-    if defect:
+    if defect and defect != "valid_freeze":
         with pytest.raises(ValueError): audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
         assert json.loads(report.read_text(encoding="utf-8"))["status"] == "FAIL"
+        if defect == "false_freeze":
+            assert json.loads(report.read_text(encoding="utf-8"))["checks"]["freeze_claim"]["status"] == "FAIL"
     else:
         result = audit_native_brand_features(manifest, metadata, folds, excluded, tmp_path, report)
-        assert result["status"] == "PASS" and result["feature_status"] == "PRELIMINARY"
+        assert result["status"] == "PASS" and result["feature_status"] == ("FROZEN" if defect == "valid_freeze" else "PRELIMINARY")
         assert result["n_features"] == 20 and result["model_comparison_status"] == "PENDING_PRODUCER_E2_PREDICTIONS"
 
 
