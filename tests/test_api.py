@@ -68,6 +68,35 @@ def test_invalid_body_precedes_readiness_and_does_not_echo_input(payload):
     assert set(response.json()) == {"error"} and "input" not in response.json()["error"]
 
 
+def test_url_at_maximum_contract_length_is_accepted(tmp_path):
+    prefix = "https://example.com/"
+    url = prefix + "a" * (4096 - len(prefix))
+    assert len(url) == 4096
+
+    path = artifact(tmp_path, bundle())
+    with TestClient(api.create_app(bundle_path=path)) as client:
+        response = client.post("/predict", json={"url": url})
+
+    assert response.status_code == 200
+
+
+def test_outer_whitespace_is_trimmed_before_inference(tmp_path, monkeypatch):
+    path = artifact(tmp_path, bundle())
+    received_urls = []
+    original_predict_url = api.predict_url
+
+    def record_trimmed_url(url, model_bundle, model_name):
+        received_urls.append(url)
+        return original_predict_url(url, model_bundle, model_name)
+
+    monkeypatch.setattr(api, "predict_url", record_trimmed_url)
+    with TestClient(api.create_app(bundle_path=path)) as client:
+        response = client.post("/predict", json={"url": " \texample.com \r\n"})
+
+    assert response.status_code == 200
+    assert received_urls[-1] == "example.com"
+
+
 def test_malformed_json_and_unknown_http_routes_use_error_envelope():
     with TestClient(api.create_app()) as client:
         r = client.post("/predict", content='{"url":', headers={"Content-Type": "application/json"})
