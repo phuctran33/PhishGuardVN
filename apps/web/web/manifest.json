@@ -1,0 +1,19 @@
+{
+  "name": "PhishGuard VN",
+  "short_name": "PhishGuard",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4f7f8",
+  "theme_color": "#087e78",
+  "description": "Phân tích dấu hiệu phishing từ URL.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

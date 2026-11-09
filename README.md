@@ -266,3 +266,7 @@ FastAPI backend và API contract: [hướng dẫn chạy](docs/backend.md), [con
 Khởi động bằng `python -m uvicorn phishguard_vn.api:app --host 127.0.0.1 --port 8000 --no-access-log`
 sau khi cài `python -m pip install -e '.[api,test]' tldextract==5.4.0 idna==3.20`.
 Checkout sạch chưa có artifact: `/health` báo degraded, `/predict` trả 503; không sinh prediction giả.
+
+Flutter Web (#19): [cài/chạy và smoke test](apps/web/README.md). Chạy Web ở port 3000,
+trỏ `API_BASE_URL` tới backend port 8000 và cấu hình CORS theo hướng dẫn.
+Web gọi inference thật qua API, không tự tính lại features hoặc mở URL đích.

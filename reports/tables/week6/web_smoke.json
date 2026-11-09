@@ -1,0 +1,111 @@
+{
+  "backend_artifact_sha256": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+  "model": "logistic_regression_balanced",
+  "feature_set": "lexical_12",
+  "teacher_v1": false,
+  "synthetic_predictions_used": false,
+  "browser": "Google Chrome headless via Playwright",
+  "frontend": "Flutter release; real HTTP API; no route mocking",
+  "cases": [
+    {
+      "case": "valid_url",
+      "status": "PASS",
+      "http": 200,
+      "model": "logistic_regression_balanced",
+      "score": 0.4949721386878221,
+      "score_kind": "probability"
+    },
+    {
+      "case": "empty_url",
+      "status": "PASS",
+      "validation": "local; no POST"
+    },
+    {
+      "case": "missing_scheme",
+      "status": "PASS",
+      "http": 200,
+      "score": 0.4949721386878221
+    },
+    {
+      "case": "invalid_url",
+      "status": "PASS",
+      "http": 422,
+      "reason": "invalid_port"
+    },
+    {
+      "case": "backend_offline",
+      "status": "PASS",
+      "method": "actual backend process stopped, no route mocking"
+    },
+    {
+      "case": "retry_after_restart",
+      "status": "PASS",
+      "method": "same page, actual backend restarted, no reload"
+    },
+    {
+      "case": "mobile_390px",
+      "status": "PASS",
+      "http": 200,
+      "layout": "no document horizontal overflow"
+    }
+  ],
+  "page_errors": [],
+  "page_request_hosts": [
+    "127.0.0.1"
+  ],
+  "screenshots": [
+    "desktop.png",
+    "offline.png",
+    "mobile.png"
+  ],
+  "screenshots_sha256": {
+    "desktop.png": "e93017a9cf44a8b48a4f64ebb986fa3f4e6403ecfab70dc0ae8d86d22b7026f4",
+    "offline.png": "72a1c1ca0d80d483dc17fe95629aa15aefa3295d96d98df628ebccde2f7c8446",
+    "mobile.png": "81e306db99992dccfacfdf3e9dae29f45b43e6f7bf28aa808573b3eb5f97f321"
+  },
+  "backend_commit": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
+  "flutter_version": "3.47.9",
+  "dart_version": "3.13.7",
+  "flutter_tests": {
+    "passed": 16,
+    "failed": 0
+  },
+  "flutter_analyze": "No issues found",
+  "release_build": "passed; --no-web-resources-cdn",
+  "mobile_note": "Chrome viewport 390x844 emulation, not a real phone/Android demo; mobile feedback auto-scrolls into view.",
+  "backend_remote_clean_clone": {
+    "revision": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
+    "backend_tests_passed": 33,
+    "http_checks": [
+      {
+        "path": "health",
+        "status": 200,
+        "content": {
+          "status": "degraded",
+          "model_ready": false,
+          "model": null,
+          "feature_set": null,
+          "protocol": null,
+          "artifact_sha256": null,
+          "model_error": "not_configured"
+        }
+      },
+      {
+        "path": "docs",
+        "status": 200,
+        "content": "Swagger HTML"
+      },
+      {
+        "path": "predict",
+        "status": 503,
+        "content": {
+          "error": {
+            "code": "MODEL_UNAVAILABLE",
+            "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
+            "reason": "not_configured"
+          }
+        }
+      }
+    ]
+  }
+}
