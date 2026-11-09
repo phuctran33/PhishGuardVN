@@ -259,3 +259,10 @@ PhishVN v3.1.0, tác giả Thai Nguyen Vu, DOI `10.17632/b97hxbxtpd.4`.
 README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 `LICENSE`, `CITATION.cff`, `MANIFEST.txt` và tài liệu dataset gốc được giữ nguyên.
 `LICENSE` áp dụng cho dataset; giấy phép code mới của nhóm chưa được lựa chọn.
+
+## Week 6 — API local
+
+FastAPI backend và API contract: [hướng dẫn chạy](docs/backend.md), [contract v1 cho QA/Web](docs/api_contract.md).
+Khởi động bằng `python -m uvicorn phishguard_vn.api:app --host 127.0.0.1 --port 8000 --no-access-log`
+sau khi cài `python -m pip install -e '.[api,test]' tldextract==5.4.0 idna==3.20`.
+Checkout sạch chưa có artifact: `/health` báo degraded, `/predict` trả 503; không sinh prediction giả.

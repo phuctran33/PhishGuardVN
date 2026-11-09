@@ -20,7 +20,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "httpx2>=2.16,<3"]
+api = ["fastapi>=0.162.2,<0.163", "uvicorn>=0.54,<0.55"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

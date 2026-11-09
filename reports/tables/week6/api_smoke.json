@@ -1,0 +1,128 @@
+{
+  "artifact_sha256": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+  "model": "logistic_regression_balanced",
+  "feature_set": "lexical_12",
+  "protocol": "week5_e1_audit",
+  "teacher_v1": false,
+  "tests_are_not_ml_benchmark": true,
+  "real_http_checks": [
+    {
+      "case": "valid",
+      "http_status": 200,
+      "response": {
+        "label": "benign",
+        "model": "logistic_regression_balanced",
+        "score": 0.4949721386878221,
+        "score_kind": "probability",
+        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+        "decision_rule": "estimator.predict",
+        "protocol": "week5_e1_audit"
+      }
+    },
+    {
+      "case": "empty",
+      "http_status": 422,
+      "response": {
+        "error": {
+          "code": "INVALID_REQUEST",
+          "message": "Body phải gồm duy nhất url là chuỗi 1–4096 ký tự, không chỉ khoảng trắng.",
+          "reason": "schema_validation"
+        }
+      }
+    },
+    {
+      "case": "missing_scheme",
+      "http_status": 200,
+      "response": {
+        "label": "benign",
+        "model": "logistic_regression_balanced",
+        "score": 0.4949721386878221,
+        "score_kind": "probability",
+        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+        "decision_rule": "estimator.predict",
+        "protocol": "week5_e1_audit"
+      }
+    },
+    {
+      "case": "invalid",
+      "http_status": 422,
+      "response": {
+        "error": {
+          "code": "INVALID_URL",
+          "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+          "reason": "invalid_port"
+        }
+      }
+    },
+    {
+      "case": "unicode",
+      "http_status": 200,
+      "response": {
+        "label": "phishing",
+        "model": "logistic_regression_balanced",
+        "score": 0.9014940244617446,
+        "score_kind": "probability",
+        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+        "decision_rule": "estimator.predict",
+        "protocol": "week5_e1_audit"
+      }
+    },
+    {
+      "case": "ipv4",
+      "http_status": 200,
+      "response": {
+        "label": "benign",
+        "model": "logistic_regression_balanced",
+        "score": 0.0007515540016442981,
+        "score_kind": "probability",
+        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+        "decision_rule": "estimator.predict",
+        "protocol": "week5_e1_audit"
+      }
+    },
+    {
+      "case": "ipv6",
+      "http_status": 200,
+      "response": {
+        "label": "phishing",
+        "model": "logistic_regression_balanced",
+        "score": 0.9999540215944692,
+        "score_kind": "probability",
+        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+        "decision_rule": "estimator.predict",
+        "protocol": "week5_e1_audit"
+      }
+    }
+  ],
+  "fresh_environment_no_model": [
+    {
+      "path": "health",
+      "status": 200,
+      "body": {
+        "status": "degraded",
+        "model_ready": false,
+        "model": null,
+        "feature_set": null,
+        "protocol": null,
+        "artifact_sha256": null,
+        "model_error": "not_configured"
+      }
+    },
+    {
+      "path": "docs",
+      "status": 200,
+      "body": "Swagger HTML available"
+    },
+    {
+      "path": "predict",
+      "status": 503,
+      "body": {
+        "error": {
+          "code": "MODEL_UNAVAILABLE",
+          "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
+          "reason": "not_configured"
+        }
+      }
+    }
+  ]
+}
