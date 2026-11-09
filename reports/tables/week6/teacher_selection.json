@@ -1,0 +1,204 @@
+{
+  "protocol": "week6_e2_v1_teacher_groupcv_v1",
+  "feature_schema_version": "e2-brand-v1",
+  "created_utc": "2026-11-09T12:32:06.045522+00:00",
+  "teacher_finalized": true,
+  "selected_by": "core_train_group_cv",
+  "external_used_for_selection": false,
+  "primary_metric": "mean_outer_average_precision",
+  "selection_rule": "AP desc; F1 desc; FPR asc; model name asc",
+  "selected_candidate": "E2__mlp",
+  "teacher_candidates": [
+    "E2__mlp"
+  ],
+  "train_rows": 13078,
+  "validation_rows": 1585,
+  "test_evaluated": false,
+  "seed": 42,
+  "outer_folds": 3,
+  "inner_folds": 2,
+  "features": [
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len",
+    "brand_in_domain",
+    "brand_in_subdomain",
+    "brand_in_path",
+    "brand_domain_mismatch",
+    "brand_typo_score",
+    "susp_token_cnt",
+    "idna_flag",
+    "homoglyph_brand_hit"
+  ],
+  "reference": {
+    "file": "brand_reference_v1.csv",
+    "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+    "n_brands": 45,
+    "status_counts": {
+      "verified": 45
+    },
+    "n_missing_source_accessed": 0,
+    "n_missing_source_url": 0,
+    "fully_verified": true,
+    "n_provenance_issues": 0,
+    "provenance_issues": [],
+    "n_brands_with_official_suffixes": 1,
+    "n_brands_with_typo_ignore": 1
+  },
+  "extractor_source_lf_sha256": {
+    "features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
+    "brand_features.py": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b"
+  },
+  "notebook_code_sha256": "c560f5796b909149533f32e0b9775737b3a65817677033eda6497a0e1a700310",
+  "runtime_git_revision": "5509ed1d5bbe85459d2fdd09963dfd11a30c8eb5",
+  "runtime_git_dirty": true,
+  "versions": {
+    "scikit-learn": "1.9.1",
+    "numpy": "2.4.6",
+    "pandas": "3.1.0",
+    "joblib": "1.6.0",
+    "tldextract": "5.4.0",
+    "idna": "3.20"
+  },
+  "input_sha256": {
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb",
+    "data/interim/03_registrable_domains.csv": "926cafce69aaee4347923e21ea3aab0b1def25d814b9d0db504529788c13ab1f",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820",
+    "data/interim/05_matrix_X_brand_trainval.csv": "32e5b54e0a3350588ca20378aa7eac0b0e2a1af94d2dc8a2a3edadb8fb490e09",
+    "data/interim/05_matrix_X_brand_trainval.manifest.json": "9a7b3cf9c027614a6c11e29d20659871820987356007fb49b84287c7f5829772"
+  },
+  "parameters": [
+    {
+      "model": "logistic_regression",
+      "context": "0",
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": "0",
+      "parameters": "{}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": "0",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "model": "mlp",
+      "context": "0",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": "0",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "random_forest",
+      "context": "0",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "logistic_regression",
+      "context": "1",
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": "1",
+      "parameters": "{}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": "1",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "model": "mlp",
+      "context": "1",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": "1",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "random_forest",
+      "context": "1",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "logistic_regression",
+      "context": "2",
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": "2",
+      "parameters": "{}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": "2",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "model": "mlp",
+      "context": "2",
+      "parameters": "{\"model__hidden_layer_sizes\": [32, 16]}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": "2",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "random_forest",
+      "context": "2",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "logistic_regression",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": "full_train",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "model": "mlp",
+      "context": "full_train",
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": "full_train",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "random_forest",
+      "context": "full_train",
+      "parameters": "{\"max_depth\": 12}"
+    }
+  ],
+  "bundle_sha256": "704307ab16140856892e05748635f013d5e9053be7d03814f0622850e48f9bbc"
+}

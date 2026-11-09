@@ -1,0 +1,19 @@
+{
+  "teacher_finalized": true,
+  "selected_by": "core_train_group_cv",
+  "external_used_for_selection": false,
+  "model_name": "mlp",
+  "feature_set": "e2-brand-v1",
+  "score_kind": "probability",
+  "decision_rule": "estimator.predict",
+  "threshold": 0.5,
+  "operating_point_scope": "fixed_core_protocol",
+  "bundle": {
+    "path": "models/week6_teacher_v1.joblib",
+    "sha256": "704307ab16140856892e05748635f013d5e9053be7d03814f0622850e48f9bbc"
+  },
+  "selection_record": {
+    "path": "reports/tables/week6/teacher_selection.json",
+    "sha256": "748e6e63f9033584dac3e7b4b4b9a1f1cd1af8add1e3dfdb882571289815ab7d"
+  }
+}

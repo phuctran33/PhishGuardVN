@@ -29,6 +29,7 @@ Thumbs.db
 /data/processed/*
 !/data/processed/.gitkeep
 /models/*
+!/models/week6_teacher_v1.joblib
 !/models/README.md
 !/models/.gitkeep
 

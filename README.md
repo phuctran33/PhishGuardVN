@@ -259,3 +259,11 @@ PhishVN v3.1.0, tác giả Thai Nguyen Vu, DOI `10.17632/b97hxbxtpd.4`.
 README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 `LICENSE`, `CITATION.cff`, `MANIFEST.txt` và tài liệu dataset gốc được giữ nguyên.
 `LICENSE` áp dụng cho dataset; giấy phép code mới của nhóm chưa được lựa chọn.
+
+## Phúc — Teacher E2 v1 tuần 6
+
+- Notebook dễ đọc: [06_teacher_v1.ipynb](notebooks/06_teacher_v1.ipynb).
+- Kết quả và lý do chọn: [week6_teacher.md](reports/week6_teacher.md).
+- Bàn giao/đọc code: [week6_phuc_handoff.md](docs/week6_phuc_handoff.md).
+- Predict model đã có: .venv/Scripts/python.exe scripts/predict_teacher.py --examples.
+- Tái tạo sau khi có handoff/E2 v1: .venv/Scripts/python.exe scripts/train_teacher.py.

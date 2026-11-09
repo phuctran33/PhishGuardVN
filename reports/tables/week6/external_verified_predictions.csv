@@ -1,0 +1,93 @@
+id,source,label,prediction,score,score_kind,model_input
+ext_pilot_phishing_0001,ACB official list of fake websites,phishing,phishing,0.9999940085498258,probability,acb.chamsoc-the-uudaikhachhang-tructuyen.com.vn
+ext_pilot_phishing_0002,ACB official list of fake websites,phishing,phishing,0.9999705830795516,probability,acb.chamsockhachhang-capnhatuudai-thang11.com.vn
+ext_pilot_phishing_0003,ACB official list of fake websites,phishing,phishing,0.9999683272696843,probability,acb.chamsockhachhang-hotrothe-thang11.com.vn
+ext_pilot_phishing_0004,ACB official list of fake websites,phishing,phishing,0.9996796094961308,probability,acb.chamsockhachhang-thang10-tructuyen.com.vn
+ext_pilot_phishing_0005,ACB official list of fake websites,phishing,phishing,0.9999526333050126,probability,acb.chamsockhachhang-tructuyen-capnhatuudai.com.vn
+ext_pilot_phishing_0006,ACB official list of fake websites,phishing,phishing,0.9996796094961308,probability,acb.chamsockhachhang-tructuyen-thang10.com.vn
+ext_pilot_phishing_0007,ACB official list of fake websites,phishing,phishing,0.9983785607210982,probability,acb.chamsockhachhang-tructuyenthang10.com.vn
+ext_pilot_phishing_0008,ACB official list of fake websites,phishing,phishing,0.9998253639581836,probability,acb.chamsockhachhang-uudaithehapdan-thang10.com.vn
+ext_pilot_phishing_0009,ACB official list of fake websites,phishing,phishing,0.9997012504170489,probability,acb.chamsockhachhang-uudaithethang10.com.vn
+ext_pilot_phishing_0010,ACB official list of fake websites,phishing,phishing,0.9989680899615727,probability,acb.chamsockhachhangthe-thang9.com.vn
+ext_pilot_phishing_0011,ACB official list of fake websites,phishing,phishing,0.9999824146389937,probability,acb.chamsockhachhangthe-uudai-thang10.com.vn
+ext_pilot_phishing_0012,ACB official list of fake websites,phishing,phishing,0.9997085019912368,probability,acb.chamsocthekhachhang-thang10-tructuyen.com.vn
+ext_pilot_phishing_0013,ACB official list of fake websites,phishing,phishing,0.9999988372520687,probability,acb.chamsocthekhachhang-thang9.online
+ext_pilot_phishing_0014,ACB official list of fake websites,phishing,phishing,0.9996315197270506,probability,acb.chamsocthekhachhang-tructuyen-thang8.com.vn
+ext_pilot_phishing_0015,ACB official list of fake websites,phishing,phishing,0.9960204501081392,probability,acb.hotrokhachhang-uudaithetructuyen.com.vn
+ext_pilot_phishing_0016,ACB official list of fake websites,phishing,phishing,0.999999884240265,probability,acb.uudaikhachhang-chamsocthe-tructuyen.online
+ext_pilot_phishing_0017,ACB official list of fake websites,phishing,phishing,0.999964623412004,probability,acb.uudaikhachhangthe-thang10-tructuyen.com.vn
+ext_pilot_phishing_0018,ACB official list of fake websites,phishing,phishing,0.9999733815673039,probability,acb.uudaikhachhangthe-tructuyen-thang9.com.vn
+ext_pilot_phishing_0019,ACB official list of fake websites,phishing,phishing,0.9999998445536897,probability,acb.uudaithe-chamsockhachhang.online
+ext_pilot_phishing_0020,ACB official list of fake websites,phishing,phishing,0.9999819954552597,probability,acb.uudaithekhachhang-thang10.com.vn
+ext_pilot_phishing_0021,ACB official list of fake websites,phishing,phishing,0.999999981245972,probability,acb.uudaithekhachhang-tructuyen-thang9.com
+ext_pilot_phishing_0022,ACB official list of fake websites,phishing,phishing,0.9999733815673039,probability,acb.uudaithekhachhang-tructuyen-thang9.com.vn
+ext_pilot_phishing_0024,ACB official list of fake websites,phishing,benign,0.3810157756358947,probability,chinhphu.dancuquocgia.org
+ext_pilot_phishing_0025,ACB official list of fake websites,phishing,phishing,0.7909228162233787,probability,chinhphu.hodancu.com
+ext_pilot_phishing_0026,ACB official list of fake websites,phishing,phishing,0.9999952546050643,probability,dichvucong.bcavnvngov.com
+ext_pilot_phishing_0027,ACB official list of fake websites,phishing,phishing,0.9999818133172234,probability,dichvucong.capnhatcutru.com
+ext_pilot_phishing_0028,ACB official list of fake websites,phishing,phishing,0.9999975122527599,probability,dichvucong.dinhdanhcutru.com
+ext_pilot_phishing_0029,ACB official list of fake websites,phishing,phishing,0.9999924651985905,probability,dichvucong.snggov.com
+ext_pilot_phishing_0030,ACB official list of fake websites,phishing,phishing,0.9999827510677329,probability,dichvucong.vnvgov.com
+ext_pilot_phishing_0031,ACB official list of fake websites,phishing,phishing,0.6892766999297898,probability,dichvucongbca.com
+ext_pilot_phishing_0032,ACB official list of fake websites,phishing,phishing,0.8313503398495491,probability,dichvuconginfo.com
+ext_pilot_phishing_0033,ACB official list of fake websites,phishing,phishing,0.8388703816387003,probability,dkvn.govkp.com
+ext_pilot_phishing_0034,BIDV official consumer fraud warning,phishing,phishing,0.9969178349628219,probability,ebanking-shopee.vn
+ext_pilot_phishing_0036,BIDV official consumer fraud warning,phishing,phishing,0.8963267863650116,probability,ibank-shopee.vn
+ext_pilot_phishing_0037,BIDV official consumer fraud warning,phishing,phishing,0.9561856475409629,probability,ibanking-shopee.vn
+ext_pilot_phishing_0038,Agribank official warning of spoofed domains,phishing,benign,0.49774042549873754,probability,newagribank.cc
+ext_pilot_phishing_0039,ACB official list of fake websites,phishing,phishing,0.7714945774606913,probability,org.govqp.com
+ext_pilot_phishing_0040,BIDV official consumer fraud warning,phishing,phishing,0.991867288070434,probability,shopeemobilebanking.vn
+ext_pilot_phishing_0041,Agribank official warning of spoofed domains,phishing,phishing,0.9817783512938387,probability,vaagribank.cc
+ext_pilot_phishing_0043,ACB official list of fake websites,phishing,phishing,0.6614706325320725,probability,vn-eid.com
+ext_pilot_phishing_0046,ACB official list of fake websites,phishing,phishing,0.8508546992313508,probability,vssid.govne.com
+ext_pilot_phishing_0047,ACB official list of fake websites,phishing,phishing,0.6169144320520293,probability,vssid.govnn.cc
+ext_pilot_phishing_0048,ACB official list of fake websites,phishing,benign,0.17899295661711773,probability,vssids.com
+ext_pilot_phishing_0049,Bac Ninh government local public-service scam alert,phishing,phishing,0.8841932114527411,probability,dichvucong-vn.com
+ext_pilot_phishing_0050,Quang Ngai police publication of NCSC warning,phishing,phishing,0.9999792031909203,probability,dichvucong.cvgov.com
+ext_pilot_phishing_0051,Quang Ngai police publication of NCSC warning,phishing,phishing,0.9999956248505051,probability,dichvucong.dancuso.com
+ext_pilot_phishing_0052,Quang Ngai police publication of NCSC warning,phishing,phishing,0.9999979784727987,probability,dichvucong.dulieuqucogia.com
+ext_pilot_phishing_0053,Quang Ngai police publication of NCSC warning,phishing,phishing,0.9999973129062762,probability,dichvucong.hhlpa.com
+ext_pilot_phishing_0054,Quang Ngai police publication of NCSC warning,phishing,phishing,0.999996148714304,probability,dichvucong.xgovvn.net
+ext_pilot_phishing_0055,Quang Ngai police publication of NCSC warning,phishing,benign,0.12819188203433923,probability,nganhangsaison.org
+ext_pilot_phishing_0056,Quang Ngai police publication of NCSC warning,phishing,benign,0.0983848733236906,probability,policeonline.club
+ext_pilot_phishing_0057,Quang Ngai police publication of NCSC warning,phishing,phishing,0.9999986958848671,probability,sotuyenvcb.vietcombanker.com
+ext_pilot_phishing_0058,Quang Ngai police publication of NCSC warning,phishing,benign,0.0003151442851071953,probability,vdbank.com.vn
+ext_pilot_phishing_0059,Quang Ngai police publication of NCSC warning,phishing,benign,0.2695441731019812,probability,vietgcv.cc
+ext_pilot_phishing_0060,NCSC warning republished by Dak Lak government,phishing,benign,0.014360916287466002,probability,558-558-559.com
+ext_pilot_phishing_0061,NCSC warning republished by Dak Lak government,phishing,phishing,0.9999988412571283,probability,acb.chamsockhachhang-uudaithetructuyen-thang8.online
+ext_pilot_phishing_0063,NCSC warning republished by Dak Lak government,phishing,benign,0.37833479526646874,probability,amazonl4.com
+ext_pilot_phishing_0066,NCSC warning republished by Dak Lak government,phishing,benign,0.1737284045574644,probability,baovietn.vip
+ext_pilot_phishing_0072,NCSC warning republished by Dak Lak government,phishing,phishing,0.529226250746021,probability,chinhphu.dulieucutru.org
+ext_pilot_phishing_0074,NCSC warning republished by Dak Lak government,phishing,benign,0.2436099481108886,probability,chinhphu.thongtincutru.org
+ext_pilot_phishing_0078,NCSC warning republished by Dak Lak government,phishing,benign,0.4405668226341255,probability,dienmayxanh389.com
+ext_pilot_phishing_0082,NCSC warning republished by Dak Lak government,phishing,phishing,0.538777093761064,probability,ggiao.hangtietkiem.com
+ext_pilot_phishing_0085,NCSC warning republished by Dak Lak government,phishing,phishing,0.9978843558474634,probability,giaohangtietkiem247.top
+ext_pilot_phishing_0087,NCSC warning republished by Dak Lak government,phishing,phishing,0.9999877196094074,probability,giaohangtietkiemvn.com
+ext_pilot_phishing_0091,NCSC warning republished by Dak Lak government,phishing,benign,0.4147642482747333,probability,hethongtikicareers24.com
+ext_pilot_phishing_0092,NCSC warning republished by Dak Lak government,phishing,benign,0.4199588259140636,probability,hethongtikicareers24h.com
+ext_pilot_phishing_0093,NCSC warning republished by Dak Lak government,phishing,phishing,0.6916778802374771,probability,hotro0nline28.com
+ext_pilot_phishing_0095,NCSC warning republished by Dak Lak government,phishing,benign,0.09458178106090624,probability,kbthuhoivontreo.com
+ext_pilot_phishing_0097,NCSC warning republished by Dak Lak government,phishing,benign,0.18574323631305362,probability,kpd63519s.com
+ext_pilot_phishing_0098,NCSC warning republished by Dak Lak government,phishing,phishing,0.5226013001055145,probability,kyaj11.com
+ext_pilot_phishing_0099,NCSC warning republished by Dak Lak government,phishing,phishing,0.9315786897165361,probability,lazada68.com
+ext_pilot_phishing_0100,NCSC warning republished by Dak Lak government,phishing,benign,0.06163857514693785,probability,mbbkh-canhan.com
+ext_pilot_phishing_0101,NCSC warning republished by Dak Lak government,phishing,benign,0.42359336282653315,probability,mmbonline01.com
+ext_pilot_phishing_0103,NCSC warning republished by Dak Lak government,phishing,benign,0.18574323631305362,probability,nuk36952s.com
+ext_pilot_phishing_0105,NCSC warning republished by Dak Lak government,phishing,phishing,0.9999998319428929,probability,ocb.hotrokhachhang-tructuyenthe.com
+ext_pilot_phishing_0107,NCSC warning republished by Dak Lak government,phishing,benign,0.3655273813322847,probability,sdfsshop1.com
+ext_pilot_phishing_0109,NCSC warning republished by Dak Lak government,phishing,benign,0.1737284045574644,probability,sendotv.shop
+ext_pilot_phishing_0112,NCSC warning republished by Dak Lak government,phishing,phishing,0.51564234637151,probability,sjfku11.com
+ext_pilot_phishing_0113,NCSC warning republished by Dak Lak government,phishing,phishing,0.51564234637151,probability,sjfku88.com
+ext_pilot_phishing_0115,NCSC warning republished by Dak Lak government,phishing,benign,0.3648530977085893,probability,sp61889p.com
+ext_pilot_phishing_0116,NCSC warning republished by Dak Lak government,phishing,benign,0.08911650368413664,probability,taichinheximbak.com
+ext_pilot_phishing_0117,NCSC warning republished by Dak Lak government,phishing,phishing,0.5375578541448901,probability,tdke03.com
+ext_pilot_phishing_0118,NCSC warning republished by Dak Lak government,phishing,benign,0.10142836693110534,probability,tikicareers.vip
+ext_pilot_phishing_0119,NCSC warning republished by Dak Lak government,phishing,benign,0.4178281110807657,probability,tikijaj3.com
+ext_pilot_phishing_0120,NCSC warning republished by Dak Lak government,phishing,benign,0.4733881108474538,probability,tikimuasam24h.com
+ext_pilot_phishing_0121,NCSC warning republished by Dak Lak government,phishing,benign,0.16621565355379309,probability,tikinew.club
+ext_pilot_phishing_0126,NCSC warning republished by Dak Lak government,phishing,phishing,0.9999199130454922,probability,vib.cham-soc-the-truc-tuyen.com.vn
+ext_pilot_phishing_0131,NCSC warning republished by Dak Lak government,phishing,benign,0.47808874973110266,probability,vnsehotro.com
+ext_pilot_phishing_0133,NCSC warning republished by Dak Lak government,phishing,benign,0.3631415983192845,probability,vnviettel.com
+ext_pilot_phishing_0136,NCSC warning republished by Dak Lak government,phishing,phishing,0.771704134865205,probability,vssid.pddgov.cc
+ext_pilot_phishing_0137,NCSC weekly scam warnings on Ministry portal,phishing,benign,0.10875916855742918,probability,nestlegroup.pro
+ext_pilot_phishing_0138,VNCERT/CC warning on Ministry portal,phishing,phishing,0.8695236300763389,probability,online.acbvnx.com

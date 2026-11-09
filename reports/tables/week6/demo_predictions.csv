@@ -1,0 +1,6 @@
+url,model,label,score,score_kind,score_definition,decision_rule,protocol
+https://www.vietcombank.com.vn,mlp,benign,1.472200073806637e-05,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_v1
+https://vietcombank-login.example.com/xacminh,mlp,phishing,0.9999707157691131,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_v1
+https://example.com/login?account=123,mlp,phishing,0.9984647816428119,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_v1
+https://xn--bcher-kva.de,mlp,benign,4.461982395906484e-20,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_v1
+https://www.hcmus.edu.vn,mlp,benign,0.0007940467513444441,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_v1

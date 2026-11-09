@@ -1,0 +1,78 @@
+{
+  "checked_at_utc": "2026-11-09T12:42:49.653683+00:00",
+  "branch": "phuc-week6-teacher-v1",
+  "notebook": {
+    "executed_code_cells": 12,
+    "errors": 0,
+    "code_hash_matches": true
+  },
+  "pytest": {
+    "passed": 391,
+    "failed": 0,
+    "skipped": 1,
+    "skip_reason": "Existing empty parameter set in tests/test_brand_regressions.py:58",
+    "command": "python -m pytest -q -rs"
+  },
+  "oof_rows": 78468,
+  "cv_metric_max_abs_error": 0.0,
+  "all_id_fold_partition_checks": true,
+  "teacher_fit_rows_from_scaler": 13078,
+  "reload_parity_urls": 6,
+  "reload_score_max_abs_error": 0.0,
+  "portable_inference_without_dataset": {
+    "passed": true,
+    "urls": 5,
+    "temporary_directory": "C:\\Users\\PHUCTR~1\\AppData\\Local\\Temp\\phishguard-week6-inference-bxes4w6q"
+  },
+  "old_artifacts_unchanged": 24,
+  "old_artifact_hashes": {
+    "reports/tables/06_ablation_metadata.json": "677262f6c91a75149769c9bf8dd41c205531e13dfce6cdceac6fbff99ab0f493",
+    "reports/tables/06_brand_subgroups.csv": "d7a5699e527a61ace61da73e7d91e23c6351f0c61d3cf268887df56fed968691",
+    "reports/tables/06_comparison.csv": "b42162a70325a241a3d796c0d3647c47de00eb827eb7aa37deb297021cab259b",
+    "reports/tables/06_cv_metrics.csv": "995e20237896988593c036fa4cf323f4a567585e5b1078dbe2d31556b0db34ad",
+    "reports/tables/06_deltas.csv": "b807452944ee769caef34a7190beed3f8c8a6ee6a46dc243de9fd54456f0c59f",
+    "reports/tables/06_error_changes.csv": "71fa79ec0cf56435eece512ea95005a86245cf58d211f3ec1e1ef42fbf2c894f",
+    "reports/tables/06_error_examples.csv": "2ad5012645c3e86bfccd65e00a05ef69dba18c31ea9a6a191261b9189ea48bcf",
+    "reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+    "reports/tables/06_paired_folds.csv": "3fd8502b9fb5c162bf50d4d41103d343f9d35de170a55def4d94305b145d5e4f",
+    "reports/tables/06_parameters.csv": "d407c139e7b6b070c068a6eef0f1094682e1cb123f92d84497576eee2b83542e",
+    "reports/tables/06_resources.csv": "8e52d8ba5a567030dd494589827f2d88c021c3cbbdffb9c48040bb5b22054fbc",
+    "reports/tables/06_shortlist.csv": "e06e3aa68a02a161785662450e3a989dac4a5fbf9e100927b1d5251f0683a6ae",
+    "reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8",
+    "reports/tables/06_validation.csv": "0f6696991d08273dc67c2de82020d84ce50e102494d34b8286d5fc1fdd7095da",
+    "reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+    "reports/tables/06_verification.json": "fa14a0f8bf8d787c1aa3b61f519aa29d246b2e86560a2219f386104f4be65ab4",
+    "models/week5_e1_ablation.joblib": "a14c981b7083cadaf4d4b4f23319bddfda188169c5ce7b4f0b45e5f8619b9c1a",
+    "models/week5_e2_ablation.joblib": "50056710b557b314cf70b79e3a364a23dac306843871c3b45f5e2ef4c9a13b90",
+    "models/week5_lexical_models.joblib": "e7c3c254cb787ccadcb9efa51e192e3aa56145733f7f92116763f8176c61261e",
+    "models/week5_lexical_models_metadata.json": "6fee9dd2a873737b51adf66e8dc2e040f681f1b7f6c637823870896116f45992",
+    "models/week5_readable_models.joblib": "a785dc15ce5524e33ffd6b2a98d15115062f65010340f8e920599494f69ee6a8",
+    "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb"
+  },
+  "binary_git_attributes_checked": [
+    "models/week6_teacher_v1.joblib",
+    "reports/tables/week6/*.csv.gz"
+  ],
+  "upstream_e2_verifier": {
+    "exit_code": 1,
+    "failures": [
+      "FAIL  git sạch",
+      "FAIL  05_matrix_X_brand_trainval_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]",
+      "FAIL  05_matrix_X_brand_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]",
+      "FAIL  parity: sinh lại từ mã cho kết quả y hệt (đồng thời qua kiểm tra giá trị tính tay)"
+    ],
+    "explanation": "1 dirty working tree (expected before commit); 2 existing whole-repo freeze guards; 1 exact float equality in parity."
+  },
+  "semantic_parity": {
+    "cases": 47,
+    "manual_value_assertions_passed": true,
+    "numeric_differences": 24,
+    "max_abs_error": 1.7763568394002505e-15,
+    "declared_tolerance": 1e-06,
+    "within_tolerance": true
+  },
+  "teacher_bundle_sha256": "704307ab16140856892e05748635f013d5e9053be7d03814f0622850e48f9bbc",
+  "official_test_evaluated": false
+}

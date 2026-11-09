@@ -1,0 +1,7 @@
+model,pipeline_bytes,batch_size,latency_p50_ms,latency_p95_ms,scope
+logistic_regression,2497,128,1.6017000016290694,2.5528099911753084,"PC predict+score, precomputed X, 1 thread, warmup=5, repeats=30"
+logistic_regression_balanced,2513,128,1.326149984379299,1.6059749876148994,"PC predict+score, precomputed X, 1 thread, warmup=5, repeats=30"
+svm_rbf,543885,128,43.63329999614507,54.936655011260875,"PC predict+score, precomputed X, 1 thread, warmup=5, repeats=30"
+mlp,36705,128,1.4204000035533682,1.8601099975057875,"PC predict+score, precomputed X, 1 thread, warmup=5, repeats=30"
+hist_gradient_boosting,146992,128,4.324499997892417,5.251809993933421,"PC predict+score, precomputed X, 1 thread, warmup=5, repeats=30"
+random_forest,5401865,128,29.347000003326684,35.211095004342496,"PC predict+score, precomputed X, 1 thread, warmup=5, repeats=30"

@@ -16,3 +16,5 @@ Lần kiểm tra 04/11/2026: **152 passed**, không skip; `pip check` pass. Đã
 - `test_ablation_ml.py`: chạy code cells notebook E2 ablation; E1/E2 cùng ID/folds, scaler/tuning trong fitting partition, không dùng nhãn Val/Test chọn model, đổi outer answers không đổi dự đoán fold đó; invalid pairing/lexical/schema/Test dừng trước fit; E2 reload/direct-extraction parity và reference snapshot/source drift.
 
 Tests bảo vệ tính đúng code/giao thức, không chứng minh chất lượng ngoài dataset. Xem reports/week5_readable.md để đọc kết quả/giới hạn.
+
+- test_teacher_week6.py: chạy code cell thật của E2 v1; chặn v0, kiểm tra scaler/search chỉ trong fitting, đổi đáp án outer holdout không đổi dự đoán của fold đó, Validation không chọn Teacher.
