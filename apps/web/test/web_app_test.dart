@@ -157,4 +157,60 @@ void main() {
     expect(tester.getTopLeft(result).dy, greaterThanOrEqualTo(0));
     expect(tester.getBottomRight(result).dy, lessThanOrEqualTo(844));
   });
+  testWidgets('phishing warning has explicit text, icon and red emphasis', (
+    tester,
+  ) async {
+    await start(
+      tester,
+      (_) async =>
+          jsonResponse({...predictionFixture(score: .9), 'label': 'phishing'}),
+    );
+    await tester.enterText(find.byKey(const Key('url-input')), 'example.com');
+    await check(tester);
+    final warningText = find.text('Có dấu hiệu phishing');
+    expect(warningText, findsOneWidget);
+    expect(tester.widget<Text>(warningText).style!.color, danger);
+    expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+    expect(find.textContaining('Cân nhắc dừng truy cập'), findsOneWidget);
+  });
+  testWidgets(
+    '200% text at 320px and reduced motion retain controls without overflow',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 844);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      tester.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(disableAnimations: true);
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      addTearDown(
+        tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
+      );
+      await start(tester, (_) async => jsonResponse(predictionFixture()));
+      await tester.enterText(find.byKey(const Key('url-input')), 'example.com');
+      await check(tester);
+      expect(find.byKey(const Key('prediction-result')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+  test('dark semantic text and control colors meet minimum contrast', () {
+    double contrast(Color a, Color b) {
+      final first = a.computeLuminance();
+      final second = b.computeLuminance();
+      return first > second
+          ? (first + .05) / (second + .05)
+          : (second + .05) / (first + .05);
+    }
+
+    for (final bg in [navy, surface, dangerSurface, benignSurface]) {
+      for (final fg in [ink, muted]) {
+        expect(contrast(fg, bg), greaterThanOrEqualTo(4.5));
+      }
+    }
+    expect(contrast(navy, teal), greaterThanOrEqualTo(4.5));
+    expect(contrast(danger, dangerSurface), greaterThanOrEqualTo(4.5));
+    expect(contrast(teal, benignSurface), greaterThanOrEqualTo(4.5));
+    expect(contrast(controlBorder, navy), greaterThanOrEqualTo(3));
+  });
 }

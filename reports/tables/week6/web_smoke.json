@@ -16,6 +16,15 @@
       "score_kind": "probability"
     },
     {
+      "case": "phishing_warning",
+      "status": "PASS",
+      "http": 200,
+      "input": "https://example.com/login",
+      "label": "phishing",
+      "score": 0.809465335516596,
+      "note": "Model prediction on a reserved example URL, not a verified malicious website"
+    },
+    {
       "case": "empty_url",
       "status": "PASS",
       "validation": "local; no POST"
@@ -47,6 +56,54 @@
       "status": "PASS",
       "http": 200,
       "layout": "no document horizontal overflow"
+    },
+    {
+      "case": "responsive_keyboard_reduced_motion",
+      "status": "PASS",
+      "viewports": [
+        {
+          "width": 320,
+          "height": 844,
+          "reduced_motion": true,
+          "keyboard_enter_submit": true,
+          "status": "PASS"
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "reduced_motion": true,
+          "keyboard_enter_submit": true,
+          "status": "PASS"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "reduced_motion": true,
+          "keyboard_enter_submit": true,
+          "status": "PASS"
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "reduced_motion": true,
+          "keyboard_enter_submit": true,
+          "status": "PASS"
+        },
+        {
+          "width": 1024,
+          "height": 768,
+          "reduced_motion": true,
+          "keyboard_enter_submit": true,
+          "status": "PASS"
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "reduced_motion": true,
+          "keyboard_enter_submit": true,
+          "status": "PASS"
+        }
+      ]
     }
   ],
   "page_errors": [],
@@ -56,19 +113,22 @@
   "screenshots": [
     "desktop.png",
     "offline.png",
-    "mobile.png"
+    "mobile.png",
+    "phishing.png"
   ],
   "screenshots_sha256": {
-    "desktop.png": "e93017a9cf44a8b48a4f64ebb986fa3f4e6403ecfab70dc0ae8d86d22b7026f4",
-    "offline.png": "72a1c1ca0d80d483dc17fe95629aa15aefa3295d96d98df628ebccde2f7c8446",
-    "mobile.png": "81e306db99992dccfacfdf3e9dae29f45b43e6f7bf28aa808573b3eb5f97f321"
+    "desktop.png": "65097c67ed33214fbb4d3cd64498f666b8c806241eb49d782e57b04e2de85e58",
+    "offline.png": "3007604fe285e139f8a69a3bcb1140a10b4eb898b1fc2e07d055f7664e4b13b7",
+    "mobile.png": "e85e91f02c0bc8d1aab8077faa17863d54ecff84a8c44f8dd9f08bf0ea66065c",
+    "phishing.png": "e8ad77001f3f4c008dbc42e137ba71c76310cd4e725ca03d46c21c91bd5eaa38"
   },
   "backend_commit": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
   "flutter_version": "3.47.9",
   "dart_version": "3.13.7",
   "flutter_tests": {
-    "passed": 16,
-    "failed": 0
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0
   },
   "flutter_analyze": "No issues found",
   "release_build": "passed; --no-web-resources-cdn",
@@ -107,5 +167,31 @@
         }
       }
     ]
+  },
+  "design_system": {
+    "skill": "ui-ux-pro-max",
+    "cli_version": "2.15.0",
+    "loaded": "manually read SKILL.md and executed search.py; automatic discovery after assistant restart",
+    "master": "apps/web/design-system/phishguardvn/MASTER.md",
+    "style": "Glassmorphism",
+    "theme": "dark navy/cyan/red",
+    "layout": "Minimalism / Swiss",
+    "implementation": "Flutter/Dart + Material 3"
+  },
+  "accessibility_checks": [
+    "200% text / 320px widget layout without overflow",
+    "reduced motion widget/browser",
+    "semantic text contrast >=4.5:1 and input boundary >=3:1",
+    "keyboard Enter submit across six viewports",
+    "loading duplicate-submit lock, explicit status/error/warning text"
+  ],
+  "immutable_original_files": {
+    "base": "5509ed1",
+    "unchanged": 265,
+    "changed": [
+      "README.md",
+      "pyproject.toml"
+    ],
+    "model_sha256_unchanged": true
   }
 }

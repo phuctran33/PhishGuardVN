@@ -2,6 +2,10 @@
 
 Ứng dụng Web gửi URL tới API v1, không tự tính feature hoặc mở website đích. Backend/contract thuộc PR #22 / issue #15. Ứng dụng Web nằm riêng `apps/web/`, không thay code Android/parity của Hy trong `mobile/`.
 
+## Thiết kế
+
+Design system tạo bằng **UI UX Pro Max 2.15.0**, đã đọc và chạy scripts thật: [MASTER.md](design-system/phishguardvn/MASTER.md). Dark navy + cyan/teal, Glassmorphism tiết chế, bố cục Minimalism / Swiss, Material 3; cảnh báo phishing đỏ kèm icon và chữ. Font Roboto bundle local hỗ trợ tiếng Việt. Một card kính mờ, không dashboard hoặc telemetry giả. Input và nút có focus/keyboard semantics; trạng thái wrap ở màn hình hẹp, hỗ trợ tăng cỡ chữ và reduced motion. API contract/inference không phụ thuộc skill.
+
 ## Chạy từ máy mới
 
 Đã kiểm chứng bằng **Flutter 3.47.9 / Dart 3.13.7** (stable), Chrome; xem [Flutter Web setup](https://docs.flutter.dev/platform-integration/web/setup). Chỉ cần Flutter/Web, không cần Android Studio/Xcode để chạy target Web. Python backend xem [hướng dẫn](../../docs/backend.md) và [API contract](../../docs/api_contract.md).
