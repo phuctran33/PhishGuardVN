@@ -31,7 +31,7 @@
     "reports/tables/external_pilot/overlaps.csv": "17700e2101180dd01e0deeff0976ab6e2efb7137b1a59bfc754ea3c44b94bb25",
     "reports/tables/external_pilot/audit_summary.json": "440c138ae216d69e785369aeb7aa2750dc9971db8dd6f2403923d0acf7dc64a7",
     "data/external/history/2026-11-07/manifest.json": "fb579fb6dd82f5a894cd608de2534bedb0016771331ef1741b8cde9e4836d43f",
-    "reports/k53_external_pilot_audit.md": "c00fe55a21d43e31cc60f9faba5621155d310f168b64a8f7580ae3e9622aeb12"
+    "reports/k53_external_pilot_audit.md": "77bfc80dca21a2700ee18a293e7acedfcd862c4ea48bddb507f7a4d41f25c9ad"
   },
   "current_ids_sha256": "c1a3e7fea3f7be4923508aa9069170bb03b33175775a65519411a6e7491551a2",
   "external_schema_version": "k53-pilot-v2-review-method",
@@ -61,5 +61,19 @@
   "brand_reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
   "network_requests": false,
   "research_model_training": false,
-  "original_labels_modified": false
+  "original_labels_modified": false,
+  "publication_documentation_overlay": {
+    "reviewed_main_revision": "d7a5a6644a6118690c6e8306b6c66e181e08e361",
+    "original_snapshot_report_sha256": "c00fe55a21d43e31cc60f9faba5621155d310f168b64a8f7580ae3e9622aeb12",
+    "scope": "Editorial post-merge status update only; no EDA recomputation, data/label/model change or new benchmark. Producer runtime revision and previous verification remain historical.",
+    "review_document": "reports/post_merge_eda_review.md",
+    "review_document_sha256": "1cc3d0a7d13ba0cc1e3dcb02881bcef7ec57a150a07ecab0ecb92a60b5ea320f",
+    "human_confirmation": {
+      "path": "reports/annotations/k53_human_check_confirmation.csv",
+      "sha256": "af003a69f169671cb3600578ca08f4a442dd80887b60cbc0212703cf6749e912",
+      "human_checked": 99,
+      "basis": "User group-level self-attestation received after PR #13; no checking date or independent re-audit invented"
+    },
+    "regeneration_note": "Existing notebook/script regenerate producer snapshot text; retain separate review/confirmation sidecar and reapply editorial overlay after regeneration."
+  }
 }

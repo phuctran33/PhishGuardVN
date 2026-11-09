@@ -137,9 +137,26 @@
     "reports/figures/data_report/brand_rates.png": "60e33fa17de7a30cc6f76c778986a0bbfb9ae26e29d8df43fac70a95881b0128",
     "reports/figures/data_report/lexical_spearman.png": "4d2e72d119a2bd90894228b564df77619ba35b4fa242d45dbde6ff3ba78b3f89",
     "reports/figures/data_report/url_keywords_structure.png": "4295abfbd3271a1a13f52d0b80806626d8c24cfff984644239d9288f049692fc",
-    "reports/data_report_final.md": "aa9b2adb45db8d66d97d74858510efdbf2091b10e78228b677dc7a476d216dd0"
+    "reports/data_report_final.md": "5b5d90a86455edfbd7682a2729c84066869c8004238afb6a4e0617a8a727dfe4"
   },
   "model_training_or_tuning": false,
   "outlier_removal_or_capping": false,
-  "new_human_verification": false
+  "new_human_verification": false,
+  "publication_documentation_overlay": {
+    "reviewed_main_revision": "d7a5a6644a6118690c6e8306b6c66e181e08e361",
+    "original_snapshot_report_sha256": "aa9b2adb45db8d66d97d74858510efdbf2091b10e78228b677dc7a476d216dd0",
+    "scope": "Editorial post-merge status update only; no EDA recomputation, data/label/model change or new benchmark. Producer runtime revision and previous verification remain historical.",
+    "review_document": "reports/post_merge_eda_review.md",
+    "review_document_sha256": "1cc3d0a7d13ba0cc1e3dcb02881bcef7ec57a150a07ecab0ecb92a60b5ea320f",
+    "human_confirmation": {
+      "path": "reports/annotations/k53_human_check_confirmation.csv",
+      "sha256": "af003a69f169671cb3600578ca08f4a442dd80887b60cbc0212703cf6749e912",
+      "human_checked": 99,
+      "basis": "User group-level self-attestation received after PR #13; no checking date or independent re-audit invented"
+    },
+    "regeneration_note": "Existing notebook/script regenerate producer snapshot text; retain separate review/confirmation sidecar and reapply editorial overlay after regeneration."
+  },
+  "row_scope_clarifications": {
+    "external_pending": "167 is raw candidate CSV status at EDA runtime; PR #13 ledger is 99 verified / 68 pending and later human check is recorded separately."
+  }
 }

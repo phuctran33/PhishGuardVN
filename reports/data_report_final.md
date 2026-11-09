@@ -1,6 +1,6 @@
 # Báo cáo dữ liệu PhishGuardVN — EDA và tiền xử lý
 
-Phạm vi: bản sao PhishVN v3.1.0 trong repository; phân tích feature chỉ trên **Core Train hợp lệ**. Không huấn luyện/tune model, chọn feature, chỉnh nhãn/split, cap outlier hay truy cập URL đích. Báo cáo được sinh từ notebook 02; đây không phải cam kết điểm số.
+Phạm vi: bản sao PhishVN v3.1.0 trong repository; phân tích feature chỉ trên **Core Train hợp lệ**. Không huấn luyện/tune model, chọn feature, chỉnh nhãn/split, cap outlier hay truy cập URL đích. Các số liệu EDA được sinh từ notebook 02 và được giữ nguyên. Diễn giải trạng thái đã cập nhật sau merge PR #12/#13 trên main `d7a5a66`; xem [đối chiếu sau merge](post_merge_eda_review.md). Đây không phải cam kết điểm số.
 
 ## 1. Bài toán và đơn vị phân tích
 
@@ -14,7 +14,7 @@ Theo tài liệu tác giả: phishing đến từ NCSC/Tín Nhiệm Mạng (Gold
 
 ## 3. Phần nhóm thực hiện và định dạng lưu trữ
 
-Nhóm kiểm định snapshot CSV UTF-8, giữ raw URL/ID/label/split, chọn Core theo tier đã quy định, chạy parser PSL offline, tạo E1/E2 và Group CV. 167 URL external do nhóm tổng hợp là **ứng viên**, cả 167 còn `pending`; chúng không đi vào Core, EDA feature, train/tuning hoặc metric. Provenance/evidence_ref nằm ở [external datasheet](../docs/external_datasheet.md) và [source audit](week5_data_reliability.md); có evidence_ref không đồng nghĩa nhãn đã accepted.
+Nhóm kiểm định snapshot CSV UTF-8, giữ raw URL/ID/label/split, chọn Core theo tier đã quy định, chạy parser PSL offline, tạo E1/E2 và Group CV. 167 URL external do nhóm tổng hợp là **ứng viên**. Hai CSV nguồn giữ nguyên 167 `pending`; ledger sau PR #13 có 99 `verified` theo tài liệu ở scope hostname lịch sử (92 phishing/7 benign), 68 pending. Hưng đã xác nhận kiểm tra lại 99 trường hợp này: trạng thái trình bày hiện tại là **99 human-checked**, ghi riêng theo ID/signature tại [human check confirmation](annotations/k53_human_check_confirmation.csv). Đây là xác nhận do reviewer tự báo cáo, không phải một lần kiểm tra độc lập mới của công cụ; ngày kiểm tra thực tế chưa được cung cấp. 68 pending không được nâng trạng thái. External không đi vào Core, EDA feature, train/tuning hoặc metric. Provenance/evidence_ref nằm ở [external datasheet](../docs/external_datasheet.md) và [source audit](week5_data_reliability.md); có evidence_ref không đồng nghĩa nhãn đã accepted.
 
 ## 4. Quy trình trước/sau xử lý
 
@@ -42,7 +42,7 @@ Missing metadata được giữ missing, không làm lý do loại URL. Không i
 
 Parser thêm scheme khi thiếu, chuẩn hóa **host** (lowercase, bỏ dấu chấm cuối, IDNA/UTS46, IP), giữ case path/query; feature độ dài/đếm dùng URL bỏ scheme, `dom_len` dùng registrable domain. Không dùng `url_norm` nguồn thay raw URL để trích features. Audit thực tế `url_norm` khớp strip + lowercase + thêm `http://` ở 53,116/53,116 dòng; mô tả nguồn nói “scheme stripped” không hoàn toàn khớp representation lưu. Đây là khác biệt tài liệu, không sửa CSV hoặc hạ chữ thường path để “làm sạch”.
 
-Kiểm tra thủ công: datasheet nguồn mô tả một label audit của tác giả; báo cáo này không tái xác nhận audit đó và không tạo thêm human verification. Các case parser kỹ thuật được xem xét offline bằng fixtures và bảng exclusions. Phần human error review của Hưng nằm riêng trong **PR #7 còn mở tại lúc bắt đầu**; không nhập hay ghi đè checklist đó. Không dùng việc đọc chuỗi URL làm xác nhận nhãn/trang đích.
+Kiểm tra thủ công: datasheet nguồn mô tả một label audit của tác giả; báo cáo này không tái xác nhận audit đó và không tạo thêm human verification cho Core. Các case parser kỹ thuật được xem xét offline bằng fixtures và bảng exclusions. Phần human error review H5.2 của Hưng thuộc **PR #7 đã merge vào main tại `b7c5b16`**; không nhập hay ghi đè checklist đó và không đồng nhất với human check của external K5.3. Không dùng việc đọc chuỗi URL làm xác nhận nhãn/trang đích.
 
 ## 6. Quy mô, nhãn và mất cân bằng
 
@@ -106,7 +106,7 @@ Nhận xét từ output:
 
 ## 8. EDA 8 brand features — E2 v1
 
-Ma trận **Train+Validation vừa tái tạo bằng script chính thức**, chỉ lấy Train để phân tích; so manifest/schema/thứ tự, reference và hai dictionary với freeze đã commit. Schema `e2-brand-v1` có 12 lexical + 8 brand; reference có 45 brand với provenance verified. “Verified reference” không chứng minh nhãn URL hoặc bảo đảm độc lập với mọi nguồn/campaign. Không dùng v0; 12 lexical so theo ID khớp E1 (atol 1e-12, rtol 0).
+Ma trận **Train+Validation đã tái tạo bằng script chính thức ở lần xuất báo cáo EDA**, chỉ lấy Train để phân tích; so manifest/schema/thứ tự, reference và hai dictionary với freeze đã commit. Schema `e2-brand-v1` có 12 lexical + 8 brand; reference có 45 brand với provenance verified. “Verified reference” không chứng minh nhãn URL hoặc bảo đảm độc lập với mọi nguồn/campaign. Không dùng v0; 12 lexical so theo ID khớp E1 (atol 1e-12, rtol 0).
 
 | feature | benign_n | phishing_n | benign_pct | phishing_pct |
 |---|---|---|---|---|
@@ -246,7 +246,7 @@ Toàn snapshot thiếu 31,455 `collected_at`; có 21,661 parse được và 0 gi
 
 `data/*.csv`, `data/splits/`, `MANIFEST.txt`, `CITATION.cff` là input/version gốc; `data/interim/` là representation local bị gitignore, không phải raw đã thay. E1 = id + 12 feature; E2 = id + 20 feature, external tách tại `data/external/`. Bảng tổng hợp nhỏ ở `reports/tables/data_report/`; ba hình báo cáo ở `reports/figures/data_report/`. [eda_report_manifest.json](tables/data_report/eda_report_manifest.json) ghi hash input/code/reference/dictionary, phạm vi, schema, phiên bản và output. [data_report_verification.json](tables/data_report/data_report_verification.json) ghi lệnh, notebook cells, pytest, hash bất biến và giới hạn E2 verifier; chỉ ghi PASS sau chạy thật.
 
-Thứ tự chạy: **01_data_quality → 03_url_features → build E2 trainval chính thức → 02_eda_and_splits → 05_source_bias → pytest**. Lệnh build: `python scripts/05_build_matrix_x_brand.py --partition trainval --freeze` trên checkout sạch. Nếu chỉ tái tạo từ checkout đang sửa báo cáo, bỏ `--freeze` sẽ tạo bản local unfrozen và cell guard từ chối; hãy dùng checkout sạch đúng source/reference, không tự đổi flag/falsify provenance. Báo cáo không đổi hay freeze lại dictionary/reference. Xem commands đầy đủ và notebook outputs đã chạy ở verification; các notebook không sửa chỉ giữ bản executed local để tránh commit outputs/hình trùng lớn.
+Thứ tự chạy: **01_data_quality → 03_url_features → build E2 trainval chính thức → 02_eda_and_splits → 05_source_bias → pytest**. Lệnh build: `python scripts/05_build_matrix_x_brand.py --partition trainval --freeze` trên checkout sạch. Nếu chỉ tái tạo từ checkout đang sửa báo cáo, bỏ `--freeze` sẽ tạo bản local unfrozen và cell guard từ chối; hãy dùng checkout sạch đúng source/reference, không tự đổi flag/falsify provenance. Báo cáo không đổi hay freeze lại dictionary/reference. Trên main sạch `d7a5a66`, verifier hiện có hai FAIL ở guard so toàn repository với commit freeze, dù bảy file producer/reference/dictionary vẫn byte-identical; exit 1 không được báo thành PASS. Xem nguyên nhân và đề xuất sửa riêng tại [đối chiếu sau merge](post_merge_eda_review.md#hai-fail-của-e2-freeze-verifier). Xem commands đầy đủ và notebook outputs đã chạy ở verification; các notebook không sửa chỉ giữ bản executed local để tránh commit outputs/hình trùng lớn.
 
 ## 14. Đối chiếu yêu cầu báo cáo môn học
 
@@ -278,7 +278,9 @@ Cột đầu là **đánh giá trước bổ sung** với ba trạng thái yêu 
 
 ## 15. Kết luận và hướng sử dụng cho ML
 
-Báo cáo bao phủ EDA/preprocessing theo checklist được cung cấp bằng số liệu chạy thật; không cam kết 10/10. Core/representation/folds giữ nguyên; 12 lexical và 8 brand được mô tả đủ với Train-only scope. Sử dụng kết quả để hiểu dữ liệu và nêu giới hạn; nếu học imputer/scaler/selector phải fit trong từng fitting fold, nếu đánh giá cải thiện cần thí nghiệm E1/E2 đúng version, không suy từ EDA. Các giới hạn còn lại gồm nhãn kế thừa/abuse rộng, source bias, thiếu thời gian, feature/keyword thưa, label/reference independence cần đánh giá và external chưa accepted. Các điểm này phải được nêu khi bảo vệ báo cáo; không bị che bằng thêm kỹ thuật hoặc thay split.
+Báo cáo bao phủ EDA/preprocessing theo checklist được cung cấp bằng số liệu chạy thật; không cam kết 10/10. Core/representation/folds giữ nguyên; 12 lexical và 8 brand được mô tả đủ với Train-only scope. Sử dụng kết quả để hiểu dữ liệu và nêu giới hạn; nếu học imputer/scaler/selector phải fit trong từng fitting fold, nếu đánh giá cải thiện cần thí nghiệm E1/E2 đúng version, không suy từ EDA. Các giới hạn còn lại gồm nhãn kế thừa/abuse rộng, source bias, thiếu thời gian, feature/keyword thưa, label/reference independence cần đánh giá; external có 99 human-checked theo tài liệu lịch sử nhưng 68 pending, source–label confounding còn và chưa có Teacher finalized để chạy recall pilot. Không có external benchmark hay metric chính thức. Các điểm này phải được nêu khi bảo vệ báo cáo; không bị che bằng thêm kỹ thuật hoặc thay split.
+
+Đối chiếu bổ sung với `ml-data.pdf` của thầy (3 trang, bản local đã đọc) xác nhận đủ bằng chứng cho 21 mục trong §14; xem mapping theo trang, hash PDF và giới hạn ở [đối chiếu sau merge](post_merge_eda_review.md). External benchmark và sửa guard verifier không được nhận là kết quả EDA mới.
 
 ## 16. Tài liệu tham khảo và bằng chứng
 
