@@ -23,7 +23,7 @@ def main():
         nbformat.write(notebook, path)
         if manager.has_kernel:
             manager.shutdown_kernel(now=True)
-    print("Xong. Xem reports/tables/week6 và models/week6_teacher_v1.joblib")
+    print("Xong bao cao. Xem reports/tables/week6; Teacher van dang cho nhom quyet dinh.")
 
 
 if __name__ == "__main__":

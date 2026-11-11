@@ -1,7 +1,7 @@
 # Kiểm thử local
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -e '.[test]'
+.\.venv\Scripts\python.exe -m pip install -e '.[test,teacher]'
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
@@ -18,3 +18,5 @@ Lần kiểm tra 04/11/2026: **152 passed**, không skip; `pip check` pass. Đã
 Tests bảo vệ tính đúng code/giao thức, không chứng minh chất lượng ngoài dataset. Xem reports/week5_readable.md để đọc kết quả/giới hạn.
 
 - test_teacher_week6.py: chạy code cell thật của E2 v1; chặn v0, kiểm tra scaler/search chỉ trong fitting, đổi đáp án outer holdout không đổi dự đoán của fold đó, Validation không chọn Teacher.
+
+Week-6 expanded tests cover TF-IDF fitting-only vocabulary, inner-OOF low-FPR thresholds, separate E2/raw rankings and blocked unfinalized inference. Install .[teacher] to run notebook tests; without those optional packages they skip.

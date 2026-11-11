@@ -19,6 +19,8 @@ def main():
         parser.error("Truyền URL hoặc --examples")
     root = Path(__file__).resolve().parents[1]
     lock = json.loads((root / "configs/week6_teacher_lock.json").read_text(encoding="utf-8"))
+    if not lock.get("teacher_finalized"):
+        parser.error("Chua chot Teacher. Xem reports/week6_teacher.md va doi nhom xac nhan model.")
     predictor = load_locked_teacher(root, lock)
     urls = [args.url] if args.url else [
         "https://www.vietcombank.com.vn", "https://vietcombank-login.example.com/xacminh",

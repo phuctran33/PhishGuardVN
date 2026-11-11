@@ -16,6 +16,8 @@ Joblib cần môi trường/code tương thích; không chạy trực tiếp off
 Model giữ local và bị Git bỏ qua. Ba bảng OOF/Validation/partitions dạng `.csv.gz` trong `reports/tables/` được đưa vào repo để Hưng audit; không đóng gói bản sao model/code/reference.
 Đọc `reports/week5_ablation.md`, `reports/week5_teacher_cards.md`, `docs/week5_phuc_handoff.md`.
 
-## Teacher v1 tuần 6
+## Week 6: Teacher decision pending
 
-week6_teacher_v1.joblib là Teacher E2 v1 nhỏ (~44 KB), được cho phép quản lý trong Git để bàn giao. Xem docs/week6_phuc_handoff.md và configs/week6_teacher_lock.json. Dùng scripts/predict_teacher.py --examples; không cần retrain để predict.
+week6_teacher_v1.joblib remains the historical MLP artifact from commit 19ceb7b. The expanded comparison has not finalized a Teacher. configs/week6_teacher_lock.json is pending and predict_teacher.py intentionally blocks use as a newly approved Teacher.
+
+Comparison candidates are saved only under ignored data/interim for local review. See reports/week6_teacher.md and docs/week6_phuc_handoff.md; publish the final inference bundle after the team agrees on E2 versus raw-URL input.

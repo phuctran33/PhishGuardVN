@@ -1,304 +1,34 @@
 {
-  "teacher_locked_before_external": true,
+  "status": "NOT_RUN_PENDING_TEACHER",
+  "teacher_finalized": false,
+  "external_evaluated_in_current_comparison": false,
   "official": false,
-  "recall_pilot": {
-    "status": "PHISHING_RECALL_PILOT",
-    "official": false,
-    "representation": "host_only",
-    "metrics": {
-      "n": 92,
-      "positive_support": 92,
-      "negative_support": 0,
+  "prior_external_results_already_observed": true,
+  "historical_observations_not_for_selection": [
+    {
+      "model": "mlp",
+      "record": "19ceb7b",
+      "scope": "historical_host_only",
       "tp": 62,
       "fn": 30,
-      "recall_phishing": 0.6739130434782609,
-      "precision": null,
-      "f1": null,
-      "accuracy": null,
-      "fpr": null
+      "phishing_support": 92,
+      "benign_support": 7,
+      "fp": 1
     },
-    "n_candidates": 167,
-    "n_evaluated": 92,
-    "by_source": [
-      {
-        "source": "ACB official list of fake websites",
-        "n": 37,
-        "positive_support": 37,
-        "negative_support": 0,
-        "tp": 35,
-        "fn": 2,
-        "recall_phishing": 0.9459459459459459,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "Agribank official warning of spoofed domains",
-        "n": 2,
-        "positive_support": 2,
-        "negative_support": 0,
-        "tp": 1,
-        "fn": 1,
-        "recall_phishing": 0.5,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "BIDV official consumer fraud warning",
-        "n": 4,
-        "positive_support": 4,
-        "negative_support": 0,
-        "tp": 4,
-        "fn": 0,
-        "recall_phishing": 1.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "Bac Ninh government local public-service scam alert",
-        "n": 1,
-        "positive_support": 1,
-        "negative_support": 0,
-        "tp": 1,
-        "fn": 0,
-        "recall_phishing": 1.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "NCSC warning republished by Dak Lak government",
-        "n": 36,
-        "positive_support": 36,
-        "negative_support": 0,
-        "tp": 14,
-        "fn": 22,
-        "recall_phishing": 0.3888888888888889,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "NCSC weekly scam warnings on Ministry portal",
-        "n": 1,
-        "positive_support": 1,
-        "negative_support": 0,
-        "tp": 0,
-        "fn": 1,
-        "recall_phishing": 0.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "Quang Ngai police publication of NCSC warning",
-        "n": 10,
-        "positive_support": 10,
-        "negative_support": 0,
-        "tp": 6,
-        "fn": 4,
-        "recall_phishing": 0.6,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "VNCERT/CC warning on Ministry portal",
-        "n": 1,
-        "positive_support": 1,
-        "negative_support": 0,
-        "tp": 1,
-        "fn": 0,
-        "recall_phishing": 1.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      }
-    ],
-    "review_methods": {
-      "ai_document_review": 92
-    },
-    "limitations": [
-      "No source-disjoint generalization claim; source-label confounding remains.",
-      "Host-only is lossy and needs host-scoped reviewed labels; no live-site verification implied."
-    ]
-  },
-  "two_class_exploratory": {
-    "status": "EXPLORATORY_TWO_CLASS",
-    "official": false,
-    "representation": "host_only",
-    "metrics": {
-      "n": 99,
-      "positive_support": 92,
-      "negative_support": 7,
-      "tp": 62,
-      "fn": 30,
-      "recall_phishing": 0.6739130434782609,
-      "precision": 0.9841269841269841,
-      "f1": 0.8,
-      "accuracy": 0.6868686868686869,
-      "fpr": 0.14285714285714285,
-      "fp": 1,
-      "tn": 6
-    },
-    "n_candidates": 167,
-    "n_evaluated": 99,
-    "by_source": [
-      {
-        "source": "ACB official list of fake websites",
-        "n": 37,
-        "positive_support": 37,
-        "negative_support": 0,
-        "tp": 35,
-        "fn": 2,
-        "recall_phishing": 0.9459459459459459,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "Agribank official warning of spoofed domains",
-        "n": 2,
-        "positive_support": 2,
-        "negative_support": 0,
-        "tp": 1,
-        "fn": 1,
-        "recall_phishing": 0.5,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "BIDV official consumer fraud warning",
-        "n": 4,
-        "positive_support": 4,
-        "negative_support": 0,
-        "tp": 4,
-        "fn": 0,
-        "recall_phishing": 1.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "Bac Ninh government local public-service scam alert",
-        "n": 1,
-        "positive_support": 1,
-        "negative_support": 0,
-        "tp": 1,
-        "fn": 0,
-        "recall_phishing": 1.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "NCSC warning republished by Dak Lak government",
-        "n": 36,
-        "positive_support": 36,
-        "negative_support": 0,
-        "tp": 14,
-        "fn": 22,
-        "recall_phishing": 0.3888888888888889,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "NCSC weekly scam warnings on Ministry portal",
-        "n": 1,
-        "positive_support": 1,
-        "negative_support": 0,
-        "tp": 0,
-        "fn": 1,
-        "recall_phishing": 0.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "Quang Ngai police publication of NCSC warning",
-        "n": 10,
-        "positive_support": 10,
-        "negative_support": 0,
-        "tp": 6,
-        "fn": 4,
-        "recall_phishing": 0.6,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "VNCERT/CC warning on Ministry portal",
-        "n": 1,
-        "positive_support": 1,
-        "negative_support": 0,
-        "tp": 1,
-        "fn": 0,
-        "recall_phishing": 1.0,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "aeon_official_corporate_profile",
-        "n": 1,
-        "positive_support": 0,
-        "negative_support": 1,
-        "tp": 0,
-        "fn": 0,
-        "recall_phishing": null,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      },
-      {
-        "source": "vnba_member_directory",
-        "n": 6,
-        "positive_support": 0,
-        "negative_support": 6,
-        "tp": 0,
-        "fn": 0,
-        "recall_phishing": null,
-        "precision": null,
-        "f1": null,
-        "accuracy": null,
-        "fpr": null
-      }
-    ],
-    "review_methods": {
-      "ai_document_review": 99
-    },
-    "limitations": [
-      "No source-disjoint generalization claim; source-label confounding remains.",
-      "Host-only is lossy and needs host-scoped reviewed labels; no live-site verification implied."
-    ]
-  },
-  "raw_candidates": 167,
-  "pending_not_scored": 68,
-  "selection_record_sha256": "748e6e63f9033584dac3e7b4b4b9a1f1cd1af8add1e3dfdb882571289815ab7d",
+    {
+      "model": "catboost",
+      "record": "initial_expanded_run_before_reopening_decision",
+      "scope": "historical_host_only",
+      "tp": 59,
+      "fn": 33,
+      "phishing_support": 92,
+      "benign_support": 7,
+      "fp": 1
+    }
+  ],
   "limitations": [
-    "Host-only, historical evidence; không xác nhận tình trạng website hiện tại.",
-    "Chỉ 7 benign được review; FPR/precision hai-class chỉ tham khảo, còn source bias.",
-    "Không dùng pending làm ground truth; không chọn lại model/ngưỡng theo external."
+    "Không dùng các quan sát external đã thấy để chọn/tune.",
+    "99 historical-hostname verified; 68 pending không phải ground truth.",
+    "Chỉ chạy external cho model cuối sau khi nhóm chốt lại Teacher."
   ]
 }

@@ -1,15 +1,32 @@
 {
-  "protocol": "week6_e2_v1_teacher_groupcv_v1",
+  "protocol": "week6_e2_v1_teacher_groupcv_expanded",
   "feature_schema_version": "e2-brand-v1",
-  "created_utc": "2026-11-09T12:32:06.045522+00:00",
-  "teacher_finalized": true,
-  "selected_by": "core_train_group_cv",
+  "created_utc": "2026-11-11T14:20:28.941221+00:00",
+  "teacher_finalized": false,
+  "status": "awaiting_team_decision",
+  "selected_by": "not_finalized",
   "external_used_for_selection": false,
   "primary_metric": "mean_outer_average_precision",
-  "selection_rule": "AP desc; F1 desc; FPR asc; model name asc",
-  "selected_candidate": "E2__mlp",
-  "teacher_candidates": [
-    "E2__mlp"
+  "ranking_rule": "AP desc; F1 desc; FPR asc; model name asc",
+  "selected_candidate": null,
+  "leading_e2_candidate": "catboost",
+  "leading_raw_candidate": "tfidf_linear_svm",
+  "e2_candidates": [
+    "logistic_regression",
+    "logistic_regression_balanced",
+    "svm_rbf",
+    "mlp",
+    "hist_gradient_boosting",
+    "random_forest",
+    "extra_trees",
+    "balanced_random_forest",
+    "lightgbm",
+    "xgboost",
+    "catboost"
+  ],
+  "raw_url_controls": [
+    "tfidf_linear_svm",
+    "tfidf_logistic_regression"
   ],
   "train_rows": 13078,
   "validation_rows": 1585,
@@ -59,8 +76,8 @@
     "url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
     "brand_features.py": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b"
   },
-  "notebook_code_sha256": "c560f5796b909149533f32e0b9775737b3a65817677033eda6497a0e1a700310",
-  "runtime_git_revision": "5509ed1d5bbe85459d2fdd09963dfd11a30c8eb5",
+  "notebook_code_sha256": "f69bbe5398ef6616a23e3b05925179c3d61cddaf01a5efcb78f797caaa372c8e",
+  "runtime_git_revision": "19ceb7b80e3da5424d1bfca5d32a628e4828c2c5",
   "runtime_git_dirty": true,
   "versions": {
     "scikit-learn": "1.9.1",
@@ -68,7 +85,11 @@
     "pandas": "3.1.0",
     "joblib": "1.6.0",
     "tldextract": "5.4.0",
-    "idna": "3.20"
+    "idna": "3.20",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.2.0",
+    "catboost": "1.2.10",
+    "imbalanced-learn": "0.14.2"
   },
   "input_sha256": {
     "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
@@ -110,6 +131,41 @@
       "parameters": "{\"max_depth\": 12}"
     },
     {
+      "model": "extra_trees",
+      "context": "0",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "balanced_random_forest",
+      "context": "0",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "lightgbm",
+      "context": "0",
+      "parameters": "{\"num_leaves\": 15}"
+    },
+    {
+      "model": "xgboost",
+      "context": "0",
+      "parameters": "{\"max_depth\": 5}"
+    },
+    {
+      "model": "catboost",
+      "context": "0",
+      "parameters": "{\"depth\": 6}"
+    },
+    {
+      "model": "tfidf_linear_svm",
+      "context": "0",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "model": "tfidf_logistic_regression",
+      "context": "0",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
       "model": "logistic_regression",
       "context": "1",
       "parameters": "{}"
@@ -138,6 +194,41 @@
       "model": "random_forest",
       "context": "1",
       "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "extra_trees",
+      "context": "1",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "balanced_random_forest",
+      "context": "1",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "lightgbm",
+      "context": "1",
+      "parameters": "{\"num_leaves\": 15}"
+    },
+    {
+      "model": "xgboost",
+      "context": "1",
+      "parameters": "{\"max_depth\": 3}"
+    },
+    {
+      "model": "catboost",
+      "context": "1",
+      "parameters": "{\"depth\": 6}"
+    },
+    {
+      "model": "tfidf_linear_svm",
+      "context": "1",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "model": "tfidf_logistic_regression",
+      "context": "1",
+      "parameters": "{\"model__C\": 2.0}"
     },
     {
       "model": "logistic_regression",
@@ -170,6 +261,41 @@
       "parameters": "{\"max_depth\": 12}"
     },
     {
+      "model": "extra_trees",
+      "context": "2",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "balanced_random_forest",
+      "context": "2",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "lightgbm",
+      "context": "2",
+      "parameters": "{\"num_leaves\": 7}"
+    },
+    {
+      "model": "xgboost",
+      "context": "2",
+      "parameters": "{\"max_depth\": 3}"
+    },
+    {
+      "model": "catboost",
+      "context": "2",
+      "parameters": "{\"depth\": 4}"
+    },
+    {
+      "model": "tfidf_linear_svm",
+      "context": "2",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "model": "tfidf_logistic_regression",
+      "context": "2",
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
       "model": "logistic_regression",
       "context": "full_train",
       "parameters": "{}"
@@ -198,7 +324,122 @@
       "model": "random_forest",
       "context": "full_train",
       "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "extra_trees",
+      "context": "full_train",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "balanced_random_forest",
+      "context": "full_train",
+      "parameters": "{\"max_depth\": 12}"
+    },
+    {
+      "model": "lightgbm",
+      "context": "full_train",
+      "parameters": "{\"num_leaves\": 7}"
+    },
+    {
+      "model": "xgboost",
+      "context": "full_train",
+      "parameters": "{\"max_depth\": 3}"
+    },
+    {
+      "model": "catboost",
+      "context": "full_train",
+      "parameters": "{\"depth\": 6}"
+    },
+    {
+      "model": "tfidf_linear_svm",
+      "context": "full_train",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "model": "tfidf_logistic_regression",
+      "context": "full_train",
+      "parameters": "{\"model__C\": 2.0}"
     }
   ],
-  "bundle_sha256": "704307ab16140856892e05748635f013d5e9053be7d03814f0622850e48f9bbc"
+  "candidate_grids": {
+    "logistic_regression": {},
+    "logistic_regression_balanced": {},
+    "svm_rbf": {
+      "model__C": [
+        0.5,
+        2.0
+      ]
+    },
+    "mlp": {
+      "model__hidden_layer_sizes": [
+        [
+          32
+        ],
+        [
+          32,
+          16
+        ]
+      ]
+    },
+    "hist_gradient_boosting": {
+      "max_leaf_nodes": [
+        7,
+        15
+      ]
+    },
+    "random_forest": {
+      "max_depth": [
+        12,
+        null
+      ]
+    },
+    "extra_trees": {
+      "max_depth": [
+        12,
+        null
+      ]
+    },
+    "balanced_random_forest": {
+      "max_depth": [
+        12,
+        null
+      ]
+    },
+    "lightgbm": {
+      "num_leaves": [
+        7,
+        15
+      ]
+    },
+    "xgboost": {
+      "max_depth": [
+        3,
+        5
+      ]
+    },
+    "catboost": {
+      "depth": [
+        4,
+        6
+      ]
+    },
+    "tfidf_linear_svm": {
+      "model__C": [
+        0.5,
+        2.0
+      ]
+    },
+    "tfidf_logistic_regression": {
+      "model__C": [
+        0.5,
+        2.0
+      ]
+    }
+  },
+  "prior_results_already_observed": true,
+  "low_fpr_analysis": "inner-OOF fitting calibration only; not a deployed operating point",
+  "candidate_e2_bundle_local_only": {
+    "path": "data/interim/week6_candidate_e2.joblib",
+    "sha256": "7f0c2b3f8ec8a434d326f1adf1df2e3165a111147502c7faebf2e2be23aab047"
+  }
 }

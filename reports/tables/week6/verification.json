@@ -1,28 +1,40 @@
 {
-  "checked_at_utc": "2026-11-09T12:42:49.653683+00:00",
+  "checked_at_utc": "2026-11-11T14:22:26.949370+00:00",
   "branch": "phuc-week6-teacher-v1",
   "notebook": {
     "executed_code_cells": 12,
     "errors": 0,
     "code_hash_matches": true
   },
-  "pytest": {
-    "passed": 391,
-    "failed": 0,
-    "skipped": 1,
-    "skip_reason": "Existing empty parameter set in tests/test_brand_regressions.py:58",
-    "command": "python -m pytest -q -rs"
+  "pre_run_plan": {
+    "recorded_before_extended_run_utc": "2026-11-11T14:17:37.917206+00:00",
+    "base_commit": "19ceb7b",
+    "notebook_code_sha256": "f69bbe5398ef6616a23e3b05925179c3d61cddaf01a5efcb78f797caaa372c8e",
+    "train_selection_only": true,
+    "external_prior_results_already_observed": true,
+    "model_count": 13,
+    "e2_model_count": 11,
+    "raw_model_count": 2,
+    "teacher_finalized": false
   },
-  "oof_rows": 78468,
+  "pytest_summary": "396 passed, 1 skipped in 29.56s",
+  "models": 13,
+  "e2_model_count": 11,
+  "teacher_finalized": false,
+  "raw_url_controls": 2,
+  "oof_rows": 170014,
   "cv_metric_max_abs_error": 0.0,
   "all_id_fold_partition_checks": true,
-  "teacher_fit_rows_from_scaler": 13078,
+  "low_fpr_thresholds_calibrated_only_in_fitting": true,
+  "threshold_analysis_changes_deployment": false,
+  "unfinalized_teacher_inference_blocked": true,
+  "external_skipped_pending_teacher": true,
+  "error_examples": 12,
   "reload_parity_urls": 6,
   "reload_score_max_abs_error": 0.0,
-  "portable_inference_without_dataset": {
+  "portable_candidate_inference_without_dataset": {
     "passed": true,
-    "urls": 5,
-    "temporary_directory": "C:\\Users\\PHUCTR~1\\AppData\\Local\\Temp\\phishguard-week6-inference-bxes4w6q"
+    "urls": 5
   },
   "old_artifacts_unchanged": 24,
   "old_artifact_hashes": {
@@ -51,28 +63,14 @@
     "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820",
     "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb"
   },
-  "binary_git_attributes_checked": [
-    "models/week6_teacher_v1.joblib",
-    "reports/tables/week6/*.csv.gz"
-  ],
+  "existing_six_model_oof_predictions_unchanged": true,
+  "existing_six_model_score_max_abs_error": 0.0,
+  "local_candidate_bundle_sha256": "7f0c2b3f8ec8a434d326f1adf1df2e3165a111147502c7faebf2e2be23aab047",
+  "previous_teacher_artifact_unchanged": true,
+  "official_test_evaluated": false,
   "upstream_e2_verifier": {
-    "exit_code": 1,
-    "failures": [
-      "FAIL  git sạch",
-      "FAIL  05_matrix_X_brand_trainval_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]",
-      "FAIL  05_matrix_X_brand_v1.manifest.json: mã/tài liệu không đổi kể từ commit freeze 45908a69  [.gitattributes, README.md, configs/archive/e2_models_nested_v1.toml, configs/e2_manifest.example.json, configs/e2_models.toml]",
-      "FAIL  parity: sinh lại từ mã cho kết quả y hệt (đồng thời qua kiểm tra giá trị tính tay)"
-    ],
-    "explanation": "1 dirty working tree (expected before commit); 2 existing whole-repo freeze guards; 1 exact float equality in parity."
-  },
-  "semantic_parity": {
-    "cases": 47,
-    "manual_value_assertions_passed": true,
-    "numeric_differences": 24,
-    "max_abs_error": 1.7763568394002505e-15,
-    "declared_tolerance": 1e-06,
-    "within_tolerance": true
-  },
-  "teacher_bundle_sha256": "704307ab16140856892e05748635f013d5e9053be7d03814f0622850e48f9bbc",
-  "official_test_evaluated": false
+    "not_modified": true,
+    "not_rerun_in_this_audit": true,
+    "known_limitations": "Whole-repo freeze guards and exact floating-point equality; not claimed PASS."
+  }
 }

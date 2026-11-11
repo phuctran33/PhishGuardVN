@@ -1,100 +1,108 @@
-# Tuần 6 — Phúc: đọc code và nhận Teacher v1
+# Tuần 6 — Phúc: báo cáo ứng viên, chưa chốt Teacher
 
-## Bắt đầu review từ đâu?
+Trạng thái hiện tại là awaiting_team_decision. Mục tiêu của thay đổi này là báo kết quả thử thêm model cho nhóm, chưa xuất một Teacher mới để tích hợp.
 
-1. Đọc reports/week6_teacher.md để biết đã chọn gì, số liệu và giới hạn.
-2. Mở notebooks/06_teacher_v1.ipynb: code model/fit/predict nằm ngay trong notebook.
-3. Đọc scripts/predict_teacher.py để xem cách load và dùng model mà không train.
-4. Kiểm tra reports/tables/week6/comparison.csv, errors.csv và teacher_selection.json.
+## Đọc theo thứ tự
 
-## Luồng notebook
+1. reports/week6_teacher.md: kết quả, giới hạn và điều nhóm cần quyết định.
+2. notebooks/06_teacher_v1.ipynb: toàn bộ khai báo model và fit/predict.
+3. reports/tables/week6/comparison.csv: 13 model, tách E2 và URL thô.
+4. low_fpr_metrics.csv, errors.csv, teacher_selection.json và verification.json để kiểm tra sâu hơn.
 
-| Bước | Làm gì? | Vì sao cần? |
+## Phần nào đã làm?
+
+- Giữ LR, LR balanced, RBF SVM, MLP, HistGB và RF.
+- Thêm LightGBM, XGBoost, CatBoost, Extra Trees, Balanced RF.
+- Thêm TF-IDF char n-gram + Linear SVM/LR làm đối chứng URL thô.
+- Cùng 13.078 Train IDs, ba outer domain folds, inner Group CV; tuning AP trong fitting.
+- Bảng AP/Recall/FPR/F1, tốc độ PC, kích thước; phân tích ngưỡng nhắm FPR 2% chỉ từ inner-OOF fitting.
+- Phân tích 12 lỗi OOF của ứng viên E2 dẫn đầu, đủ FP/FN ở ba folds.
+- Kiểm thử vocab/scaler/tuning/threshold không nhìn outer holdout; kiểm tra ID/folds và reload ứng viên.
+
+CatBoost dẫn đầu E2: CV AP khoảng 0,7332. TF-IDF Linear SVM dẫn đầu URL thô: khoảng 0,9256. Cần đọc cả Validation và giới hạn source/format bias trong báo cáo; CV cao chưa chứng minh hiệu quả thực tế.
+
+## Các bước notebook làm gì?
+
+| Tag / bước | Công việc | Tại sao cần? |
 | --- | --- | --- |
-| Setup | Import, đường dẫn, seed | Dùng cùng môi trường/cấu hình |
-| 1 — Data | Đọc X/y/domain/folds, chặn v0/sai ID/hash | Tránh học nhầm dữ liệu |
-| 2 — Models | Khai báo LR/SVM/MLP/HistGB/RandomForest | Nhìn trực tiếp model được tạo |
-| 3 — Helpers | Ba hàm ngắn: inner folds, score, metrics | Tránh lặp lại cùng phép tính |
-| 4 — CV | Fit trong fitting, predict outer holdout | Mỗi mẫu có một dự đoán ngoài phần đã học |
-| 5 — Selection | Xếp mean AP, chọn Teacher | Chưa dùng Validation/external |
-| 6 — Final fit | Tìm cấu hình bằng Train CV, refit Train | Tạo model bàn giao |
-| 7 — Errors | 12 lỗi, đủ FP/FN ở ba folds | Hiểu model sai ở đâu |
-| 8 — Resources | Đo kích thước/tốc độ PC | Có thông tin đánh đổi tài nguyên |
-| 9 — Save | Lưu model, kết quả, selection, lock | Bàn giao đúng phiên bản |
-| 10 — Demo | Load và thử năm URL | Xác nhận inference dùng được |
-| 11 — External | Phép thử host-only đã review | Quan sát thêm sau khi đã khóa Teacher |
+| setup | Import, paths, seed, CPU thread | Dùng môi trường/config rõ ràng |
+| data | Nối X/URL/nhãn/domain theo ID, kiểm tra schema/hash | Tránh ghép nhầm hoặc dùng E2 v0 |
+| models | Tạo trực tiếp 13 sklearn-style classifiers/Pipelines | Đọc ngay model và grid đang thử |
+| helpers | Chia inner folds, chọn input, score, metric, threshold | Các phép lặp ngắn, không giấu một pipeline train khác |
+| cv | GridSearchCV.fit hoặc clone(model).fit trong fitting, predict outer holdout | Tạo đúng một OOF prediction/ID/model |
+| selection | Xếp hạng riêng ứng viên E2 và URL thô | Không tự chốt Teacher |
+| final_fit | Tuning trên full Train, fit ứng viên, dự đoán Validation | Phục vụ báo cáo/demo, không chấm lại Train làm OOF |
+| errors | Đọc 12 lỗi của E2 đứng đầu | Hiểu giới hạn 20 features |
+| resources | Đo predict+score PC và dung lượng pipeline | Cân nhắc tài nguyên, chưa phải benchmark Android |
+| save | Lưu báo cáo và metadata pending | Tránh bàn giao nhầm một model là Teacher cuối |
+| demo | Thử hai ứng viên trên cùng năm URL offline | Xác nhận đường predict hoạt động, không xác minh nhãn |
+| external | Ghi trạng thái chờ chốt; không chấm thêm | Không dùng external để chọn model |
 
-Ba hàm chính dễ tìm:
-- inner_splits: chia hai phần bên trong outer fitting và kiểm tra domain.
-- ranking_scores: lấy probability hoặc margin SVM để tính AP.
-- calculate_metrics: tính AP/precision/recall/F1/FPR và confusion counts.
+Các hàm cần hiểu:
+- inner_splits: chia hai group folds bên trong fitting, kiểm tra domain không giao nhau.
+- model_input: E2 lấy đúng 20 cột số; text lấy duy nhất cột url.
+- ranking_scores: probability hoặc SVM margin, phục vụ AP.
+- calculate_metrics: AP/precision/recall/F1/FPR và TN/FP/FN/TP.
+- threshold_at_train_fpr: lấy quantile benign từ inner-OOF fitting, dùng cho bảng phụ FPR thấp.
 
-Lời gọi học thật là search.fit hoặc clone(model).fit ở CV/final fit.
-train_teacher.py chỉ mở và chạy notebook, không giấu một thuật toán train khác.
+Lời gọi học nằm ngay trong cell cv/final_fit. train_teacher.py chỉ chạy notebook, không tạo một thuật toán huấn luyện khác.
 
-## Hưng và Hy nhận gì?
+## Những đầu ra nhóm có thể review ngay
 
-- models/week6_teacher_v1.joblib: chỉ Teacher MLP và reference snapshot; khoảng 44 KB, cho phép đưa vào repo để pull là có.
-- configs/week6_teacher_lock.json: model nào, schema v1, threshold cố định, hash model/selection.
-- reports/tables/week6/teacher_selection.json: lý do chọn theo CV, feature order, params, phiên bản thư viện và hash input.
-- oof_predictions.csv.gz, validation_predictions.csv.gz, training_partitions.csv.gz: pandas.read_csv đọc trực tiếp, dùng kiểm tra ID/folds/leakage.
-- comparison.csv/resources.csv: metric, độ trễ PC và kích thước; errors.csv: 12 lỗi thật.
-- external_results.json cùng hai bảng predictions: phép thử riêng, pending không làm ground truth.
+Trong reports/tables/week6:
+- comparison.csv: thứ hạng và tài nguyên; e2_contract_compatible cho biết có nhận 20 features hay không.
+- cv_metrics.csv: kết quả từng outer fold; low_fpr_metrics.csv: kết quả phụ ở ngưỡng hiệu chỉnh trong fitting.
+- oof_predictions.csv.gz: 170.014 dòng = 13 × 13.078; có model/ID/fold/nhãn/score.
+- training_partitions.csv.gz: fitting/held_out/inner fold IDs để Hưng audit leakage.
+- parameters.csv: tham số được chọn mỗi fold và full Train.
+- validation.csv / validation_predictions.csv.gz: báo cáo riêng; không dùng chọn model.
+- resources.csv: scope đo riêng cho numeric E2 và text.
+- errors.csv: 12 lỗi E2, có observation/hypothesis/next_check.
+- demo_predictions.csv: chỉ minh họa candidate_not_final_teacher.
+- teacher_selection.json: tên file giữ từ đợt trước, nhưng selected_candidate=null, teacher_finalized=false.
+- external_results.json: NOT_RUN_PENDING_TEACHER, ghi rõ các quan sát lịch sử đã thấy.
+- verification.json: kiểm chứng và hash.
 
-Không cần tạo ZIP hay gửi một bộ thư mục kết quả khác. Model không tự train lại lúc predict.
-
-## Chạy dự đoán
-
-Từ root repo, dùng đúng .venv:
-~~~powershell
-.\.venv\Scripts\python.exe scripts/predict_teacher.py --examples
-.\.venv\Scripts\python.exe scripts/predict_teacher.py "https://example.com/login"
-~~~
-
-Cần dependencies như metadata (đặc biệt scikit-learn 1.9.1); cùng package source và reference v1. Dùng artifact của nhóm có nguồn rõ ràng. Không mở website đích.
-
-Nếu load trong Python:
+Ví dụ Hưng đọc OOF:
 ~~~python
-import json
-from pathlib import Path
-from phishguard_vn.external_pilot import load_locked_teacher
+import pandas as pd
 
-root = Path.cwd()
-lock = json.loads((root / "configs/week6_teacher_lock.json").read_text(encoding="utf-8"))
-predict = load_locked_teacher(root, lock)
-print(predict("https://example.com/login"))
+oof = pd.read_csv("reports/tables/week6/oof_predictions.csv.gz")
+catboost_oof = oof.loc[oof["model"].eq("catboost")]
+text_svm_oof = oof.loc[oof["model"].eq("tfidf_linear_svm")]
 ~~~
 
-## Tái tạo nếu cần, không bắt buộc trước khi review
+## Chạy lại trên local
 
-Nếu đã có core, lexical X, domains và folds từ 01 → 03 → 02:
+Cài thêm các thư viện của đợt thử model:
 ~~~powershell
-.\.venv\Scripts\python.exe scripts/05_build_matrix_x_brand.py --partition trainval
+.\.venv\Scripts\python.exe -m pip install -e ".[teacher,test]"
 .\.venv\Scripts\python.exe scripts/train_teacher.py
 ~~~
 
-Builder tái tạo chỉ Train/Validation, không sửa raw/folds. Khi đang có file chưa commit, không thêm --freeze để ép provenance sạch; metadata phải ghi đúng trạng thái. Notebook Teacher kiểm tra schema/reference/input/dictionary và ID.
+Cần có handoff core/E1 X/domains/folds và E2 v1 trainval như notebook data kiểm tra. Chạy lại sẽ ghi lại bảng/metadata tuần 6 và candidate local; không ghi đè raw, folds hoặc đầu ra tuần 5. Không cần chạy lại chỉ để đọc các kết quả đã commit.
 
-Nếu chưa có handoff, dùng luồng chuẩn bị có sẵn của dự án: 01, 03, build E2 trainval, 02. Lưu ý notebook 02 bản mới có cả phần EDA brand v1; guard freeze trong phần xuất EDA yêu cầu artifact đúng quy định của nó. Không sửa guard đó chỉ để chạy ML; dùng handoff đã kiểm chứng hoặc tái tạo EDA trên checkout sạch theo hướng dẫn báo cáo.
+Phiên bản thật có trong teacher_selection.json. Đã giữ nguyên các phiên bản core đang dùng khi cài model libraries.
 
-Khi chạy lại, model/lock/bảng tuần 6 được ghi lại. Dữ liệu/metrics tuần 5 không ghi đè. Nếu thay model/grid/data, đọc và cập nhật báo cáo cùng phân tích lỗi.
+## Vì sao chưa gọi predict_teacher như trước?
 
-## Những điều cần hiểu khi review
+configs/week6_teacher_lock.json hiện có teacher_finalized=false. predict_teacher.py sẽ dừng với thông báo chờ nhóm quyết định, và load_locked_teacher cũng chặn trước khi mở artifact. Đây là trạng thái có chủ đích.
 
-- AP không phải accuracy. Cột pr_auc trong CSV đang chứa average_precision_score.
-- LR balanced là một cấu hình của LR, không phải họ thuật toán hoàn toàn khác.
-- Inner CV chọn tham số; outer CV chấm. Scaler ở trong Pipeline.
-- MLP và HistGB AP gần nhau; đây là quyết định theo tiêu chí, chưa là bằng chứng hơn hẳn về thống kê.
-- Teacher fit toàn Train không dùng để tạo soft targets rồi đánh giá OOF trên chính Train; KD phải làm theo fold ở bước sau.
-- External: 167 candidates, 99 có review scope lịch sử, 68 pending; chỉ 7 benign nên metric hai lớp rất hạn chế.
-- Quy tắc LF trong .gitattributes giữ hash text giống nhau giữa Windows/macOS; không thay giá trị URL/nhãn/reference.
+models/week6_teacher_v1.joblib vẫn giữ nguyên MLP từ commit 19ceb7b để không ghi đè lịch sử thành một lựa chọn mới. Nó chưa được tái xác nhận sau đợt so sánh này. Không lấy file đó để tuyên bố Teacher mới đã sẵn sàng.
 
-## Trạng thái kiểm tra cần biết
+Để review local, notebook save hai candidate trong data/interim/week6_candidate_e2.joblib và week6_candidate_raw_url.joblib. Hai file bị Git bỏ qua, chỉ phục vụ reload/demo; không cần gửi riêng hoặc đưa vào PR như Teacher chính thức. Hưng/Khiêm/Hy review bảng và protocol trước; bundle tích hợp cuối chỉ bàn giao sau quyết định nhóm.
 
-Đã chạy notebook thật, 391 tests pass/1 skip, load/dự đoán năm URL trong thư mục chỉ có source + Teacher + lock/selection, không có dataset. OOF metrics tính lại khớp, 24 artifact/input cũ giữ nguyên hash. Xem reports/tables/week6/verification.json.
+## Điều nhóm cần chốt tiếp
 
-Lần kiểm tra trước commit ghi nhận verifier freeze cũ có 4 FAIL: dirty, hai guard toàn repo, và exact equality của entropy. Bộ 47 parity cases khớp trong tolerance 1e-6 (sai số max được ghi trong verification.json). Không sửa code verifier/fixture để làm xanh kiểm tra. Đây là việc riêng đã được nhận diện trên main, không được che thành PASS.
+1. Giữ Teacher nhận E2 20 số hay cho phép học trực tiếp từ URL thô?
+2. Cân nhắc CV, giới hạn nguồn/định dạng, Recall/FPR, kích thước và hướng inference web/mobile.
+3. Nếu chọn E2, ứng viên dẫn đầu là CatBoost; nếu chọn text, dẫn đầu là TF-IDF Linear SVM. Thứ hạng chưa tự biến thành quyết định.
+4. Sau quyết định: xuất một Teacher, chốt preprocessing/feature order hoặc vectorizer, metadata/hash/lock, thử inference và kiểm thử tích hợp với Khiêm/Hưng/Hy.
+5. Đọc ít nhất 10 lỗi đúng model được chọn; phần hiện có là lỗi ứng viên E2, chưa thay thế phân tích text nếu nhóm chọn text.
+6. Chỉ sau khi khóa lại Teacher mới chạy external host-only riêng. Chưa chấm Official Test, làm KD hoặc export Android.
 
-Kết quả external mới đọc ở reports/tables/week6/external_results.json. benchmark_status.json của K5.3 vẫn là snapshot trước Teacher, được giữ để không ghi đè audit cũ.
+Joblib không chạy trực tiếp trong Dart/Flutter. Các số latency hiện chỉ đo PC, không bao gồm UI/network và không phải số đo điện thoại. Việc chuyển đổi/runtime/parity phải được thử sau khi chọn model.
 
-Runtime revision trong metadata là commit nền lúc chạy; dirty=true vì code tuần 6 chưa commit. Hash code cells/source xác định mã thực sự đã dùng. Không sửa revision thành commit mới sau này để giả rằng model đã chạy trên commit đó.
+## Giới hạn kiểm chứng
+
+Xem reports/week6_teacher.md và verification.json. Verifier freeze E2 cũ không được sửa trong phần này; không tuyên bố các guard toàn repo/exact float equality đã pass. Test code không chứng minh chất lượng bên ngoài dữ liệu.
