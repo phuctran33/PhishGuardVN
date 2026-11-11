@@ -58,7 +58,8 @@ def test_unconfigured_app_starts_with_docs_but_never_fakes_prediction():
 
 
 @pytest.mark.parametrize("payload", [{}, {"url": ""}, {"url": "  "}, {"url": None},
-    {"url": 12}, {"url": True}, {"url": "x" * 4097}, {"url": "example.com", "model": "x"}])
+    {"url": 12}, {"url": 1.5}, {"url": True}, {"url": []}, {"url": {}},
+    {"url": "x" * 4097}, {"url": "example.com", "model": "x"}])
 def test_invalid_body_precedes_readiness_and_does_not_echo_input(payload):
     with TestClient(api.create_app()) as client:
         response = client.post("/predict", json=payload)
@@ -110,6 +111,7 @@ def test_malformed_json_and_unknown_http_routes_use_error_envelope():
 @pytest.mark.parametrize("url,reason", [
     ("http://example.com:99999", "invalid_port"), ("http://example.com:no", "invalid_port"),
     ("http://[broken/", "parse_error"), ("not_a_domain", "unresolved_domain"),
+    ("http://☃.example.com/", "invalid_hostname"),
     ("ftp://example.com", "unsupported_scheme"), ("https://example.com/a b", "invalid_characters")])
 def test_parser_boundary_errors_are_422_even_without_model(url, reason):
     with TestClient(api.create_app()) as client:
@@ -122,15 +124,33 @@ def test_parser_boundary_errors_are_422_even_without_model(url, reason):
                                   "http://[2001:db8::1]/", "//example.com/path"])
 def test_valid_parser_inputs_use_existing_inference_offline(tmp_path, monkeypatch, url):
     import socket
-    monkeypatch.setattr(socket, "create_connection", lambda *a, **kw: pytest.fail("No outbound connection during prediction"))
+
+    def deny_network(*args, **kwargs):
+        pytest.fail("Prediction attempted outbound network access")
+
+    monkeypatch.setattr(socket, "create_connection", deny_network)
+    monkeypatch.setattr(socket, "getaddrinfo", deny_network)
     path = artifact(tmp_path, bundle())
     with TestClient(api.create_app(bundle_path=path)) as client:
+        monkeypatch.setattr(socket.socket, "connect", deny_network)
         assert client.get("/health").json()["model_ready"] is True
         r = client.post("/predict", json={"url": url})
     assert r.status_code == 200
     assert r.json() == {"label": "phishing", "model": "fixture", "score": .7,
         "score_kind": "probability", "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
         "decision_rule": "estimator.predict", "protocol": "synthetic-unit-test-only"}
+
+
+def test_api_response_matches_python_inference_on_same_artifact(tmp_path):
+    url = "https://example.com/path?source=contract-test"
+    path = artifact(tmp_path, bundle())
+    with TestClient(api.create_app(bundle_path=path)) as client:
+        response = client.post("/predict", json={"url": url})
+
+    direct_bundle = joblib.load(path)
+    direct_result = api.predict_url(url, direct_bundle, "fixture")
+    assert response.status_code == 200
+    assert response.json() == direct_result
 
 
 def test_margin_is_not_converted_to_probability(tmp_path):
@@ -201,6 +221,22 @@ def test_inference_exception_does_not_leak_input_exception_or_traceback(tmp_path
         r = client.post("/predict", json={"url": "example.com/private?token=secret"})
     assert r.status_code == 500 and r.json()["error"]["code"] == "INFERENCE_FAILED"
     assert "secret" not in r.text + caplog.text and "Traceback" not in r.text
+
+
+def test_unexpected_route_exception_uses_sanitized_internal_error(tmp_path, monkeypatch, caplog):
+    with TestClient(api.create_app(bundle_path=artifact(tmp_path, bundle()))) as client:
+        def broken_parser(*args, **kwargs):
+            raise RuntimeError("sensitive parser detail")
+
+        monkeypatch.setattr(api, "parse_url", broken_parser)
+        response = client.post("/predict", json={"url": "https://example.com/private?token=secret"})
+
+    assert response.status_code == 500
+    assert response.json()["error"]["code"] == "INTERNAL_ERROR"
+    assert response.json()["error"]["reason"] == "internal_error"
+    assert "secret" not in response.text + caplog.text
+    assert "sensitive parser detail" not in response.text + caplog.text
+    assert "Traceback" not in response.text
 
 
 def test_cors_is_explicit_and_applies_to_errors():

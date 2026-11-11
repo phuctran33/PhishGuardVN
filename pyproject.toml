@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest", "httpx2>=2.16,<3"]
+test = ["pytest", "httpx2>=2.16,<3", "nbformat", "ipython"]
 api = ["fastapi>=0.162.2,<0.163", "uvicorn>=0.54,<0.55"]
 
 [tool.setuptools.packages.find]
@@ -28,3 +28,8 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 phishguard_vn = ["resources/*.csv"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra"
