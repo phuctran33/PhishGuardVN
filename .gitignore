@@ -37,3 +37,6 @@ Thumbs.db
 # Local previews
 **/_preview/
 *.log
+
+# Research candidate is reviewed separately; v1 stays the default.
+!/models/teacher_v2_candidate.joblib

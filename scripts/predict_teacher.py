@@ -1,4 +1,4 @@
-"""Predict offline using the packaged, hash-checked raw-URL Teacher."""
+"""Predict offline using the official, hash-checked stacking Teacher (CPython 3.11)."""
 from pathlib import Path
 import argparse,json,sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
