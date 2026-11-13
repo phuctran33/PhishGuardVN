@@ -17,6 +17,9 @@ jobs:
     name: Python 3.11 / Ubuntu
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: "1"
+      PYTHONIOENCODING: utf-8
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -28,11 +31,21 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
 
+      - name: Check out reviewed backend and released Teacher
+        uses: actions/checkout@v7
+        with:
+          repository: phuctran33/PhishGuardVN
+          ref: 7dfeec5f96f106f3544163466e2cf312494eb41f
+          path: teacher-handoff
+
       - name: Install package and API/test dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[api,test]"
+          python -m pip install -r teacher-handoff/requirements-teacher.txt -e "./teacher-handoff[api,test]"
           python -m pip check
 
       - name: Run test suite
-        run: python -m pytest -p no:cacheprovider -q
+        run: python -m pytest -p no:cacheprovider -q --teacher-root=teacher-handoff --teacher-api -k "not test_real_external_bundle_matches_saved_scores"
+
+      - name: Teacher API acceptance
+        run: python -m pytest -p no:cacheprovider -q --tb=short tests/test_teacher_integration.py --teacher-root=teacher-handoff --teacher-api -m teacher_api

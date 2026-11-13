@@ -31,6 +31,46 @@ def _mean_and_p95(samples_ms: list[float]) -> tuple[float, float]:
     return statistics.fmean(samples_ms), p95
 
 
+def _validate_prediction(body: bytes, health: dict) -> dict:
+    try:
+        prediction = json.loads(body)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError("POST /predict sai contract JSON; không ghi nhận benchmark.") from exc
+    if not isinstance(prediction, dict):
+        raise RuntimeError("POST /predict sai contract; không ghi nhận benchmark.")
+    score = prediction.get("score")
+    kind = prediction.get("score_kind")
+    valid = (
+        prediction.get("label") in ("benign", "phishing")
+        and prediction.get("model") == health.get("model")
+        and prediction.get("protocol") == health.get("protocol")
+        and isinstance(prediction.get("score_definition"), str)
+        and bool(prediction["score_definition"].strip())
+        and kind in ("probability", "decision_function")
+        and isinstance(score, (int, float))
+        and not isinstance(score, bool)
+        and math.isfinite(score)
+    )
+    rule = prediction.get("decision_rule")
+    threshold = prediction.get("threshold")
+    if valid and rule == "score >= threshold":
+        valid = (
+            kind == "probability"
+            and isinstance(threshold, (int, float))
+            and not isinstance(threshold, bool)
+            and math.isfinite(threshold)
+            and 0 <= threshold <= math.nextafter(1., math.inf)
+            and prediction["label"] == ("phishing" if score >= threshold else "benign")
+        )
+    elif rule == "estimator.predict":
+        valid = valid and threshold is None
+    else:
+        valid = False
+    if not valid or (kind == "probability" and not 0 <= score <= 1):
+        raise RuntimeError("POST /predict sai contract hoặc model metadata; không ghi nhận benchmark.")
+    return prediction
+
+
 def benchmark(base_url: str, url: str, request_count: int, warmup_count: int, timeout: float) -> dict:
     parsed = urlsplit(base_url.rstrip("/"))
     if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
@@ -61,24 +101,33 @@ def benchmark(base_url: str, url: str, request_count: int, warmup_count: int, ti
             health = json.loads(health_body)
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise RuntimeError("GET /health không trả JSON hợp lệ; không đo latency.") from exc
-        if not health.get("model_ready"):
+        if not isinstance(health, dict):
+            raise RuntimeError("GET /health phải trả JSON object; không đo latency.")
+        if health.get("model_ready") is not True:
             raise RuntimeError("Model chưa sẵn sàng theo /health; không đo latency inference.")
-        if not health.get("artifact_sha256"):
+        digest = health.get("artifact_sha256")
+        if not (isinstance(digest, str) and len(digest) == 64
+                and all(char in "0123456789abcdefABCDEF" for char in digest)):
             raise RuntimeError("/health không cung cấp artifact_sha256; không ghi nhận benchmark.")
+        if any(not isinstance(health.get(key), str) or not health[key].strip()
+               for key in ("model", "protocol", "feature_set")):
+            raise RuntimeError("/health thiếu model metadata; không ghi nhận benchmark.")
 
         payload = json.dumps({"url": url}, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         for _ in range(warmup_count):
-            status, _ = _request(connection, "POST", predict_path, payload)
+            status, response_body = _request(connection, "POST", predict_path, payload)
             if status != 200:
                 raise RuntimeError(f"Warm-up trả HTTP {status}; không ghi nhận benchmark.")
+            _validate_prediction(response_body, health)
 
         samples_ms = []
         for _ in range(request_count):
             started = time.perf_counter()
-            status, _ = _request(connection, "POST", predict_path, payload)
+            status, response_body = _request(connection, "POST", predict_path, payload)
             elapsed_ms = (time.perf_counter() - started) * 1000
             if status != 200:
                 raise RuntimeError(f"Request đo trả HTTP {status}; không ghi nhận benchmark.")
+            prediction = _validate_prediction(response_body, health)
             samples_ms.append(elapsed_ms)
     finally:
         connection.close()
@@ -101,6 +150,9 @@ def benchmark(base_url: str, url: str, request_count: int, warmup_count: int, ti
         "feature_set": health.get("feature_set"),
         "protocol": health.get("protocol"),
         "artifact_sha256": health.get("artifact_sha256"),
+        "score_kind": prediction["score_kind"],
+        "decision_rule": prediction["decision_rule"],
+        "threshold": prediction.get("threshold"),
     }
 
 
@@ -120,6 +172,9 @@ def main() -> int:
 
     try:
         result = benchmark(args.base_url, args.url, args.request_count, args.warmup_count, args.timeout)
+    except http.client.HTTPException:
+        print("Benchmark không hoàn tất: phản hồi HTTP bị gián đoạn hoặc không hợp lệ.", file=sys.stderr)
+        return 2
     except (OSError, ValueError, RuntimeError) as exc:
         print(f"Benchmark không hoàn tất: {exc}", file=sys.stderr)
         return 2

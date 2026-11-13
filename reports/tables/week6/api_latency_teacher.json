@@ -1,0 +1,21 @@
+{
+  "timestamp_utc": "2026-11-13T15:27:18.803254+00:00",
+  "endpoint": "http://127.0.0.1:18765",
+  "method": "HTTP/1.1 keep-alive",
+  "python_version": "3.11.14",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "warmup_requests": 10,
+  "measured_requests": 100,
+  "url_length": 25,
+  "raw_url_recorded": false,
+  "p95_method": "nearest-rank",
+  "mean_ms": 16.074093999995966,
+  "p95_ms": 19.840400000248337,
+  "model": "teacher-stacking-v2",
+  "feature_set": "canonical-reference-v1",
+  "protocol": "full_train_group_oof_fpr_target_0.01",
+  "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "score_kind": "probability",
+  "decision_rule": "score >= threshold",
+  "threshold": 0.6945740700635259
+}

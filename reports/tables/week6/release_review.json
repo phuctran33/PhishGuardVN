@@ -1,0 +1,109 @@
+{
+  "review_date_local": "2026-11-13",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "qa_branch": "test/api-contract-qa",
+  "qa_head": "cef4aea917711188931c0849f5caee9911c70ff4",
+  "qa_worktree_contains_uncommitted_changes": true,
+  "backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f",
+  "web_revision": "a2bb0dcedb7d12777774462a5fdea680aca2ff7e",
+  "teacher_release_revision": "398ee2ce9e587644ebe21b529fba485536a9aac1",
+  "upstream_main_revision": "7d2d60091c971dd3081b0b71fbf35b4cdd80c165",
+  "runtime": {
+    "python": "3.11.14",
+    "platform": "Windows build 26200",
+    "chrome": "157.0.8103.78",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "teacher_libraries_match_requirements_lock": true,
+    "pip_check_exit_code": 0
+  },
+  "teacher": {
+    "model_version": "teacher-stacking-v2",
+    "preprocessing_version": "canonical-reference-v1",
+    "promoted": true,
+    "bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "threshold": 0.6945740700635259,
+    "decision_rule": "score >= threshold",
+    "score_kind": "probability",
+    "calibrated": false
+  },
+  "qa_full_suite": {
+    "passed": 490,
+    "skipped": 2,
+    "failed": 0,
+    "duration_seconds": 56.46,
+    "teacher_api_acceptance_enabled": true,
+    "skip_reasons": [
+      "empty brand regression parameter set",
+      "missing notebook 02/03 local real-data handoff"
+    ]
+  },
+  "focused_qa_teacher_and_benchmark": {
+    "passed": 53,
+    "failed": 0,
+    "duration_seconds": 20.81,
+    "teacher_tests": 32,
+    "benchmark_tests": 21,
+    "parity_inputs": 13,
+    "score_absolute_tolerance": 1e-12
+  },
+  "original_pr22_api_tests": {
+    "passed": 47,
+    "failed": 1,
+    "duration_seconds": 7.33,
+    "failure_id": "QA-WIN-01"
+  },
+  "original_pr22_full_suite": {
+    "passed": 552,
+    "failed": 1,
+    "skipped": 2,
+    "deselected": 1,
+    "duration_seconds": 65.62,
+    "excluded_test": "test_real_external_bundle_matches_saved_scores",
+    "teacher_and_research_extras_installed": true,
+    "failure_id": "QA-WIN-01"
+  },
+  "proposed_windows_test_fix": {
+    "applied_to_original_pr22": false,
+    "verified_on_temporary_copy": true,
+    "passed": 48,
+    "failed": 0,
+    "duration_seconds": 3.85,
+    "guards_cover_load_warmup_prediction": true
+  },
+  "web": {
+    "tests_passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "analyze": "No issues found",
+    "release_build": "passed; --no-web-resources-cdn",
+    "real_browser_case_groups_passed": 9,
+    "browser_evidence": "release_e2e.json",
+    "latency_evidence": "api_latency_teacher.json"
+  },
+  "backend_review": "request_windows_test_fix_before_approval",
+  "web_review": "no_issues_found_within_verified_scope",
+  "qa_ci_for_uncommitted_diff": "not_run_on_github",
+  "clean_clone_final_qa_revision": "pending_user_commit_merge_push",
+  "backend_source_installed_from_separate_checkout": true,
+  "qa_branch_merged_with_new_backend": false,
+  "original_backend_web_model_code_modified": false,
+  "project_data_training_performed": false,
+  "external_dataset_scoring_performed": false,
+  "official_test_scored": false,
+  "staged_or_committed_by_assistant": false,
+  "source_sha256": {
+    "backend/src/phishguard_vn/api.py": "9720a6862e000ebc88650f5f4e320d4c4728d32b20f9748f5440f689a46921f2",
+    "backend/configs/teacher_lock.json": "781e1670a96df52b830bc40eb40af046d47db5f0a1b963bd2d42195c740db96c",
+    "web/apps/web/lib/api_client.dart": "8131a2f9a1aa4a63adc4fcb0385e86b66ae03b11d92aff004c810e3853401704",
+    "web/apps/web/lib/main.dart": "3759a0346bc017fec21458cec02de2bd287b997e2c49ce42b73dd2bf2fe73785"
+  },
+  "screenshots_sha256": {
+    "khiem_teacher_invalid.png": "491409242f2fcb79762a5c967f4d20df32cb6041e679aeb1a34982b42e12e91d",
+    "khiem_teacher_mobile.png": "3ee841d7ef4a85228b980b06eccbecb777c1095b30371308afead08ea587e8f2",
+    "khiem_teacher_offline.png": "0e40879b725089f6e9499e141ca8128828a4c143828c525ca15e4430012a8dea",
+    "khiem_teacher_phishing.png": "e231cc534a5172c64303cc4a023813a19c9205b99d081a33b790f63b167158fc",
+    "khiem_teacher_unavailable.png": "ae4fd928da4e037554e1223997a38162f103278ced4e6efd20586c7fc02e72ec",
+    "khiem_teacher_valid.png": "cd846ca38af1303c525a63f0ecd91d17fa134027f58b0b4b5fe12b0d5665ff08"
+  }
+}

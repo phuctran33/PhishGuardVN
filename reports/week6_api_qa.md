@@ -1,110 +1,92 @@
 # Báo cáo QA API — Issue #17
 
-## Phạm vi và môi trường
+## Phiên bản được kiểm tra
 
-- Nhánh kiểm tra: `test/api-contract-qa`, dựa trên nhánh backend PR #22.
-- Lần chạy ghi nhận: 10/11/2026.
-- Hệ điều hành: Windows, chạy bằng PowerShell.
-- Python: 3.13.7.
-- Gói được cài từ `pyproject.toml` với extra `api,test`; `tldextract` 5.4.0 và `idna` 3.20.
-- Test API dùng estimator và artifact tổng hợp trong thư mục tạm; không dùng model thật.
-- Artifact `week5_e2_ablation.joblib` không có trong checkout này. Không đặt biến môi trường model theo đường dẫn ví dụ.
+- QA: nhánh `test/api-contract-qa`, HEAD `cef4aea917711188931c0849f5caee9911c70ff4`, có thay đổi chưa commit.
+- Backend PR #22: `7dfeec5f96f106f3544163466e2cf312494eb41f`.
+- Web PR #23: `a2bb0dcedb7d12777774462a5fdea680aca2ff7e`.
+- Main bàn giao: `7d2d60091c971dd3081b0b71fbf35b4cdd80c165`; Teacher đã phát hành qua `398ee2ce9e587644ebe21b529fba485536a9aac1`.
+- Teacher hiện tại: `teacher-stacking-v2`, preprocessing `canonical-reference-v1`, `promoted=true`. File bundle giữ tên lịch sử `models/teacher_v2_candidate.joblib`.
+- SHA256 bundle: `63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1`; ngưỡng đọc từ release lock: `0.6945740700635259`.
+- Windows build 26200, CPython **3.11.14**; tất cả runtime libraries khớp `requirements-teacher.txt`. `pip check` đạt. Flutter 3.47.9 / Dart 3.13.7; Chrome headless bằng profile tạm.
 
-## Kết quả
+## Kết quả kiểm chứng độc lập
 
-- `tests/test_api.py`: **43 passed** trong lần chạy lại working tree ngày 13/11/2026.
-- `tests/test_api_benchmark.py`: **2 passed**.
-- Toàn bộ pytest suite: **439 passed, 2 skipped** trong lần chạy lại ngày 13/11/2026 trên Python 3.13.7.
-- `pip check`: không có dependency lỗi.
-- `git diff --check`: không có lỗi whitespace.
+| Phần kiểm tra | Kết quả thực tế |
+| --- | --- |
+| Full suite QA, bật `--teacher-api` | **490 passed, 2 skipped in 56.46s**; một warning escape sequence có sẵn trong `week5_reporting.py`. |
+| QA Teacher/parity/security và benchmark tập trung | **53 passed in 20.81s**; gồm 32 bài Teacher/API và 21 bài benchmark. |
+| API/Teacher tests nguyên bản của Hưng | **47 passed, 1 failed in 7.33s**; lỗi bootstrap test trên Windows, chi tiết bên dưới. |
+| Full suite PR #22, có extras teacher/research | **552 passed, 2 skipped, 1 failed, 1 deselected in 65.62s**. Loại đúng bài `test_real_external_bundle_matches_saved_scores`; không chạy external scoring cho tác vụ QA. |
+| Đề xuất sửa test Windows, chỉ trên bản sao tạm | **48 passed in 3.85s**. Source test PR #22 vẫn giữ nguyên, chưa thể ghi bản gốc 48/48 pass. |
+| Flutter | **28 passed, 0 failed, 0 skipped**; analyzer `No issues found`; release build đạt với `--no-web-resources-cdn`. |
+| Web release → Uvicorn → Teacher thật | **9 nhóm tình huống đạt**, không mock prediction; không page error hoặc request tới website đích. |
 
-Hai test bị skip:
+Hai skip của môi trường QA này:
 
-- `tests/test_brand_regressions.py:58`: fixture không sinh ra bộ tham số brand regression.
-- `tests/test_splits.py:210`: chưa có handoff dữ liệu local từ notebook 02 và 03.
+- `test_brand_regressions.py`: bộ tham số brand rỗng.
+- `test_splits.py`: chưa có handoff dữ liệu local từ notebook 02/03.
 
-Các số **419/2** bạn chạy trước đó và **420/1** trong báo cáo PR #22 thuộc revision/môi trường khác; test API của nhánh QA cũng đã được bổ sung từ 33 lên 43 ca. Vì vậy cần ghi kèm revision, môi trường và handoff khi so sánh; số mới nhất của working tree QA là **439/2**.
+So với **554 passed, 1 skip** trong bàn giao của Hưng, lần chạy full PR #22 tại đây chuyển một ca thành skip do thiếu handoff local và có thêm một failure bootstrap Windows. Không chạy notebook hoặc sửa test chỉ để khớp số đếm.
 
-Lúc chuẩn bị môi trường QA, full suite ban đầu báo thiếu `nbformat`, sau đó các test notebook báo thiếu `IPython`. Hai gói đã được khai báo trong extra `test` và cài vào môi trường; chạy lại full suite cho kết quả nêu trên.
+## Tích hợp Teacher và contract
 
-## Kiểm tra đã bổ sung
+Blocker cũ `QA-TEACHER-01` đã được mở trên bản backend mới: mode `teacher` gọi `load_teacher(repo_root)` chính thức, warm-up xong mới ready; `/health` trả `status=ok`, `model_ready=true`, model/hash/protocol đúng release lock.
 
-- Body sai kiểu, URL rỗng, URL dài quá giới hạn, URL đúng 4096 ký tự và khoảng trắng đầu/cuối.
-- URL hợp lệ/lỗi theo parser, gồm Unicode, IPv4/IPv6, port lỗi và hostname lỗi.
-- Model/artifact chưa sẵn sàng, artifact lỗi hoặc metadata không tương thích.
-- Lỗi inference/lỗi nội bộ được che chi tiết; kiểm tra không lộ URL nhạy cảm, exception hoặc traceback.
-- Chặn DNS/socket trong test xử lý URL để kiểm tra luồng offline; kiểm tra raw URL không xuất hiện trong log khi request thành công.
-- So sánh response API với `predict_url` và `scripts/predict_week5.py` trên cùng artifact tổng hợp. Đây **không phải** parity với model thật.
+Bộ QA hiện kiểm tra release lock/promotion/hash/runtime; Python single/batch/CLI và API parity trên **13 input**, tolerance score tuyệt đối `1e-12`. Các input gồm thiếu scheme, hostname case, Unicode/punycode, IPv4/IPv6, port hợp lệ, path/query/escaping, userinfo/fragment và biên 4096 ký tự. API trim khoảng trắng ngoài trước khi chuyển chuỗi vào adapter theo contract v1.
 
-## Bổ sung kiểm chứng ngày 11/11/2026
+Nhãn của Teacher theo `score >= threshold`; score meta-LR chưa calibrated. Đã kiểm tra độc lập trường hợp score `0.5760558654872864` vẫn có nhãn benign vì thấp hơn ngưỡng lock. Không dùng .5 để suy nhãn; không biểu diễn score thành phần trăm an toàn.
 
-### CI và clean clone
+Các ca bảo mật chặn DNS/socket, bắt log từ DEBUG, kiểm tra không lộ raw URL/secret/traceback, guards artifact/version/hash/runtime và lỗi response được chạy lại. Công cụ latency được cập nhật để kiểm tra cả `estimator.predict` và rule threshold, đồng thời lưu rule/threshold trong kết quả.
 
-- GitHub Actions `Python tests` thành công trên push commit `2a3efeb` và lần đồng bộ PR #25. Bốn ca pytest bổ sung ghi ở phần dưới được thêm sau commit này, nên cần push để CI chạy lại.
-- Tạo clone mới từ branch QA đã push; SHA của branch GitHub được xác minh là `2a3efebcc9cc4c6c21a65511a8c7498d6bc0dc69`.
-- Môi trường clone sạch: Windows 11, Python 3.13.7; cài theo `docs/backend.md` với `.[api,test]`, `tldextract==5.4.0`, `idna==3.20`; `pip check` không có dependency lỗi.
-- Full pytest trong clone: **435 passed, 2 skipped, 1 SyntaxWarning**. Skip vẫn là thiếu handoff dữ liệu notebook 02/03 và bộ tham số brand regression; warning `invalid escape sequence` ở `src/phishguard_vn/week5_reporting.py:148`.
-- Chạy Uvicorn tại `127.0.0.1:8013` với `--no-access-log`, không cấu hình artifact: `/health` trả 200 `degraded/not_configured`; POST URL hợp lệ trả 503 `MODEL_UNAVAILABLE/not_configured`; URL sai port trả 422 `INVALID_URL/invalid_port`.
-- Các request HTTP trong lần kiểm tra PowerShell được gửi bằng `curl.exe` và file JSON UTF-8 qua `--data-binary`, tránh khác biệt quote/alias của PowerShell.
+## Latency bằng Teacher thật
 
-### Kiểm tra bổ sung trong working tree
+- Uvicorn một process, loopback, `--no-access-log`, `OMP_NUM_THREADS=1`; client HTTP/1.1 keep-alive, concurrency 1.
+- 10 request warm-up, **100 request đo**, tất cả HTTP 200 và đúng contract/model metadata.
+- Mean **16.0741 ms**, p95 nearest-rank **19.8404 ms**.
+- Cấu hình/runtime/artifact trong `tables/week6/api_latency_teacher.json`; không lưu raw URL. Đây là phép đo trên máy QA, không phải cam kết latency cho mọi máy hoặc tải đồng thời.
+- Số đo tổng hợp cũ trong `api_latency_synthetic.json` được giữ làm lịch sử.
 
-- Thêm test so sánh API với `scripts/predict_week5.py` trên **cùng artifact tổng hợp và cùng input**; test log raw URL; thêm `scripts/benchmark_api_latency.py` và hai test cho kết quả JSON/bảo vệ trạng thái model chưa sẵn sàng.
-- Sau các test bổ sung: API suite **43 passed**; toàn bộ suite **439 passed, 2 skipped** trên Python 3.13.7. Các thay đổi sau commit `2a3efeb` chưa được commit/push ở thời điểm ghi báo cáo, vì vậy chưa nằm trong CI run.
+## Final E2E bằng model thật
 
-### Đo latency thử nghiệm
+| Tình huống | Kết quả |
+| --- | --- |
+| URL rỗng | Validation ở Web, không POST. |
+| URL hợp lệ, thiếu scheme | HTTP 200; nhãn, score và model hiển thị đúng backend. |
+| Benign với score > .5 | Score 0.576056 trên UI; nhãn benign đúng threshold lock. |
+| Phishing từ ví dụ Hưng bàn giao | HTTP 200, score 0.9319661170520045; UI có cảnh báo phishing. Dùng lại mẫu ID `024efd11-58b4-57c4-8d40-383a1034b19f` được bàn giao; không mở website đích hoặc tạo benchmark mới. |
+| URL sai port | HTTP 422 `invalid_port`; UI có thông báo lỗi, input sửa được. |
+| Thiếu model | Restart server với release root rỗng: HTTP 503 `artifact_missing`; UI báo model chưa sẵn sàng. Artifact chính thức giữ nguyên. |
+| Backend mất kết nối | Dừng process Uvicorn thật; Web kết thúc loading và báo lỗi kết nối. |
+| Phục hồi/retry | Khởi động lại đúng model/port; retry thành công trên cùng trang, không reload. |
+| Responsive | 390×844, 320×844, 844×390, 768×1024, 1440×900 không overflow ngang của document. Đây là viewport emulation, không phải test Android vật lý. |
 
-- Đo HTTP qua Uvicorn loopback bằng `scripts/benchmark_api_latency.py`, với 10 request warm-up và 100 request đo, HTTP/1.1 keep-alive; Windows 11, Python 3.13.7, FastAPI 0.162.4, Uvicorn 0.54.0.
-- Artifact SHA256 `d50f7377652d36f4ab770ce3ef499bb683dd8e28a3437c0c67804e8fc1c92f7a`, model `DummyClassifier`, feature set `lexical_12`, protocol `synthetic-latency-only`.
-- Kết quả thử nghiệm: **mean 3.806 ms, p95 4.362 ms** (nearest-rank). JSON cấu hình/kết quả: `reports/tables/week6/api_latency_synthetic.json`. Đây chỉ là baseline của API với artifact tổng hợp; **không đại diện latency model thật và không thay kết quả benchmark cuối**.
-- Đã xác nhận script từ chối đo nếu `/health.model_ready` là false; trường hợp không có model kết thúc với exit code 2 và không ghi file kết quả.
+Bằng chứng: `tables/week6/release_e2e.json` và ảnh `figures/week6/khiem_teacher_{valid,phishing,invalid,unavailable,offline,mobile}.png`. Chỉ gọi HTTP loopback tới Web/API; prediction không bị route-mock.
 
-## Xác minh bổ sung ngày 13/11/2026
+## Review cần Hưng xử lý — QA-WIN-01
 
-- Chạy lại full pytest trên working tree hiện tại: **439 passed, 2 skipped** trong 44,24 giây. Hai skip giữ nguyên lý do đã nêu; lần chạy này không có warning.
-- PR #23: `flutter analyze --no-pub` báo `No issues found`; `flutter test --no-pub` có **19 tests passed**; `flutter build web --release --no-pub` thành công.
-- Thử smoke Web → API với artifact tổng hợp `DummyClassifier`, protocol `mock-e2e-only`; API chỉ bind loopback `127.0.0.1:8015`, CORS cho origin `http://127.0.0.1:3000`. Trang Web báo API sẵn sàng; gửi một URL hợp lệ qua form cho kết quả `phishing`, điểm `100.00%` từ model giả.
-- Smoke trên chỉ xác nhận luồng HTTP/UI cơ bản với model giả. Không xem đó là Teacher, kết quả đánh giá model hay final E2E với model thật. URL port lỗi và backend offline được kiểm tra trong contract/widget tests; lần smoke trình duyệt này không xác nhận riêng hai tình huống đó.
-- Kết quả mới ở trên nằm trong working tree chưa commit. GitHub Actions xanh hiện chỉ chứng minh commit `2a3efeb` và lần đồng bộ PR #25; cần push commit mới để CI chạy đúng phiên bản này.
-- Clean clone được ghi nhận trước đó tại SHA `2a3efebcc9cc4c6c21a65511a8c7498d6bc0dc69`, không có artifact model. Nó chưa kiểm tra các thay đổi working tree hiện tại; clean clone cho revision mới cần thực hiện sau khi các thay đổi được commit/push.
+`tests/test_api_teacher.py::test_real_released_teacher_warmup_and_prediction_are_offline` monkeypatch `socket.socket.connect` trước khi tạo TestClient. Trên CPython 3.11 Windows, event loop khởi tạo self-pipe bằng `socket._fallback_socketpair`, cần connect loopback nội bộ. Test chặn kết nối này và fail **trước khi gọi loader/warm-up Teacher**.
 
-## Trạng thái còn lại
+Đề nghị dời việc chặn `connect`/`connect_ex` vào wrapper của `teacher_module.load_teacher`: event loop đã được tạo, còn loader/warm-up/predict vẫn chịu network guards. Đề xuất đã kiểm bằng bản sao test và đạt 48/48. Phản hồi trực tiếp tại dòng 100 của `tests/test_api_teacher.py` trên review PR #22.
 
-- Workflow CI đã được thêm và đã pass cho commit `2a3efeb`; các thay đổi QA hiện tại chưa có CI run vì chưa commit/push.
-- Clean-clone đã pass cho SHA `2a3efeb` trong cấu hình không model, với health degraded và prediction 503 đúng contract. Chưa có clean-clone chạy trên các thay đổi working tree mới.
-- API–CLI parity hiện đã kiểm tra với artifact tổng hợp; parity model thật vẫn chờ artifact tương thích.
-- Latency mean/p95 đã có baseline tổng hợp; benchmark với model thật còn chờ artifact.
-- Smoke Web → API với model giả đã cho kết quả hợp lệ; final smoke Flutter → API → model thật vẫn là hậu kiểm sau bàn giao ổn định PR #19 và Teacher/artifact tương thích.
+Backend thật đã chạy được; tuy nhiên PR #22 nguyên bản chưa đạt tất cả test trên Windows. Chờ Hưng cập nhật test rồi chạy lại trước khi approve theo yêu cầu nghiệm thu này.
 
-## Chạy lại trên máy khác
+## Trạng thái Issue #17 và bước chốt
 
-Các lệnh dưới đây dùng đường dẫn tương đối từ thư mục gốc của repository. Cần Python 3.11 trở lên; để so sánh sát với kết quả ghi nhận, dùng Python 3.13.7. `pyproject.toml` khai báo các dependency kiểm thử, gồm `nbformat` và `ipython`.
+| Hạng mục | Trạng thái |
+| --- | --- |
+| Contract, URL cases, artifact errors | Đạt trong suite QA trên backend mới. |
+| API–Python/CLI parity | Đạt trên Teacher phát hành, 13 input, atol 1e-12. |
+| Security và mất kết nối | Đạt trong các test QA và browser smoke đã chạy. |
+| Latency Teacher thật | Đã có mean/p95, runtime/hash/cấu hình thực tế. |
+| Final E2E Web → API → Teacher | Đã có kết quả đủ ba tình huống bắt buộc và các ca bổ sung trên revisions nêu trên. |
+| Review PR22 | Còn QA-WIN-01; không đổi failure thành pass hoặc skip. |
+| Review PR23 | Chưa thấy lỗi trong 28 tests/analyze/build và các ca browser đã kiểm. |
+| CI phần QA mới | Workflow đã pin backend/Teacher phát hành và bật API acceptance; **chưa push/chạy Actions cho diff này**. |
+| Clean clone revision QA cuối | Baseline `cef4aea` đã có 439 passed/2 skipped và smoke không model. **Cần chạy lại sau khi commit/merge/push revision cuối**; chưa nhận hoàn tất phần này. |
 
-### Windows PowerShell
+Nhánh QA còn thay đổi chưa commit. Trong lần kiểm này, venv QA cài source API từ checkout PR #22; không copy đè code backend/Web/model vào diff QA. Sau khi người phụ trách tự commit phần QA, cập nhật nhánh bằng merge backend mới, kiểm lại source import/pytest/Actions và clean clone đúng SHA cuối. Giữ deadline tests/security/CI/clean clone 14/11/2026; bằng chứng E2E phải gắn với revisions cuối trước nghiệm thu 15/11.
 
-```powershell
-# Từ thư mục gốc repository
-py -3.13 -m venv .venv
-& .\.venv\Scripts\python.exe -m pip install -e ".[api,test]" tldextract==5.4.0 idna==3.20
-& .\.venv\Scripts\python.exe -m pip check
-& .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider -q -rs tests\test_api.py
-& .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider -q -rs
-# Sau khi backend có model thật và /health.model_ready=true:
-& .\.venv\Scripts\python.exe scripts\benchmark_api_latency.py --base-url http://127.0.0.1:8000 --url https://example.com/benchmark --requests 100 --warmup 10 --output reports\tables\week6\api_latency.json
-```
+## Lịch sử và tái lập
 
-### Linux/macOS
-
-```sh
-# Từ thư mục gốc repository
-python3.13 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e '.[api,test]' tldextract==5.4.0 idna==3.20
-python -m pip check
-python -m pytest -p no:cacheprovider -q -rs tests/test_api.py
-python -m pytest -p no:cacheprovider -q -rs
-# After starting a backend with a real model and /health.model_ready=true:
-python scripts/benchmark_api_latency.py --base-url http://127.0.0.1:8000 --url https://example.com/benchmark --requests 100 --warmup 10 --output reports/tables/week6/api_latency.json
-```
-
-Các skip do thiếu handoff dữ liệu hoặc không có ca regression vẫn có thể xuất hiện; ghi lại đúng output của môi trường chạy. Để thử backend khi chưa có artifact, không đặt `PHISHGUARD_MODEL_BUNDLE`: theo contract `/health` phải ở trạng thái degraded và `/predict` với URL hợp lệ phải trả 503.
+Hướng dẫn lệnh hiện tại: `tests/README.md`. Bằng chứng tổng hợp hiện tại: `tables/week6/release_review.json`. Báo cáo trước khi Teacher stacking được phát hành nằm ở `history/week6_api_qa_pre_release.md`; `teacher_integration.json` giữ bằng chứng v1/candidate cũ. Những trạng thái chờ Teacher v1/candidate trong lịch sử không phải trạng thái của lần kiểm hiện tại.

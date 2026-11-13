@@ -1,0 +1,119 @@
+{
+  "backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f",
+  "web_revision": "a2bb0dcedb7d12777774462a5fdea680aca2ff7e",
+  "real_model": true,
+  "prediction_mocking": false,
+  "scenarios": [
+    {
+      "name": "empty_input_no_post",
+      "status": "pass"
+    },
+    {
+      "name": "valid_url_real_teacher",
+      "status": "pass",
+      "http_status": 200,
+      "label": "benign",
+      "score": 0.0288165553314368,
+      "threshold": 0.6945740700635259
+    },
+    {
+      "name": "benign_score_above_half_below_locked_threshold",
+      "status": "pass",
+      "score": 0.5760558654872864,
+      "threshold": 0.6945740700635259,
+      "label": "benign"
+    },
+    {
+      "name": "phishing_example_from_handoff",
+      "status": "pass",
+      "http_status": 200,
+      "handoff_sample_id": "024efd11-58b4-57c4-8d40-383a1034b19f",
+      "score": 0.9319661170520045,
+      "label": "phishing",
+      "threshold": 0.6945740700635259
+    },
+    {
+      "name": "invalid_url",
+      "status": "pass",
+      "http_status": 422,
+      "reason": "invalid_port"
+    },
+    {
+      "name": "missing_model",
+      "status": "pass",
+      "http_status": 503,
+      "reason": "artifact_missing"
+    },
+    {
+      "name": "backend_connection_lost",
+      "status": "pass",
+      "backend_process_stopped": true
+    },
+    {
+      "name": "retry_after_restart_without_reload",
+      "status": "pass"
+    },
+    {
+      "name": "responsive_no_document_overflow",
+      "status": "pass",
+      "viewports": [
+        [
+          390,
+          844
+        ],
+        [
+          320,
+          844
+        ],
+        [
+          844,
+          390
+        ],
+        [
+          768,
+          1024
+        ],
+        [
+          1440,
+          900
+        ]
+      ],
+      "limitation": "Viewport emulation; not a physical Android device test"
+    }
+  ],
+  "browser_page_errors": [],
+  "external_page_requests": [],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "model": "teacher-stacking-v2",
+    "feature_set": "canonical-reference-v1",
+    "protocol": "full_train_group_oof_fpr_target_0.01",
+    "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "model_error": null
+  },
+  "latency": {
+    "timestamp_utc": "2026-11-13T15:27:18.803254+00:00",
+    "endpoint": "http://127.0.0.1:18765",
+    "method": "HTTP/1.1 keep-alive",
+    "python_version": "3.11.14",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "warmup_requests": 10,
+    "measured_requests": 100,
+    "url_length": 25,
+    "raw_url_recorded": false,
+    "p95_method": "nearest-rank",
+    "mean_ms": 16.074093999995966,
+    "p95_ms": 19.840400000248337,
+    "model": "teacher-stacking-v2",
+    "feature_set": "canonical-reference-v1",
+    "protocol": "full_train_group_oof_fpr_target_0.01",
+    "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "score_kind": "probability",
+    "decision_rule": "score >= threshold",
+    "threshold": 0.6945740700635259
+  },
+  "status": "passed",
+  "raw_urls_recorded": false,
+  "timestamp_utc": "2026-11-13T15:40:05.179Z"
+}

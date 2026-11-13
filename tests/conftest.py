@@ -1,8 +1,50 @@
 import numpy as np
+import os
+from pathlib import Path
 import pytest
 from unittest.mock import Mock
 
 from phishguard_vn.features import extract_features
+
+
+def pytest_addoption(parser):
+    group = parser.getgroup("teacher QA")
+    group.addoption(
+        "--teacher-root",
+        default=os.environ.get("PHISHGUARD_TEACHER_ROOT"),
+        help="Checkout backend/Teacher phát hành, chứa configs/teacher_lock.json.",
+    )
+    group.addoption(
+        "--teacher-api",
+        action="store_true",
+        help="Chạy nghiệm thu API với Teacher thật; sẽ fail nếu backend chưa hỗ trợ bundle.",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if not config.getoption("--teacher-api"):
+        marker = pytest.mark.skip(reason="Bật --teacher-api để nghiệm thu API Teacher; chưa tính là pass.")
+        for item in items:
+            if "teacher_api" in item.keywords:
+                item.add_marker(marker)
+
+
+@pytest.fixture(scope="session")
+def teacher_root(pytestconfig):
+    value = pytestconfig.getoption("--teacher-root")
+    if not value:
+        pytest.skip("Cần --teacher-root hoặc PHISHGUARD_TEACHER_ROOT để kiểm tra artifact thật.")
+    root = Path(value).resolve()
+    required = (
+        "src/phishguard_vn/teacher.py",
+        "scripts/predict_teacher.py",
+        "configs/teacher_lock.json",
+        "requirements-teacher.txt",
+    )
+    for relative in required:
+        if not (root / relative).is_file():
+            pytest.fail(f"Teacher checkout thiếu {relative}; kiểm tra --teacher-root.")
+    return root
 
 
 @pytest.fixture

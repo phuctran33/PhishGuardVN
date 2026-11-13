@@ -1,6 +1,7 @@
 """Backend smoke/contract tests. Synthetic estimators are test fixtures, never demo models."""
 import hashlib
 import json
+import logging
 import os
 from pathlib import Path
 import shutil
@@ -140,6 +141,7 @@ def test_valid_parser_inputs_use_existing_inference_offline(tmp_path, monkeypatc
     path = artifact(tmp_path, bundle())
     with TestClient(api.create_app(bundle_path=path)) as client:
         monkeypatch.setattr(socket.socket, "connect", deny_network)
+        monkeypatch.setattr(socket.socket, "connect_ex", deny_network)
         assert client.get("/health").json()["model_ready"] is True
         r = client.post("/predict", json={"url": url})
     assert r.status_code == 200
@@ -268,6 +270,7 @@ def test_e2_reference_and_extractor_guard(tmp_path):
 
 
 def test_inference_exception_does_not_leak_input_exception_or_traceback(tmp_path, monkeypatch, caplog):
+    caplog.set_level(logging.DEBUG)
     with TestClient(api.create_app(bundle_path=artifact(tmp_path, bundle()))) as client:
         def broken(*args): raise RuntimeError("secret raw-url must not escape")
         monkeypatch.setattr(api, "predict_url", broken)
@@ -277,6 +280,7 @@ def test_inference_exception_does_not_leak_input_exception_or_traceback(tmp_path
 
 
 def test_successful_prediction_does_not_log_raw_url(tmp_path, caplog):
+    caplog.set_level(logging.DEBUG)
     url = "https://example.com/private?token=qa-log-secret-marker"
     with TestClient(api.create_app(bundle_path=artifact(tmp_path, bundle()))) as client:
         response = client.post("/predict", json={"url": url})
@@ -287,6 +291,7 @@ def test_successful_prediction_does_not_log_raw_url(tmp_path, caplog):
 
 
 def test_unexpected_route_exception_uses_sanitized_internal_error(tmp_path, monkeypatch, caplog):
+    caplog.set_level(logging.DEBUG)
     with TestClient(api.create_app(bundle_path=artifact(tmp_path, bundle()))) as client:
         def broken_parser(*args, **kwargs):
             raise RuntimeError("sensitive parser detail")
