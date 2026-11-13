@@ -1,3 +1,5 @@
+> Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
+
 # PhishGuard VN
 
 Đồ án CSC14005 — phát hiện nguy cơ từ URL và nghiên cứu đặc trưng thương hiệu
@@ -259,3 +261,17 @@ PhishVN v3.1.0, tác giả Thai Nguyen Vu, DOI `10.17632/b97hxbxtpd.4`.
 README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 `LICENSE`, `CITATION.cff`, `MANIFEST.txt` và tài liệu dataset gốc được giữ nguyên.
 `LICENSE` áp dụng cho dataset; giấy phép code mới của nhóm chưa được lựa chọn.
+
+## Week 6: expanded model comparison (Teacher pending)
+
+- Notebook: [06_teacher_v1.ipynb](notebooks/06_teacher_v1.ipynb).
+- Results and limitations: [week6_teacher.md](reports/week6_teacher.md).
+- Reading guide and next steps: [week6_phuc_handoff.md](docs/week6_phuc_handoff.md).
+- Install training libraries: .venv/Scripts/python.exe -m pip install -e ".[teacher,test]".
+- Reproduce comparison: .venv/Scripts/python.exe scripts/train_teacher.py.
+- Teacher is not finalized; predict_teacher.py blocks until the team confirms model/input contract.
+
+
+## Nghiên cứu preprocessing tiếp theo
+
+Phần nghiên cứu A–F và bốn hướng neural được thực hiện tiếp trên cùng nhánh, giữ nguyên benchmark 13 model. Đọc [báo cáo nghiên cứu](reports/url_preprocessing_research.md); kế hoạch đăng ký ở configs/url_research_plan.json, kết quả và OOF ở reports/tables/url_research. Trạng thái chỉ là candidate_proposed, Teacher chưa finalized.
