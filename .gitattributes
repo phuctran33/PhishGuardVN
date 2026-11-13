@@ -60,3 +60,7 @@
 /reports/tables/stacking/candidate/*.json text eol=lf
 /reports/tables/stacking/candidate/*.csv text eol=lf
 /reports/tables/stacking/candidate/*.gz -text
+
+/configs/teacher_lock.json text eol=lf
+/requirements-teacher.txt text eol=lf
+/reports/tables/stacking/promotion.json text eol=lf

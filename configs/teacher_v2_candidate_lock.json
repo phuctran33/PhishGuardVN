@@ -59,5 +59,10 @@
   "bundle": {
     "path": "models/teacher_v2_candidate.joblib",
     "sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1"
+  },
+  "python_runtime": {
+    "implementation": "CPython",
+    "major": 3,
+    "minor": 11
   }
 }

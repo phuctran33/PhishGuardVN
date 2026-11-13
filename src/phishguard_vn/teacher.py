@@ -56,6 +56,9 @@ class Teacher:
 
 def load_teacher(root,lock=None):
     root=Path(root)
+    if lock is None and (root/"configs/teacher_lock.json").exists():
+        from phishguard_vn.released_teacher import load_released_teacher
+        return load_released_teacher(root)
     if lock is None:
         lock=json.loads((root/"configs/week6_teacher_lock.json").read_text(encoding="utf-8"))
     if (lock.get("teacher_finalized") is not True or lock.get("selected_by")!="core_train_group_cv"

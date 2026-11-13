@@ -1,55 +1,31 @@
-## Kết quả
+## Đã xử lý review: promote stacking thành Teacher v2
 
-Thêm nghiên cứu stacking và bundle **Teacher v2 candidate, chưa promoted**. Teacher v1 vẫn là mặc định.
-PR này phụ thuộc #24; base tạm là `phuc-week6-teacher-v1` để nhóm chỉ review phần nghiên cứu mới.
+Teacher mặc định nay là **canonical TF-IDF + Linear SVM và HistGB E2 → scaled Logistic Regression**.
+Không thêm mô hình, không train lại, không đổi threshold, công thức E2, reference, dữ liệu hay bảng benchmark.
 
-Plan đăng ký trước kết quả: 11 pipeline, 53 cấu hình, cùng 13.078 Train IDs và 3 outer domain folds.
-Tuning dùng 2 inner Group CV; meta learner dùng base group OOF; ngưỡng chỉ chọn từ fitting-side OOF.
+### Runtime và regression
 
-| Pipeline | Mean outer AP |
-|---|---:|
-| Raw TF-IDF + SVM | 0,925628 |
-| Hybrid canonical TF-IDF + E2 → SVM | 0,927713 |
-| Canonical SVM + HistGB → LR | 0,930667 |
-| SVM + HistGB + ExtraTrees → LR | 0,931131 |
+- Khóa **CPython 3.11** trong metadata/lock/loader; runtime khác bị chặn trước unpickle/inference, thông báo lỗi rõ.
+- Giữ artifact đã freeze (SHA256 `63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1`); không sửa entropy để đổi kết quả.
+- Tests mô phỏng Python 3.10/3.12/3.13 và metadata thiếu runtime đều bị từ chối.
+- Real-bundle regression kiểm đủ 1.585 Validation và 99 external: score khớp CSV với atol=1e-12, nhãn khớp tuyệt đối. Không score Official Test.
+- CI cài đúng dependencies từ `requirements-teacher.txt` trên Python 3.11 và chạy regression này.
+- Local focused: **80 passed**; full available: **480 passed, 2 skipped**. Skip là research extras không cài trong env này và empty brand regression lịch sử. Research fixtures vẫn chạy ở job CI riêng.
 
-Candidate hai nhánh tăng 0,005039 AP so với raw; CI 95% [-0,000570; 0,011136] vẫn chứa 0.
-ExtraTrees tăng rất ít nhưng file/latency lớn. Chưa chứng minh candidate thắng chắc hoặc tổng quát tốt ngoài dataset.
+### Promotion và lịch sử
 
-## Stress và bổ sung theo review
+- `configs/teacher_lock.json` là pointer chính thức, kiểm hash runtime lock/artifact/threshold.
+- `load_teacher(".")` và `scripts/predict_teacher.py` dùng stacking v2.
+- `released_teacher.py` đổi trạng thái/phiên bản output; không đổi weights hoặc tag lịch sử trong pickle.
+- V1 bundle/lock giữ nguyên; vẫn load được khi truyền `configs/week6_teacher_lock.json` tường minh.
+- Metadata promotion mới: `reports/tables/stacking/promotion.json`; metadata/evaluation candidate cũ giữ lịch sử.
+- Hướng dẫn: [teacher_v2_release.md](https://github.com/phuctran33/PhishGuardVN/blob/phuc-teacher-v2-stacking/docs/teacher_v2_release.md).
 
-- Thêm `https://`: raw SVM recall 77,77% → 25,41%; uppercase hostname → 3,23%. Đây là chẩn đoán tổng hợp dùng nhãn dataset.
-- Stack hai nhánh có 0 label flips trong các phép stress đã thử. Điểm số vẫn có thể đổi do E2 raw; không tuyên bố bất biến mọi URL.
-- Xác nhận hostname text thực sự đổi trên 13.078 URL; giữ path/query/userinfo/fragment/port/domain. Tái dùng outer models, kiểm cả native và policy fitting-OOF FPR 1%.
-- HistGB CV lịch sử dùng auto nhưng <=8.719 fitting rows, thực tế không early-stop và đủ 300 vòng. **Giữ nguyên benchmark**, không rerun grid.
-- Mọi fit candidate mới đặt `early_stopping=False`; full Train chạy đủ 300 vòng.
-- Bảng source × label cho thấy các nguồn tách biệt hoàn toàn theo nhãn. Tách domain và bỏ cột source chưa loại source bias. Không sửa raw/nhãn/folds/features/reference.
+### Kết quả và giới hạn giữ nguyên
 
-## Bundle và kiểm chứng
+Mean outer AP stacking 0,930667 vs raw SVM 0,925628; CI delta vẫn chứa 0.
+External vẫn **bỏ sót 55/92 phishing**, chỉ 7 benign; source bias còn và score chưa calibrated.
+Official Test chưa đánh giá. Promotion là quyết định chọn Teacher của nhóm, không phải chứng nhận an toàn thực tế.
+Không KD/Android/API integration hoặc tự merge.
 
-- Canonical char 2–5 SVM C=1 + HistGB E2 → StandardScaler + LR C=0,1.
-- Ngưỡng 0,6945740700635259 từ full-Train Group OOF, mục tiêu empirical FPR <=1%; không bảo đảm FPR ngoài mẫu.
-- Bundle có reference snapshot, inference raw URL offline; score LR chưa calibrated. Canonical bỏ userinfo/fragment, có mất thông tin.
-- Artifact: `models/teacher_v2_candidate.joblib`, 2.130.586 bytes.
-- SHA256: `63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1`.
-- 552 fits benchmark + 33 fits candidate thành công; 143.858 OOF rows audit PASS.
-- Parity 13.078 inputs: score delta 0, labels khớp; single/batch delta <=1,67e-16 với atol=1e-12.
-- Portable CLI chạy thật 5 URL, không dataset/report/reference CSV ngoài bundle.
-- 12 FP/FN ở ba folds, đúng policy outer-fitting FPR 1%, có base scores/threshold/observation/hypothesis/next_check.
-- Lần package đầu vướng TLD `.example` trong URL minh họa; sửa ví dụ và resume bundle đã freeze, không retrain/overwrite model.
-- Full local research suite: **500 passed, 1 historical skip**, 2 historical L1 warnings. Focused sau cập nhật provenance: **53 passed**, không skip.
-- Workflow hiện có thêm stacking fixtures bắt buộc, CI không train project data hoặc gọi website. CI thực xem head PR; số local không thay CI.
-
-## Đánh giá bổ sung sau freeze
-
-| Scope | AP | Recall | FPR | TP/FN/FP/TN |
-|---|---:|---:|---:|---|
-| Validation: 24 phishing / 1.561 benign | 0,5549 | 62,50% | 0,897% | 15/9/14/1547 |
-| External historical hostname: 92 / 7 | 0,9813 | 40,22% | 14,29% | 37/55/1/6 |
-
-Vẫn bỏ sót 55/92 phishing; external FPR chỉ dựa trên 7 benign. 68 pending không chấm; cohort 92 là subset của 99.
-Các scope đã từng được quan sát, không dùng chọn lại model/ngưỡng. Không Official Test, KD, export hoặc Android.
-
-Báo cáo: [teacher_v2_stacking.md](https://github.com/phuctran33/PhishGuardVN/blob/phuc-teacher-v2-stacking/reports/teacher_v2_stacking.md).
-Flow code và cách chạy: [teacher_v2_handoff.md](https://github.com/phuctran33/PhishGuardVN/blob/phuc-teacher-v2-stacking/docs/teacher_v2_handoff.md).
-Nhóm quyết định promotion riêng; PR này không thay Teacher v1 hoặc tự merge.
+PR vẫn phụ thuộc #24 (base nhánh v1). Nhờ nhóm review commit, regression và CI head mới trước merge.

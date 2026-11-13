@@ -1,3 +1,5 @@
+> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](../docs/teacher_v2_release.md). Earlier candidate/v1 status below is historical.
+
 > Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](../docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
 
 # Model local

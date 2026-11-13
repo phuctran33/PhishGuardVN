@@ -1,3 +1,5 @@
+> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](../docs/teacher_v2_release.md). Earlier candidate/v1 status below is historical.
+
 # Teacher v2 candidate: kiểm chứng stacking trên Train
 
 Trạng thái: **candidate nghiên cứu, chưa promoted**. Teacher v1 raw TF-IDF/SVM vẫn là mặc định.

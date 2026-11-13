@@ -2,6 +2,8 @@
 from pathlib import Path
 from importlib.metadata import version, PackageNotFoundError
 import hashlib
+import sys
+import platform
 import json
 import joblib
 import numpy as np
@@ -12,6 +14,15 @@ from phishguard_vn.stacking import (
 from phishguard_vn.brand_features import E2_FEATURES
 
 MODEL_VERSION = "teacher-stacking-v2-candidate"
+
+
+PYTHON_RUNTIME = {"implementation": "CPython", "major": 3, "minor": 11}
+
+
+def require_python_runtime(record):
+    if (record != PYTHON_RUNTIME or sys.version_info[:2] != (3, 11)
+            or platform.python_implementation() != "CPython"):
+        raise RuntimeError("Teacher requires CPython / Python 3.11; unsupported runtime (including 3.12). Entropy arithmetic can change tree branches.")
 
 
 def sha(path):
@@ -40,6 +51,7 @@ def validate_contract(value):
 
 class StackingCandidate:
     def __init__(self, bundle):
+        require_python_runtime(PYTHON_RUNTIME)  # legacy frozen bundle; lock records supported runtime
         validate_contract(bundle)
         self.bundle = bundle
         self.model = bundle["model"]
@@ -85,6 +97,7 @@ def load_candidate(root):
     root = Path(root)
     path = root / "configs/teacher_v2_candidate_lock.json"
     lock = json.loads(path.read_text(encoding="utf-8"))
+    require_python_runtime(lock.get("python_runtime"))
     validate_contract(lock)
     for package, expected in lock["runtime_versions"].items():
         try:

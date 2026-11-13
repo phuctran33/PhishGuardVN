@@ -189,6 +189,7 @@ def save_candidate(root, bundle):
     path = root / "models/teacher_v2_candidate.joblib"
     joblib.dump(bundle, path)
     lock = {k: v for k, v in bundle.items() if k not in {"model", "reference"}}
+    lock["python_runtime"] = {"implementation": "CPython", "major": 3, "minor": 11}
     lock["bundle"] = {"path": "models/teacher_v2_candidate.joblib", "sha256": sha(path)}
     (root / "configs/teacher_v2_candidate_lock.json").write_text(json.dumps(lock), encoding="utf-8")
     return lock

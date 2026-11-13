@@ -164,6 +164,7 @@ def main():
         path = ROOT / "models/teacher_v2_candidate.joblib"
         joblib.dump(bundle, path)
         lock = {k: v for k, v in bundle.items() if k not in {"model", "reference"}}
+        lock["python_runtime"] = {"implementation": "CPython", "major": 3, "minor": 11}
         lock["bundle"] = dict(path=path.relative_to(ROOT).as_posix(), sha256=run.sha(path))
         run.write_json(ROOT / "configs/teacher_v2_candidate_lock.json", lock)
     candidate = load_candidate(ROOT)
