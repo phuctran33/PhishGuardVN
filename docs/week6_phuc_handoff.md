@@ -1,3 +1,5 @@
+> Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
+
 # Tuần 6 — Phúc: báo cáo ứng viên, chưa chốt Teacher
 
 Trạng thái hiện tại là awaiting_team_decision. Mục tiêu của thay đổi này là báo kết quả thử thêm model cho nhóm, chưa xuất một Teacher mới để tích hợp.

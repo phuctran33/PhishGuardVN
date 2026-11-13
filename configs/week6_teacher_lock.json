@@ -1,16 +1,19 @@
 {
-  "teacher_finalized": false,
-  "status": "awaiting_team_decision",
-  "selected_by": "not_finalized",
+  "teacher_finalized": true,
+  "selected_by": "core_train_group_cv",
   "external_used_for_selection": false,
-  "reason": "Báo cáo mở rộng để nhóm quyết định model và hợp đồng E2 hay URL thô.",
-  "comparison_record": {
-    "path": "reports/tables/week6/teacher_selection.json",
-    "sha256": "dac57ee83d081d616e9f2a06bd105b04d7855699816ad5d51fd9ca17918c5819"
+  "model_name": "tfidf_linear_svm",
+  "feature_set": "url_raw_char_3_5",
+  "score_kind": "decision_function",
+  "decision_rule": "estimator.predict",
+  "threshold": 0,
+  "operating_point_scope": "fixed_core_protocol",
+  "bundle": {
+    "path": "models/teacher_tfidf_svm_v1.joblib",
+    "sha256": "5a6d9b500ee147ae2f6cc78f986ac3122658eab58dfd9ad636f11d0ba19494b5"
   },
-  "previous_teacher": {
-    "revision": "19ceb7b",
-    "path": "models/week6_teacher_v1.joblib",
-    "note": "MLP lịch sử, chưa được tái xác nhận sau đợt so sánh mở rộng."
+  "selection_record": {
+    "path": "reports/tables/teacher_release/metadata.json",
+    "sha256": "52ede5f214742e79e75f61a06de00e355802bd61f5cd8fe79c0e672b44c321de"
   }
 }

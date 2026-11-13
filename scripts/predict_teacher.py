@@ -1,35 +1,22 @@
-"""Chỉ dự đoán offline khi Teacher đã finalized; trạng thái pending sẽ bị chặn."""
+"""Predict offline using the packaged, hash-checked raw-URL Teacher."""
 from pathlib import Path
-import argparse
-import json
-import sys
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from threadpoolctl import threadpool_limits
-from phishguard_vn.external_pilot import load_locked_teacher
-
+import argparse,json,sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
+from phishguard_vn.teacher import load_teacher
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("url", nargs="?", help="URL cần thử")
-    parser.add_argument("--examples", action="store_true", help="Thử năm URL mẫu")
-    args = parser.parse_args()
-    if args.url is None and not args.examples:
-        parser.error("Truyền URL hoặc --examples")
-    root = Path(__file__).resolve().parents[1]
-    lock = json.loads((root / "configs/week6_teacher_lock.json").read_text(encoding="utf-8"))
-    if not lock.get("teacher_finalized"):
-        parser.error("Chua chot Teacher. Xem reports/week6_teacher.md va doi nhom xac nhan model.")
-    predictor = load_locked_teacher(root, lock)
-    urls = [args.url] if args.url else [
-        "https://www.vietcombank.com.vn", "https://vietcombank-login.example.com/xacminh",
-        "https://example.com/login?account=123", "https://xn--bcher-kva.de", "https://www.hcmus.edu.vn"]
-    with threadpool_limits(limits=1):
-        for url in urls:
-            print(json.dumps({"url": url, **predictor(url)}, ensure_ascii=False))
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument("urls",nargs="*")
+    p.add_argument("--examples",action="store_true")
+    args=p.parse_args()
+    urls=args.urls or (["example.com","https://example.com/Login?Q=A","xn--bcher-kva.de",
+                       "https://example.com:8443/path","https://www.hcmus.edu.vn"] if args.examples else [])
+    if not urls:p.error("Pass one/many URL strings or --examples")
+    try:
+        model=load_teacher(Path(__file__).resolve().parents[1])
+        for url,result in zip(urls,model.predict_batch(urls)):
+            print(json.dumps({"url":url,**result},ensure_ascii=False))
+    except (ValueError,TypeError,RuntimeError,ImportError,OSError) as exc:
+        p.error(str(exc))
+if __name__=="__main__":main()

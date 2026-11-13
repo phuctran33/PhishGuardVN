@@ -1,3 +1,5 @@
+> Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](../docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
+
 # Model local
 
 Notebook E2 ablation tạo `week5_e1_ablation.joblib` và `week5_e2_ablation.joblib`, mỗi bundle chứa năm model full Train,

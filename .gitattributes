@@ -43,3 +43,7 @@
 /reports/tables/url_research/*.csv text eol=lf
 /reports/tables/url_research/*.json text eol=lf
 /reports/tables/url_research/*.gz -text
+
+/models/teacher_tfidf_svm_v1.joblib -text
+/reports/tables/teacher_release/*.json text eol=lf
+/reports/tables/teacher_release/*.csv text eol=lf

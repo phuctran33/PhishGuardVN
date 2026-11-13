@@ -1,0 +1,11 @@
+{
+  "full_suite": "438 passed, 1 skipped, 2 historical L1 warnings",
+  "focused_adapter_external_tests": "52 passed",
+  "portable_cli_without_dataset_research_reference": {
+    "passed": true,
+    "urls": 5
+  },
+  "cli_python_exact_parity": true,
+  "training_reused_no_retrain": true,
+  "official_test_evaluated": false
+}
