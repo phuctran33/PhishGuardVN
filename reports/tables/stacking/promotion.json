@@ -1,0 +1,26 @@
+{
+  "promoted": true,
+  "model_version": "teacher-stacking-v2",
+  "python_runtime": {
+    "implementation": "CPython",
+    "major": 3,
+    "minor": 11
+  },
+  "packaged_python_version": "3.11.7",
+  "verified_python_version": "3.11.7",
+  "decision": "Team review selects SVM + HistGB -> scaled LR; no training or threshold change",
+  "active_lock": "configs/teacher_lock.json",
+  "bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "runtime_lock_sha256": "e393942a6001f4fab55967c9d34bd09c92e37bff5b1dc134caf57d272de5652b",
+  "historical_candidate_metadata": "reports/tables/stacking/candidate/metadata.json",
+  "historical_candidate_metadata_preserved": true,
+  "official_test_evaluated": false,
+  "external_false_negatives": 55,
+  "external_positive_support": 92,
+  "adapter_source_sha256": {
+    "src/phishguard_vn/teacher.py": "5b3643622d79b1b3d81102cf2924db8df55fe657eeeb69f298133096e02e200f",
+    "src/phishguard_vn/released_teacher.py": "e1fee5523b8522f8d0f66e17f40f08d2db72bcd96ed09dd97f3a648e6ef2e2b7",
+    "src/phishguard_vn/stacking_candidate.py": "dff87fa09cca1e775f869747453aa25d079993f80876e42dc1fa7befd7125cd7",
+    "scripts/predict_teacher.py": "6ae65340ecd94d0058aa219d4ab808811f0ab38435c472335e862980652e4f30"
+  }
+}

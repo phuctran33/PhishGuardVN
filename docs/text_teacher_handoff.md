@@ -1,3 +1,5 @@
+> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](teacher_v2_release.md). Earlier candidate/v1 status below is historical.
+
 # Teacher text v1 — bàn giao cho Hưng, Khiêm, Hy
 
 Teacher đã được chọn theo yêu cầu nhóm: **tfidf_linear_svm**, raw URL, char 3–5, LinearSVC C=0.5. Mean outer Group CV AP 0,9256 là điểm quy trình so sánh trên folds đã quan sát nhiều lần, không phải đánh giá độc lập riêng cấu hình full Train.

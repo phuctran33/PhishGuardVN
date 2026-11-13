@@ -1,0 +1,288 @@
+{
+  "version": "teacher-v2-stacking-plan-v1",
+  "seed": 42,
+  "base_commit": "35c7d8d1b6c7e907aaa539ca145b3abacf1cba7f",
+  "status": "registered_before_new_outer_results",
+  "scope": "Train-only research; preserve Teacher v1; candidate never promoted automatically; no Official Test/KD/Android",
+  "expected": {
+    "rows": 13078,
+    "phishing": 2074,
+    "benign": 11004,
+    "domain_groups": 8835,
+    "outer_folds": 3,
+    "inner_folds": 2,
+    "meta_folds": 2,
+    "threshold_folds": 2
+  },
+  "selection": "mean inner Group CV AP within each outer fitting; final parameters from full-Train Group CV; no Validation/external/stress selection",
+  "preprocessing": {
+    "version": "canonical-reference-v1",
+    "scheme": "drop",
+    "hostname": "IDNA UTS46 then lowercase; historical research contract",
+    "default_ports": "drop only http:80 / https:443",
+    "path_query": "preserve case and percent escapes",
+    "userinfo_fragment": "drop; lossy diagnostic contract, not universal URL equivalence",
+    "numeric": "frozen 20 E2 from raw URL, unchanged formulas/reference/order"
+  },
+  "text": {
+    "analyzer": "char",
+    "min_df": 2,
+    "lowercase": false,
+    "sublinear_tf": true,
+    "use_idf": true,
+    "norm": "l2",
+    "svm_max_iter": 30000
+  },
+  "experiments": [
+    {
+      "id": "raw_svm",
+      "kind": "text",
+      "canonical": false,
+      "ngram": [
+        3,
+        5
+      ],
+      "cap": 50000,
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "canonical_svm",
+      "kind": "text",
+      "canonical": true,
+      "ngram": [
+        3,
+        5
+      ],
+      "cap": 50000,
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "canonical_wide_svm",
+      "kind": "text",
+      "canonical": true,
+      "ngram": [
+        2,
+        5
+      ],
+      "cap": 100000,
+      "grid": {
+        "C": [
+          0.5,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "histgb",
+      "kind": "hist",
+      "grid": {}
+    },
+    {
+      "id": "hybrid_svm",
+      "kind": "hybrid",
+      "grid": {
+        "C": [
+          0.5,
+          2,
+          8
+        ],
+        "numeric_weight": [
+          0.05,
+          0.25,
+          1
+        ]
+      }
+    },
+    {
+      "id": "stack_hist",
+      "kind": "stack",
+      "members": [
+        "svm",
+        "hist"
+      ],
+      "grid": {
+        "C": [
+          0.1,
+          1,
+          10
+        ],
+        "scale": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "stack_extra",
+      "kind": "stack",
+      "members": [
+        "svm",
+        "extra"
+      ],
+      "grid": {
+        "C": [
+          0.1,
+          1,
+          10
+        ],
+        "scale": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "stack_lgbm",
+      "kind": "stack",
+      "members": [
+        "svm",
+        "lgbm"
+      ],
+      "grid": {
+        "C": [
+          0.1,
+          1,
+          10
+        ],
+        "scale": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "stack_hist_extra",
+      "kind": "stack",
+      "members": [
+        "svm",
+        "hist",
+        "extra"
+      ],
+      "grid": {
+        "C": [
+          0.1,
+          1,
+          10
+        ],
+        "scale": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "stack_hist_lgbm",
+      "kind": "stack",
+      "members": [
+        "svm",
+        "hist",
+        "lgbm"
+      ],
+      "grid": {
+        "C": [
+          0.1,
+          1,
+          10
+        ],
+        "scale": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "stack_hybrid",
+      "kind": "stack",
+      "members": [
+        "svm",
+        "hybrid_lr"
+      ],
+      "grid": {
+        "C": [
+          0.1,
+          1,
+          10
+        ],
+        "scale": [
+          false,
+          true
+        ]
+      }
+    }
+  ],
+  "base_parameters": {
+    "svm": {
+      "C": 1,
+      "ngram": [
+        2,
+        5
+      ],
+      "cap": 100000
+    },
+    "hist": {
+      "max_iter": 300,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 15
+    },
+    "extra": {
+      "n_estimators": 400,
+      "min_samples_leaf": 2,
+      "max_features": 1
+    },
+    "lgbm": {
+      "n_estimators": 600,
+      "learning_rate": 0.035,
+      "num_leaves": 15,
+      "min_child_samples": 20,
+      "max_bin": 127,
+      "deterministic": true,
+      "force_col_wise": true
+    },
+    "hybrid_lr": {
+      "C": 1,
+      "numeric_weight": 0.25,
+      "max_iter": 3000
+    }
+  },
+  "thresholds": {
+    "fpr_targets": [
+      0.01,
+      0.02
+    ],
+    "selection": "maximize recall on fitting-side 2-fold group OOF subject to empirical FPR <= target; conservative higher-threshold tie",
+    "rule": "score >= threshold",
+    "candidate_policy": "Train OOF FPR target 0.01, not guarantee out-of-sample FPR"
+  },
+  "bootstrap": {
+    "draws": 2000,
+    "seed": 42,
+    "unit": "domain cluster within outer fold; paired all models",
+    "scope": "conditional on fitted models/folds, no refit uncertainty or multiple-comparison correction"
+  },
+  "stress": [
+    "add_https",
+    "remove_scheme",
+    "uppercase_hostname"
+  ],
+  "resources": {
+    "threads": 2,
+    "warmup": 3,
+    "repeats": 15,
+    "batch_size": 16,
+    "scope": "offline raw URL -> required E2/reference/preprocessing -> score; no startup/model load/network/Android/peak RAM"
+  },
+  "reuse": "No old scores/models reused. Cache identical fixed-base fits across meta grids under identical code/plan/data hashes; log actual fits.",
+  "candidate_selection": "Prefer stack_hist when competitive; third base only if paired evidence and resource cost support; compare hybrid_svm and LightGBM. Report no winner if evidence insufficient.",
+  "post_freeze": "Validation and external eligibility via existing audited ledger only after candidate lock; already observed supplemental scopes, not selection"
+}

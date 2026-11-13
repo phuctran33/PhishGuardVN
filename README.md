@@ -1,3 +1,5 @@
+> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](docs/teacher_v2_release.md). Earlier candidate/v1 status below is historical.
+
 > Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
 
 # PhishGuard VN
@@ -275,3 +277,9 @@ README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 ## Nghiên cứu preprocessing tiếp theo
 
 Phần nghiên cứu A–F và bốn hướng neural được thực hiện tiếp trên cùng nhánh, giữ nguyên benchmark 13 model. Đọc [báo cáo nghiên cứu](reports/url_preprocessing_research.md); kế hoạch đăng ký ở configs/url_research_plan.json, kết quả và OOF ở reports/tables/url_research. Trạng thái chỉ là candidate_proposed, Teacher chưa finalized.
+
+## Teacher v2 candidate (research, not promoted)
+
+Teacher v1 remains the default. New stacking results and limitations: [report](reports/teacher_v2_stacking.md).
+Offline candidate inference and code flow: [handoff](docs/teacher_v2_handoff.md).
+Run `python scripts/predict_stacking_candidate.py --examples` in the recorded runtime environment.

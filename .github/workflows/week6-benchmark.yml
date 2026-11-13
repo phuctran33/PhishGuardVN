@@ -2,7 +2,7 @@ name: Week 6 benchmark checks
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, phuc-week6-teacher-v1]
   push:
     branches: [main]
   workflow_dispatch:
@@ -28,6 +28,8 @@ jobs:
           cache-dependency-path: pyproject.toml
       - name: Install declared teacher and test dependencies
         run: python -m pip install -e ".[teacher,test]"
+      - name: Install frozen Teacher runtime (Python 3.11)
+        run: python -m pip install -r requirements-teacher.txt
       - name: Check installed dependencies
         run: |
           python -m pip check
@@ -37,6 +39,12 @@ jobs:
       - name: Reject skipped or missing Teacher tests
         run: |
           python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/teacher.xml').findall('.//testcase'); assert len(cases)>=13, 'Teacher tests missing'; assert all(c.find('skipped') is None for c in cases), 'Teacher tests must not skip'"
+      - name: Run stacking and portable candidate fixtures
+        run: |
+          python -m pytest tests/test_stacking.py -q -rs --junitxml=test-results/stacking.xml
+          python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/stacking.xml').findall('.//testcase'); assert len(cases)>=53; assert all(c.find('skipped') is None for c in cases)"
+      - name: Check real released bundle against saved Validation and external predictions
+        run: python -m pytest tests/test_teacher_release.py -q -rs
       - name: Run full available suite
         run: python -m pytest -q -rs --junitxml=test-results/full.xml
       - name: Upload test reports
