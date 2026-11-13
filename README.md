@@ -268,3 +268,8 @@ README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 - Install training libraries: .venv/Scripts/python.exe -m pip install -e ".[teacher,test]".
 - Reproduce comparison: .venv/Scripts/python.exe scripts/train_teacher.py.
 - Teacher is not finalized; predict_teacher.py blocks until the team confirms model/input contract.
+
+
+## Nghiên cứu preprocessing tiếp theo
+
+Phần nghiên cứu A–F và bốn hướng neural được thực hiện tiếp trên cùng nhánh, giữ nguyên benchmark 13 model. Đọc [báo cáo nghiên cứu](reports/url_preprocessing_research.md); kế hoạch đăng ký ở configs/url_research_plan.json, kết quả và OOF ở reports/tables/url_research. Trạng thái chỉ là candidate_proposed, Teacher chưa finalized.

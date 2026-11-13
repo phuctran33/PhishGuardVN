@@ -116,3 +116,8 @@ Cài môi trường sạch bằng pip install -e ".[teacher,test]". Extra test c
 CI checkout chỉ có file được Git quản lý. Những test cần handoff/cache trong data/interim hoặc model local có thể skip và phải đọc lý do; không suy ra CI đã kiểm chứng integration với đầy đủ dữ liệu. Phần local kiểm tra artifact thật được ghi riêng trong verification.json tại handoff_review.
 
 Kết quả 396 passed/1 skipped là lịch sử ngày 11/11/2026, không thay thế kết quả kiểm chứng mới của PR. Không chạy lại notebook chỉ để đổi tài liệu hoặc tiêu đề PR.
+
+
+## Cập nhật: nghiên cứu đã triển khai trên cùng nhánh
+
+Phúc đã thực hiện A–F và bốn hướng neural từ code/config truy cập được trong repo; không dựa vào giả định về nhánh nghiên cứu chưa cung cấp. Benchmark 13 model giữ riêng. Xem [báo cáo nghiên cứu](../reports/url_preprocessing_research.md) và configs/url_research_plan.json để đọc scope, ngân sách và candidate_proposed. Teacher lock vẫn pending.
