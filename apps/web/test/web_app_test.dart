@@ -91,6 +91,27 @@ void main() {
       false,
     );
   });
+  testWidgets(
+    'stacking shows backend benign above .5 without inferring a label',
+    (tester) async {
+      await start(
+        tester,
+        (_) async => jsonResponse({
+          ...predictionFixture(score: .6),
+          'model': 'teacher_fixture',
+          'decision_rule': 'score >= threshold',
+          'threshold': .7,
+        }),
+      );
+      await tester.enterText(find.byKey(const Key('url-input')), 'example.com');
+      await check(tester);
+      expect(find.text('Nhãn mô hình: benign'), findsOneWidget);
+      expect(find.text('0.600000'), findsOneWidget);
+      expect(find.text('Quy tắc backend: score ≥ 0.7'), findsOneWidget);
+      expect(find.textContaining('Meta-LR score'), findsOneWidget);
+      expect(find.text('Có dấu hiệu phishing'), findsNothing);
+    },
+  );
   testWidgets('invalid URL error keeps input editable', (tester) async {
     await start(
       tester,

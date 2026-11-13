@@ -27,6 +27,44 @@ http.Response jsonResponse(Object value, [int status = 200]) => http.Response(
 );
 
 void main() {
+  test('released stacking rule preserves the backend label and threshold', () {
+    final row = Prediction.fromJson({
+      ...predictionFixture(score: .6),
+      'decision_rule': 'score >= threshold',
+      'threshold': .7,
+    });
+    expect(row.label, 'benign');
+    expect(row.threshold, .7);
+    expect(row.decisionRule, 'score >= threshold');
+  });
+  for (final bad in [null, '0.7', double.nan, double.infinity, -.1, 2]) {
+    test('rejects invalid stacking threshold: $bad', () {
+      expect(
+        () => Prediction.fromJson({
+          ...predictionFixture(),
+          'decision_rule': 'score >= threshold',
+          'threshold': bad,
+        }),
+        throwsFormatException,
+      );
+    });
+  }
+  test('rejects unknown rule or threshold on estimator.predict', () {
+    for (final changes in [
+      {'decision_rule': 'arbitrary'},
+      {'threshold': .7},
+      {
+        'decision_rule': 'score >= threshold',
+        'threshold': .7,
+        'score_kind': 'decision_function',
+      },
+    ]) {
+      expect(
+        () => Prediction.fromJson({...predictionFixture(), ...changes}),
+        throwsFormatException,
+      );
+    }
+  });
   test('POST sends only URL and parses v1 probability response', () async {
     final api = PredictionApi(
       baseUrl: 'http://localhost:8000/',

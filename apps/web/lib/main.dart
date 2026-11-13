@@ -596,7 +596,9 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
             const SizedBox(height: 4),
             Text(
               probability
-                  ? '${(p.score * 100).toStringAsFixed(2)}%'
+                  ? p.threshold != null
+                        ? p.score.toStringAsFixed(6)
+                        : '${(p.score * 100).toStringAsFixed(2)}%'
                   : p.score.toStringAsFixed(4),
               key: const Key('score-value'),
               style: TextStyle(
@@ -608,10 +610,19 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
             ),
             Text(
               probability
-                  ? 'predict_proba · chưa hiệu chuẩn nguy cơ thực tế'
+                  ? p.threshold != null
+                        ? 'Meta-LR score · chưa hiệu chuẩn nguy cơ thực tế'
+                        : 'predict_proba · chưa hiệu chuẩn nguy cơ thực tế'
                   : 'Decision margin · không phải xác suất',
               style: const TextStyle(color: muted, fontSize: 12, height: 1.5),
             ),
+            if (p.threshold != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                'Quy tắc backend: score ≥ ${p.threshold}',
+                style: const TextStyle(color: muted, fontSize: 12, height: 1.5),
+              ),
+            ],
             const SizedBox(height: 18),
             const Divider(color: line, height: 1),
             const SizedBox(height: 14),

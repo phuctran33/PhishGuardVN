@@ -17,6 +17,8 @@ class Prediction {
     required this.scoreKind,
     required this.scoreDefinition,
     required this.protocol,
+    required this.decisionRule,
+    this.threshold,
   });
   final String label;
   final String model;
@@ -24,11 +26,15 @@ class Prediction {
   final String scoreKind;
   final String scoreDefinition;
   final String protocol;
+  final String decisionRule;
+  final double? threshold;
 
   factory Prediction.fromJson(Map<String, dynamic> json) {
     final label = json['label'];
     final kind = json['score_kind'];
     final value = json['score'];
+    final rule = json['decision_rule'];
+    final threshold = json['threshold'];
     if (!{'benign', 'phishing'}.contains(label) ||
         !{'probability', 'decision_function'}.contains(kind) ||
         value is! num ||
@@ -37,7 +43,14 @@ class Prediction {
         json['model'] is! String ||
         json['score_definition'] is! String ||
         json['protocol'] is! String ||
-        json['decision_rule'] != 'estimator.predict') {
+        !{'estimator.predict', 'score >= threshold'}.contains(rule) ||
+        (rule == 'score >= threshold' &&
+            (kind != 'probability' ||
+                threshold is! num ||
+                !threshold.isFinite ||
+                threshold < 0 ||
+                threshold > 1.0000000000000002)) ||
+        (rule == 'estimator.predict' && threshold != null)) {
       throw const FormatException('Unexpected prediction schema');
     }
     return Prediction(
@@ -47,6 +60,8 @@ class Prediction {
       scoreKind: kind as String,
       scoreDefinition: json['score_definition'] as String,
       protocol: json['protocol'] as String,
+      decisionRule: rule as String,
+      threshold: (threshold as num?)?.toDouble(),
     );
   }
 }

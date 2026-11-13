@@ -1,71 +1,64 @@
-# Week 6 — Flutter Web #19 và E2E với model thật
+# Week 6 — Flutter Web #19 → released stacking Teacher, 13/11/2026
 
-Web là PR riêng, stacked trên backend [PR #22](https://github.com/phuctran33/PhishGuardVN/pull/22), base commit `509e6a3`. Chỉ thêm `apps/web/`, README/bằng chứng Web; không đưa lại backend vào diff PR Web. Không tự merge hoặc đóng #19 khi bước tích hợp Teacher chưa được chứng minh.
+PR #23 vẫn stacked trên backend PR #22; backend đã đồng bộ main `7d2d600` chứa upstream Teacher review `398ee2c` qua PR #27. Diff Web chỉ có apps/web, README và bằng chứng Web; không lặp code API hoặc bảng benchmark Phúc. Không thiết kế lại giao diện, đổi framework hoặc sửa pipeline Teacher.
 
-## Thiết kế đã triển khai
+## Luồng tích hợp hiện tại
 
-Đã cài **UI UX Pro Max CLI 2.15.0** từ repository chính thức và `uipro init --ai codex --global`. Skill ở `~/.agents/skills/ui-ux-pro-max`; đã đọc SKILL.md và chạy workflow tạo/persist design system cùng truy vấn style/Flutter thật. CLI yêu cầu restart assistant để tự discovery; phiên này đọc và chạy thủ công thành công, không nhận rằng Codex đã tự reload skill.
+Flutter Web release → FastAPI thật → `load_teacher(repo_root)` chính thức → **teacher-stacking-v2**. Runtime **CPython 3.11.17**, preprocessing **canonical-reference-v1**; artifact SHA256 **63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1**. Threshold đọc từ lock **0.6945740700635259**, rule **score >= threshold**, không hardcode threshold/path/SHA candidate trong code.
 
-[Design system đã áp dụng](../apps/web/design-system/phishguardvn/MASTER.md): Glassmorphism tiết chế, dark navy/cyan-teal/red, bố cục Minimalism / Swiss, Flutter Material 3; một card blur 12px, font Roboto local, hierarchy/spacing rõ, không dữ liệu dashboard giả hoặc animation trang trí. Gợi ý Cyberpunk ban đầu được loại vì không khớp brief; palette/light-mode generic được thay bằng yêu cầu của người dùng. API #15 đã chốt/push trước phần thiết kế; Web không sửa contract hoặc inference.
+Parser hỗ trợ rule stacking và threshold hữu hạn có điều kiện, giữ numeric estimator.predict cũ. UI giữ nguyên label backend, hiển thị meta-LR score dạng số (không % an toàn/nguy cơ), ghi chưa hiệu chuẩn và rule/threshold backend. Nhãn benign không bảo đảm an toàn. Loading/chống gửi trùng/error/retry/responsive và thiết kế navy/cyan/red Glassmorphism Material 3 giữ nguyên.
 
-## Kết quả chạy thật
+## Kiểm thử thực tế
 
 | Kiểm tra | Kết quả |
 |---|---|
-| Flutter 3.47.9 / Dart 3.13.7, `flutter analyze` | No issues found |
-| `flutter test` | **19 passed**, 0 skipped, 0 failed; gồm client/schema/timeout và widget loading/error/retry, score probability/margin, mobile 320×844 không overflow và kết quả trong viewport; thêm phishing đỏ, chữ 200%/reduced motion và contrast |
-| `flutter build web --release --no-web-resources-cdn --dart-define=API_BASE_URL=http://127.0.0.1:8000` | Thành công; assets/fonts/CanvasKit phục vụ local |
-| Chrome thật headless, Flutter release → FastAPI → pipeline E1 thật | **9/9 nhóm tình huống PASS**, 0 page errors, không route mocking hoặc synthetic predictions |
-| Backend từ clone mới qua GitHub, venv mới theo README | **33 backend tests passed in 2.36s**; health/docs 200, chưa có model trả degraded/503 |
-| Swagger UI trong Chrome | Render đủ 2 operations: health và predict |
+| Flutter 3.47.9 / Dart 3.13.7 analyze | **No issues found** |
+| flutter test | **28 passed, 0 failed, 0 skipped** |
+| Release Web build, --no-web-resources-cdn | **PASS**, fonts/CanvasKit phục vụ local |
+| Chrome headless, API/model thật, không route mocks | **9/9 nhóm tình huống PASS**, 0 page errors |
+| Responsive/reduced motion/Enter | 390×844, 320×844, 844×390 landscape, 768×1024, 1440×900: gọi Teacher thật và không document horizontal overflow |
+| Python CLI–API (backend report) | 13/13 khớp score/label/threshold; max score delta 0.0, atol 1e-12 |
 
-Client/unit/widget tests dùng fixtures synthetic chỉ để kiểm tra protocol và trạng thái, không dùng fixtures trong demo/browser acceptance. Toàn bộ Python suite của backend trước Web: **420 passed, 1 skip cũ, 1 SyntaxWarning cũ**; xem [báo cáo API](week6_api_verification.md). Không nhận đây là toàn bộ QA/security/CI/latency của Khiêm (#17).
+Fixtures unit/widget chỉ phục vụ validation/trạng thái: rule lạ, threshold thiếu/sai/NaN/inf, margin vs probability, score .6/threshold .7 nhưng label benign; không dùng fixtures để chụp ảnh hoặc nhận demo Teacher. Mobile là viewport emulation trên Chrome, không nhận đã kiểm điện thoại Android thật. Các checks accessibility có phạm vi cụ thể, không phải audit WCAG đầy đủ.
 
-## E2E tối thiểu và kết quả
+## Các tình huống Web → API → Teacher đã chạy
 
-Browser mở `http://127.0.0.1:3000`, API `http://127.0.0.1:8000`; input URL chỉ nằm trong POST body, không mở trang example.com hoặc URL người dùng. Các request của trang trong lượt desktop chỉ tới `127.0.0.1` (assets local và API).
-
-| Trường hợp | Bằng chứng quan sát |
+| Tình huống | Kết quả quan sát |
 |---|---|
-| URL hợp lệ `https://example.com` | HTTP 200, benign, logistic_regression_balanced, probability `0.4949721386878221`; UI hiển thị **49.50% predict_proba chưa hiệu chuẩn**, không bảo đảm an toàn |
-| Nhánh phishing UI `https://example.com/login` | HTTP 200, model trả phishing, score `0.809465335516596`; UI đỏ + icon + nhãn + hướng dẫn. Đây là URL ví dụ dành riêng để thử nhánh UI, không phải website đã xác minh độc hại |
-| URL rỗng | Form báo thiếu URL, số POST không tăng |
-| URL thiếu scheme `example.com` | HTTP 200; score khớp cùng pipeline, parser backend xử lý scheme thiếu |
-| URL sai port `http://example.com:99999` | HTTP 422/invalid_port, error card và retry, input vẫn chỉnh được |
-| Backend mất kết nối | Dừng thật tiến trình API bằng SIGTERM; UI hiện lỗi kết nối và trạng thái chưa kết nối, không trả prediction giả |
-| Thử lại sau restart | Khởi động lại API với cùng artifact thật, bấm Thử lại trên **cùng trang**, kết quả phục hồi mà không reload |
-| Mobile 390×844 | HTTP 200 và model/score thật; kết quả tự cuộn vào viewport, không document horizontal overflow |
+| HTTPS hợp lệ, score nằm giữa .5 và threshold | `https://example.com/Login?Q=A`: score **0.5760558654872865**, label **benign**, threshold chính xác từ lock; UI **0.576056**, không suy thành phishing ở .5 |
+| Nhánh phishing thật | URL thuộc Validation, ID **024efd11-58b4-57c4-8d40-383a1034b19f**, split val đã kiểm; domain vô hiệu hóa **9944789[.]com**. Teacher trả phishing, UI cảnh báo đỏ và giữ score/rule. Không truy cập website hoặc thay nhãn dataset |
+| Input rỗng | Lỗi tại form, không gửi POST |
+| Thiếu scheme | `example.com`: Teacher trả benign, model/version/score đúng |
+| Port sai | HTTP 422 invalid_port, error card và retry |
+| Model unavailable | Dừng/restart API với release root rỗng riêng; HTTP 503/health degraded, UI báo chưa sẵn sàng; không sửa/xóa artifact chính thức hoặc fallback |
+| Backend mất kết nối | Dừng thật process bằng SIGTERM; UI báo mất kết nối, không prediction giả |
+| Restart/retry | Restart với root chứa lock/bundle chính thức, nút Thử lại trên cùng trang phục hồi Teacher, không reload |
+| Desktop/mobile/tablet | Gửi bằng Enter, reduced motion, score/label thật; không horizontal overflow |
 
-Bổ sung 6 viewport: **320×844, 375×812, 844×390, 768×1024, 1024×768, 1440×900**. Mỗi viewport gọi API thật, gửi bằng Enter, bật reduced motion, thấy score và không document horizontal overflow. Widget test riêng kiểm tra **200% text ở 320px**, không overflow; kiểm tra luminance cho text ≥4.5:1 trên các surface và input outline ≥3:1. Đây là các kiểm tra accessibility có phạm vi cụ thể, không nhận là audit WCAG đầy đủ.
+Mọi HTTP request do trang phát trong lượt kiểm chỉ đến **127.0.0.1**, gồm assets và API; không request tới URL input. JSON từng case, artifact/revision và screenshot/source hashes: [web_smoke.json](tables/week6/web_smoke.json), mục **current_teacher**. Revision nền khi build không phải commit publish sau kiểm thử; source hashes định danh đúng code đã chạy.
 
-Mobile là viewport emulation trên Chrome, **không** nhận là kiểm thử trên điện thoại Android thật; Android/parity thuộc Hy. Với Flutter, live-region text có thể là label của semantic group; automation kiểm tra đúng accessibility node và nội dung render, không chỉ tìm một text node rời. Ảnh được xem lại để đối chiếu hiển thị thực.
+## Ảnh render Teacher thật
 
-JSON của lượt chạy thành công, artifact SHA và screenshot hashes: [web_smoke.json](tables/week6/web_smoke.json).
+![Benign, score trên .5 nhưng dưới threshold](figures/week6_web/desktop.png)
 
-## Ảnh demo thực tế
+![Teacher phishing trên URL Validation](figures/week6_web/phishing.png)
 
-![Desktop — kết quả pipeline E1 thật](figures/week6_web/desktop.png)
+![Mobile sau khi tự cuộn tới kết quả](figures/week6_web/mobile.png)
 
-![Mobile — kết quả trong viewport sau auto-scroll](figures/week6_web/mobile.png)
+![Release root thiếu artifact, 503 thật](figures/week6_web/unavailable.png)
 
-![Phishing warning — output mô hình trên URL ví dụ](figures/week6_web/phishing.png)
+![Backend dừng thật, lỗi và retry](figures/week6_web/offline.png)
 
-![Backend dừng thật — lỗi và retry](figures/week6_web/offline.png)
+Không có video được nhận là đã quay; đây là screenshot browser thật, không ảnh sinh/mockup. Không mở URL nguy hiểm.
 
-Đây là screenshots browser thật, không phải mockup hoặc ảnh sinh. Không có video được nhận là đã quay; các bước trong README cho phép tự quay lại demo.
+## Lịch sử E1 và bảo toàn nghiên cứu
 
-## Model và bước còn chờ #16
+Bằng chứng **09/11/2026 dùng E1** `logistic_regression_balanced / lexical_12`, artifact SHA `6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c`, protocol `week5_e1_audit`, không phải stacking. Record giữ ở **legacy_e1_2026_11_09** trong JSON; bốn ảnh cũ chuyển nguyên bytes vào [legacy_e1_2026_11_09](figures/week6_web/legacy_e1_2026_11_09/). Không đổi tên output E1 thành Teacher. Design system UI UX Pro Max 2.15.0 và các tests/ảnh 09/11 thuộc mốc lịch sử riêng.
 
-Model hiện tại: cache H5.1 **logistic_regression_balanced / lexical_12**, protocol `week5_e1_audit`, artifact SHA256 `6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c`. Không clone/fit/tune/change weights; raw data, labels, splits/folds, extractor, reference, notebook outputs, experiment metrics và file model đều giữ nguyên. Scores ở trên là kiểm tra endpoint trên input kỹ thuật, **không phải** external benchmark/quality metric.
+Không train/retrain/tune, đổi threshold/model bytes/lock/promotion, sửa raw data/labels/splits/folds, E1/E2/reference, notebook outputs hoặc kết quả benchmark của Phúc. Không chạy external hoặc Official Test cho tích hợp. Giữ guards runtime 3.11/source/reference của loader chính thức.
 
-Chưa có Teacher E2 v1 từ Phúc trong môi trường bàn giao: checkbox “tích hợp Teacher v1” của #19 vẫn **PENDING/BLOCKED #16**. Backend đã có guard E2 v1/order/reference/source hashes; khi có artifact đúng, chỉ đổi cấu hình backend và restart, frontend không sửa contract hoặc gọi mọi score là xác suất. Không thay v0 thành v1 hoặc tự train để làm demo.
+## Bàn giao #15/#19 và hậu kiểm #17
 
-## Bảo toàn kết quả nghiên cứu
+[API contract v1](../docs/api_contract.md), [backend CPython 3.11 và release lock](../docs/backend.md), [Flutter setup/build/smoke](../apps/web/README.md). API `http://127.0.0.1:8000`, Web `http://127.0.0.1:3000`, CORS đúng hai localhost origins. Checkout Git có artifact/lock chính thức, không phụ thuộc cache riêng của Hưng; không dùng máy thiếu artifact để nhận integration pass.
 
-Đối chiếu SHA256 **267 file gốc** tại base `5509ed1`: **265 không đổi**, chỉ README và pyproject.toml thay đổi để hướng dẫn/cài API. Raw data, labels, splits, folds, feature code/reference, notebooks/outputs, model bytes và kết quả thí nghiệm không đổi. Artifact E1 giữ SHA256 ở trên; diff Web so với branch backend không có thay đổi `src/`, Python tests, pyproject hoặc API contract. Không truy cập URL đích, train/tune hoặc dùng Official Test.
-
-## Chạy và bàn giao hậu kiểm
-
-Xem [apps/web/README.md](../apps/web/README.md) cho cài từ máy mới, config/CORS, test/build và 5 bước smoke để Khiêm thực hiện sau bàn giao #19. [API contract](../docs/api_contract.md) vẫn v1, đủ request/response/error codes; không thay endpoint hoặc semantics trong PR Web.
-
-Để dùng máy hiện tại: code Web ở `/tmp/PhishGuardVN-w6-web`; API backend ở `/tmp/PhishGuardVN-w6-api`. Model local nằm ngoài các worktree này và phải cấu hình bằng đường dẫn thật. Bản chạy kiểm chứng dùng web port 3000/API 8000; không phải deployment production hay URL công khai. CI/security/latency đầy đủ và nghiệm thu chung trước 15/11 vẫn theo #17, không đánh dấu hoàn thành thay Khiêm.
+DoD #15 và luồng #19 đã có bằng chứng local Web → API → Teacher thật; chờ review PR, không tự merge/đóng issue. Không còn blocker thiếu Teacher #16 cho luồng Web. Khiêm #17 vẫn phụ trách QA/security/latency/clean-clone và final smoke trước nghiệm thu 15/11; không đánh dấu thay Khiêm. Không mở rộng KD/Student/Android/deployment.
