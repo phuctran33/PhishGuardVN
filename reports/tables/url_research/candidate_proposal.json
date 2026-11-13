@@ -1,0 +1,75 @@
+{
+  "status": "candidate_proposed",
+  "teacher_finalized": false,
+  "candidates": [
+    {
+      "role": "main",
+      "experiment": "tfidf_linear_svm",
+      "spec": {
+        "id": "baseline_tfidf_svm",
+        "group": "baseline",
+        "representation": "char",
+        "grid": {
+          "C": [
+            0.5,
+            2
+          ]
+        }
+      },
+      "full_train_parameters": {
+        "C": 0.5
+      },
+      "full_train_inner_ap": 0.9136652401191232,
+      "model_path": "data/interim/url_research/main_candidate.joblib",
+      "sha256": "82dbe5ddd5f3b98c77fd3838f0afad111cf9cd42cd9f0d4e83d0efde727f3e15",
+      "resources": {
+        "model_bytes": 1561750,
+        "latency_p50_ms": 1.2682999949902296,
+        "latency_p95_ms": 1.3714599976083264,
+        "batch_size": 16,
+        "latency_scope": "CPU offline URL-to-score incl required extraction; threads=2; warmup2/repeats5"
+      },
+      "outer_ap_mean_of_family_not_specific_full_train_config": 0.9256282836988817,
+      "reload_checked": true
+    },
+    {
+      "role": "compact",
+      "experiment": "binary",
+      "spec": {
+        "id": "binary",
+        "group": "F",
+        "representation": "char",
+        "question": "What changes when only feature weighting changes?",
+        "baseline": "tfidf_logistic_regression",
+        "grid": {
+          "C": [
+            0.5,
+            2
+          ]
+        },
+        "weighting": "binary"
+      },
+      "full_train_parameters": {
+        "C": 2
+      },
+      "full_train_inner_ap": 0.9106951414760638,
+      "model_path": "data/interim/url_research/compact_candidate.joblib",
+      "sha256": "6012f967df0380dae87b96ccbb32d6bda82dae688c2b212fe3fce896ab49d164",
+      "resources": {
+        "model_bytes": 1266246,
+        "latency_p50_ms": 1.298800008953549,
+        "latency_p95_ms": 1.5954400063492358,
+        "batch_size": 16,
+        "latency_scope": "CPU offline URL-to-score incl required extraction; threads=2; warmup2/repeats5"
+      },
+      "outer_ap_mean_of_family_not_specific_full_train_config": 0.9217894422739511,
+      "reload_checked": true
+    }
+  ],
+  "selection_scope": "descriptive on repeatedly observed outer folds; full-Train configs selected only by inner Group CV",
+  "reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+  "source_sha256": {
+    "src/phishguard_vn/research_preprocessing.py": "719fda2ed95754d497bf5f39dcaefc8aaa3577e51cefbfd88b20c0df2665104b",
+    "src/phishguard_vn/research_neural.py": "384c159081349fa061cf26fb999bcd68b34cf252fa947a76c5635652ebea9233"
+  }
+}

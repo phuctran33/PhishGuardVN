@@ -1,0 +1,90 @@
+{
+  "teacher_finalized": true,
+  "candidate": "tfidf_linear_svm",
+  "candidate_role": "main",
+  "candidate_config": {
+    "C": 0.5
+  },
+  "candidate_sha256": "82dbe5ddd5f3b98c77fd3838f0afad111cf9cd42cd9f0d4e83d0efde727f3e15",
+  "candidate_record_sha256": "3c642cdfb04e08d38ea7771e78ede85754e3c1d91477d044a2130474d6b32449",
+  "model_version": "teacher-tfidf-svm-v1",
+  "preprocessing_version": "raw-char-3-5-v1",
+  "selected_by": "core_train_group_cv",
+  "primary_metric": "mean_outer_average_precision",
+  "outer_mean_ap_of_procedure": 0.9256282836988817,
+  "selection_scope": "User explicitly selected candidate; full-Train C selected previously by inner Group CV; outer mean is not an independent score of C=0.5.",
+  "input_contract": "Nonempty raw strings; no strip/lower/normalization/scheme addition/truncation. Missing scheme accepted. Reject wrong type/blank/NUL only.",
+  "output_contract": "benign=0, phishing=1; signed SVM margin, NOT probability; label from estimator.predict including ties",
+  "decision_rule": "estimator.predict",
+  "threshold": 0,
+  "external_used_for_selection": false,
+  "train_rows": 13078,
+  "class_counts": {
+    "benign": 11004,
+    "phishing": 2074
+  },
+  "test_evaluated": false,
+  "vectorizer_parameters": {
+    "analyzer": "char",
+    "ngram_range": [
+      3,
+      5
+    ],
+    "min_df": 2,
+    "max_df": 1.0,
+    "max_features": 50000,
+    "lowercase": false,
+    "sublinear_tf": true,
+    "use_idf": true,
+    "smooth_idf": true,
+    "norm": "l2",
+    "binary": false,
+    "strip_accents": null
+  },
+  "classifier_parameters": {
+    "C": 0.5,
+    "class_weight": null,
+    "dual": "auto",
+    "fit_intercept": true,
+    "intercept_scaling": 1,
+    "loss": "squared_hinge",
+    "max_iter": 10000,
+    "multi_class": "ovr",
+    "penalty": "l2",
+    "random_state": 42,
+    "tol": 0.0001,
+    "verbose": 0
+  },
+  "n_features": 36946,
+  "feature_fingerprint": {
+    "vocabulary_sha256": "7100f6ac04effbe33729d1055511f404f58250285d10a1ea9b95cbfda404f485",
+    "idf_sha256": "821762df9202daa3e0cc5202428634d312315752d445f4e0a43e895a45d23dcb",
+    "coefficient_sha256": "44a2325444f95e092a165dde78bcafc7fdb4205d71de121ba60675f4e097f9a5"
+  },
+  "versions": {
+    "scikit-learn": "1.9.1",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "joblib": "1.6.0"
+  },
+  "input_sha256": {
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
+  },
+  "adapter_sha256": "09dee408b330b92c3bb26112519f5efc4680606384cca76bf7f83390c8f7f18c",
+  "runtime_git_revision": "c778c677a3f60b95cc86c8fbb23e925042c50f93",
+  "runtime_git_dirty": true,
+  "model_sha256": "5a6d9b500ee147ae2f6cc78f986ac3122658eab58dfd9ad636f11d0ba19494b5",
+  "packaged_utc": "2026-11-13T09:33:10.071948+00:00",
+  "parity": {
+    "inputs": 13083,
+    "margin_max_abs_error": 0.0,
+    "labels_equal": true,
+    "single_batch_equal": true,
+    "candidate_reused": true
+  },
+  "packaged_adapter_sha256": "5048efa73f5a18f6331e728cf6c54a111a3828604104be7759239fcd1ad0849b",
+  "adapter_revision_note": "Post-packaging protocol hardening only; original adapter SHA retained, model unchanged.",
+  "score_kind": "decision_function",
+  "operating_point_scope": "fixed_core_protocol"
+}

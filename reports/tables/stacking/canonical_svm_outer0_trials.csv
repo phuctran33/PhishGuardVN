@@ -1,0 +1,5 @@
+experiment,context,config_id,inner_fold,parameters,ap
+canonical_svm,outer0,0,0,"{""C"": 0.5}",0.8605312621428894
+canonical_svm,outer0,0,1,"{""C"": 0.5}",0.8823895140585608
+canonical_svm,outer0,1,0,"{""C"": 2}",0.8522649707496487
+canonical_svm,outer0,1,1,"{""C"": 2}",0.8739991338563369

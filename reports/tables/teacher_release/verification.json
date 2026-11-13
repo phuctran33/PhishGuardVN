@@ -1,0 +1,24 @@
+{
+  "full_suite": "438 passed, 1 skipped, 2 historical L1 warnings",
+  "focused_adapter_external_tests": "52 passed",
+  "portable_cli_without_dataset_research_reference": {
+    "passed": true,
+    "urls": 5
+  },
+  "cli_python_exact_parity": true,
+  "training_reused_no_retrain": true,
+  "official_test_evaluated": false,
+  "p2_handoff_review": {
+    "focused": "61 passed",
+    "full_suite": "447 passed, 1 historical skip, 2 historical L1 API warnings",
+    "external_cli": "python scripts/evaluate_external_pilot.py --teacher-lock configs/week6_teacher_lock.json --two-class",
+    "external_cli_exit": 0,
+    "output": "data/interim/external_teacher_eval",
+    "validation_predictions_unchanged": true,
+    "external_predictions_unchanged": true,
+    "historical_audit_manifest_unchanged": true,
+    "bundle_unchanged": true,
+    "negative_protocol_tests": 8,
+    "lineage_guard_rejects_data_and_unregistered_code_changes": true
+  }
+}
