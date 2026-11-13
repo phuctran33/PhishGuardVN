@@ -63,8 +63,8 @@ Lỗi cache pretrained nghiên cứu: prepare_url_research.py hiện kiểm tra 
 
 python scripts/evaluate_external_pilot.py --teacher-lock configs/week6_teacher_lock.json --two-class
 
-Mặc định output ở data/interim/external_teacher_eval; có thể truyền --output-dir thư mục riêng. Không ghi đè báo cáo audit lịch sử. Manifest gốc giữ nguyên: external_adapter_lineage.json ghi đúng cặp hash lịch sử/hiện tại cho riêng text dispatch; thay ledger, dữ liệu, code khác hoặc adapter không được ghi nhận vẫn bị chặn. Không được cập nhật lineage tự động để làm xanh guard.
+Mặc định output ở data/interim/external_teacher_eval; có thể truyền --output-dir thư mục riêng. Không ghi đè báo cáo audit lịch sử. Manifest gốc giữ nguyên: external_adapter_lineage.json ghi đúng cặp hash lịch sử/hiện tại cho đúng hai revision: text dispatch và CLI evaluator; thay ledger, dữ liệu, code khác hoặc adapter không được ghi nhận vẫn bị chặn. Không được cập nhật lineage tự động để làm xanh guard.
 
 Loader kiểm tra signed margin, operating point Core, AP selection, Test chưa chấm và không dùng external để lựa chọn; negative tests cố tình dùng hash hợp lệ nhưng protocol sai vẫn phải bị từ chối.
 
-Ki?m ch?ng b?n s?a P2: focused 61 passed; full suite 447 passed/1 skip c?; CLI external exit 0 v? prediction gi? nguy?n. Manifest l?ch s? v? bundle kh?ng ??i, kh?ng retrain.
+Kiểm chứng bản sửa P2: focused 61 passed; full suite 447 passed/1 skip cũ; CLI external exit 0 và prediction giữ nguyên. Manifest lịch sử và bundle không đổi, không retrain.
