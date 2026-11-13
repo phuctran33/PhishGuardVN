@@ -1,6 +1,6 @@
 # PhishGuardVN API contract — v1
 
-Contract bàn giao cho #17 và #19; chốt trước implementation trong #15. Base URL local: `http://127.0.0.1:8000`. Không authentication/database. API chỉ phân tích chuỗi offline bằng `prediction.predict_url()`, không mở URL, không DNS/HTTP tới website đích. Không gửi URL nhạy cảm vào demo công khai.
+Contract bàn giao cho #17 và #19; chốt trước implementation trong #15. Base URL local: `http://127.0.0.1:8000`. Không authentication/database. API chỉ phân tích chuỗi offline: mode `teacher` gọi loader/inference chính thức, E1/E2 numeric gọi `prediction.predict_url()`, không mở URL, không DNS/HTTP tới website đích. Không gửi URL nhạy cảm vào demo công khai.
 
 ## GET /health
 
@@ -23,8 +23,8 @@ Luôn trả **200** khi tiến trình API hoạt động, kể cả chưa có mo
 | status | `ok` nếu model sẵn sàng, ngược lại `degraded` |
 | model_ready | boolean; chỉ true sau khi load, kiểm tra metadata/schema và warm-up inference thật thành công |
 | model | string hoặc null; model được chọn trong bundle |
-| feature_set | `lexical_12`, `e2-brand-v1` hoặc null |
-| protocol | string từ bundle, hoặc `week5_e1_audit` cho adapter cache E1, hoặc null |
+| feature_set | Teacher: preprocessing version từ adapter (hiện `canonical-reference-v1`, canonical text + E2); numeric: `lexical_12`, `e2-brand-v1`; null nếu degraded |
+| protocol | Teacher: operating_point_scope từ release lock; numeric: bundle protocol / `week5_e1_audit`; null nếu degraded |
 | artifact_sha256 | SHA256 file artifact đã load, hoặc null |
 | model_error | null hoặc một trong `not_configured`, `artifact_missing`, `artifact_load_failed`, `artifact_incompatible`; không chứa đường dẫn/exception |
 
@@ -48,17 +48,45 @@ Header `Content-Type: application/json`. Body bắt buộc là object gồm **du
 
 ### 200 — inference thành công
 
-Tất cả bảy trường dưới đây luôn có mặt:
+Bảy trường cơ sở dưới đây luôn có mặt; Teacher threshold-rule có thêm `threshold`:
 
 | Trường | Kiểu / ý nghĩa |
 |---|---|
-| label | `phishing` hoặc `benign`, từ estimator.predict, không từ ngưỡng UI |
+| label | `phishing` hoặc `benign`, từ adapter Teacher hoặc estimator numeric, không từ ngưỡng UI |
 | model | string, tên model đã load |
 | score | số hữu hạn; probability thuộc [0,1], decision_function không bị giới hạn khoảng |
 | score_kind | `probability` hoặc `decision_function` |
 | score_definition | string giải thích score từ predict_url |
-| decision_rule | `estimator.predict` |
-| protocol | string theo bundle; không suy ra Teacher v1 chỉ từ tên API |
+| decision_rule | `estimator.predict` (numeric) hoặc `score >= threshold` (released stacking) |
+| threshold | Chỉ có ở threshold-rule: số hữu hạn, giá trị chính xác do release lock/adapter trả; không mặc định 0.5. Numeric estimator.predict bỏ trường này |
+| protocol | Teacher: `operating_point_scope` trong release lock; numeric: string theo bundle. `model` Teacher là model_version chính thức |
+
+### Released stacking Teacher
+
+Mode `PHISHGUARD_BUNDLE_FORMAT=teacher` bắt buộc có `configs/teacher_lock.json` trong `PHISHGUARD_TEACHER_ROOT` (default repository root chứa package source). Dùng `from phishguard_vn.teacher import load_teacher; load_teacher(repo_root)`, không load candidate trực tiếp. Loader chính thức kiểm release/candidate-lock/bundle hashes, CPython 3.11, exact runtime libraries, source/preprocessing, E2 reference/order và promotion. Startup warm-up phải thành công mới ready. Lock/model lỗi giữ degraded/503; không fallback v1/E1. Không đặt MODEL_BUNDLE/MODEL_NAME cho mode teacher: artifact và tên do release lock quyết định. Optional MODEL_SHA256 chỉ là pin bổ sung và phải khớp lock.
+
+Request URL được trim hai đầu theo v1 rồi chuyển nguyên cho Teacher; API không tự thêm scheme/lowercase/path/query normalization. Canonical text và E2 raw là trách nhiệm upstream adapter. Nhãn được giữ nguyên từ adapter, threshold từ lock; numeric E1/E2 vẫn dùng chế độ tường minh. Python 3.12+ bị từ chối, không sửa công thức entropy để load.
+
+Ví dụ Teacher thực tế và parity Python/CLI–HTTP nằm trong [api_smoke.json](../reports/tables/week6/api_smoke.json). Score meta-LR là **điểm chưa hiệu chuẩn**, không là phần trăm an toàn hay xác suất nguy cơ thực tế. Đổi decision_rule/threshold trong v1 là thay đổi bổ sung tương thích cho clients đã cập nhật; Web cũ chỉ nhận estimator.predict cần nâng parser cùng PR #23.
+
+Ví dụ **Teacher thật**, request {"url": "https://example.com/Login?Q=A"}:
+
+```json
+{
+  "label": "benign",
+  "model": "teacher-stacking-v2",
+  "score": 0.5760558654872865,
+  "score_kind": "probability",
+  "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+  "decision_rule": "score >= threshold",
+  "protocol": "full_train_group_oof_fpr_target_0.01",
+  "threshold": 0.6945740700635259
+}
+```
+
+Score trên .5 vẫn benign theo operating point của Teacher; client giữ label backend, không tự phân loại lại. Giá trị ví dụ đọc từ smoke record, không phải threshold hardcode trong implementation.
+
+### Bằng chứng E1 lịch sử (09/11/2026)
 
 Ví dụ **inference thật đã kiểm tra trên pipeline E1 local**, không phải kết quả Teacher/external: input `https://example.com`, cache `e1_result.joblib` SHA256 `6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c`. Adapter chỉ đổi container trong bộ nhớ, không fit/chỉnh weights hoặc thay threshold 0.5. Protocol adapter mô tả nguồn cache, không nhận là protocol ablation E2 của Phúc.
 

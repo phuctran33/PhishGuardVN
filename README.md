@@ -268,8 +268,8 @@ README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 
 FastAPI backend và API contract: [hướng dẫn chạy](docs/backend.md), [contract v1 cho QA/Web](docs/api_contract.md).
 Khởi động bằng `python -m uvicorn phishguard_vn.api:app --host 127.0.0.1 --port 8000 --no-access-log`
-sau khi cài `python -m pip install -e '.[api,test]' tldextract==5.4.0 idna==3.20`.
-Checkout sạch chưa có artifact: `/health` báo degraded, `/predict` trả 503; không sinh prediction giả.
+sau khi cài đúng **CPython 3.11**, `python -m pip install -r requirements-teacher.txt -e '.[api,test]'` và cấu hình mode `teacher` theo hướng dẫn.
+Teacher chính thức dùng release lock trong Git; không cần cache riêng. Thiếu/sai artifact hoặc runtime: `/health` degraded, `/predict` 503, không fallback. Các ghi chú candidate/pending dưới đây là lịch sử nghiên cứu; release hiện tại xem [teacher_v2_release.md](docs/teacher_v2_release.md).
 ## Week 6: expanded model comparison (Teacher pending)
 
 - Notebook: [06_teacher_v1.ipynb](notebooks/06_teacher_v1.ipynb).
