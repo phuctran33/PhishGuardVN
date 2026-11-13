@@ -107,6 +107,7 @@ def main():
     CANDIDATE_OUT.mkdir(exist_ok=True)
     run.LEDGER.extend(pd.read_csv(OUT / "fit_ledger.csv", keep_default_na=False).to_dict("records"))
     run.PARTITIONS.append(pd.read_csv(OUT / "partitions.csv.gz"))
+    training_revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     path = ROOT / "models/teacher_v2_candidate.joblib"
     lock_path = ROOT / "configs/teacher_v2_candidate_lock.json"
     if lock_path.exists():
@@ -114,6 +115,13 @@ def main():
         candidate = load_candidate(ROOT)
         lock = json.loads(lock_path.read_text(encoding="utf-8"))
         model, reference = candidate.model, candidate.reference
+        # Resume preserves the fit provenance; it must not relabel old weights as new fits.
+        training_revision = candidate.bundle.get("training_code_revision")
+        old_metadata = CANDIDATE_OUT / "metadata.json"
+        if not training_revision and old_metadata.exists():
+            training_revision = json.loads(old_metadata.read_text(encoding="utf-8"))["training_code_revision"]
+        if not training_revision:
+            raise ValueError("Frozen legacy bundle has no fit revision; recover its original evidence before resuming")
         threshold = candidate.threshold
         table = pd.read_csv(CANDIDATE_OUT / "full_train_trials.csv")
         means = table.groupby("config_id").ap.mean()
@@ -144,6 +152,7 @@ def main():
         reference = load_reference()
         runtime = {p: version(p) for p in ["scikit-learn", "numpy", "scipy", "pandas", "joblib", "tldextract", "idna"]}
         bundle = dict(model=model, reference=reference, model_version=MODEL_VERSION,
+            training_code_revision=training_revision,
             candidate_only=True, promoted=False, preprocessing_version=PREPROCESSING_VERSION,
             selected_by="core_train_group_cv", primary_metric="mean_outer_average_precision",
             validation_used_for_selection=False, external_used_for_selection=False, official_test_evaluated=False,
@@ -191,7 +200,7 @@ def main():
         np.testing.assert_allclose([r["score"] for r in portable_results], [r["score"] for r in results], rtol=0, atol=1e-12)
         assert [r["class_id"] for r in portable_results] == [r["class_id"] for r in results]
     meta = dict(candidate="stack_hist", params=params, resumed_frozen_bundle=args.resume_frozen,
-        training_code_revision="2ba16fa", full_train_inner_mean_ap=inner_ap,
+        training_code_revision=training_revision, full_train_inner_mean_ap=inner_ap,
         hist_parameters=model.bases["hist"].named_steps["model"].get_params(),
         hist_fitted_iterations=int(model.bases["hist"].named_steps["model"].n_iter_),
         hist_effective_early_stopping=bool(model.bases["hist"].named_steps["model"].do_early_stopping_),

@@ -1,47 +1,55 @@
-## Vấn đề và kết quả
+## Kết quả
 
-Teacher v1 raw SVM có CV AP tốt nhưng nhạy định dạng URL. PR này giữ v1 và thêm nghiên cứu cùng bundle **Teacher v2 candidate chưa promoted**.
-Phụ thuộc PR #24; base tạm là phuc-week6-teacher-v1 để chỉ review thay đổi nghiên cứu.
+Thêm nghiên cứu stacking và bundle **Teacher v2 candidate, chưa promoted**. Teacher v1 vẫn là mặc định.
+PR này phụ thuộc #24; base tạm là `phuc-week6-teacher-v1` để nhóm chỉ review phần nghiên cứu mới.
 
-- Đăng ký plan trước kết quả: 11 pipeline/53 cấu hình; cùng13.078 Train IDs/3outer domain folds/2inner Group CV.
-- 552 fits benchmark +33 fits candidate, 0 failed;143.858 outer OOF rows audit PASS.
-- Raw SVM AP0,925628; SVM+HistGB→LR AP0,930667. Delta0,005039, CI95%[-0,000570;0,011136]: chưa chứng minh thắng chắc.
-- ExtraTrees thứ ba tăng rất ít, CI chứa0 nhưng file/latency lớn. Giữ candidate hai nhánh.
-- Stress thêm https: raw recall77,77%→25,41%; uppercase hostname→3,23%.
-  Candidate outer stack có0 label flips ở các phép thử; điểm số vẫn đổi do một số E2 raw. Không tuyên bố bất biến mọi URL.
+Plan đăng ký trước kết quả: 11 pipeline, 53 cấu hình, cùng 13.078 Train IDs và 3 outer domain folds.
+Tuning dùng 2 inner Group CV; meta learner dùng base group OOF; ngưỡng chỉ chọn từ fitting-side OOF.
 
-## Bổ sung theo review, không rerun grid
+| Pipeline | Mean outer AP |
+|---|---:|
+| Raw TF-IDF + SVM | 0,925628 |
+| Hybrid canonical TF-IDF + E2 → SVM | 0,927713 |
+| Canonical SVM + HistGB → LR | 0,930667 |
+| SVM + HistGB + ExtraTrees → LR | 0,931131 |
 
-- HistGB CV lịch sử auto nhưng <=8.719 fitting rows, effective early stop=False, đủ300 vòng; giữ model/metric.
-- Mọi fit candidate mới đặt early_stopping=False, full Train chạy300 vòng.
-- Kiểm hostname text thực đổi ở13.078 URL, giữ path/query/userinfo/fragment/port/domain;
-  tái dùng outer models, kiểm cả native và policy Train OOF FPR1%.
-- Bảng source×label cho thấy nguồn phân tách hoàn toàn theo nhãn. Bỏ source và tách domain chưa loại source bias.
-  Không sửa raw/labels/folds/features/reference.
+Candidate hai nhánh tăng 0,005039 AP so với raw; CI 95% [-0,000570; 0,011136] vẫn chứa 0.
+ExtraTrees tăng rất ít nhưng file/latency lớn. Chưa chứng minh candidate thắng chắc hoặc tổng quát tốt ngoài dataset.
 
-## Bundle và operating point
+## Stress và bổ sung theo review
 
-- Canonical char2–5 SVM C1 +HistGB E2→StandardScaler+LR C0,1.
-- Threshold 0.6945740700635259 chọn từ full-Train Group OOF với mục tiêu FPR1%, không bảo đảm FPR ngoài mẫu.
-- Artifact models/teacher_v2_candidate.joblib, SHA256 63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1.
-- Raw URL vào toàn pipeline offline, bundled reference; score LR chưa calibrated.
-- Bỏ scheme/default port/userinfo/fragment; giữ path/query case/percent escapes. Userinfo/fragment là giới hạn mất thông tin.
-- Default v1 lock/bundle/adapter/CLI nguyên byte; không promotion/merge.
+- Thêm `https://`: raw SVM recall 77,77% → 25,41%; uppercase hostname → 3,23%. Đây là chẩn đoán tổng hợp dùng nhãn dataset.
+- Stack hai nhánh có 0 label flips trong các phép stress đã thử. Điểm số vẫn có thể đổi do E2 raw; không tuyên bố bất biến mọi URL.
+- Xác nhận hostname text thực sự đổi trên 13.078 URL; giữ path/query/userinfo/fragment/port/domain. Tái dùng outer models, kiểm cả native và policy fitting-OOF FPR 1%.
+- HistGB CV lịch sử dùng auto nhưng <=8.719 fitting rows, thực tế không early-stop và đủ 300 vòng. **Giữ nguyên benchmark**, không rerun grid.
+- Mọi fit candidate mới đặt `early_stopping=False`; full Train chạy đủ 300 vòng.
+- Bảng source × label cho thấy các nguồn tách biệt hoàn toàn theo nhãn. Tách domain và bỏ cột source chưa loại source bias. Không sửa raw/nhãn/folds/features/reference.
 
-## Kiểm chứng
+## Bundle và kiểm chứng
 
-- Parity13.078 inputs: score delta0, labels khớp; single/batch score delta<=1,67e-16 (atol1e-12), portable CLI5URL thật.
-- Lần package đầu vướng URL ví dụ TLD.example; sửa ví dụ và resume bundle đã freeze, **không retrain/overwrite bundle**.
-- 12 FP/FN đúng outer-policy1%, ba folds, có base scores/threshold/observation/hypothesis/next_check.
-- Full local research suite: **500 passed,1 historical skip**,2 historical L1 warnings; không skip mới.
-- Workflow hiện có thêm >=53 stacking fixtures không skip. CI thực theo head PR, số local không thay CI.
+- Canonical char 2–5 SVM C=1 + HistGB E2 → StandardScaler + LR C=0,1.
+- Ngưỡng 0,6945740700635259 từ full-Train Group OOF, mục tiêu empirical FPR <=1%; không bảo đảm FPR ngoài mẫu.
+- Bundle có reference snapshot, inference raw URL offline; score LR chưa calibrated. Canonical bỏ userinfo/fragment, có mất thông tin.
+- Artifact: `models/teacher_v2_candidate.joblib`, 2.130.586 bytes.
+- SHA256: `63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1`.
+- 552 fits benchmark + 33 fits candidate thành công; 143.858 OOF rows audit PASS.
+- Parity 13.078 inputs: score delta 0, labels khớp; single/batch delta <=1,67e-16 với atol=1e-12.
+- Portable CLI chạy thật 5 URL, không dataset/report/reference CSV ngoài bundle.
+- 12 FP/FN ở ba folds, đúng policy outer-fitting FPR 1%, có base scores/threshold/observation/hypothesis/next_check.
+- Lần package đầu vướng TLD `.example` trong URL minh họa; sửa ví dụ và resume bundle đã freeze, không retrain/overwrite model.
+- Full local research suite: **500 passed, 1 historical skip**, 2 historical L1 warnings. Focused sau cập nhật provenance: **53 passed**, không skip.
+- Workflow hiện có thêm stacking fixtures bắt buộc, CI không train project data hoặc gọi website. CI thực xem head PR; số local không thay CI.
 
 ## Đánh giá bổ sung sau freeze
 
-Validation1585(24/1561): AP0,5549;recall62,50%;FPR0,897%;TP/FN/FP/TN15/9/14/1547.
-External99 historical hostnames(92/7): AP0,9813;recall40,22%;FPR14,29%;37/55/1/6.
-Vẫn bỏ sót55/92 phishing; FPR chỉ7benign. 68pending không chấm;92 là subset99, không coi độc lập.
-Không dùng Validation/external chọn model/ngưỡng; không Official Test/KD/Android/export.
+| Scope | AP | Recall | FPR | TP/FN/FP/TN |
+|---|---:|---:|---:|---|
+| Validation: 24 phishing / 1.561 benign | 0,5549 | 62,50% | 0,897% | 15/9/14/1547 |
+| External historical hostname: 92 / 7 | 0,9813 | 40,22% | 14,29% | 37/55/1/6 |
 
-Báo cáo: reports/teacher_v2_stacking.md. Handoff/CLI: docs/teacher_v2_handoff.md.
-Nhóm review và quyết định promotion riêng; không có tuyên bố tổng quát tốt ngoài dataset.
+Vẫn bỏ sót 55/92 phishing; external FPR chỉ dựa trên 7 benign. 68 pending không chấm; cohort 92 là subset của 99.
+Các scope đã từng được quan sát, không dùng chọn lại model/ngưỡng. Không Official Test, KD, export hoặc Android.
+
+Báo cáo: [teacher_v2_stacking.md](https://github.com/phuctran33/PhishGuardVN/blob/phuc-teacher-v2-stacking/reports/teacher_v2_stacking.md).
+Flow code và cách chạy: [teacher_v2_handoff.md](https://github.com/phuctran33/PhishGuardVN/blob/phuc-teacher-v2-stacking/docs/teacher_v2_handoff.md).
+Nhóm quyết định promotion riêng; PR này không thay Teacher v1 hoặc tự merge.

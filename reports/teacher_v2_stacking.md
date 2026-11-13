@@ -177,3 +177,5 @@ Portable inference đã kiểm thật với bundle: chỉ runtime sources + lock
 Teacher v1 lock/bundle/adapter/CLI được so byte với 35c7d8d và giữ nguyên.
 
 Nhóm cần quyết định promotion sau review. Candidate chưa thay default v1.
+
+Provenance note: metadata gi? hash script ?? th?c ch?y ? l?n ??ng g?i. B?n script m?i l?u revision training trong bundle khi fit m?i v? gi? revision g?c khi resume; kh?ng s?a metadata/hash l?ch s? hay refit bundle hi?n t?i.
