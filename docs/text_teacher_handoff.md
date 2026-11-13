@@ -55,6 +55,16 @@ Bundle Python **chưa chạy trực tiếp trong Dart**. Android offline, export
 Lỗi cache pretrained nghiên cứu: prepare_url_research.py hiện kiểm tra hash cache nhưng chưa kiểm tra identity checkpoint/revision trước khi reuse cache nếu đổi plan. Không sửa trong đợt text Teacher này; cần bản vá riêng và test cache identity trước nghiên cứu pretrained tiếp. Teacher sklearn hiện tại không dùng checkpoint đó. Không sửa hash/lịch sử nghiên cứu để giả code mới tạo kết quả cũ.
 
 
-## Ki?m ch?ng local
+## Kiểm chứng local
 
-52 adapter/external tests passed; full research environment 438 passed, 1 skipped c? (brand regression r?ng), 2 warnings API L1 l?ch s?. CLI/Python parity ch?nh x?c; portable CLI th? 5 URL kh?ng dataset/research/reference. GitHub CI xem checks c?a PR, kh?ng nh?m v?i s? local.
+52 adapter/external tests passed; full research environment 438 passed, 1 skipped cũ (brand regression rỗng), 2 warnings API L1 lịch sử. Đây là kết quả lịch sử ở commit 0a06aab; lần sửa P2 có kết quả mới ghi trong verification.json. CLI/Python parity chính xác, portable CLI đã thử 5 URL không dataset/research/reference.
+
+## Chạy lại external sau bàn giao
+
+python scripts/evaluate_external_pilot.py --teacher-lock configs/week6_teacher_lock.json --two-class
+
+Mặc định output ở data/interim/external_teacher_eval; có thể truyền --output-dir thư mục riêng. Không ghi đè báo cáo audit lịch sử. Manifest gốc giữ nguyên: external_adapter_lineage.json ghi đúng cặp hash lịch sử/hiện tại cho riêng text dispatch; thay ledger, dữ liệu, code khác hoặc adapter không được ghi nhận vẫn bị chặn. Không được cập nhật lineage tự động để làm xanh guard.
+
+Loader kiểm tra signed margin, operating point Core, AP selection, Test chưa chấm và không dùng external để lựa chọn; negative tests cố tình dùng hash hợp lệ nhưng protocol sai vẫn phải bị từ chối.
+
+Ki?m ch?ng b?n s?a P2: focused 61 passed; full suite 447 passed/1 skip c?; CLI external exit 0 v? prediction gi? nguy?n. Manifest l?ch s? v? bundle kh?ng ??i, kh?ng retrain.

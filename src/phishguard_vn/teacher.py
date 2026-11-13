@@ -61,13 +61,23 @@ def load_teacher(root,lock=None):
     if (lock.get("teacher_finalized") is not True or lock.get("selected_by")!="core_train_group_cv"
         or lock.get("external_used_for_selection") is not False
         or lock.get("feature_set")!="url_raw_char_3_5" or lock.get("threshold")!=0
-        or lock.get("decision_rule")!="estimator.predict"):
+        or lock.get("decision_rule")!="estimator.predict"
+        or lock.get("score_kind")!="decision_function"
+        or lock.get("operating_point_scope")!="fixed_core_protocol"):
         raise ValueError("Teacher text lock is not finalized under the selected Core protocol")
     for key in ["bundle","selection_record"]:
         path=root/lock[key]["path"]
         if not path.is_file() or sha(path)!=lock[key]["sha256"]:
             raise ValueError(f"Missing or changed Teacher {key}")
     metadata=json.loads((root/lock["selection_record"]["path"]).read_text(encoding="utf-8"))
+    if (metadata.get("primary_metric")!="mean_outer_average_precision"
+        or metadata.get("test_evaluated") is not False
+        or metadata.get("selected_by")!="core_train_group_cv"
+        or metadata.get("external_used_for_selection") is not False
+        or metadata.get("score_kind")!="decision_function"
+        or metadata.get("operating_point_scope")!="fixed_core_protocol"
+        or metadata.get("decision_rule")!="estimator.predict" or metadata.get("threshold")!=0):
+        raise ValueError("Teacher metadata violates Core evaluation protocol")
     if metadata["versions"]["scikit-learn"]!=version("scikit-learn"):
         raise RuntimeError("Incompatible scikit-learn; install the exact version in Teacher metadata")
     if metadata.get("teacher_finalized") is not True or metadata["model_sha256"]!=lock["bundle"]["sha256"]:

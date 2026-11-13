@@ -71,7 +71,7 @@
     "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
     "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
   },
-  "adapter_sha256": "5048efa73f5a18f6331e728cf6c54a111a3828604104be7759239fcd1ad0849b",
+  "adapter_sha256": "09dee408b330b92c3bb26112519f5efc4680606384cca76bf7f83390c8f7f18c",
   "runtime_git_revision": "c778c677a3f60b95cc86c8fbb23e925042c50f93",
   "runtime_git_dirty": true,
   "model_sha256": "5a6d9b500ee147ae2f6cc78f986ac3122658eab58dfd9ad636f11d0ba19494b5",
@@ -82,5 +82,9 @@
     "labels_equal": true,
     "single_batch_equal": true,
     "candidate_reused": true
-  }
+  },
+  "packaged_adapter_sha256": "5048efa73f5a18f6331e728cf6c54a111a3828604104be7759239fcd1ad0849b",
+  "adapter_revision_note": "Post-packaging protocol hardening only; original adapter SHA retained, model unchanged.",
+  "score_kind": "decision_function",
+  "operating_point_scope": "fixed_core_protocol"
 }

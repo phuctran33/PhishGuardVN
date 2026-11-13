@@ -13,6 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"src"))
 from phishguard_vn.teacher import (Teacher,load_teacher,validate_pipeline,feature_fingerprint,sha,
                                    MODEL_VERSION,PREPROCESSING_VERSION)
+from phishguard_vn.external_provenance import validate_audit_manifest
 from phishguard_vn.external_pilot import evaluate_verified
 
 def metrics(y,pred,score):
@@ -69,6 +70,7 @@ def main():
         "input_contract":"Nonempty raw strings; no strip/lower/normalization/scheme addition/truncation. Missing scheme accepted. Reject wrong type/blank/NUL only.",
         "output_contract":"benign=0, phishing=1; signed SVM margin, NOT probability; label from estimator.predict including ties",
         "decision_rule":"estimator.predict","threshold":0,"external_used_for_selection":False,
+        "score_kind":"decision_function","operating_point_scope":"fixed_core_protocol",
         "train_rows":13078,"class_counts":{"benign":11004,"phishing":2074},"test_evaluated":False,
         "vectorizer_parameters":{k:pipeline.named_steps["tfidf"].get_params()[k] for k in
             ["analyzer","ngram_range","min_df","max_df","max_features","lowercase","sublinear_tf","use_idf","smooth_idf","norm","binary","strip_accents"]},
@@ -104,15 +106,7 @@ def main():
                 "official_test_evaluated":False}
     # Preserve strict external ledger eligibility and review-scope checks.
     manifest=json.loads((ROOT/"reports/tables/external_pilot/manifest.json").read_text())
-    for name,digest in {**manifest["inputs_sha256"],**manifest["outputs_sha256"]}.items():
-        if name=="src/phishguard_vn/external_pilot.py":
-            source=(ROOT/name).read_bytes()
-            addition=b'    if lock.get("feature_set")=="url_raw_char_3_5":\n        from phishguard_vn.teacher import load_teacher\n        return load_teacher(root,lock).predict_one\n'
-            assert source.count(addition)==1
-            assert hashlib.sha256(source.replace(addition,b"",1)).hexdigest()==digest
-            evaluation["external_adapter_extension"]={"historical_source_sha256":digest,"current_source_sha256":sha(ROOT/name),"change":"Only text-Teacher dispatch; audit eligibility/evaluation unchanged"}
-        else:
-            assert sha(ROOT/name)==digest,name
+    validate_audit_manifest(ROOT,manifest)
     ledger=pd.read_csv(ROOT/"data/external/derived/k53_candidates.csv",keep_default_na=False)
     recall,rp=evaluate_verified(ledger,teacher.predict_one,representation="host_only")
     both,ep=evaluate_verified(ledger,teacher.predict_one,representation="host_only",two_class=True)
