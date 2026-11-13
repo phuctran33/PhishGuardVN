@@ -39,7 +39,7 @@
 /reports/tables/external_pilot/*.json text eol=lf
 
 # Research manifests and compressed OOF must survive Windows/Linux checkout unchanged.
-/configs/url_research_plan.json text eol=lf
+/configs/url_research_plan.json text eol=crlf
 /reports/tables/url_research/*.csv text eol=lf
 /reports/tables/url_research/*.json text eol=lf
 /reports/tables/url_research/*.gz -text
