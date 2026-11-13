@@ -20,3 +20,5 @@ Tests bảo vệ tính đúng code/giao thức, không chứng minh chất lư�
 - test_teacher_week6.py: chạy code cell thật của E2 v1; chặn v0, kiểm tra scaler/search chỉ trong fitting, đổi đáp án outer holdout không đổi dự đoán của fold đó, Validation không chọn Teacher.
 
 Week-6 expanded tests cover TF-IDF fitting-only vocabulary, inner-OOF low-FPR thresholds, separate E2/raw rankings and blocked unfinalized inference. Install .[teacher] to run notebook tests; without those optional packages they skip.
+
+Week-6 clean review 2026-11-13: Teacher fixtures 13 passed/0 skipped; full local suite 400 passed/1 skipped (existing empty brand regression parameter set). The four optional-library fixture cases actually fit and reload LightGBM, XGBoost, CatBoost and Balanced RF. These fresh results are separate from the 2026-11-11 historical 396/1 run. CI rejects Teacher skips and reports missing-data integration skips separately.

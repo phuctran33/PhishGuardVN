@@ -1,4 +1,4 @@
-"""Chạy notebook tuần 6 bằng Python hiện tại; code train nằm trong notebook."""
+"""Chạy benchmark notebook tuần 6; chỉ báo cáo ứng viên, không tự chốt Teacher."""
 from pathlib import Path
 import sys
 import nbformat

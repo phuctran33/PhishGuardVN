@@ -106,3 +106,13 @@ Joblib không chạy trực tiếp trong Dart/Flutter. Các số latency hiện 
 ## Giới hạn kiểm chứng
 
 Xem reports/week6_teacher.md và verification.json. Verifier freeze E2 cũ không được sửa trong phần này; không tuyên bố các guard toàn repo/exact float equality đã pass. Test code không chứng minh chất lượng bên ngoài dữ liệu.
+
+## Phạm vi review PR benchmark
+
+PR #24 bàn giao bảng so sánh 13 model, OOF và protocol; chưa bàn giao Teacher mới để tích hợp. Các thí nghiệm preprocessing/hybrid TF-IDF ghép E2 + LR của Hưng ở nhánh nghiên cứu riêng chưa nằm trong bảng này, cần PR riêng.
+
+Cài môi trường sạch bằng pip install -e ".[teacher,test]". Extra test có pytest/nbformat/IPython; extra teacher có các model libraries và nbclient/ipykernel cho runner. Workflow .github/workflows/week6-benchmark.yml chạy Python 3.11, import các thư viện bắt buộc, chạy Teacher fixtures không cho skip, rồi full pytest. Không retrain dataset hoặc truy cập website URL.
+
+CI checkout chỉ có file được Git quản lý. Những test cần handoff/cache trong data/interim hoặc model local có thể skip và phải đọc lý do; không suy ra CI đã kiểm chứng integration với đầy đủ dữ liệu. Phần local kiểm tra artifact thật được ghi riêng trong verification.json tại handoff_review.
+
+Kết quả 396 passed/1 skipped là lịch sử ngày 11/11/2026, không thay thế kết quả kiểm chứng mới của PR. Không chạy lại notebook chỉ để đổi tài liệu hoặc tiêu đề PR.

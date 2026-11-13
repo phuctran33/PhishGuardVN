@@ -185,3 +185,30 @@ def test_unfinalized_teacher_is_blocked_before_loading_any_model(tmp_path):
     from phishguard_vn.external_pilot import load_locked_teacher
     with pytest.raises(ValueError, match="Teacher must be finalized"):
         load_locked_teacher(tmp_path, {"teacher_finalized": False, "status": "awaiting_team_decision"})
+
+
+@pytest.mark.parametrize("model_name", ["lightgbm", "xgboost", "catboost", "balanced_forest"])
+def test_optional_estimator_group_search_and_reload(teacher_scope, tmp_path, model_name):
+    """Fit each added library on synthetic data; verify sklearn search and reload compatibility."""
+    import joblib
+    scope = teacher_scope
+    rng = np.random.default_rng(42)
+    X = pd.DataFrame(rng.normal(size=(120, len(scope["FEATURES"]))), columns=scope["FEATURES"])
+    y = np.tile([0, 1], 60)
+    X["url_len"] += 3 * y
+    frame = X.assign(target=y, registrable_domain=[f"g{i // 2}.example" for i in range(len(X))])
+    estimator = scope["clone"](scope[model_name])
+    small_budget = {"iterations": 4} if model_name == "catboost" else {"n_estimators": 4}
+    estimator.set_params(**small_budget)
+    search = GridSearchCV(estimator, {}, scoring="average_precision",
+                          cv=scope["inner_splits"](frame), n_jobs=1, error_score="raise")
+    search.fit(X, y)
+    fitted = search.best_estimator_
+    assert list(fitted.classes_) == [0, 1]
+    scores = scope["ranking_scores"](fitted, X.iloc[:8])
+    assert scores.shape == (8,) and np.isfinite(scores).all()
+    assert set(np.asarray(fitted.predict(X.iloc[:8])).ravel()).issubset({0, 1})
+    path = tmp_path / f"{model_name}.joblib"
+    joblib.dump(fitted, path)
+    np.testing.assert_allclose(scope["ranking_scores"](joblib.load(path), X.iloc[:8]),
+                               scores, rtol=0, atol=1e-12)

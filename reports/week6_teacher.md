@@ -183,3 +183,25 @@ Nguồn vẫn là 167 candidates có sẵn từ Khiêm; ledger của Hưng có 9
 - Ứng viên E2 reload/direct URL khớp 6 Validation cases; portable candidate inference không dataset chạy 5 URL. Đây là kiểm tra candidate, không phải bàn giao Teacher.
 - Bản audit chi tiết ở verification.json. Runtime revision/dirty ghi đúng trạng thái thực tế, không sửa thành commit sạch giả.
 - Không sửa scripts/05_verify_e2_artifacts.py. Hai guard freeze toàn repo và exact equality float là giới hạn cũ đã ghi; không tuyên bố verifier cũ PASS.
+
+## 12. Kiểm chứng mới cho PR benchmark — 13/11/2026
+
+Tạo virtual environment Python 3.11 riêng trên Windows, không sửa môi trường ML cũ. Cài bằng khai báo repo sau khi bổ sung dependencies:
+
+~~~powershell
+python -m pip install -e ".[teacher,test]"
+python -m pip check
+python -m pytest tests/test_teacher_week6.py -q -rs
+python -m pytest -q -rs
+~~~
+
+- Teacher tests: **13 passed, 0 skipped, 0 failed**. Có bốn test thực sự fit/search/reload LightGBM, XGBoost, CatBoost và Balanced RF trên dữ liệu giả nhỏ; không chỉ import thư viện.
+- Full suite: **400 passed, 1 skipped, 0 failed**. Skip duy nhất: test_brand_regressions.py:58, bộ tham số (url, rule, brand_id, key) rỗng; không phải thiếu model libraries.
+- pip check: không có dependency bị thiếu/xung đột. Extra test khai báo pytest/nbformat/IPython; extra teacher có model libraries và nbclient/ipykernel cho notebook runner.
+- Đối chiếu artifact hiện có bằng pd.read_csv(..., float_precision="round_trip"): 13 model, 170.014 OOF rows, không trùng model–ID, IDs/folds khớp; tính lại cả CV, ngưỡng phụ và Validation. Sai khác metric tối đa **2,220446049250313e-16**.
+- Hash inputs/reference/source, đúng 20 features và binary MLP lịch sử giữ nguyên. Không sửa bảng benchmark, nhãn, folds, reference hoặc công thức features.
+- Không chạy lại notebook, không chấm Official Test/external và không chạy lại guard freeze/parity toàn repo. Kết quả 396 passed/1 skipped ở mục 11 là lịch sử ngày 11/11, không phải lần test mới này.
+
+Workflow [.github/workflows/week6-benchmark.yml](../.github/workflows/week6-benchmark.yml) dùng Python 3.11: cài extras, kiểm tra import/dependencies, chạy Teacher fixtures không cho skip, rồi full suite và lưu JUnit reports. CI checkout không có mọi handoff/cache local; nếu integration test thiếu dữ liệu thì phải đọc lý do skip, không tuyên bố đã kiểm chứng real-data integration. Trạng thái chạy CI thực tế xem tại checks của PR #24.
+
+Các hướng preprocessing/hybrid TF-IDF ghép E2 + LR của Hưng chưa tích hợp, không thuộc số liệu 13 model này; sẽ review qua PR riêng. PR benchmark này không tự chốt Teacher hoặc thay artifact tích hợp.

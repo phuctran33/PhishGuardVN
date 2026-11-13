@@ -1,4 +1,4 @@
-"""Load Teacher v1 và dự đoán offline; không train hoặc truy cập URL."""
+"""Chỉ dự đoán offline khi Teacher đã finalized; trạng thái pending sẽ bị chặn."""
 from pathlib import Path
 import argparse
 import json

@@ -72,5 +72,85 @@
     "not_modified": true,
     "not_rerun_in_this_audit": true,
     "known_limitations": "Whole-repo freeze guards and exact floating-point equality; not claimed PASS."
+  },
+  "historical_record_note": "Các mục kiểm chứng top-level và pytest_summary là bản ghi lịch sử của lần chạy notebook ngày 11/11/2026; handoff_review ghi kiểm chứng mới, không retrain.",
+  "handoff_review": {
+    "checked_at_utc": "2026-11-13T06:41:49.373395+00:00",
+    "source_git_revision": "ac08a377cad390f3ee6fd96fb65a747ffb127c39",
+    "scope": "clean temporary Windows virtual environment; no notebook retraining",
+    "install_command": "python -m pip install -e \".[teacher,test]\"",
+    "install_exit_code": 0,
+    "initial_install_note": "First package-index attempt could not resolve pytest; retry succeeded without upgrading the existing ML environment.",
+    "pip_check": "No broken requirements found.",
+    "environment": {
+      "python": "3.11.7 (tags/v3.11.7:fa7a6f2, Dec  4 2023, 19:24:49) [MSC v.1937 64 bit (AMD64)]",
+      "packages": {
+        "pytest": "9.2.0",
+        "numpy": "2.4.6",
+        "pandas": "3.1.1",
+        "scipy": "1.17.1",
+        "scikit-learn": "1.9.1",
+        "nbformat": "5.11.1",
+        "ipython": "9.18.1",
+        "nbclient": "0.11.0",
+        "ipykernel": "7.4.0",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.2.0",
+        "catboost": "1.2.10",
+        "imbalanced-learn": "0.14.2"
+      }
+    },
+    "teacher_command": "python -m pytest tests/test_teacher_week6.py -q -rs --junitxml=<temp>/teacher.xml",
+    "teacher_tests": {
+      "collected": 13,
+      "passed": 13,
+      "skipped": 0,
+      "failed": 0,
+      "skip_details": []
+    },
+    "optional_library_fixture_fits": [
+      "lightgbm",
+      "xgboost",
+      "catboost",
+      "imblearn BalancedRandomForestClassifier"
+    ],
+    "full_command": "python -m pytest -q -rs --junitxml=<temp>/full.xml",
+    "full_suite": {
+      "collected": 401,
+      "passed": 400,
+      "skipped": 1,
+      "failed": 0,
+      "skip_details": [
+        {
+          "test": "test_correct_flags_are_still_flagged[NOTSET]",
+          "reason": "got empty parameter set for (url, rule, brand_id, key)"
+        }
+      ]
+    },
+    "artifacts": {
+      "checked_at_utc": "2026-11-13T06:38:25.607392+00:00",
+      "read_csv_float_precision": "round_trip",
+      "models": 13,
+      "e2_models": 11,
+      "raw_url_models": 2,
+      "oof_rows": 170014,
+      "duplicate_model_id": 0,
+      "models_ids_folds_consistent": true,
+      "max_metric_abs_error": 2.220446049250313e-16,
+      "validation_metrics_recomputed": true,
+      "old_artifact_hashes_checked": 24,
+      "pending_lock_metadata_consistent": true,
+      "training_code_hash_unchanged": true,
+      "input_reference_feature_order_source_hashes_unchanged": true,
+      "historical_mlp_bytes_unchanged": true,
+      "external_status": "NOT_RUN_PENDING_TEACHER",
+      "retrained": false,
+      "not_run": [
+        "whole-repo E2 freeze/parity verifier",
+        "Official Test",
+        "new external evaluation"
+      ]
+    },
+    "ci_scope": "Python 3.11 Ubuntu fixture tests + available suite; no full-data training or target-URL calls"
   }
 }

@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
-teacher = ["lightgbm==4.7.0", "xgboost==3.2.0", "catboost==1.2.10", "imbalanced-learn==0.14.2"]
+test = ["pytest", "nbformat", "ipython"]
+teacher = ["lightgbm==4.7.0", "xgboost==3.2.0", "catboost==1.2.10", "imbalanced-learn==0.14.2", "nbclient", "ipykernel"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
