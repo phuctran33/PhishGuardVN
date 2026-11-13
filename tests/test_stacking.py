@@ -327,3 +327,12 @@ def test_domain_bootstrap_matches_weighted_sklearn_ap(tmp_path):
             row = saved.loc[saved.baseline.eq(base) & saved.experiment.eq(name)].iloc[0]
             delta = expected[:, j] - expected[:, names.index(base)]
             np.testing.assert_allclose([row.ci_low, row.ci_high], np.quantile(delta, [.025, .975]), atol=1e-12)
+
+
+def test_cli_example_urls_pass_official_parser():
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("candidate_cli_fixture", root / "scripts/predict_stacking_candidate.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert len(module.EXAMPLES) >= 5
+    validate_urls(module.EXAMPLES)

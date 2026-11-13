@@ -551,3 +551,36 @@ outer2/inner/1,meta_lr,stack_hybrid,"{""C"": 10, ""scale"": true}",4359,d58f8268
 outer2/threshold/0,meta_lr,stack_hybrid,"{""C"": 0.1, ""scale"": true}",4359,ead817ed490a78f1ade2d528b2f9a966f83bd6851f4e1c39c9496d3f59675a9b,success,,0.009284400002798066
 outer2/threshold/1,meta_lr,stack_hybrid,"{""C"": 0.1, ""scale"": true}",4359,d58f82680c3b1afe7e2de48f30b7cf6117e6a21a2880962dfbefd8fb08f28090,success,,0.006651499992585741
 outer2/refit,meta_lr,stack_hybrid,"{""C"": 0.1, ""scale"": true}",8718,2f88f1d159746a8388027a595e09d29837fc6d446d92c05562de6087543790fb,success,,0.01183060000767
+full_train/inner/0/meta/0,candidate_base_crossfit,svm,{},3269,1cfa9cec65c5806f7ae2cecda695cd0354c9042e51ce9f4e86986c3ceaee1fae,success,[],0.2632320999982767
+full_train/inner/0/meta/0,candidate_base_crossfit,hist,"{""early_stopping"": false}",3269,1cfa9cec65c5806f7ae2cecda695cd0354c9042e51ce9f4e86986c3ceaee1fae,success,[],0.28522559998964425
+full_train/inner/0/meta/1,candidate_base_crossfit,svm,{},3270,7aa4483028aef39e7fd553414e28f8a0faec8a753373781ac9b24df3d769b4ad,success,[],0.22282730000733864
+full_train/inner/0/meta/1,candidate_base_crossfit,hist,"{""early_stopping"": false}",3270,7aa4483028aef39e7fd553414e28f8a0faec8a753373781ac9b24df3d769b4ad,success,[],0.27140959999815095
+full_train/inner/0,candidate_base_refit,svm,{},6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,[],0.41471919999457896
+full_train/inner/0,candidate_base_refit,hist,"{""early_stopping"": false}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,[],0.3632967000012286
+full_train/inner/0,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": false}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.0054681000037817284
+full_train/inner/1/meta/0,candidate_base_crossfit,svm,{},3269,b70196e20a81441ca9db56d3e496f40f434523cb042b25d3be5ad5d8104c14ac,success,[],0.2035403000045335
+full_train/inner/1/meta/0,candidate_base_crossfit,hist,"{""early_stopping"": false}",3269,b70196e20a81441ca9db56d3e496f40f434523cb042b25d3be5ad5d8104c14ac,success,[],0.2792757999995956
+full_train/inner/1/meta/1,candidate_base_crossfit,svm,{},3270,f5c6035df2c2e7a4755316e6d7afa2d6ffbf388f0ada9d3e414b6b8c91133258,success,[],0.21259890000510495
+full_train/inner/1/meta/1,candidate_base_crossfit,hist,"{""early_stopping"": false}",3270,f5c6035df2c2e7a4755316e6d7afa2d6ffbf388f0ada9d3e414b6b8c91133258,success,[],0.27052559998992365
+full_train/inner/1,candidate_base_refit,svm,{},6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,[],0.4419845999946119
+full_train/inner/1,candidate_base_refit,hist,"{""early_stopping"": false}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,[],0.3440955000114627
+full_train/inner/1,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": false}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.005341500000213273
+full_train/inner/0,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": true}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.007044499987387098
+full_train/inner/1,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": true}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.006967399996938184
+full_train/inner/0,candidate_meta_lr,stack_hist,"{""C"": 1, ""scale"": false}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.004673699993873015
+full_train/inner/1,candidate_meta_lr,stack_hist,"{""C"": 1, ""scale"": false}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.006180700002005324
+full_train/inner/0,candidate_meta_lr,stack_hist,"{""C"": 1, ""scale"": true}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.007445900002494454
+full_train/inner/1,candidate_meta_lr,stack_hist,"{""C"": 1, ""scale"": true}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.004915899990010075
+full_train/inner/0,candidate_meta_lr,stack_hist,"{""C"": 10, ""scale"": false}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.004716700001154095
+full_train/inner/1,candidate_meta_lr,stack_hist,"{""C"": 10, ""scale"": false}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.005859900003997609
+full_train/inner/0,candidate_meta_lr,stack_hist,"{""C"": 10, ""scale"": true}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.006495699999504723
+full_train/inner/1,candidate_meta_lr,stack_hist,"{""C"": 10, ""scale"": true}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.0054213000112213194
+full_train/threshold/0,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": true}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,,0.0055656999902566895
+full_train/threshold/1,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": true}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,,0.005931199993938208
+full_train/refit/meta/0,candidate_base_crossfit,svm,{},6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,[],0.39738490000308957
+full_train/refit/meta/0,candidate_base_crossfit,hist,"{""early_stopping"": false}",6539,784a5a39d58c98bd11688aa6514ed96dff2797b14cde9b00ef032f36d73a4761,success,[],0.3622631000034744
+full_train/refit/meta/1,candidate_base_crossfit,svm,{},6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,[],0.45390469999983907
+full_train/refit/meta/1,candidate_base_crossfit,hist,"{""early_stopping"": false}",6539,3eaab8a692af6803df8cc2ee683af0b2ab4cfe19898189c7544129abf36e9322,success,[],0.3639212999987649
+full_train/refit,candidate_base_refit,svm,{},13078,9a472631fa44a43c5ac7c30826985b72b46c39c0a8d98461ac488eb5bf335f65,success,[],0.8702052000007825
+full_train/refit,candidate_base_refit,hist,"{""early_stopping"": false}",13078,9a472631fa44a43c5ac7c30826985b72b46c39c0a8d98461ac488eb5bf335f65,success,[],0.5008804999961285
+full_train/refit,candidate_meta_lr,stack_hist,"{""C"": 0.1, ""scale"": true}",13078,9a472631fa44a43c5ac7c30826985b72b46c39c0a8d98461ac488eb5bf335f65,success,,0.007017199997790158

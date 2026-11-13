@@ -68,7 +68,14 @@ def main():
             current = run.metrics(train.loc[mask, "target"], pred, score)
             for key, value in current.items():
                 assert abs(value - saved[key]) < 1e-12, (name, fold, key)
-            rows.append(dict(experiment=name, fold=fold, **current))
+            original = pd.read_csv(OUT / f"{name}_outer{fold}_oof.csv.gz", float_precision="round_trip")
+            threshold = float(original["threshold_0.01"].iloc[0])
+            threshold_pred = score >= threshold
+            threshold_metrics = run.metrics(train.loc[mask, "target"], threshold_pred, score)
+            rows.append(dict(experiment=name, fold=fold, **current,
+                native_prediction_flips=int(np.sum(pred != original.prediction.to_numpy())),
+                threshold1_prediction_flips=int(np.sum(threshold_pred != original["prediction_0.01"].to_numpy())),
+                **{"threshold1_" + key: value for key, value in threshold_metrics.items()}))
     run.write_csv(OUT / "hostname_case_recheck.csv", pd.DataFrame(rows))
     run.write_json(OUT / "supplement.json", dict(
         historical_benchmark_preserved=True, grid_retrained=False,

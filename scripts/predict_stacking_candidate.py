@@ -7,15 +7,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from phishguard_vn.stacking_candidate import load_candidate
 
+EXAMPLES = ["example.com", "https://EXAMPLE.com/A?Q=%2F",
+    "https://bank-login-example.com/verify", "https://xn--bcher-kva.de/A",
+    "https://example.com:8443/Case"]
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("urls", nargs="*")
     parser.add_argument("--examples", action="store_true")
     args = parser.parse_args()
-    urls = args.urls or (["example.com", "https://EXAMPLE.com/A?Q=B",
-        "https://bank-login.example/verify", "https://xn--bcher-kva.de/A",
-        "https://example.com:8443/Case"] if args.examples else [])
+    urls = args.urls or (EXAMPLES if args.examples else [])
     if not urls:
         parser.error("Supply URLs or --examples")
     candidate = load_candidate(ROOT)

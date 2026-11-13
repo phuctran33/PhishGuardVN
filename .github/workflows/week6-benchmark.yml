@@ -2,7 +2,7 @@ name: Week 6 benchmark checks
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, phuc-week6-teacher-v1]
   push:
     branches: [main]
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
       - name: Run stacking and portable candidate fixtures
         run: |
           python -m pytest tests/test_stacking.py -q -rs --junitxml=test-results/stacking.xml
-          python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/stacking.xml').findall('.//testcase'); assert len(cases)>=50; assert all(c.find('skipped') is None for c in cases)"
+          python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/stacking.xml').findall('.//testcase'); assert len(cases)>=53; assert all(c.find('skipped') is None for c in cases)"
       - name: Run full available suite
         run: python -m pytest -q -rs --junitxml=test-results/full.xml
       - name: Upload test reports

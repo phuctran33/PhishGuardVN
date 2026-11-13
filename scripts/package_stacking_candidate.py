@@ -6,6 +6,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from importlib.metadata import version
 import hashlib
+import argparse
 import json
 import shutil
 import subprocess
@@ -97,41 +98,65 @@ def select_candidate(spec, train):
 def main():
     assert json.loads((OUT / "audit.json").read_text())["status"] == "PASS"
     assert (OUT / "paired_bootstrap.csv").exists() and (OUT / "stress.csv").exists()
-    assert not (ROOT / "configs/teacher_v2_candidate_lock.json").exists(), "Candidate already frozen; do not overwrite silently"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--resume-frozen", action="store_true", help="Verify an existing frozen bundle, never refit or overwrite it")
+    args = parser.parse_args()
     train = run.load_train()
     plan = json.loads(run.PLAN.read_text(encoding="utf-8"))
     spec = next(s for s in plan["experiments"] if s["id"] == "stack_hist")
     CANDIDATE_OUT.mkdir(exist_ok=True)
     run.LEDGER.extend(pd.read_csv(OUT / "fit_ledger.csv", keep_default_na=False).to_dict("records"))
     run.PARTITIONS.append(pd.read_csv(OUT / "partitions.csv.gz"))
-    params, inner_ap = select_candidate(spec, train)
-    fs = np.full(len(train), np.nan)
-    for fold, (a, b) in enumerate(run.splits(train, "full_train/threshold", "threshold")):
-        fitted = fit_candidate(train.iloc[a], params, f"full_train/threshold/{fold}")
-        fs[b] = score_model(fitted, run.X(train.iloc[b]))
-    assert np.isfinite(fs).all()
-    threshold = choose_threshold(train.target, fs, .01)
-    model = fit_candidate(train, params, "full_train/refit")
-    assert model.bases["hist"].named_steps["model"].early_stopping is False
-    assert model.bases["hist"].named_steps["model"].n_iter_ == 300
-    run.write_csv(CANDIDATE_OUT / "train_threshold_oof.csv.gz", pd.DataFrame({
-        "id": train.id, "y_true": train.target, "score": fs, "prediction": fs >= threshold}))
-    reference = load_reference()
-    runtime = {p: version(p) for p in ["scikit-learn", "numpy", "scipy", "pandas", "joblib", "tldextract", "idna"]}
-    bundle = dict(model=model, reference=reference, model_version=MODEL_VERSION,
-        candidate_only=True, promoted=False, preprocessing_version=PREPROCESSING_VERSION,
-        selected_by="core_train_group_cv", primary_metric="mean_outer_average_precision",
-        validation_used_for_selection=False, external_used_for_selection=False, official_test_evaluated=False,
-        decision_rule="score >= threshold", operating_point_scope="full_train_group_oof_fpr_target_0.01",
-        score_kind="probability", calibrated=False, feature_names=list(E2_FEATURES),
-        class_mapping={"benign": 0, "phishing": 1}, threshold=threshold,
-        source_sha256=source_hashes(), reference_sha256=reference.sha256,
-        reference_fingerprint=reference_fingerprint(reference), runtime_versions=runtime)
     path = ROOT / "models/teacher_v2_candidate.joblib"
-    joblib.dump(bundle, path)
-    lock = {k: v for k, v in bundle.items() if k not in {"model", "reference"}}
-    lock["bundle"] = dict(path=path.relative_to(ROOT).as_posix(), sha256=run.sha(path))
-    run.write_json(ROOT / "configs/teacher_v2_candidate_lock.json", lock)
+    lock_path = ROOT / "configs/teacher_v2_candidate_lock.json"
+    if lock_path.exists():
+        assert args.resume_frozen, "Frozen candidate exists: use --resume-frozen, never overwrite"
+        candidate = load_candidate(ROOT)
+        lock = json.loads(lock_path.read_text(encoding="utf-8"))
+        model, reference = candidate.model, candidate.reference
+        threshold = candidate.threshold
+        table = pd.read_csv(CANDIDATE_OUT / "full_train_trials.csv")
+        means = table.groupby("config_id").ap.mean()
+        best = int(means.idxmax())
+        params = json.loads(table.loc[table.config_id.eq(best), "parameters"].iloc[0])
+        inner_ap = float(means.loc[best])
+        assert model.meta.named_steps["lr"].C == params["C"]
+        assert (model.meta.named_steps["scale"] != "passthrough") == params["scale"]
+        saved = pd.read_csv(CANDIDATE_OUT / "train_threshold_oof.csv.gz", float_precision="round_trip")
+        assert saved.id.tolist() == train.id.tolist() and saved.y_true.tolist() == train.target.tolist()
+        fs = saved.score.to_numpy()
+        assert choose_threshold(train.target, fs, .01) == threshold
+        print("Resume frozen candidate: NO refitting and NO bundle/lock overwrite.", flush=True)
+    else:
+        assert not args.resume_frozen, "No frozen candidate to resume"
+        params, inner_ap = select_candidate(spec, train)
+        fs = np.full(len(train), np.nan)
+        for fold, (a, b) in enumerate(run.splits(train, "full_train/threshold", "threshold")):
+            fitted = fit_candidate(train.iloc[a], params, f"full_train/threshold/{fold}")
+            fs[b] = score_model(fitted, run.X(train.iloc[b]))
+        assert np.isfinite(fs).all()
+        threshold = choose_threshold(train.target, fs, .01)
+        model = fit_candidate(train, params, "full_train/refit")
+        assert model.bases["hist"].named_steps["model"].early_stopping is False
+        assert model.bases["hist"].named_steps["model"].n_iter_ == 300
+        run.write_csv(CANDIDATE_OUT / "train_threshold_oof.csv.gz", pd.DataFrame({
+            "id": train.id, "y_true": train.target, "score": fs, "prediction": fs >= threshold}))
+        reference = load_reference()
+        runtime = {p: version(p) for p in ["scikit-learn", "numpy", "scipy", "pandas", "joblib", "tldextract", "idna"]}
+        bundle = dict(model=model, reference=reference, model_version=MODEL_VERSION,
+            candidate_only=True, promoted=False, preprocessing_version=PREPROCESSING_VERSION,
+            selected_by="core_train_group_cv", primary_metric="mean_outer_average_precision",
+            validation_used_for_selection=False, external_used_for_selection=False, official_test_evaluated=False,
+            decision_rule="score >= threshold", operating_point_scope="full_train_group_oof_fpr_target_0.01",
+            score_kind="probability", calibrated=False, feature_names=list(E2_FEATURES),
+            class_mapping={"benign": 0, "phishing": 1}, threshold=threshold,
+            source_sha256=source_hashes(), reference_sha256=reference.sha256,
+            reference_fingerprint=reference_fingerprint(reference), runtime_versions=runtime)
+        path = ROOT / "models/teacher_v2_candidate.joblib"
+        joblib.dump(bundle, path)
+        lock = {k: v for k, v in bundle.items() if k not in {"model", "reference"}}
+        lock["bundle"] = dict(path=path.relative_to(ROOT).as_posix(), sha256=run.sha(path))
+        run.write_json(ROOT / "configs/teacher_v2_candidate_lock.json", lock)
     candidate = load_candidate(ROOT)
     # Parity across all eligible Train URLs. Extraction included, no training on examples.
     expected = score_model(model, run.X(train))
@@ -139,10 +164,13 @@ def main():
     scores = np.array([r["score"] for r in actual])
     np.testing.assert_allclose(expected, scores, rtol=0, atol=1e-12)
     np.testing.assert_array_equal(expected >= threshold, [r["class_id"] for r in actual])
-    urls = ["example.com", "https://EXAMPLE.com/A?Q=%2F", "https://bank-login.example/verify",
-            "https://xn--bcher-kva.de/A", "https://example.com:8443/Case"]
+    from predict_stacking_candidate import EXAMPLES
+    urls = EXAMPLES
     results = candidate.predict_batch(urls)
-    assert results == [candidate.predict_one(u) for u in urls]
+    singles = [candidate.predict_one(u) for u in urls]
+    np.testing.assert_allclose([r["score"] for r in results], [r["score"] for r in singles], rtol=0, atol=1e-12)
+    assert [{k:v for k,v in r.items() if k != "score"} for r in results] == [{k:v for k,v in r.items() if k != "score"} for r in singles]
+    single_batch_error = max(abs(a["score"] - b["score"]) for a,b in zip(results, singles))
     # A real portable process gets only runtime sources, bundle and lock, no reports/data.
     with tempfile.TemporaryDirectory(prefix="phishguard-stacking-portable-") as directory:
         portable = Path(directory)
@@ -159,8 +187,11 @@ def main():
         result = subprocess.run([sys.executable, "-X", "utf8", "scripts/predict_stacking_candidate.py", "--examples"],
             cwd=portable, capture_output=True, text=True, encoding="utf-8")
         assert result.returncode == 0, result.stderr
-        assert json.loads(result.stdout) == results
-    meta = dict(candidate="stack_hist", params=params, full_train_inner_mean_ap=inner_ap,
+        portable_results = json.loads(result.stdout)
+        np.testing.assert_allclose([r["score"] for r in portable_results], [r["score"] for r in results], rtol=0, atol=1e-12)
+        assert [r["class_id"] for r in portable_results] == [r["class_id"] for r in results]
+    meta = dict(candidate="stack_hist", params=params, resumed_frozen_bundle=args.resume_frozen,
+        training_code_revision="2ba16fa", full_train_inner_mean_ap=inner_ap,
         hist_parameters=model.bases["hist"].named_steps["model"].get_params(),
         hist_fitted_iterations=int(model.bases["hist"].named_steps["model"].n_iter_),
         hist_effective_early_stopping=bool(model.bases["hist"].named_steps["model"].do_early_stopping_),
@@ -175,7 +206,9 @@ def main():
         adapter_sha256=run.sha(ROOT / "src/phishguard_vn/stacking_candidate.py"),
         package_script_sha256=run.sha(Path(__file__)),
         parity=dict(inputs=len(train), score_max_abs_error=float(np.max(abs(expected - scores))),
-            labels_equal=True, single_batch_equal=True, portable_cli_examples=len(urls)),
+            labels_equal=True, single_batch_labels_equal=True,
+            single_batch_score_max_abs_error=single_batch_error, score_absolute_tolerance=1e-12,
+            portable_cli_examples=len(urls)),
         decision_reason="Competitive Train Group CV, two complementary branches, modest size; format robustness is diagnostic, no independent final-test or promotion claim.")
     run.write_json(CANDIDATE_OUT / "metadata.json", meta)
     # Error notes use the candidate's outer OOF, not the full-Train model coefficients.

@@ -6,6 +6,7 @@ from pathlib import Path
 from io import BytesIO
 from urllib.parse import urlsplit, urlunsplit
 import hashlib
+import argparse
 import json
 import sys
 import time
@@ -125,6 +126,8 @@ def audit(train, specs):
     run.write_json(OUT / "audit.json", dict(status="PASS", pipelines=len(specs),
         configurations=sum(len(run.ParameterGrid(s["grid"])) for s in specs),
         oof_rows=len(all_oof), fits=len(ledger), failed_fits=0,
+        benchmark_fits=int(ledger.context.str.startswith("outer").sum()),
+        candidate_fits=int(ledger.context.str.startswith("full_train").sum()),
         partition_contexts=partitions.context.nunique(), partition_rows=len(partitions),
         checks=["IDs/labels/folds", "outer/inner/meta/threshold domain isolation",
                 "fitting-ID hashes", "round-trip CSV metrics", "fitting-only threshold constraints",
@@ -260,11 +263,85 @@ def bootstrap(train, oof, names, draws=2000):
     run.write_csv(OUT / "paired_bootstrap.csv", pd.DataFrame(rows))
 
 
+
+
+def candidate_notes(train):
+    """Twelve real outer errors at the candidate's 1% fitting-OOF policy."""
+    folder = OUT / "candidate"
+    if not (folder / "metadata.json").exists():
+        return
+    oof = pd.concat([pd.read_csv(OUT / f"stack_hist_outer{f}_oof.csv.gz", float_precision="round_trip")
+                     for f in range(3)], ignore_index=True)
+    oof["prediction"] = oof["prediction_0.01"]
+    wrong = oof.loc[oof.y_true.ne(oof.prediction)].copy()
+    wrong["error"] = np.where(wrong.y_true.eq(0), "FP", "FN")
+    cases = wrong.sort_values("id").groupby(["fold_id", "error"]).head(2).merge(
+        train[["id", "url", "susp_token_cnt", "brand_domain_mismatch", "digit_cnt", "url_len"]],
+        on="id", validate="one_to_one")
+    cases["base_svm_margin"], cases["base_hist_score"] = np.nan, np.nan
+    for fold in range(3):
+        mask = cases.fold_id.eq(fold)
+        model = joblib.load(LOCAL / f"stack_hist_outer{fold}.joblib")
+        frame = raw_frame(cases.loc[mask, "url"].tolist())
+        cases.loc[mask, "base_svm_margin"] = score_model(model.bases["svm"], frame)
+        cases.loc[mask, "base_hist_score"] = score_model(model.bases["hist"], frame)
+    cases["operating_point"] = "outer-fitting Group OOF FPR target 0.01, actual outer FPR may differ"
+    cases["observation"] = cases.apply(lambda r: (
+        f"{r.error}; fold={r.fold_id}; meta={r.score:.6f}, threshold={r['threshold_0.01']:.6f}; "
+        f"SVM margin={r.base_svm_margin:.6f}, HistGB={r.base_hist_score:.6f}; "
+        f"suspicious tokens={r.susp_token_cnt}, brand mismatch={r.brand_domain_mismatch}, digits={r.digit_cnt}"), axis=1)
+    def hypothesis(r):
+        disagree = (r.base_svm_margin > 0) != (r.base_hist_score > .5)
+        if disagree:
+            return "The two branches disagree; their combination and the fitting-selected operating point may explain this error. This is a hypothesis, not feature attribution."
+        if r.error == "FN":
+            return "Both branches favor benign or have weak evidence; a phishing hostname can share benign-looking text/numeric patterns. Source/format bias may remain."
+        return "Both branches favor phishing; benign text/brand patterns can overlap phishing. The source label is retained; no live-site judgment is made."
+    cases["hypothesis"] = cases.apply(hypothesis, axis=1)
+    cases["next_check"] = "Inspect this outer fold's fitting-side n-grams, brand matches and source/format counts offline. Do not retune from the case or change its label."
+    cases["url"] = cases.url.str.replace(".", "[.]", regex=False)
+    assert len(cases) == 12 and cases.observation.str.len().gt(0).all()
+    run.write_csv(folder / "error_cases.csv", cases)
+    from phishguard_vn.stacking_candidate import load_candidate
+    candidate = load_candidate(ROOT)
+    durations = []
+    urls = train.url.iloc[:16].tolist()
+    for repeat in range(18):
+        start = time.perf_counter()
+        candidate.predict_batch(urls)
+        if repeat >= 3:
+            durations.append((time.perf_counter() - start) * 1000)
+    import subprocess
+    preserved = {}
+    for path in ["configs/week6_teacher_lock.json", "models/teacher_tfidf_svm_v1.joblib",
+                 "src/phishguard_vn/teacher.py", "scripts/predict_teacher.py"]:
+        before = subprocess.check_output(["git", "show", "35c7d8d:" + path], cwd=ROOT)
+        preserved[path] = hashlib.sha256(before).hexdigest() == run.sha(ROOT / path)
+    assert all(preserved.values())
+    run.write_json(folder / "verification.json", dict(
+        v1_files_unchanged=preserved, errors=12, error_policy="outer-fitting OOF FPR target 0.01",
+        source_sha256=run.sha(Path(__file__)), model_sha256=run.sha(ROOT / "models/teacher_v2_candidate.joblib"),
+        p50_batch16_ms=float(np.median(durations)), p95_batch16_ms=float(np.quantile(durations, .95)),
+        bytes=(ROOT / "models/teacher_v2_candidate.joblib").stat().st_size,
+        scope="candidate warm desktop CPU raw URL -> full offline pipeline -> score/label; batch16 threads2 warmup3 repeats15; excludes load/startup/network/Android/peak RAM"))
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--audit-only", action="store_true", help="Preserve existing stress/resources/bootstrap; audit CSV and candidate only")
+    args = parser.parse_args()
     train = run.load_train()
     specs = json.loads(run.PLAN.read_text(encoding="utf-8"))["experiments"]
     oof, summary = audit(train, specs)
     print(summary.to_string(index=False), flush=True)
+    if args.audit_only:
+        candidate_notes(train)
+        run.write_json(OUT / "audit_provenance.json", dict(
+            source_sha256=run.sha(Path(__file__)), generated_utc=run.datetime.now(run.timezone.utc).isoformat(),
+            preserved_analysis_provenance_sha256=run.sha(OUT / "analysis_provenance.json"),
+            benchmark_refitted=False, original_stress_resources_bootstrap_preserved=True))
+        print("Audit-only complete; no benchmark/stress/bootstrap refit or overwrite.", flush=True)
+        return
     stress_and_resources(train, specs)
     bootstrap(train, oof, [s["id"] for s in specs])
     run.write_json(OUT / "analysis_provenance.json", dict(

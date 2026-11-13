@@ -1,0 +1,63 @@
+{
+  "model_version": "teacher-stacking-v2-candidate",
+  "candidate_only": true,
+  "promoted": false,
+  "preprocessing_version": "canonical-reference-v1",
+  "selected_by": "core_train_group_cv",
+  "primary_metric": "mean_outer_average_precision",
+  "validation_used_for_selection": false,
+  "external_used_for_selection": false,
+  "official_test_evaluated": false,
+  "decision_rule": "score >= threshold",
+  "operating_point_scope": "full_train_group_oof_fpr_target_0.01",
+  "score_kind": "probability",
+  "calibrated": false,
+  "feature_names": [
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len",
+    "brand_in_domain",
+    "brand_in_subdomain",
+    "brand_in_path",
+    "brand_domain_mismatch",
+    "brand_typo_score",
+    "susp_token_cnt",
+    "idna_flag",
+    "homoglyph_brand_hit"
+  ],
+  "class_mapping": {
+    "benign": 0,
+    "phishing": 1
+  },
+  "threshold": 0.6945740700635259,
+  "source_sha256": {
+    "stacking.py": "56267dd25c773a564f5bd441847179e34ec5c2e24c4466f266d01d6fb29f5431",
+    "features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "brand_features.py": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b",
+    "url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8"
+  },
+  "reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+  "reference_fingerprint": "cffbf03b41c344c5ffe780292cbed00459b39fec83a07d1fbb309c526faf5b26",
+  "runtime_versions": {
+    "scikit-learn": "1.9.1",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.1.0",
+    "joblib": "1.6.0",
+    "tldextract": "5.4.0",
+    "idna": "3.20"
+  },
+  "bundle": {
+    "path": "models/teacher_v2_candidate.joblib",
+    "sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1"
+  }
+}

@@ -275,3 +275,9 @@ README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 ## Nghiên cứu preprocessing tiếp theo
 
 Phần nghiên cứu A–F và bốn hướng neural được thực hiện tiếp trên cùng nhánh, giữ nguyên benchmark 13 model. Đọc [báo cáo nghiên cứu](reports/url_preprocessing_research.md); kế hoạch đăng ký ở configs/url_research_plan.json, kết quả và OOF ở reports/tables/url_research. Trạng thái chỉ là candidate_proposed, Teacher chưa finalized.
+
+## Teacher v2 candidate (research, not promoted)
+
+Teacher v1 remains the default. New stacking results and limitations: [report](reports/teacher_v2_stacking.md).
+Offline candidate inference and code flow: [handoff](docs/teacher_v2_handoff.md).
+Run `python scripts/predict_stacking_candidate.py --examples` in the recorded runtime environment.

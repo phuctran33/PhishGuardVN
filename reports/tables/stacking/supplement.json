@@ -118,6 +118,6 @@
   "outer_case_metrics_recomputed": true,
   "source_label_pure": true,
   "limitation": "All phishing and benign sources are disjoint by label. Domain Group CV and removing source input do not remove URL source proxies or establish source-disjoint generalization.",
-  "source_sha256": "6f90aaa16260b8d98ec691960b701240b4364be6556c33cf510ef755d2b9a477",
+  "source_sha256": "78ad505c48ff821cd04f702b3d0b360e947c1676cca1f830281ef52e1861bb0e",
   "addendum_sha256": "4ecfdb7094bf43b23447c0b32b1c91806e52e0e7a040f2c5a948fd6f2970651e"
 }
