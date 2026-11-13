@@ -1,10 +1,17 @@
 """Backend smoke/contract tests. Synthetic estimators are test fixtures, never demo models."""
 import hashlib
+import json
+import os
 from pathlib import Path
+import shutil
+import subprocess
+import sys
 
 import joblib
 import numpy as np
+import pandas as pd
 import pytest
+from sklearn.dummy import DummyClassifier
 
 pytest.importorskip("fastapi", reason="Install .[api,test] for backend smoke tests")
 pytest.importorskip("httpx2", reason="Install .[api,test] for TestClient")
@@ -153,6 +160,52 @@ def test_api_response_matches_python_inference_on_same_artifact(tmp_path):
     assert response.json() == direct_result
 
 
+def test_api_prediction_matches_python_cli_on_same_synthetic_artifact(tmp_path):
+    feature_names = list(CANDIDATE_FEATURES)
+    train = pd.DataFrame(np.zeros((2, len(feature_names))), columns=feature_names)
+    model = DummyClassifier(strategy="constant", constant=1).fit(train, [0, 1])
+    bundle_value = {
+        "feature_set": "lexical_12",
+        "feature_names": feature_names,
+        "selected_model": "dummy",
+        "models": {"dummy": model},
+        "score_kinds": {"dummy": "probability"},
+        "protocol": "synthetic-cli-parity-test-only",
+    }
+
+    cli_root = tmp_path / "cli"
+    scripts_dir = cli_root / "scripts"
+    models_dir = cli_root / "models"
+    scripts_dir.mkdir(parents=True)
+    models_dir.mkdir()
+    repository_root = Path(api.__file__).resolve().parents[2]
+    shutil.copyfile(repository_root / "scripts" / "predict_week5.py", scripts_dir / "predict_week5.py")
+    artifact_path = models_dir / "week5_readable_models.joblib"
+    joblib.dump(bundle_value, artifact_path)
+
+    url = "https://example.com/path?source=qa-cli-parity"
+    env = dict(os.environ)
+    env["PYTHONPATH"] = os.pathsep.join(
+        part for part in [str(repository_root / "src"), env.get("PYTHONPATH", "")] if part
+    )
+    cli = subprocess.run(
+        [sys.executable, str(scripts_dir / "predict_week5.py"), url],
+        cwd=cli_root,
+        env=env,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+        timeout=30,
+    )
+
+    with TestClient(api.create_app(bundle_path=artifact_path)) as client:
+        response = client.post("/predict", json={"url": url})
+
+    assert response.status_code == 200
+    assert response.json() == json.loads(cli.stdout)
+
+
 def test_margin_is_not_converted_to_probability(tmp_path):
     with TestClient(api.create_app(bundle_path=artifact(tmp_path, bundle("decision_function")))) as client:
         r = client.post("/predict", json={"url": "example.com"})
@@ -221,6 +274,16 @@ def test_inference_exception_does_not_leak_input_exception_or_traceback(tmp_path
         r = client.post("/predict", json={"url": "example.com/private?token=secret"})
     assert r.status_code == 500 and r.json()["error"]["code"] == "INFERENCE_FAILED"
     assert "secret" not in r.text + caplog.text and "Traceback" not in r.text
+
+
+def test_successful_prediction_does_not_log_raw_url(tmp_path, caplog):
+    url = "https://example.com/private?token=qa-log-secret-marker"
+    with TestClient(api.create_app(bundle_path=artifact(tmp_path, bundle()))) as client:
+        response = client.post("/predict", json={"url": url})
+
+    assert response.status_code == 200
+    assert url not in caplog.text
+    assert "qa-log-secret-marker" not in caplog.text
 
 
 def test_unexpected_route_exception_uses_sanitized_internal_error(tmp_path, monkeypatch, caplog):

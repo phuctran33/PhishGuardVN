@@ -1,0 +1,18 @@
+{
+  "timestamp_utc": "2026-11-11T07:41:22.901954+00:00",
+  "endpoint": "http://127.0.0.1:8014",
+  "method": "HTTP/1.1 keep-alive",
+  "python_version": "3.13.7",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "warmup_requests": 10,
+  "measured_requests": 100,
+  "url_length": 30,
+  "raw_url_recorded": false,
+  "p95_method": "nearest-rank",
+  "mean_ms": 3.8057539938017726,
+  "p95_ms": 4.361600033007562,
+  "model": "dummy",
+  "feature_set": "lexical_12",
+  "protocol": "synthetic-latency-only",
+  "artifact_sha256": "d50f7377652d36f4ab770ce3ef499bb683dd8e28a3437c0c67804e8fc1c92f7a"
+}
