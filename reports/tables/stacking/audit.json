@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "pipelines": 11,
+  "configurations": 53,
+  "oof_rows": 143858,
+  "fits": 552,
+  "failed_fits": 0,
+  "partition_contexts": 15,
+  "partition_rows": 104624,
+  "checks": [
+    "IDs/labels/folds",
+    "outer/inner/meta/threshold domain isolation",
+    "fitting-ID hashes",
+    "round-trip CSV metrics",
+    "fitting-only threshold constraints",
+    "registered source/data fingerprints"
+  ],
+  "official_test_evaluated": false
+}

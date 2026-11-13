@@ -155,3 +155,175 @@ def test_registered_grid_is_finite():
     plan = json.loads((root / "configs/teacher_v2_plan.json").read_text(encoding="utf-8"))
     assert len(plan["experiments"]) == 11
     assert sum(len(ParameterGrid(s["grid"])) for s in plan["experiments"]) == 53
+
+
+@pytest.fixture
+def candidate_bundle():
+    from importlib.metadata import version
+    from phishguard_vn.brand_features import load_reference
+    from phishguard_vn.stacking import source_hashes, reference_fingerprint, PREPROCESSING_VERSION
+    from phishguard_vn.stacking_candidate import MODEL_VERSION
+    frame, y = fixture_frame()
+    bases = {"svm": make_base("svm").fit(frame, y),
+             "hist": make_base("hist").set_params(model__early_stopping=False).fit(frame, y)}
+    meta = make_meta(.1, True).fit(np.column_stack([y, y]), y)
+    reference = load_reference()
+    return dict(model=FittedStack(["svm", "hist"], bases, meta), reference=reference,
+        model_version=MODEL_VERSION, candidate_only=True, promoted=False,
+        preprocessing_version=PREPROCESSING_VERSION, selected_by="core_train_group_cv",
+        primary_metric="mean_outer_average_precision", validation_used_for_selection=False,
+        external_used_for_selection=False, official_test_evaluated=False,
+        decision_rule="score >= threshold", operating_point_scope="full_train_group_oof_fpr_target_0.01",
+        score_kind="probability", calibrated=False, feature_names=list(E2_FEATURES),
+        class_mapping={"benign": 0, "phishing": 1}, threshold=.5,
+        source_sha256=source_hashes(), reference_sha256=reference.sha256,
+        reference_fingerprint=reference_fingerprint(reference),
+        runtime_versions={p: version(p) for p in ["scikit-learn", "tldextract", "idna"]})
+
+
+def save_candidate(root, bundle):
+    import joblib
+    from phishguard_vn.stacking_candidate import sha
+    (root / "models").mkdir(exist_ok=True)
+    (root / "configs").mkdir(exist_ok=True)
+    path = root / "models/teacher_v2_candidate.joblib"
+    joblib.dump(bundle, path)
+    lock = {k: v for k, v in bundle.items() if k not in {"model", "reference"}}
+    lock["bundle"] = {"path": "models/teacher_v2_candidate.joblib", "sha256": sha(path)}
+    (root / "configs/teacher_v2_candidate_lock.json").write_text(json.dumps(lock), encoding="utf-8")
+    return lock
+
+
+def test_candidate_single_batch_reload_boundary(candidate_bundle, tmp_path):
+    import joblib
+    from phishguard_vn.stacking_candidate import StackingCandidate, load_candidate
+    save_candidate(tmp_path, candidate_bundle)
+    loaded = load_candidate(tmp_path)
+    urls = ["example.com", "https://EXAMPLE.com/A?Q=%2F"]
+    assert loaded.predict_batch(urls) == [loaded.predict_one(u) for u in urls]
+    # Explicit threshold rule, unlike the native LR rule, includes an equal score.
+    candidate_bundle["model"].meta.named_steps["lr"].coef_[:] = 0
+    candidate_bundle["model"].meta.named_steps["lr"].intercept_[:] = 0
+    assert StackingCandidate(candidate_bundle).predict_one(urls[0])["class_id"] == 1
+
+
+@pytest.mark.parametrize("field,value", [
+    ("promoted", True), ("candidate_only", False), ("score_kind", "decision_function"),
+    ("calibrated", True), ("primary_metric", "accuracy"), ("external_used_for_selection", True),
+    ("validation_used_for_selection", True), ("official_test_evaluated", True),
+    ("operating_point_scope", "external_tuned"), ("threshold", float("nan")),
+    ("feature_names", list(reversed(E2_FEATURES))), ("source_sha256", {}),
+])
+def test_candidate_protocol_negative(candidate_bundle, tmp_path, field, value):
+    from phishguard_vn.stacking_candidate import load_candidate
+    candidate_bundle[field] = value
+    save_candidate(tmp_path, candidate_bundle)
+    with pytest.raises(ValueError):
+        load_candidate(tmp_path)
+
+
+def test_candidate_missing_reference_and_hash(candidate_bundle, tmp_path):
+    from phishguard_vn.stacking_candidate import load_candidate
+    candidate_bundle["reference"] = None
+    save_candidate(tmp_path, candidate_bundle)
+    with pytest.raises(ValueError, match="reference"):
+        load_candidate(tmp_path)
+    (tmp_path / "models/teacher_v2_candidate.joblib").write_bytes(b"changed")
+    with pytest.raises(ValueError, match="bundle"):
+        load_candidate(tmp_path)
+
+
+def test_candidate_missing_dependency(candidate_bundle, tmp_path, monkeypatch):
+    from importlib.metadata import PackageNotFoundError
+    import phishguard_vn.stacking_candidate as adapter
+    save_candidate(tmp_path, candidate_bundle)
+    def missing(package):
+        raise PackageNotFoundError(package)
+    monkeypatch.setattr(adapter, "version", missing)
+    with pytest.raises(RuntimeError, match="Missing"):
+        adapter.load_candidate(tmp_path)
+
+
+def test_portable_no_dataset_reports_or_reference_file(candidate_bundle, tmp_path):
+    import shutil, subprocess, sys
+    save_candidate(tmp_path, candidate_bundle)
+    source = Path(__file__).resolve().parents[1] / "src/phishguard_vn"
+    target = tmp_path / "src/phishguard_vn"
+    target.mkdir(parents=True)
+    for name in ["__init__.py", "stacking.py", "stacking_candidate.py", "url_parser.py",
+                 "features.py", "brand_features.py"]:
+        shutil.copyfile(source / name, target / name)
+    code = ("import sys; sys.path.insert(0, 'src'); "
+            "from phishguard_vn.stacking_candidate import load_candidate; "
+            "c=load_candidate('.'); print(len(c.predict_batch(['example.com','https://EXAMPLE.com/A'])))")
+    result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "2"
+    assert not (tmp_path / "data").exists()
+    assert not (tmp_path / "reports").exists()
+    assert not (target / "resources").exists()
+
+
+@pytest.mark.parametrize("name", ["svm", "hist", "extra", "lgbm", "hybrid_lr", "hybrid_svm"])
+def test_actual_base_estimators(name):
+    frame, y = fixture_frame()
+    model = make_base(name).fit(frame, y)
+    assert score_model(model, frame).shape == (len(frame),)
+    assert model.predict(frame).shape == (len(frame),)
+
+
+def test_stress_keeps_path_query_userinfo_fragment():
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("stacking_summary_fixture", root / "scripts/summarize_stacking.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    url = "https://user:pass@Example.com:8443/Case%2F?Q=Ab#Frag"
+    assert module.transform_url(url, "uppercase_hostname") == "https://user:pass@EXAMPLE.COM:8443/Case%2F?Q=Ab#Frag"
+    assert module.transform_url(url, "remove_scheme") == "user:pass@Example.com:8443/Case%2F?Q=Ab#Frag"
+    assert module.transform_url("example.com/Case?Q=Ab", "add_https") == "https://example.com/Case?Q=Ab"
+
+
+def test_candidate_hist_uses_explicit_fixed_budget():
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("candidate_pack_fixture", root / "scripts/package_stacking_candidate.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    hist = module.candidate_base("hist").named_steps["model"]
+    assert hist.early_stopping is False and hist.max_iter == 300
+
+
+def test_domain_bootstrap_matches_weighted_sklearn_ap(tmp_path):
+    from sklearn.metrics import average_precision_score
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("bootstrap_fixture", root / "scripts/summarize_stacking.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.OUT = tmp_path
+    train = pd.DataFrame([
+        dict(id=fold * 8 + group * 2 + y, fold_id=fold, target=y,
+             registrable_domain=f"f{fold}g{group}")
+        for fold in range(3) for group in range(4) for y in [0, 1]])
+    names = ["raw_svm", "canonical_svm", "stack_hist"]
+    scores = {
+        "raw_svm": np.tile([.1, .9, .6, .6, .2, .8, .7, .3], 3),
+        "canonical_svm": np.tile([.2, .8, .3, .7, .4, .6, .6, .6], 3),
+        "stack_hist": np.tile([.1, .8, .4, .9, .6, .6, .2, .7], 3)}
+    oof = pd.concat([train.assign(experiment=name, score=scores[name], y_true=train.target) for name in names])
+    draws = 30
+    module.bootstrap(train, oof, names, draws)
+    rng = np.random.default_rng(42)
+    expected = np.zeros((draws, 3))
+    for fold in range(3):
+        g = train.loc[train.fold_id.eq(fold)]
+        codes, unique = pd.factorize(g.registrable_domain)
+        for draw in range(draws):
+            counts = np.bincount(rng.integers(0, len(unique), len(unique)), minlength=len(unique))
+            for j, name in enumerate(names):
+                expected[draw, j] += average_precision_score(g.target, scores[name][g.index],
+                    sample_weight=counts[codes]) / 3
+    saved = pd.read_csv(tmp_path / "paired_bootstrap.csv")
+    for base in names:
+        for j, name in enumerate(names):
+            row = saved.loc[saved.baseline.eq(base) & saved.experiment.eq(name)].iloc[0]
+            delta = expected[:, j] - expected[:, names.index(base)]
+            np.testing.assert_allclose([row.ci_low, row.ci_high], np.quantile(delta, [.025, .975]), atol=1e-12)

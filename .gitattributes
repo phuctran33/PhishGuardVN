@@ -55,3 +55,8 @@
 /reports/tables/stacking/*.gz -text
 /configs/teacher_v2_candidate_lock.json text eol=lf
 /models/teacher_v2_candidate.joblib -text
+
+/configs/teacher_v2_addendum.json text eol=lf
+/reports/tables/stacking/candidate/*.json text eol=lf
+/reports/tables/stacking/candidate/*.csv text eol=lf
+/reports/tables/stacking/candidate/*.gz -text

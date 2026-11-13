@@ -37,6 +37,10 @@ jobs:
       - name: Reject skipped or missing Teacher tests
         run: |
           python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/teacher.xml').findall('.//testcase'); assert len(cases)>=13, 'Teacher tests missing'; assert all(c.find('skipped') is None for c in cases), 'Teacher tests must not skip'"
+      - name: Run stacking and portable candidate fixtures
+        run: |
+          python -m pytest tests/test_stacking.py -q -rs --junitxml=test-results/stacking.xml
+          python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/stacking.xml').findall('.//testcase'); assert len(cases)>=50; assert all(c.find('skipped') is None for c in cases)"
       - name: Run full available suite
         run: python -m pytest -q -rs --junitxml=test-results/full.xml
       - name: Upload test reports

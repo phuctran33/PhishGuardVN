@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_hybrid,outer1,0,0,"{""C"": 0.1, ""scale"": false}",0.9087642158670509
+stack_hybrid,outer1,0,1,"{""C"": 0.1, ""scale"": false}",0.9107267666394601
+stack_hybrid,outer1,1,0,"{""C"": 0.1, ""scale"": true}",0.910101610132193
+stack_hybrid,outer1,1,1,"{""C"": 0.1, ""scale"": true}",0.9137922498983232
+stack_hybrid,outer1,2,0,"{""C"": 1, ""scale"": false}",0.9096839195125807
+stack_hybrid,outer1,2,1,"{""C"": 1, ""scale"": false}",0.9123977611701187
+stack_hybrid,outer1,3,0,"{""C"": 1, ""scale"": true}",0.9099776665738476
+stack_hybrid,outer1,3,1,"{""C"": 1, ""scale"": true}",0.913134137506193
+stack_hybrid,outer1,4,0,"{""C"": 10, ""scale"": false}",0.9099429021359033
+stack_hybrid,outer1,4,1,"{""C"": 10, ""scale"": false}",0.9129014587834934
+stack_hybrid,outer1,5,0,"{""C"": 10, ""scale"": true}",0.909949065153962
+stack_hybrid,outer1,5,1,"{""C"": 10, ""scale"": true}",0.9129937705325976
