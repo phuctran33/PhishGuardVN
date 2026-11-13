@@ -1,0 +1,16 @@
+{
+  "v1_files_unchanged": {
+    "configs/week6_teacher_lock.json": true,
+    "models/teacher_tfidf_svm_v1.joblib": true,
+    "src/phishguard_vn/teacher.py": true,
+    "scripts/predict_teacher.py": true
+  },
+  "errors": 12,
+  "error_policy": "outer-fitting OOF FPR target 0.01",
+  "source_sha256": "57e1b67b346744391e72b068c40c3e81faf8146c18e10abe7727fe4b8cfc4f9d",
+  "model_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "p50_batch16_ms": 11.50749999214895,
+  "p95_batch16_ms": 16.48565999348648,
+  "bytes": 2130586,
+  "scope": "candidate warm desktop CPU raw URL -> full offline pipeline -> score/label; batch16 threads2 warmup3 repeats15; excludes load/startup/network/Android/peak RAM"
+}

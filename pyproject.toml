@@ -20,8 +20,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest", "httpx2>=2.16,<3"]
+inference = ["scikit-learn==1.9.1"]
+test = ["pytest", "nbformat", "ipython", "httpx2>=2.16,<3"]
 api = ["fastapi>=0.162.2,<0.163", "uvicorn>=0.54,<0.55"]
+teacher = ["lightgbm==4.7.0", "xgboost==3.2.0", "catboost==1.2.10", "imbalanced-learn==0.14.2", "nbclient", "ipykernel"]
+research = ["scikit-learn==1.9.1", "torch==2.6.0", "transformers==4.48.3", "tokenizers==0.21.4", "requests"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -21,3 +21,46 @@
 /LICENSE -text
 /CITATION.cff -text
 /MANIFEST.txt -text
+
+# Stable hashes for shared Teacher/reference artifacts across operating systems.
+/src/phishguard_vn/resources/*.csv text eol=lf
+/reports/templates/*feature_dictionary.csv text eol=lf
+/reports/tables/week6/*.csv text eol=lf
+/reports/tables/week6/*.json text eol=lf
+/reports/tables/week6/*.gz -text
+/models/week6_teacher_v1.joblib -text
+/configs/week6_teacher_lock.json text eol=lf
+
+# External audit text hashes must match on Windows and macOS.
+/data/external/*.csv text eol=lf
+/data/external/derived/*.csv text eol=lf
+/data/external/history/**/*.json text eol=lf
+/reports/tables/external_pilot/*.csv text eol=lf
+/reports/tables/external_pilot/*.json text eol=lf
+
+# Research manifests and compressed OOF must survive Windows/Linux checkout unchanged.
+/configs/url_research_plan.json text eol=crlf
+/reports/tables/url_research/*.csv text eol=lf
+/reports/tables/url_research/*.json text eol=lf
+/reports/tables/url_research/*.gz -text
+
+/models/teacher_tfidf_svm_v1.joblib -text
+/reports/tables/teacher_release/*.json text eol=lf
+/reports/tables/teacher_release/*.csv text eol=lf
+
+# Stacking candidate provenance: stable bytes on Windows/Linux.
+/configs/teacher_v2_plan.json text eol=lf
+/reports/tables/stacking/*.json text eol=lf
+/reports/tables/stacking/*.csv text eol=lf
+/reports/tables/stacking/*.gz -text
+/configs/teacher_v2_candidate_lock.json text eol=lf
+/models/teacher_v2_candidate.joblib -text
+
+/configs/teacher_v2_addendum.json text eol=lf
+/reports/tables/stacking/candidate/*.json text eol=lf
+/reports/tables/stacking/candidate/*.csv text eol=lf
+/reports/tables/stacking/candidate/*.gz -text
+
+/configs/teacher_lock.json text eol=lf
+/requirements-teacher.txt text eol=lf
+/reports/tables/stacking/promotion.json text eol=lf

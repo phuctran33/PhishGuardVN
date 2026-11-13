@@ -1,0 +1,328 @@
+{
+  "bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "lock_sha256": "303fda6ffbde2715e09a108cf60632f8afc395be6bdd8765d3e7e756b9f03e3e",
+  "frozen_before_supplemental": true,
+  "validation_previously_observed": true,
+  "validation": {
+    "ap": 0.5549104910205521,
+    "precision": 0.5172413793103449,
+    "recall": 0.625,
+    "f1": 0.5660377358490566,
+    "fpr": 0.008968609865470852,
+    "tp": 15,
+    "fn": 9,
+    "fp": 14,
+    "tn": 1547
+  },
+  "external": {
+    "ap": 0.9813432277373182,
+    "precision": 0.9736842105263158,
+    "recall": 0.40217391304347827,
+    "f1": 0.5692307692307692,
+    "fpr": 0.14285714285714285,
+    "tp": 37,
+    "fn": 55,
+    "fp": 1,
+    "tn": 6
+  },
+  "external_audit": {
+    "status": "EXPLORATORY_TWO_CLASS",
+    "official": false,
+    "representation": "host_only",
+    "metrics": {
+      "n": 99,
+      "positive_support": 92,
+      "negative_support": 7,
+      "tp": 37,
+      "fn": 55,
+      "recall_phishing": 0.40217391304347827,
+      "precision": 0.9736842105263158,
+      "f1": 0.5692307692307692,
+      "accuracy": 0.43434343434343436,
+      "fpr": 0.14285714285714285,
+      "fp": 1,
+      "tn": 6
+    },
+    "n_candidates": 167,
+    "n_evaluated": 99,
+    "by_source": [
+      {
+        "source": "ACB official list of fake websites",
+        "n": 37,
+        "positive_support": 37,
+        "negative_support": 0,
+        "tp": 15,
+        "fn": 22,
+        "recall_phishing": 0.40540540540540543,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "Agribank official warning of spoofed domains",
+        "n": 2,
+        "positive_support": 2,
+        "negative_support": 0,
+        "tp": 2,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "BIDV official consumer fraud warning",
+        "n": 4,
+        "positive_support": 4,
+        "negative_support": 0,
+        "tp": 4,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "Bac Ninh government local public-service scam alert",
+        "n": 1,
+        "positive_support": 1,
+        "negative_support": 0,
+        "tp": 1,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "NCSC warning republished by Dak Lak government",
+        "n": 36,
+        "positive_support": 36,
+        "negative_support": 0,
+        "tp": 12,
+        "fn": 24,
+        "recall_phishing": 0.3333333333333333,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "NCSC weekly scam warnings on Ministry portal",
+        "n": 1,
+        "positive_support": 1,
+        "negative_support": 0,
+        "tp": 0,
+        "fn": 1,
+        "recall_phishing": 0.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "Quang Ngai police publication of NCSC warning",
+        "n": 10,
+        "positive_support": 10,
+        "negative_support": 0,
+        "tp": 2,
+        "fn": 8,
+        "recall_phishing": 0.2,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "VNCERT/CC warning on Ministry portal",
+        "n": 1,
+        "positive_support": 1,
+        "negative_support": 0,
+        "tp": 1,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "aeon_official_corporate_profile",
+        "n": 1,
+        "positive_support": 0,
+        "negative_support": 1,
+        "tp": 0,
+        "fn": 0,
+        "recall_phishing": null,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "vnba_member_directory",
+        "n": 6,
+        "positive_support": 0,
+        "negative_support": 6,
+        "tp": 0,
+        "fn": 0,
+        "recall_phishing": null,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      }
+    ],
+    "review_methods": {
+      "ai_document_review": 99
+    },
+    "limitations": [
+      "No source-disjoint generalization claim; source-label confounding remains.",
+      "Host-only is lossy and needs host-scoped reviewed labels; no live-site verification implied."
+    ]
+  },
+  "external_recall": {
+    "status": "PHISHING_RECALL_PILOT",
+    "official": false,
+    "representation": "host_only",
+    "metrics": {
+      "n": 92,
+      "positive_support": 92,
+      "negative_support": 0,
+      "tp": 37,
+      "fn": 55,
+      "recall_phishing": 0.40217391304347827,
+      "precision": null,
+      "f1": null,
+      "accuracy": null,
+      "fpr": null
+    },
+    "n_candidates": 167,
+    "n_evaluated": 92,
+    "by_source": [
+      {
+        "source": "ACB official list of fake websites",
+        "n": 37,
+        "positive_support": 37,
+        "negative_support": 0,
+        "tp": 15,
+        "fn": 22,
+        "recall_phishing": 0.40540540540540543,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "Agribank official warning of spoofed domains",
+        "n": 2,
+        "positive_support": 2,
+        "negative_support": 0,
+        "tp": 2,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "BIDV official consumer fraud warning",
+        "n": 4,
+        "positive_support": 4,
+        "negative_support": 0,
+        "tp": 4,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "Bac Ninh government local public-service scam alert",
+        "n": 1,
+        "positive_support": 1,
+        "negative_support": 0,
+        "tp": 1,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "NCSC warning republished by Dak Lak government",
+        "n": 36,
+        "positive_support": 36,
+        "negative_support": 0,
+        "tp": 12,
+        "fn": 24,
+        "recall_phishing": 0.3333333333333333,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "NCSC weekly scam warnings on Ministry portal",
+        "n": 1,
+        "positive_support": 1,
+        "negative_support": 0,
+        "tp": 0,
+        "fn": 1,
+        "recall_phishing": 0.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "Quang Ngai police publication of NCSC warning",
+        "n": 10,
+        "positive_support": 10,
+        "negative_support": 0,
+        "tp": 2,
+        "fn": 8,
+        "recall_phishing": 0.2,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      },
+      {
+        "source": "VNCERT/CC warning on Ministry portal",
+        "n": 1,
+        "positive_support": 1,
+        "negative_support": 0,
+        "tp": 1,
+        "fn": 0,
+        "recall_phishing": 1.0,
+        "precision": null,
+        "f1": null,
+        "accuracy": null,
+        "fpr": null
+      }
+    ],
+    "review_methods": {
+      "ai_document_review": 92
+    },
+    "limitations": [
+      "No source-disjoint generalization claim; source-label confounding remains.",
+      "Host-only is lossy and needs host-scoped reviewed labels; no live-site verification implied."
+    ]
+  },
+  "pending_not_ground_truth": 68,
+  "external_scope": "99 historical-hostname records including 92 positives; overlapping cohorts, not independent tests",
+  "source_sha256": {
+    "audit_manifest": "92072b722add026996cf7192cf0547f905ce1749e611464be6b39b0dad9f2d57",
+    "ledger": "fc11a9e159a40f0e508fd1b8289a30e66c79410cdf56b0b18d08ad9f1455f270"
+  },
+  "official_test_evaluated": false,
+  "no_retuning": true
+}

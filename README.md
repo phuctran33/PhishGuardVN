@@ -1,3 +1,7 @@
+> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](docs/teacher_v2_release.md). Earlier candidate/v1 status below is historical.
+
+> Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
+
 # PhishGuard VN
 
 Đồ án CSC14005 — phát hiện nguy cơ từ URL và nghiên cứu đặc trưng thương hiệu
@@ -264,9 +268,29 @@ README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 
 FastAPI backend và API contract: [hướng dẫn chạy](docs/backend.md), [contract v1 cho QA/Web](docs/api_contract.md).
 Khởi động bằng `python -m uvicorn phishguard_vn.api:app --host 127.0.0.1 --port 8000 --no-access-log`
-sau khi cài `python -m pip install -e '.[api,test]' tldextract==5.4.0 idna==3.20`.
-Checkout sạch chưa có artifact: `/health` báo degraded, `/predict` trả 503; không sinh prediction giả.
+sau khi cài đúng **CPython 3.11**, `python -m pip install -r requirements-teacher.txt -e '.[api,test]'` và cấu hình mode `teacher` theo hướng dẫn.
+Teacher chính thức dùng release lock trong Git; không cần cache riêng. Thiếu/sai artifact hoặc runtime: `/health` degraded, `/predict` 503, không fallback. Các ghi chú candidate/pending dưới đây là lịch sử nghiên cứu; release hiện tại xem [teacher_v2_release.md](docs/teacher_v2_release.md).
+## Week 6: expanded model comparison (Teacher pending)
+
+- Notebook: [06_teacher_v1.ipynb](notebooks/06_teacher_v1.ipynb).
+- Results and limitations: [week6_teacher.md](reports/week6_teacher.md).
+- Reading guide and next steps: [week6_phuc_handoff.md](docs/week6_phuc_handoff.md).
+- Install training libraries: .venv/Scripts/python.exe -m pip install -e ".[teacher,test]".
+- Reproduce comparison: .venv/Scripts/python.exe scripts/train_teacher.py.
+- Teacher is not finalized; predict_teacher.py blocks until the team confirms model/input contract.
+
+
+## Nghiên cứu preprocessing tiếp theo
+
+Phần nghiên cứu A–F và bốn hướng neural được thực hiện tiếp trên cùng nhánh, giữ nguyên benchmark 13 model. Đọc [báo cáo nghiên cứu](reports/url_preprocessing_research.md); kế hoạch đăng ký ở configs/url_research_plan.json, kết quả và OOF ở reports/tables/url_research. Trạng thái chỉ là candidate_proposed, Teacher chưa finalized.
+
+## Teacher v2 candidate (research, not promoted)
+
+Teacher v1 remains the default. New stacking results and limitations: [report](reports/teacher_v2_stacking.md).
+Offline candidate inference and code flow: [handoff](docs/teacher_v2_handoff.md).
+Run `python scripts/predict_stacking_candidate.py --examples` in the recorded runtime environment.
+
 
 Flutter Web (#19): [cài/chạy và smoke test](apps/web/README.md). Chạy Web ở port 3000,
 trỏ `API_BASE_URL` tới backend port 8000 và cấu hình CORS theo hướng dẫn.
-Web gọi inference thật qua API, không tự tính lại features hoặc mở URL đích.
+Web gọi Teacher stacking thật qua API, không tự tính lại features hoặc mở URL đích.
