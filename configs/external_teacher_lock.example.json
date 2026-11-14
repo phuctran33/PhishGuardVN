@@ -1,0 +1,13 @@
+{
+  "teacher_finalized": false,
+  "selected_by": "core_train_group_cv",
+  "external_used_for_selection": false,
+  "model_name": "mlp",
+  "feature_set": "e2-brand-v1",
+  "score_kind": "probability",
+  "decision_rule": "estimator.predict",
+  "threshold": 0.5,
+  "operating_point_scope": "fixed_core_protocol",
+  "bundle": {"path": "models/week5_e2_ablation.joblib", "sha256": "REQUIRED_TRUSTED_LOCAL_BUNDLE_HASH"},
+  "selection_record": {"path": "reports/tables/06_ablation_metadata.json", "sha256": "REQUIRED_MATCHING_CORE_SELECTION_RECORD_HASH"}
+}

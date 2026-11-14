@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_hybrid,outer2,0,0,"{""C"": 0.1, ""scale"": false}",0.92591881175366
+stack_hybrid,outer2,0,1,"{""C"": 0.1, ""scale"": false}",0.8964315722240136
+stack_hybrid,outer2,1,0,"{""C"": 0.1, ""scale"": true}",0.9256981137411805
+stack_hybrid,outer2,1,1,"{""C"": 0.1, ""scale"": true}",0.9009494431961624
+stack_hybrid,outer2,2,0,"{""C"": 1, ""scale"": false}",0.9263034175733763
+stack_hybrid,outer2,2,1,"{""C"": 1, ""scale"": false}",0.8992373585719851
+stack_hybrid,outer2,3,0,"{""C"": 1, ""scale"": true}",0.9260386796867593
+stack_hybrid,outer2,3,1,"{""C"": 1, ""scale"": true}",0.9002966917324613
+stack_hybrid,outer2,4,0,"{""C"": 10, ""scale"": false}",0.9260718434152276
+stack_hybrid,outer2,4,1,"{""C"": 10, ""scale"": false}",0.9000338079415059
+stack_hybrid,outer2,5,0,"{""C"": 10, ""scale"": true}",0.9260419777583979
+stack_hybrid,outer2,5,1,"{""C"": 10, ""scale"": true}",0.9001835412618394

@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_lgbm,outer1,0,0,"{""C"": 0.1, ""scale"": false}",0.9114294190475902
+stack_lgbm,outer1,0,1,"{""C"": 0.1, ""scale"": false}",0.9167544387898297
+stack_lgbm,outer1,1,0,"{""C"": 0.1, ""scale"": true}",0.9119917387670647
+stack_lgbm,outer1,1,1,"{""C"": 0.1, ""scale"": true}",0.9179499865167048
+stack_lgbm,outer1,2,0,"{""C"": 1, ""scale"": false}",0.9119286728921869
+stack_lgbm,outer1,2,1,"{""C"": 1, ""scale"": false}",0.9175995849085273
+stack_lgbm,outer1,3,0,"{""C"": 1, ""scale"": true}",0.9119774660442002
+stack_lgbm,outer1,3,1,"{""C"": 1, ""scale"": true}",0.9177820229131901
+stack_lgbm,outer1,4,0,"{""C"": 10, ""scale"": false}",0.9119625225986636
+stack_lgbm,outer1,4,1,"{""C"": 10, ""scale"": false}",0.9177390380537066
+stack_lgbm,outer1,5,0,"{""C"": 10, ""scale"": true}",0.9119540846533486
+stack_lgbm,outer1,5,1,"{""C"": 10, ""scale"": true}",0.9177619562729127

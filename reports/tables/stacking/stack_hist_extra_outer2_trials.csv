@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_hist_extra,outer2,0,0,"{""C"": 0.1, ""scale"": false}",0.9278626992824589
+stack_hist_extra,outer2,0,1,"{""C"": 0.1, ""scale"": false}",0.90947797130072
+stack_hist_extra,outer2,1,0,"{""C"": 0.1, ""scale"": true}",0.9275303223052991
+stack_hist_extra,outer2,1,1,"{""C"": 0.1, ""scale"": true}",0.9093625724468779
+stack_hist_extra,outer2,2,0,"{""C"": 1, ""scale"": false}",0.9278100365076203
+stack_hist_extra,outer2,2,1,"{""C"": 1, ""scale"": false}",0.908787600100895
+stack_hist_extra,outer2,3,0,"{""C"": 1, ""scale"": true}",0.9276024057831035
+stack_hist_extra,outer2,3,1,"{""C"": 1, ""scale"": true}",0.9082338222358802
+stack_hist_extra,outer2,4,0,"{""C"": 10, ""scale"": false}",0.9276426382904215
+stack_hist_extra,outer2,4,1,"{""C"": 10, ""scale"": false}",0.9082167098848929
+stack_hist_extra,outer2,5,0,"{""C"": 10, ""scale"": true}",0.927620263286545
+stack_hist_extra,outer2,5,1,"{""C"": 10, ""scale"": true}",0.9080888833814138

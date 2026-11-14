@@ -1,0 +1,317 @@
+{
+  "checked_at_utc": "2026-11-08T11:06:17.857353+00:00",
+  "platform": "Darwin",
+  "audit_runtime_base_revision": "597222147b84b6ff128b945f0bb9558dcc7a5dea",
+  "runtime_worktree_dirty": true,
+  "publication_note": "Run before publication; source/input hashes bind this execution. Published commit is separate.",
+  "pytest": {
+    "command": ".venv/bin/python -m pytest -q -rs",
+    "exit_code": 0,
+    "passed": 375,
+    "failed": 0,
+    "skipped": 1,
+    "summary": "375 passed, 1 skipped in 13.12s",
+    "external_tests_added": 41,
+    "skip_reason": "Existing empty parameter set CONFIRMED_STILL_FLAGGED in tests/test_brand_regressions.py:58",
+    "test_source_sha256": {
+      "tests/test_external_pilot.py": "dc9752e59219455a69d95de4485e510d59cb8a418fa80ea4471fe7d321048837",
+      "tests/test_week5_audit.py": "ffad412446b47af29c2449a81d06dbe13ee7c0adb626e46d4c083fc0a0b4bac3"
+    },
+    "baseline_fixture_fix": "Same draft-reference fixture fix as PR #12; no production audit/feature/model logic modified.",
+    "verification_sequence": {
+      "before_cli_notebook": "375 passed, 1 skipped in 14.72s",
+      "after_cli_notebook": "375 passed, 1 skipped in 13.29s",
+      "after_pdf_review_final_audit": "375 passed, 1 skipped in 13.12s"
+    }
+  },
+  "cli": {
+    "source_checks": {
+      "command": ".venv/bin/python scripts/check_external_source_evidence.py",
+      "exit_code": 0,
+      "reference_count": 36,
+      "reference_status_counts": {
+        "NOT_FETCHED_SELF_SITE_OR_UNAPPROVED_REFERENCE": 18,
+        "DOCUMENT_RETRIEVED_VIA_CURL_OS_TRUST": 16,
+        "URLError:<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1077)>": 1,
+        "CURL_NONTEXT_OR_OVERSIZED_NEEDS_REVIEW": 1
+      },
+      "host_seen_rows": 99,
+      "host_seen_by_label": {
+        "phishing": 90,
+        "benign": 9
+      },
+      "labels_promoted_to_verified": 0,
+      "network_scope": "Existing allowlisted official references only, no candidate hyperlinks/target phishing pages. Python CA issue handled via curl OS trust, never disabling TLS verification.",
+      "scope_note": "Earlier availability-only snapshot retained; content review/PDF retrieval recorded separately in document_review, not silently promoted by this checker."
+    },
+    "audit": {
+      "command": ".venv/bin/python scripts/audit_external_pilot.py",
+      "exit_code": 0,
+      "candidates_retained": 167,
+      "offline": true
+    },
+    "benchmark": {
+      "command": ".venv/bin/python scripts/evaluate_external_pilot.py",
+      "exit_code": 2,
+      "status": "PREPARED_BLOCKED",
+      "expected_blocked_not_test_failure": true,
+      "metrics": null,
+      "n_evaluated": 0,
+      "blockers": [
+        "NO_FINALIZED_TRUSTED_TEACHER_ARTIFACT"
+      ]
+    }
+  },
+  "notebook": {
+    "command": ".venv/bin/python -m nbconvert --to notebook --execute notebooks/05_source_bias.ipynb --output 05_source_bias.k53-followup.executed.ipynb --output-dir /tmp/phishguard-k53-notebooks --ExecutePreprocessor.timeout=600",
+    "exit_code": 0,
+    "code_cells": 21,
+    "errors": 0,
+    "code_sha256": "d25fef9e9aeab776da6b2f5055738f0c5a336042377ade9eeeba2e395ecfe75b",
+    "code_hash_definition": "SHA256 of UTF-8 JSON array of joined code-cell source texts, independent of ipynb line-list serialization",
+    "executed_output_sha256": "21d1b43fcfae3e7d656442f35cfd1c96e8e638ca735cbe1961839fb68fcb1894",
+    "rows_reported_removed": 0,
+    "metadata_url_norm_warnings": 1,
+    "publication_policy": "Notebook source/committed outputs unchanged in follow-up; Run All repeated successfully into /tmp."
+  },
+  "idempotence": {
+    "command": "rerun offline audit without source refresh",
+    "matching_output_count": 12,
+    "all_output_sha256_unchanged": true
+  },
+  "preserved_original_files": {
+    "count": 108,
+    "sha256": {
+      "configs/archive/e2_models_nested_v1.toml": "4e317f13607bc6cd10725a66ca61160d0646975347fe9d1774d561b948d25b8c",
+      "configs/baseline.toml": "0db33eb42a86c9ee82939e88c6aff9f6742c9fe8fe5b95f35228a5024e24b0d2",
+      "configs/e2_manifest.example.json": "172db270f87c070c92c1a55692addeca4674dbdeffe83ea97ab1d35d119cd25a",
+      "configs/e2_models.toml": "7145adc4c0a99e80f7c5ca402aac2fbb182eb6fb4a71b5724314d29053cc98a7",
+      "configs/week5.toml": "cff799cdea335eaa18f95d57fc91809470b071ba5acbec21f4814ba6059c823a",
+      "data/README.md": "06f1d53ee89c8b9a11ee839cef7a28c7103754280be1edd8a856b31e2ec2267b",
+      "data/abuse_type.csv": "3e354d6429c3bf280431a34d5265e6ae9fa3e83c68bace7f7b46a8c54878389a",
+      "data/attacks/p3_paraphrase.csv": "45f6214834e135de9ced7bb9b6dbce4be7f9af76d395c801be5e62205c443980",
+      "data/attacks/p3_paraphrase_band.csv": "5a8876ad1886ee0268a119e2807a89fd673ce4063c0a5f50c1b5e8fdd4e33343",
+      "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+      "data/external/benign_candidates.csv": "47c6202d844cbe71b2c791ef4e68347492aba1a87346e5a11b4db1abe9b7fe07",
+      "data/external/phishing_candidates.csv": "2fa321c19f34a3661c2bf1cb09472aec5c299579d19a352bd646b7795ec82212",
+      "data/interim/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "data/processed/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "data/splits/url_test.csv": "b692882e8ae26b2c0b217c090e92d3a19307a26acbfb3c8c89692db26d409bc9",
+      "data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+      "data/splits/url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f",
+      "data/vn_compphish.csv": "ce64567f4ab955b214b13a268546a460f2dd827b18432d0971b3f5a3ef06bbbf",
+      "models/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "models/README.md": "3124521bca2b593c911fe4ae73e24f759885d5ef7e2a228d78592190bbee1b96",
+      "reports/tables/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "reports/tables/04_cv_metrics.csv": "1d505f8cb00a72fe3a2e951182355455116f02e72ff59b64d88a755834cb2830",
+      "reports/tables/04_cv_summary.csv": "bf66dbb52a50b0757bb3e3e0b8456bb71daa3a2ff7e1ba6ce5d32dd1cf1114ab",
+      "reports/tables/04_error_diagnostics.json": "2adea147f43887e242c63fcc9e026c96e57f2a4ebf5de37fc6d2dc5586da9a38",
+      "reports/tables/04_error_examples.csv": "ffb7cf21227f2e2a8d2c106b0d8894c669a31df127aebe6ce7960c1b4b837708",
+      "reports/tables/04_error_notes.csv": "0c750c444b93174ccacbd1c3a022216921243a5486679cfd207b2f3bdabbeb7e",
+      "reports/tables/04_run_metadata.json": "5d1206cca5c6c2237ddad7e0ea60ca512b929dd51549a27956fbb2c36a23fb6f",
+      "reports/tables/04_validation_metrics.csv": "b7bd615277a0746919bbace24e8a51302171150d90bede89e917a0a4b7771270",
+      "reports/tables/05_brand_reference_worksheet.csv": "d9b2f3e362d8ab09434f62ac17d59a5532597d552b52875dc9ce31fc39dd08bd",
+      "reports/tables/05_cv_metrics.csv": "697a27868693aa90a0a9495676bc244cc4bb006a400f98fab524415dcfc17698",
+      "reports/tables/05_cv_summary.csv": "f12146d72fc43cee199f433661bbb248c19ca3de43932ea003345764055048a3",
+      "reports/tables/05_e1_lock.json": "ae573a076ad32425fc2de05c31c223ee989dfb95417aa3107e1be51673f92237",
+      "reports/tables/05_feature_benchmark.json": "c2d560fdf225d6f2e9a20b422b416e7bf83475ced848436326b65ecb4c8f6b39",
+      "reports/tables/05_fit_log.csv": "1c70f38b06acefefd0775418bfa7f7d125e85fdf764bc4d03872af4633fda99a",
+      "reports/tables/05_gov_edu_audit_decisions.csv": "4d618df98954b6397c83099d16ed783fd66eb529230c16d5061776955a330bf0",
+      "reports/tables/05_gov_edu_brand_audit.csv": "65f9986bf4554dea2af735eed31b7c0af3e9676fa6da443830d2df8264c4b660",
+      "reports/tables/05_inner_search.csv": "8664857ed50eaaa973c15402e110b922e3e01afe3911135948baa89dc03be187",
+      "reports/tables/05_matrix_X_brand_trainval_v1.manifest.json": "3d34c8f842f35e41cf80deb68c35cb7b93f7a89f37ec0e39f83615acf93f267a",
+      "reports/tables/05_matrix_X_brand_v1.manifest.json": "6ca6e20bc04c6a10f95756673dd72f1bc37852c18c67c2af6134fe522e97f546",
+      "reports/tables/05_readable_comparison.csv": "803de79b7d614be72e034a7fb2eb49632fa903d299c46a5df8516d2430f70ef8",
+      "reports/tables/05_readable_cv_metrics.csv": "eed030309a622395ddb2e05664cd59f4413a75574b1cc4c0386cfbe32e87f68e",
+      "reports/tables/05_readable_errors.csv": "0989bb5168fed37d82a4d466ca53128f8f44a56e5fe00ae3db10c7708b6e1773",
+      "reports/tables/05_readable_metadata.json": "d48e27c38b190c7cc992a3361c5f21f14f8cce372f35445ecb979afe3837d715",
+      "reports/tables/05_readable_parameters.csv": "ade0efa95aadb20ad03e9aa5108b8e66708003a8448c0ee5c978e8302a541edd",
+      "reports/tables/05_readable_validation.csv": "2cf7ed2750bb1fd0aaca68f506a0e04c0d634ebf098cd54ff4530304c3733832",
+      "reports/tables/05_reproduction_check.json": "02a2fdda023863fff58ec4fe342aa9fc5fb0e83040228df7146ab6a27478e1b7",
+      "reports/tables/05_resource_benchmark.csv": "9adad498953dbbb67ae27a7c70051f3e7ddad642d9a6029ff56e72dbe241c528",
+      "reports/tables/05_resource_metadata.json": "b9bb06eba73600f39f70126b5e7d6fadbda2275e7b31bed489ba970825d63848",
+      "reports/tables/05_run_metadata.json": "233d58ccfd6b377990a6ac14e369ccce40327007ef58010fc668ee79646d2208",
+      "reports/tables/05_selections.csv": "22285682bf9d137a059563a81cbcb055f13c60bebf5f1b30314573d2f1f2ce5c",
+      "reports/tables/05_split_audit.csv": "f6a7656740d8aa8c415d00e0e293a13edf68a7608b93f7a9ca3da22ec92f9709",
+      "reports/tables/05_train_check_v1_audit.json": "468f20d805bd8c8c565e980cfc27d14f2f287f5bb2d9169e159d6a69a215214d",
+      "reports/tables/05_validation_metrics.csv": "07b0b552371fca617de3e794d89d6e7190e4c99ed83546dccea98a6d4284cc20",
+      "reports/tables/06_ablation_metadata.json": "03b2137b9f53b3e189549414456534798ddb432d4f1bdf13e2f7172aca20e96f",
+      "reports/tables/06_brand_subgroups.csv": "8ba392547bacb77f832cbcdda51a9785471dbf01c492ce9952b7606d1297b3c9",
+      "reports/tables/06_comparison.csv": "ec2903fdce515ab0821297e085a57d857a3c40f2b17787e19d90cd52d1a9d074",
+      "reports/tables/06_cv_metrics.csv": "e823e724fb8b52e183c92412f2a0d72b70524e7b93b301aee79a02971307e522",
+      "reports/tables/06_deltas.csv": "1df459a09f3ad55757805e124580e9a14582fa61bb6d44fc47652a7c66a191bc",
+      "reports/tables/06_error_changes.csv": "12332d07e8fccbd4a59b222575d2b4ced9a2ca1d445e1071127bfb29c312af77",
+      "reports/tables/06_error_examples.csv": "529e887aa2850d8dc89355e55773ac8b3bd7c0bd309a50440da822c64e4308c0",
+      "reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+      "reports/tables/06_paired_folds.csv": "dd1ac5f23f387da25a428ed4751a92b2508e1024c7affde4a56e0eda6bfe2a12",
+      "reports/tables/06_parameters.csv": "0ebd67ee0d1d760b1097b8a8e53601d48f5e34775802109260f6c960abe77b17",
+      "reports/tables/06_resources.csv": "82f876aebb5f45ce03a4639f241c9bfaed73cc22f01b145a50b7c836ea14a82c",
+      "reports/tables/06_shortlist.csv": "bb5b65c41d5698dfc488897b44237fd4219d7f5b27ec3909060861c318bdcc0b",
+      "reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8",
+      "reports/tables/06_validation.csv": "51f5c2ebf98cc942aaa7bd886137ce7be8a57402de195c9190f1684ae3e8b57f",
+      "reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+      "reports/tables/06_verification.json": "3da54df1617f92f83cdad3b2c4280d5457e03ec514b5713d2c83313d012d48c4",
+      "reports/tables/week5/archived_e1_comparison.csv": "a5d21d4141af83f2b01a220863d9a673467f90fa97fd021911d3d2a4ed3b7d9a",
+      "reports/tables/week5/distribution_shift.csv": "ec77b9c19d02769efa0fafc676c64fe4f4333b7fafbd011d37274c2620aab540",
+      "reports/tables/week5/e2_feature_audit.json": "22cc2a35fa8c651c3fac672d813a22ae054f454f9b6f7272f23eb90eba91d1b4",
+      "reports/tables/week5/e2_paired_folds.csv": "8396915c52e5d772fa85aa8bcc45888e3bf9af294cdc96add089f653a0e31af4",
+      "reports/tables/week5/error_cases.csv": "a9c1a4e13590c14a662446f2928ef2707d09eb5bf35c83234959a599d1ec3a0a",
+      "reports/tables/week5/error_feature_attributions.csv": "8b4c58b1c8f0583c4aaef0800870010d0d966157e7b2fb9c253ee412d0b98134",
+      "reports/tables/week5/error_model_evidence.csv": "c13dfaab249d6e29d46b250711829595c9ff664c1350d05207b60b4a94f5fdb0",
+      "reports/tables/week5/error_sampling_pool.csv": "32bd0ca4f01a992148890e0fa0ccd22f12b0a05dd8021c63ac9329cd4eb2bd25",
+      "reports/tables/week5/error_taxonomy.csv": "40a4926d646d3792f48002fa045aa2705b3b08cd3c1710d69ef5bd7515ec164f",
+      "reports/tables/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320",
+      "reports/tables/week5/fold_metrics.csv": "ff73f1f9ebe3e6397ea9a7520e9f0b6be4fa2a89ee971eda135b97fb44f68028",
+      "reports/tables/week5/metrics.csv": "a9e92b2453a18863d8f7921b9ca12a10596f2673975e02cd4a4f0372e47fa172",
+      "reports/tables/week5/numerical_shift.csv": "a6790e0525f77340d8a6e8d37acd05e3264b3468b6618ffc07aeabd4eac5d8ae",
+      "reports/tables/week5/robustness_cases.csv": "f3d12a215bc15c4bdc5e5da0cba4f0f5a41ffbd4f74f71c7a753cbd846920146",
+      "reports/tables/week5/robustness_feature_deltas.csv": "6881acb212daa72ebbeb1c5d663068deb73f1dfcf519b6a0603f6f2af5046426",
+      "reports/tables/week5/robustness_summary.csv": "1a440f73f4f921bb94397a2ab3df11e2ae70b6b2185319c6d5f49e8831157c9f",
+      "reports/tables/week5/run_manifest.json": "03669ac544df91c37181ede23c337a5edfcbc5a3c97a65dd5912452d5a2f9a44",
+      "reports/tables/week5/source_audit_review.json": "7c59608dcd1741e519957dea08610c071c65f21a9cad14f78ca1b0dda7861a8c",
+      "reports/tables/week5/stratified_metrics.csv": "dc11f515fc5f52f0e1655bb7f923a5d296e7b3cf50be2b446f465f19b0b08a13",
+      "reports/tables/week5/verification.json": "b26906681c308d2356ef2adea82e99ae4f6a4496c3b075ae3530e283f006df3b",
+      "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
+      "src/phishguard_vn/brand_features.py": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b",
+      "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
+      "src/phishguard_vn/e2_audit.py": "8e25b1048f5f963a915099496c911da3a4f4283f37516028f83837871be4c957",
+      "src/phishguard_vn/error_analysis.py": "58f4b288522d0ef585359fa09f3b4a5112c1e7d445d4faa5be1bca578db6ab47",
+      "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
+      "src/phishguard_vn/evaluation_audit.py": "f9be5b860d7d7e839f7abd3c47532feb12eef0a45e1f17d4a57cc4479d7f86ed",
+      "src/phishguard_vn/experiments.py": "093789a02f55471389c1b5b5660e609be9fba161f450260efd1be677b00f4a17",
+      "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+      "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
+      "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
+      "src/phishguard_vn/prediction.py": "ad764cdb054565a8732192d07e4e4efb8077e1a90195048dac5f19e50f994535",
+      "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
+      "src/phishguard_vn/resources/brand_reference_v1.csv": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+      "src/phishguard_vn/robustness.py": "fcf9a9bcd65a85ec557e968a8ca213b45607fd8b82e741711bf86cbe2164e139",
+      "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
+      "src/phishguard_vn/url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
+      "src/phishguard_vn/week5.py": "3624461ada7fe75028256c5ba657ce8f64f07451d32d0e129955bc02c7f4ebb3",
+      "src/phishguard_vn/week5_reporting.py": "f549c81abdaedd051d7f974e406aea206d60b25f97aa21abc85723e4435f84af"
+    },
+    "ids_raw_urls_labels_sources_references_unchanged": true,
+    "core_dataset_splits_folds_training_features_reference_model_metadata_unchanged": true
+  },
+  "ignored_e1_cache_preservation": {
+    "baseline": "Earlier same-workspace EDA snapshot before this task",
+    "sha256": {
+      "data/interim/week5/e1_training_lineage.json": "791bbb47ae11f5132f74d6fe24df6cf59c0b920559f53ae6daf6d5c50b196433",
+      "data/interim/week5/e1_predictions.csv": "d217c6dad34756a38c226fb722f277dc420e054fbac21a0e2a642a61d3147630",
+      "data/interim/week5/metadata.csv": "7345453a7c08995f1596689c5ea5584b7094a9e67932df45ac8829a36cb2b083",
+      "data/interim/week5/features.csv": "b3eae0749a55b32bff738d15958f6837065353e3837b4c23642c1c9660fe741e",
+      "data/interim/week5/e1_provenance.json": "332937e91d8356a54c8eb3a654af2d8eae027393725fc4955ce33f40ad370fd9",
+      "data/interim/week5/e1_explanation_models.joblib": "b423bba186d37b2b460cecca1a9c3de00f596ad1e5d965746ee055561d4b8a91",
+      "data/interim/week5/e1_result.joblib": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+      "data/interim/week5/folds.csv": "1a2855eda729c90b70ca04e71bbd63fc7d4bc1ecb81e35debe16938b985d5863",
+      "data/interim/week5/exclusions.csv": "6f4c07bf91204ff4ef1f46da6ce27906af6533b0db525a4793f34d12afced320"
+    }
+  },
+  "matrix": {
+    "schema": "e2-brand-v1",
+    "rows": 167,
+    "feature_count": 20,
+    "nan_inf": 0,
+    "metadata_labels_in_X": false,
+    "slash_path_constant_zero": true,
+    "reference": {
+      "file": "brand_reference_v1.csv",
+      "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+      "n_brands": 45,
+      "status_counts": {
+        "verified": 45
+      },
+      "n_missing_source_accessed": 0,
+      "n_missing_source_url": 0,
+      "fully_verified": true,
+      "n_provenance_issues": 0,
+      "provenance_issues": [],
+      "n_brands_with_official_suffixes": 1,
+      "n_brands_with_typo_ignore": 1
+    }
+  },
+  "history": {
+    "recovered_commit": "2a0765c7ab5a7fbcf38b3a25e0e45ddab3f81309",
+    "phishing_rows": 74,
+    "benign_rows": 32,
+    "requested_75_manifest_found": false,
+    "all_original_archive_bytes_match_git": true,
+    "never_pooled_with_current_cohort": true,
+    "in_repository_resolution": "74 phishing records / 75 physical lines including header. No evidence of a separate exactly-75 manifest; no invented row."
+  },
+  "scientific_scope": {
+    "research_training_or_tuning": false,
+    "external_used_for_selection": false,
+    "new_human_verification": false,
+    "scheme_path_artifact_unified": true,
+    "all_leakage_or_source_bias_claimed_removed": false,
+    "official_benchmark_ready": false,
+    "current_real_external_metrics": null,
+    "new_ai_historical_document_reviews": true,
+    "core_test_scope": "Core released URLs read only for overlap checks; no Official Test labels used for training/tuning/selection/external scoring"
+  },
+  "artifact_sha256": {
+    "audit_manifest": "84d0bc5466eb59f1e6f3dd34b7eca4fd63cb3fd0b634becb69a6802ee8e99b23",
+    "audit_summary": "440c138ae216d69e785369aeb7aa2750dc9971db8dd6f2403923d0acf7dc64a7",
+    "benchmark_status": "fd01f08beb89572bc0e0ba8ccec362a4a165d7cb620d0c682a2dcb40c1d22c37",
+    "report": "c00fe55a21d43e31cc60f9faba5621155d310f168b64a8f7580ae3e9622aeb12"
+  },
+  "python": "3.14.0",
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "tldextract": "5.4.0",
+    "idna": "3.20",
+    "joblib": "1.6.0",
+    "nbclient": "0.11.0"
+  },
+  "document_review": {
+    "method": "ai_document_review",
+    "reviewer": "Codex (AI document review)",
+    "rows_reviewed": 167,
+    "review_status": {
+      "verified": 99,
+      "pending": 68,
+      "rejected": 0
+    },
+    "verified_by_label": {
+      "phishing": 92,
+      "benign": 7
+    },
+    "new_human_verification": false,
+    "human_verified": 0,
+    "scope": "hostname_historical",
+    "documents_with_hash_time_locator": 17,
+    "pending_reason_counts": {
+      "reference_tls_failure": 33,
+      "source_www_candidate_bare": 13,
+      "directory_now_portal_homepage": 4,
+      "self_site_without_independent_identity_evidence": 18
+    },
+    "verified_reviews_bound_to_assessed_documents": true,
+    "full_url_verified": 0,
+    "label_policy": "Inherited phishing class is historically warned impersonation/fraud, not proof of per-host credential theft. Benign is documented organizational identity, not current safety guarantee.",
+    "pdf_review": {
+      "source_reference": "https://corp.aeon.com.vn/wp-content/uploads/2024/09/AEON-Vietnam-Corporate-Profile-2024-English.pdf",
+      "file_sha256": "fb641fd39a7e04092741a1a4a8a068cceec4abc7ee3cc36917f0e75f5d087c53",
+      "page_reviewed": 6,
+      "total_pages": 10,
+      "hostname": "aeoneshop.com",
+      "no_candidate_url_visited": true
+    },
+    "source_sha256": {
+      "reports/annotations/k53_reviews.csv": "5b624117d7ea39f09144dc8467ecdf2fd460305d584587813e8a3044c2e22066",
+      "reports/annotations/k53_document_sources.csv": "7073d3dda40294befa66a7f6c5c4fc400d2d1727abe59d63029ec8b76c1c4fb2"
+    }
+  },
+  "teacher_discovery": {
+    "local_finalized_bundle_found": false,
+    "github_release_count": 0,
+    "github_actions_artifact_count": 0,
+    "cache_e1_not_substituted": true,
+    "v0_weights_not_relabelled_v1": true,
+    "result": "BLOCKED awaiting trusted finalized bundle and Core-CV selection provenance"
+  }
+}

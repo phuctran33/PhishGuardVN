@@ -1,0 +1,16 @@
+{
+  "created_utc": "2026-11-13T07:40:50.103623+00:00",
+  "git_revision": "1d10cdc6b4e6ab8776250fdd0e66239374a307fd",
+  "input_sha256": {
+    "configs/url_research_plan.json": "362a8eda78ac705b8476a783463eb4861d9171c49fac8859f572d3ae64613e82",
+    "src/phishguard_vn/research_preprocessing.py": "719fda2ed95754d497bf5f39dcaefc8aaa3577e51cefbfd88b20c0df2665104b",
+    "src/phishguard_vn/research_neural.py": "384c159081349fa061cf26fb999bcd68b34cf252fa947a76c5635652ebea9233",
+    "scripts/run_url_research.py": "2420219f583a2002d78436351a07dcb20dd1f011d7f119f31ff94f99b7ab2dac",
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/05_matrix_X_brand_trainval.csv": "32e5b54e0a3350588ca20378aa7eac0b0e2a1af94d2dc8a2a3edadb8fb490e09",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
+  },
+  "train_rows": 13078,
+  "teacher_finalized": false,
+  "source_worktree_note": "Research source was uncommitted at execution; input_sha256 identifies the actual code. git_revision points to the registered-plan commit, not a release of the research code."
+}

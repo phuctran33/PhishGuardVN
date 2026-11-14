@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_hist,outer1,0,0,"{""C"": 0.1, ""scale"": false}",0.913057362745117
+stack_hist,outer1,0,1,"{""C"": 0.1, ""scale"": false}",0.9161153889553523
+stack_hist,outer1,1,0,"{""C"": 0.1, ""scale"": true}",0.9141110928783877
+stack_hist,outer1,1,1,"{""C"": 0.1, ""scale"": true}",0.9170929906078815
+stack_hist,outer1,2,0,"{""C"": 1, ""scale"": false}",0.9138203099035229
+stack_hist,outer1,2,1,"{""C"": 1, ""scale"": false}",0.9170411748284953
+stack_hist,outer1,3,0,"{""C"": 1, ""scale"": true}",0.9140340019734713
+stack_hist,outer1,3,1,"{""C"": 1, ""scale"": true}",0.9171440267574044
+stack_hist,outer1,4,0,"{""C"": 10, ""scale"": false}",0.9139943963631285
+stack_hist,outer1,4,1,"{""C"": 10, ""scale"": false}",0.9171523234370107
+stack_hist,outer1,5,0,"{""C"": 10, ""scale"": true}",0.914020755560772
+stack_hist,outer1,5,1,"{""C"": 10, ""scale"": true}",0.9171540926753687

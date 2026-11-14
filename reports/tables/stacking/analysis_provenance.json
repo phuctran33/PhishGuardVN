@@ -1,0 +1,6 @@
+{
+  "source_sha256": "1e9d14b801b56fc4a7276cc71603a5b92d09b58d33119a7c0986484864cbb3cb",
+  "benchmark_manifest_sha256": "fd28f7a4a2f6b3f2db8179fe1b61e6608c2521d0d470a84bea26bc57bd8ad3fe",
+  "generated_utc": "2026-11-13T12:37:46.707280+00:00",
+  "training_stopped_before_measurement": true
+}

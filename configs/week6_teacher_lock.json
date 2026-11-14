@@ -1,0 +1,19 @@
+{
+  "teacher_finalized": true,
+  "selected_by": "core_train_group_cv",
+  "external_used_for_selection": false,
+  "model_name": "tfidf_linear_svm",
+  "feature_set": "url_raw_char_3_5",
+  "score_kind": "decision_function",
+  "decision_rule": "estimator.predict",
+  "threshold": 0,
+  "operating_point_scope": "fixed_core_protocol",
+  "bundle": {
+    "path": "models/teacher_tfidf_svm_v1.joblib",
+    "sha256": "5a6d9b500ee147ae2f6cc78f986ac3122658eab58dfd9ad636f11d0ba19494b5"
+  },
+  "selection_record": {
+    "path": "reports/tables/teacher_release/metadata.json",
+    "sha256": "999d03349d7ca879fbdeed6e8afab0fdd533f853706ef78c9def74c0bd2095e7"
+  }
+}

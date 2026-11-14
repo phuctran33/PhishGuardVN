@@ -1,0 +1,12 @@
+{
+  "status": "PREPARED_BLOCKED",
+  "official": false,
+  "blockers": [
+    "NO_FINALIZED_TRUSTED_TEACHER_ARTIFACT"
+  ],
+  "metrics": null,
+  "n_candidates": 167,
+  "n_evaluated": 0,
+  "representation": "host_only",
+  "note": "No candidate/model-predicted labels used as ground truth. No inference or training performed."
+}

@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_hist_lgbm,outer0,0,0,"{""C"": 0.1, ""scale"": false}",0.8912848711382053
+stack_hist_lgbm,outer0,0,1,"{""C"": 0.1, ""scale"": false}",0.9028897494673755
+stack_hist_lgbm,outer0,1,0,"{""C"": 0.1, ""scale"": true}",0.8934557988096118
+stack_hist_lgbm,outer0,1,1,"{""C"": 0.1, ""scale"": true}",0.9031225819650284
+stack_hist_lgbm,outer0,2,0,"{""C"": 1, ""scale"": false}",0.8919792589185311
+stack_hist_lgbm,outer0,2,1,"{""C"": 1, ""scale"": false}",0.9030701983344108
+stack_hist_lgbm,outer0,3,0,"{""C"": 1, ""scale"": true}",0.8925260996771407
+stack_hist_lgbm,outer0,3,1,"{""C"": 1, ""scale"": true}",0.9031733474574424
+stack_hist_lgbm,outer0,4,0,"{""C"": 10, ""scale"": false}",0.892356707207113
+stack_hist_lgbm,outer0,4,1,"{""C"": 10, ""scale"": false}",0.9031643388612483
+stack_hist_lgbm,outer0,5,0,"{""C"": 10, ""scale"": true}",0.8924316266649326
+stack_hist_lgbm,outer0,5,1,"{""C"": 10, ""scale"": true}",0.9032031570922573

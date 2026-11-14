@@ -1,0 +1,5 @@
+candidate,batch_size,serialized_pipeline_bytes,repeats,warmups,latency_p50_ms,latency_p95_ms,scope
+E2__mlp,1,38225,30,5,1.8121499742846936,2.327110004262067,PC predict + score; precomputed features; CPU threads=1
+E2__mlp,128,38225,30,5,2.2648499871138483,2.595609999843873,PC predict + score; precomputed features; CPU threads=1
+E2__hist_gradient_boosting,1,146992,30,5,2.5382500316482037,3.941919986391439,PC predict + score; precomputed features; CPU threads=1
+E2__hist_gradient_boosting,128,146992,30,5,4.688849992817268,5.608264994225465,PC predict + score; precomputed features; CPU threads=1

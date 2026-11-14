@@ -1,3 +1,7 @@
+> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](docs/teacher_v2_release.md). Earlier candidate/v1 status below is historical.
+
+> Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
+
 # PhishGuard VN
 
 Đồ án CSC14005 — phát hiện nguy cơ từ URL và nghiên cứu đặc trưng thương hiệu
@@ -6,6 +10,8 @@ trong bối cảnh Việt Nam.
 **Trạng thái tuần 4: đã có kiểm định dữ liệu, parser/features, EDA/Group CV và baseline Dummy/LR.**
 Baseline là kết quả ban đầu; chưa đánh giá official test và chưa chọn mô hình cuối kỳ.
 Xem [báo cáo baseline](reports/week4_baseline.md), [phân tích FP/FN và chênh lệch CV–Validation](reports/week4_error_analysis.md) và notebook `04_baseline_ml.ipynb`.
+
+Phần EDA/preprocessing được tổng hợp tại [báo cáo dữ liệu](reports/data_report_final.md), gồm thống kê Train-only cho 12 lexical + 8 brand features v1, URL text/keywords, quality, multicollinearity và bảng đối chiếu yêu cầu môn học. Không train model khi tái lập báo cáo này.
 
 **Mặc định chạy hoàn toàn local** bằng VS Code/Jupyter và môi trường `.venv` riêng.
 GitHub dùng để quản lý code; từng thành viên có thể chọn môi trường chạy khác nhau.
@@ -104,7 +110,18 @@ Trên macOS/Linux dùng `.venv/bin/python`.
 ```
 
 Notebook tự tìm root repo, đọc dữ liệu ở `data/` và config ở `configs/`.
-Chạy notebook theo thứ tự **01 → 03 → 02 → 04**. Mỗi bước tạo artifact cho bước kế tiếp.
+Chuỗi dữ liệu hiện tại là **01 → 03 → build E2 v1 Train/Validation → 02 → 05_source_bias**. Bước build bổ sung là dependency của phần brand EDA trong notebook 02; không dùng ma trận v0 cũ. Để checkout vẫn sạch khi build `--freeze`, lưu notebook đã chạy ở thư mục local bị Git bỏ qua:
+
+```bash
+python -m nbconvert --to notebook --execute notebooks/01_data_quality.ipynb --output-dir data/interim/eda_execution
+python -m nbconvert --to notebook --execute notebooks/03_url_features.ipynb --output-dir data/interim/eda_execution
+python scripts/05_build_matrix_x_brand.py --partition trainval --freeze
+python -m nbconvert --to notebook --execute notebooks/02_eda_and_splits.ipynb --output-dir data/interim/eda_execution
+python -m nbconvert --to notebook --execute notebooks/05_source_bias.ipynb --output-dir data/interim/eda_execution
+python -m pytest -q -rs
+```
+
+`--freeze` yêu cầu checkout sạch và reference đã verified. Bảng/hình báo cáo được tái tạo ở `reports/`; không sửa dữ liệu gốc hay manifest freeze đã commit. Notebook **04** thuộc bước train baseline riêng, không cần chạy để hoàn thiện báo cáo dữ liệu.
 
 ### 4. Dữ liệu ở ổ đĩa khác — tùy chọn
 
@@ -173,6 +190,51 @@ Môi trường và hash source/handoff của kết quả nằm trong `reports/ta
 Để đối chiếu kết quả đã lưu, dùng cùng phiên bản Python/thư viện ghi trong metadata;
 chỉ giữ seed giống nhau chưa đủ bảo đảm tái lập giữa các phiên bản scikit-learn.
 
+## Tuần 5 — phần ML của Phúc: đọc notebook trực tiếp
+
+Mở **[notebooks/05_advanced_models.ipynb](notebooks/05_advanced_models.ipynb)**.
+Tên file được giữ để không làm mất đường dẫn cũ; nội dung hiện là bản dễ đọc **v2**.
+Notebook khai báo LR, SVM, MLP, boosting rồi gọi trực tiếp `.fit()`, `.predict()` và tính metrics.
+Đọc phần một-fold LR trước, sau đó đến vòng lặp ba folds và `GridSearchCV`.
+Không cần lần theo `run_experiments`/`fit_candidate` của v1.
+
+Chọn Python `.venv` và **Run All** để train lại. Hoặc chạy cùng notebook từ terminal:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/train_week5.py
+.\.venv\Scripts\python.exe scripts/predict_week5.py https://example.com/a
+```
+
+- Tham số/grid đặt trực tiếp trong phần 3 của notebook; notebook là nguồn code train duy nhất.
+- Giữ 3 outer domain folds của Hưng, 2 inner group folds để chọn tham số bằng AP. Scaler fit trong pipeline.
+- SVM v2 dùng decision score và `.predict()`, không calibration/probability0.5. Các model còn lại dùng probability và `.predict()`.
+- Official validation chỉ bổ sung, test chưa chấm. Brand ablation/Teacher xem notebook E2 ablation bên dưới.
+- Kết quả chính: `reports/tables/05_readable_comparison.csv`, `05_readable_validation.csv`, `05_readable_errors.csv`.
+- Model: `models/week5_readable_models.joblib`. API/web có thể gọi `phishguard_vn.prediction.predict_url`.
+- Hướng dẫn từng bước và nhận xét: [reports/week5_readable.md](reports/week5_readable.md).
+
+**Lịch sử:** E1 giữ nguyên. V1 nested/calibrated giữ nguyên các bảng `05_*` cũ và model
+`week5_lexical_models.joblib`; xem [archive](reports/archive/week5_nested_v1/README.md).
+`experiments.py`, `week5_reporting.py`, TOML cũ và benchmark thuộc tuyến v1 nâng cao,
+không phải đường học/chạy chính. Chưa thay cấu trúc hoặc code của các bạn khác.
+
+## E1–E2 ablation tuần 5 — đã tích hợp phần Hy
+
+Mở [notebook E2 ablation](notebooks/05_e2_ablation.ipynb) sau notebook 05 để so sánh 12 lexical với 20 lexical+brand.
+Giữ cùng samples/folds/grid; code `.fit()`/`.predict()` nằm trực tiếp trong notebook.
+
+```powershell
+.\.venv\Scripts\python.exe scripts/05_build_matrix_x_brand.py --partition trainval
+.\.venv\Scripts\python.exe scripts/train_week5.py --ablation
+.\.venv\Scripts\python.exe scripts/predict_week5.py https://example.com/a --feature-set E2 --model mlp
+```
+
+[Báo cáo ablation](reports/week5_ablation.md) và [Teacher cards](reports/week5_teacher_cards.md).
+Hưng nhận trực tiếp ba file `reports/tables/06_{oof_predictions,validation_predictions,training_partitions}.csv.gz` cùng code qua repo.
+Sau khi commit/push và pull, đọc bằng `pd.read_csv` để audit; không cần nhận riêng, giải nén hay train lại.
+[Hướng dẫn bàn giao](docs/week5_phuc_handoff.md). Model giữ local trong `models/`.
+E2 là `e2-brand-v0`, reference **draft**, shortlist sơ bộ; Test chưa chấm, KD chưa chạy.
+
 ## Quy tắc dữ liệu và đánh giá
 
 - Baseline bắt đầu với core `gold` + `silver`; để bronze riêng.
@@ -201,3 +263,23 @@ PhishVN v3.1.0, tác giả Thai Nguyen Vu, DOI `10.17632/b97hxbxtpd.4`.
 README gốc tại [`docs/dataset_README.md`](docs/dataset_README.md).
 `LICENSE`, `CITATION.cff`, `MANIFEST.txt` và tài liệu dataset gốc được giữ nguyên.
 `LICENSE` áp dụng cho dataset; giấy phép code mới của nhóm chưa được lựa chọn.
+
+## Week 6: expanded model comparison (Teacher pending)
+
+- Notebook: [06_teacher_v1.ipynb](notebooks/06_teacher_v1.ipynb).
+- Results and limitations: [week6_teacher.md](reports/week6_teacher.md).
+- Reading guide and next steps: [week6_phuc_handoff.md](docs/week6_phuc_handoff.md).
+- Install training libraries: .venv/Scripts/python.exe -m pip install -e ".[teacher,test]".
+- Reproduce comparison: .venv/Scripts/python.exe scripts/train_teacher.py.
+- Teacher is not finalized; predict_teacher.py blocks until the team confirms model/input contract.
+
+
+## Nghiên cứu preprocessing tiếp theo
+
+Phần nghiên cứu A–F và bốn hướng neural được thực hiện tiếp trên cùng nhánh, giữ nguyên benchmark 13 model. Đọc [báo cáo nghiên cứu](reports/url_preprocessing_research.md); kế hoạch đăng ký ở configs/url_research_plan.json, kết quả và OOF ở reports/tables/url_research. Trạng thái chỉ là candidate_proposed, Teacher chưa finalized.
+
+## Teacher v2 candidate (research, not promoted)
+
+Teacher v1 remains the default. New stacking results and limitations: [report](reports/teacher_v2_stacking.md).
+Offline candidate inference and code flow: [handoff](docs/teacher_v2_handoff.md).
+Run `python scripts/predict_stacking_candidate.py --examples` in the recorded runtime environment.

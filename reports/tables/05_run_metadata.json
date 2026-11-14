@@ -1,0 +1,191 @@
+{
+  "experiment": {
+    "name": "week5_lexical_models",
+    "seed": 42,
+    "feature_set": "lexical_12",
+    "threads": 1
+  },
+  "config": {
+    "experiment": {
+      "name": "week5_lexical_models",
+      "seed": 42,
+      "feature_set": "lexical_12",
+      "threads": 1
+    },
+    "evaluation": {
+      "n_splits": 3,
+      "inner_splits": 2,
+      "calibration_splits": 2,
+      "primary_metric": "average_precision",
+      "decision_threshold": 0.5,
+      "use_test": false,
+      "validation_role": "supplementary"
+    },
+    "candidates": {
+      "logistic_regression": [
+        {
+          "class_weight": "none",
+          "C": 1.0,
+          "max_iter": 2000
+        }
+      ],
+      "logistic_regression_balanced": [
+        {
+          "class_weight": "balanced",
+          "C": 1.0,
+          "max_iter": 2000
+        }
+      ],
+      "svm_rbf": [
+        {
+          "C": 0.5,
+          "gamma": "scale",
+          "class_weight": "none"
+        },
+        {
+          "C": 2.0,
+          "gamma": "scale",
+          "class_weight": "none"
+        }
+      ],
+      "mlp": [
+        {
+          "hidden_layer_sizes": [
+            32
+          ],
+          "alpha": 0.001,
+          "max_iter": 1000
+        },
+        {
+          "hidden_layer_sizes": [
+            32,
+            16
+          ],
+          "alpha": 0.001,
+          "max_iter": 1000
+        }
+      ],
+      "hist_gradient_boosting": [
+        {
+          "max_iter": 150,
+          "max_leaf_nodes": 7,
+          "learning_rate": 0.1,
+          "l2_regularization": 1.0
+        },
+        {
+          "max_iter": 150,
+          "max_leaf_nodes": 15,
+          "learning_rate": 0.1,
+          "l2_regularization": 1.0
+        }
+      ]
+    }
+  },
+  "selected_model": "mlp",
+  "selection_rule": "mean outer AP; tie mean F1, lower mean FPR, model name; final hyperparameters from full-train inner group AP",
+  "feature_set": "lexical_12",
+  "feature_names": [
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len"
+  ],
+  "scope": {
+    "train_rows": 13078,
+    "train_phishing": 2074,
+    "validation_rows": 1585,
+    "validation_phishing": 24,
+    "test_evaluated": false,
+    "domain_audit_status": "no_overlap_among_resolved",
+    "excluded_ids": [
+      {
+        "id": "74648118-c397-5d04-ab64-9c2973953892",
+        "label": "phishing",
+        "split": "train"
+      },
+      {
+        "id": "27984223-c2e3-5068-a777-02f4becd0d10",
+        "label": "phishing",
+        "split": "train"
+      }
+    ],
+    "feature_set": "lexical_12",
+    "brand_ablation_status": "pending_Hy",
+    "teacher_status": "provisional_lexical_comparison_only"
+  },
+  "threshold": 0.5,
+  "pr_auc_definition": "average_precision",
+  "status": "lexical-only candidate; brand ablation and Teacher decision pending",
+  "python": "3.11.7",
+  "versions": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "tldextract": "5.4.0",
+    "idna": "3.20",
+    "matplotlib": "3.11.2",
+    "threadpoolctl": "3.7.0"
+  },
+  "runtime": {
+    "threadpool_limit": 1,
+    "parallel_search": false
+  },
+  "source_sha256_lf": {
+    "configs/e2_models.toml": "4e317f13607bc6cd10725a66ca61160d0646975347fe9d1774d561b948d25b8c",
+    "reports/templates/feature_dictionary.csv": "bfcb84e18c818b3ef0ba0a8086956385b638c0b592b8182f2e15e5c6496a52cc",
+    "scripts/predict_week5.py": "c99f17eb4e542384169088fa8ab8baff1b1abe277437d6f4242b96f91c621de2",
+    "scripts/train_week5.py": "32892697c2605a02212fc3dbdaca5c7c694f0b800794d5ef6925f5a30b2d678a",
+    "src/phishguard_vn/__init__.py": "0be740976e0a4cefc435ff6d56ab77d4a801d6ea339d4b9d2d2d60c96308b53d",
+    "src/phishguard_vn/data.py": "bc6902d84c5f281b57fd25ef84d020e5c9bd2e7e25c63f52317f4e23e240165c",
+    "src/phishguard_vn/evaluation.py": "13611fb34d968a81471d8e1cbc773014d40697f4c41fb0d263f59cf192e0f71b",
+    "src/phishguard_vn/experiments.py": "093789a02f55471389c1b5b5660e609be9fba161f450260efd1be677b00f4a17",
+    "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "src/phishguard_vn/modeling.py": "524c603c952b68a16a369e8965ea0c0b7253baec3bebbe359dbc71203b62feb0",
+    "src/phishguard_vn/paths.py": "930efb1aa8452d3a25fd127dbfec42ca31b06f25cb10c6975ae573b4ec43a6c9",
+    "src/phishguard_vn/reporting.py": "73c0ad5d624935d2a28c2a8d603bfe7d804f3addb119586cb875cba45bdcf86f",
+    "src/phishguard_vn/splits.py": "d61f1631096790b93082dfa8ad4f3e36472a3ac59f113526ebccb07c94948c9d",
+    "src/phishguard_vn/url_parser.py": "0ca974ef204ec025aeeb599d2f6460153b2e46f5f2af021b688d06c4e907102b",
+    "src/phishguard_vn/week5_reporting.py": "f549c81abdaedd051d7f974e406aea206d60b25f97aa21abc85723e4435f84af"
+  },
+  "source_manifest_sha256": "e4999ae0a0555e6a0edf86f84b7d8cdc35a3505f5683172ec95d756ee67d1f5d",
+  "input_sha256": {
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb",
+    "data/interim/03_registrable_domains.csv": "926cafce69aaee4347923e21ea3aab0b1def25d814b9d0db504529788c13ab1f",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
+  },
+  "artifact_sha256": "e7c3c254cb787ccadcb9efa51e192e3aa56145733f7f92116763f8176c61261e",
+  "artifact_bytes": 777428,
+  "e1_snapshot_sha256": {
+    "configs/baseline.toml": "0db33eb42a86c9ee82939e88c6aff9f6742c9fe8fe5b95f35228a5024e24b0d2",
+    "reports/week4_baseline.md": "2ab6cc2d99955046b3eb1fd7156151ddc9bd7b152434fb84ef889bba4fc7850d",
+    "reports/week4_error_analysis.md": "31be30758029542a7d16605b52c10b4b0d1bc5000948e8d9533d6a8587804f5f",
+    "reports/tables/04_cv_metrics.csv": "082e3c220cf0b500f2fdd8820efac756ff8933ec09a6598743b07f5301dd3544",
+    "reports/tables/04_cv_summary.csv": "3d1ce721887fd0bc795229e77dc9ac1ae7001912030f61b7de61a287c873fe51",
+    "reports/tables/04_error_diagnostics.json": "0bd07a6f068be9436348adf822674906365d331e53336729e9b0167e2d8a1ec9",
+    "reports/tables/04_error_examples.csv": "40e9ff2df9a58897b9ac3e932485ca575168118135015a9c2575ccf7bfcc0002",
+    "reports/tables/04_error_notes.csv": "14fac32afc13da9bbabde67bff6143a3dade201f42a416509e66c35293f18baa",
+    "reports/tables/04_run_metadata.json": "96dd132f1b710980609e7d30b36be1ad6687763196c290a8a85a07b72b9c6883",
+    "reports/tables/04_validation_metrics.csv": "3f07b4866eade4ca2abfd745cd14e15020fcf039a9630fb89f47968a63b872d1"
+  },
+  "hash_conventions": {
+    "source": "CRLF normalized to LF",
+    "input": "raw bytes"
+  },
+  "git_revision": "3e9001cac54f5027637e713c2d5f65d130bb17e3",
+  "git_worktree_status": "M pyproject.toml\n?? configs/e2_models.toml\n?? docs/project/week5_protocol.md\n?? notebooks/05_advanced_models.ipynb\n?? reports/tables/05_e1_lock.json\n?? reports/week5_e1_lock.md\n?? scripts/predict_week5.py\n?? scripts/train_week5.py\n?? src/phishguard_vn/experiments.py\n?? src/phishguard_vn/week5_reporting.py\n?? tests/test_experiments.py\n?? tests/test_week5_reporting.py",
+  "git_source_worktree_status": "?? configs/e2_models.toml\n?? scripts/predict_week5.py\n?? scripts/train_week5.py\n?? src/phishguard_vn/experiments.py\n?? src/phishguard_vn/week5_reporting.py",
+  "source_state": "modified_from_head",
+  "captured_at_utc": "2026-11-01T01:59:09.307079+00:00",
+  "provenance_note": "Captured before save_week5_results writes generated outputs. git_revision is HEAD at run time, not a claim that the run used a clean commit or the eventual report commit. source_state concerns only files in source_sha256_lf; that manifest identifies runtime sources/config (CRLF normalized to LF), including uncommitted changes. input_sha256 identifies handoff bytes; neither a later commit nor edited metadata retroactively changes the provenance of an earlier run."
+}

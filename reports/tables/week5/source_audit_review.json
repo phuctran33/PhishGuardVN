@@ -1,0 +1,74 @@
+{
+  "producer_revision": "79423ee721dc34d7ce8ca0ecf268c0282014eb82",
+  "population": "official_train_val",
+  "collection_protocol": "Read-only review of remote source-audit snapshot plus recomputation on eligible local Train/Validation metadata; no URL requests.",
+  "label_policy": "Original PhishVN benign/phishing labels retained; no semantic relabeling.",
+  "official_test_used": false,
+  "records": [
+    {
+      "source": "tinnhiem_org",
+      "n_rows": 1668,
+      "labels": [
+        "benign"
+      ],
+      "observation": "Eligible Train+Validation has 1668 rows and 1 label for this source; corroborates the producer source-label-confounding observation within this scope.",
+      "review_status": "offline_metadata_corrob_label_semantics_unverified"
+    },
+    {
+      "source": "tinnhiem_web",
+      "n_rows": 3633,
+      "labels": [
+        "benign"
+      ],
+      "observation": "Eligible Train+Validation has 3633 rows and 1 label for this source; corroborates the producer source-label-confounding observation within this scope.",
+      "review_status": "offline_metadata_corrob_label_semantics_unverified"
+    },
+    {
+      "source": "tinnhiemmang",
+      "n_rows": 2098,
+      "labels": [
+        "phishing"
+      ],
+      "observation": "Eligible Train+Validation has 2098 rows and 1 label for this source; corroborates the producer source-label-confounding observation within this scope.",
+      "review_status": "offline_metadata_corrob_label_semantics_unverified"
+    },
+    {
+      "source": "tranco",
+      "n_rows": 5105,
+      "labels": [
+        "benign"
+      ],
+      "observation": "Eligible Train+Validation has 5105 rows and 1 label for this source; corroborates the producer source-label-confounding observation within this scope.",
+      "review_status": "offline_metadata_corrob_label_semantics_unverified"
+    },
+    {
+      "source": "tranco_vn",
+      "n_rows": 2159,
+      "labels": [
+        "benign"
+      ],
+      "observation": "Eligible Train+Validation has 2159 rows and 1 label for this source; corroborates the producer source-label-confounding observation within this scope.",
+      "review_status": "offline_metadata_corrob_label_semantics_unverified"
+    }
+  ],
+  "source_files": {
+    "reports/week5_data_reliability.md": {
+      "sha256": "2db746d329851f19d3b93df168c7553fda92046595dcac9e94458d3b1095bb45",
+      "url": "https://github.com/phuctran33/PhishGuardVN/blob/79423ee721dc34d7ce8ca0ecf268c0282014eb82/reports/week5_data_reliability.md"
+    },
+    "docs/external_datasheet.md": {
+      "sha256": "0e0f1d72174fd0fd4726fb703675e0692c31320222d5502744dab45e3b3670a9",
+      "url": "https://github.com/phuctran33/PhishGuardVN/blob/79423ee721dc34d7ce8ca0ecf268c0282014eb82/docs/external_datasheet.md"
+    },
+    "notebooks/05_source_bias.ipynb": {
+      "sha256": "95fcffd683412da0862a76e165ec31411f29a0b5677dc23918b63e11cae5641a",
+      "url": "https://github.com/phuctran33/PhishGuardVN/blob/79423ee721dc34d7ce8ca0ecf268c0282014eb82/notebooks/05_source_bias.ipynb"
+    }
+  },
+  "eligible_metadata_sha256": "7345453a7c08995f1596689c5ea5584b7094a9e67932df45ac8829a36cb2b083",
+  "producer_report_scope": "Producer report describes the full corpus. This review does not reuse its Test statistics for model decisions or run Test predictions.",
+  "parser_reconciliation": "Producer hostname-presence checks differ from Hy PSL-resolved group eligibility. Two unresolved-domain Train positives remain excluded from E1; hostname presence is not sufficient for domain grouping.",
+  "external_pilot_status": "Datasheet v1 and proposed 150-300 candidate plan available; no actual reviewed/labeled pilot dataset found on this branch.",
+  "temporal_review": "Producer full-corpus missingness figures not re-estimated as E1 evidence. On eligible Train/Validation, 3766/14663 collected_at values are provided and parse with both current default and explicit DD/MM/YYYY or YYYY-MM-DD rules.",
+  "limitations": "All five eligible sources are single-label; within-source class effects cannot be identified from this population. Source dependence is observed; model shortcut causality remains unverified."
+}

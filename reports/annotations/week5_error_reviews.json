@@ -1,0 +1,512 @@
+{
+  "schema_version": 1,
+  "basis": "Original 40-case diversity sample; original labels unchanged; offline strings, metadata, exact E1 fitting-context arithmetic and fitting-only feature collisions. Semantic/root causes remain unverified.",
+  "cases": [
+    {
+      "id": "6e2fe1fa-4187-535a-9e4d-ed4f04f521d8",
+      "case_signature": "79d212d77fde51b7fd0b4cc0f7d10c365381f001365b14b64b5da947c44b160c",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The bhdtw token is a five-letter bare host under cn, with no path or visible login/brand token. The score lies just below the decision boundary.",
+      "hypothesis": "The low-entropy short-host vector also occurs in benign fitting records; the cn suffix is not represented categorically, so aggregate counts can conceal differences between those labels.",
+      "next_verification": "Compare the archived tinnhiemmang evidence for bhdtw against the cited benign identical-vector record; test a categorical-suffix ablation only inside Train folds.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "68b21c18-0edb-5b77-ac39-6054afcfbe75",
+      "case_signature": "8b313d1e9f4c93a3270307851f84917473c4711cc9b4b811201f7824109f900f",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The baohomnay token is a bare all-letter com hostname. Its news-like wording is visible text, not evidence of legitimacy.",
+      "hypothesis": "Token meaning and site content are unavailable to E1; the observed benign collisions and negative entropy term can leave this original phishing label below threshold.",
+      "next_verification": "Review the collection record for baohomnay and the benign collision record; check whether an offline abuse-category annotation explains the label without changing it.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "2aee13a2-eafb-5171-819f-e246b1c867a3",
+      "case_signature": "7815334e169db7efee6c7242a76a90a7b0fc982c81146e872e555397c1ab70e2",
+      "taxonomy": [
+        "domain_subdomain",
+        "subdomain_count_sensitivity",
+        "representation_collision"
+      ],
+      "observation": "The vntrip host includes the ordinary www subdomain, with two dots and a nine-character registrable domain. HTTPS is present in raw text but excluded from X.",
+      "hypothesis": "The positive subdomain term outweighs the negative dot/domain/entropy terms in this fold; the model cannot distinguish ordinary www usage from other subdomain patterns semantically.",
+      "next_verification": "Compare the archived vntrip record with www-stripped features offline; treat this as feature sensitivity, then compare other www benign OOF errors in Train without retuning on this case.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "9d403305-972e-51b5-af2d-8dc977647666",
+      "case_signature": "617bdd9487310dcf8a4625fbe25fe4b0693d2591908da7439827c74151cfdb86",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The hancapquang token is an all-letter net hostname with no path or query. This FP is only slightly above the fixed threshold.",
+      "hypothesis": "Length/entropy counts collide across original labels and contain no organizational context for hancapquang; a small positive net logit suffices for this borderline FP.",
+      "next_verification": "Inspect the exact collision example and the tinnhiem_web inclusion evidence for hancapquang; retain the locked threshold and report this as a low-margin case.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "7a73788a-0f81-5e4a-8573-e07c85e2fb19",
+      "case_signature": "249df936be931866c3ae295f70e0722d914d72fd251e087c459c63e612f427fb",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "lexical_patterns"
+      ],
+      "observation": "The abo2sadam hostname contains the digit 2, but no path, query or subdomain. No full-vector fitting match was found.",
+      "hypothesis": "The digit term raises the score in this fold; a digit within a Tranco-labeled hostname may resemble phishing count patterns without implying maliciousness.",
+      "next_verification": "Compare digit-bearing benign versus phishing Train OOF distributions and the archived Tranco record for abo2sadam; check whether removing that digit changes only count features in a labeled-independent sensitivity test.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "4e8262a1-336e-5819-9e98-d06e12be0475",
+      "case_signature": "10325d80311166d60f63e4ac95e501249917cbc00c8870173dedbf73e8a9ea28",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The bizflycloud token is a bare vn hostname, with entropy about 3.66 and no digits. The original label comes from tranco_vn.",
+      "hypothesis": "The positive entropy/length balance and cross-label collisions can produce this FP; the cloud-like wording is not explicitly encoded as a token.",
+      "next_verification": "Inspect the tranco_vn snapshot for bizflycloud and compare the fitting collision class support; test token features only as a separately nested Train ablation.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "82998996-e80e-5061-8609-18d984e0c795",
+      "case_signature": "4d2d0fabf43c186969a2ea41c77f8a02de028b9fa1f5fa52a57016166c89a9f1",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity"
+      ],
+      "observation": "The tuantaynguyen token is a 17-character bare net hostname with relatively repetitive letters and entropy about 2.87. No exact fitting-vector match exists.",
+      "hypothesis": "The negative entropy and absent-subdomain terms can outweigh the domain-length contribution; the name-like wording cannot establish either label offline.",
+      "next_verification": "Review the tinnhiemmang evidence for tuantaynguyen and inspect similar-length low-entropy Train cases rather than attributing this FN to a verified person-name mechanism.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "679a800b-9657-5e0b-ac73-5aab35bf14d2",
+      "case_signature": "8f127d94a5d3fc4675d81f5c682734b75fc96c6866698e49a6407b98571ffd38",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The dieniex token has an eleven-character all-letter com hostname and the same 12-feature vector and fold score as gateswq and wefinex.",
+      "hypothesis": "E1 is invariant to these distinct token identities because their aggregate counts and entropy coincide; many benign fitting collisions make the near-boundary FN unsurprising as a representation limit.",
+      "next_verification": "Compare all three original collection records and their shared benign collision example; evaluate whether their abuse categories require information outside lexical counts.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "40456d96-b073-562b-8a6c-468c96670b06",
+      "case_signature": "e2dcb249854cbef1415bd8bdd6aebff8a13d1a0ee5605aa6b362cddc74e63083",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The goldenowl hostname uses the asia suffix and no subdomain/path. Its raw HTTPS scheme is not a baseline feature.",
+      "hypothesis": "Asia is not a categorical input and the goldenowl token is reduced to counts; the positive net logit and fitting-label collisions explain the decision arithmetically, not semantically.",
+      "next_verification": "Inspect the tinnhiem_org evidence for goldenowl and its identical-vector phishing fitting example; compare suffix handling in the feature dictionary before proposing a Train-only ablation.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "0bd94564-7d97-5499-8668-7fe55bf4a40b",
+      "case_signature": "71b35ebeb82f22a73f9dfc5f86cd5a1e07ea4aa6671d98ea09858e2ca7aab375",
+      "taxonomy": [
+        "domain_subdomain",
+        "subdomain_count_sensitivity"
+      ],
+      "observation": "The lamdong.dcs structure has one subdomain and a short registrable domain, with two dots and no path. Government/organization identity cannot be verified from this text.",
+      "hypothesis": "The positive subdomain term is large despite the negative short-domain term; E1 has no identity feature distinguishing this source-labeled benign hierarchy.",
+      "next_verification": "Review the archived tinnhiem_web record for lamdong.dcs and compare other benign one-subdomain Train errors, keeping the parser PSL policy fixed.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "55cfcf83-0386-500a-8543-1e4adfcee35e",
+      "case_signature": "49992b2d0b9a753c8fded41fa6d160cfda9190d606bf6f721b9ff5a942dc251f",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The hashicorp token is an all-letter com hostname, scored only about 0.006 above threshold. No hashicorp identity lookup was performed.",
+      "hypothesis": "The nearly cancelling lexical terms and mixed-label identical vectors leave a small positive margin; organizational identity is absent from the representation.",
+      "next_verification": "Check the archived Tranco label record and identical-vector phishing example for hashicorp; quantify margin sensitivity without selecting a new threshold on held-out labels.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "bb06bda7-4971-5578-80f7-d95fc3782148",
+      "case_signature": "4e4617d927d62101cbd8392ae57af17746694b6d036d02e9206a49d55a914d24",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "lexical_patterns"
+      ],
+      "observation": "The 2fa token is a three-character label containing digit 2 under vn. Its extremely short total length differs from most training hosts.",
+      "hypothesis": "Short length and low letter count raise the fitted score; the token 2fa is not understood as an authentication-related term, and no opposite-label exact vector was observed.",
+      "next_verification": "Inspect the tranco_vn record for 2fa and report fitting supports for comparably short mixed-alphanumeric hosts; do not interpret the token as evidence of credential theft.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "22fd85e0-cb1b-5023-8ed1-34e430a7d3ad",
+      "case_signature": "3de905a9d29e2bec9849d5e70e86188d4756e6418d8bb37f866e0da7dd35c852",
+      "taxonomy": [
+        "domain_subdomain",
+        "subdomain_count_sensitivity",
+        "lexical_patterns",
+        "brand_cues"
+      ],
+      "observation": "The dangkyonline subdomain and vietcombank247 registrable label visibly contain registration-like wording, a bank-like token and digits 247. There is no URL path.",
+      "hypothesis": "E1 has no explicit brand-token identity. The negative dot-count and URL-length contributions dominate even with positive subdomain/digit terms, yielding a confident FN; impersonation remains unverified.",
+      "next_verification": "Use approved offline tinnhiemmang evidence to review the vietcombank247 label and claimed identity; later test fold-local brand features against this unchanged held-out prediction.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "71d0b5ed-19af-5b33-8bda-7299ca41539a",
+      "case_signature": "d19cf8190b42cc4527bcaa562a22fa6dad48aabf894d154f6b51255a500531d4",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "brand_cues",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The winbank token visibly contains bank under io, but E1 receives only aggregate counts. Its feature vector and score equal daubao in the same fold.",
+      "hypothesis": "Distinct meanings collapse to the same vector and benign fitting collisions; the bank substring does not affect E1 except through length/count/entropy.",
+      "next_verification": "Compare archived winbank and daubao label evidence plus the shared collision record; treat any future bank-token effect as a Train-only E2 ablation, not proof of impersonation.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "25cf507a-2766-5326-9e00-2b724107c219",
+      "case_signature": "c0504f597d5f138ae3c2762f5675d1a0d45f96c1e5cb225b1f4ff94e7840b8ba",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "near_threshold"
+      ],
+      "observation": "The vieclambencat token appears in a bare com hostname with an HTTPS scheme and no path; the score is just above threshold.",
+      "hypothesis": "Word-level meaning is lost in the 12 features; this vector has fitting matches but none of the opposite original class, so an exact mixed-label collision cannot explain it.",
+      "next_verification": "Inspect the tinnhiem_org record for vieclambencat and the full fitted term balance; compare nearby vectors in Train without asserting an unobserved collision.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "fbc2ecfa-7ef7-57a0-b2d7-d0423f49b954",
+      "case_signature": "1898967be046687422a2deb3b8c435d23a5b732a5b9463891ecddcb73aef9742",
+      "taxonomy": [
+        "domain_subdomain",
+        "subdomain_count_sensitivity"
+      ],
+      "observation": "The giaoducthudo.giaoducthoidai structure contains a long subdomain and a 17-character registrable domain. Both visible labels include education-like text, not verified publisher identity.",
+      "hypothesis": "A large positive subdomain term overcomes the negative length/dot terms; aggregate counts cannot use the relationship between the two education-like tokens.",
+      "next_verification": "Review the archived tinnhiem_web hierarchy for giaoducthudo and compare other long benign subdomain OOF cases; verify token-reference independence before any E2 use.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "8db0d463-6c13-5492-9a4f-91a8b937552e",
+      "case_signature": "8d8b005cf772dab0be5700a6edebbf6957da2c2a3675ae315777d73b494e5832",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The eldisgroup token is a bare net hostname with high character diversity and no digit/subdomain cue.",
+      "hypothesis": "Positive entropy and length terms plus mixed-label fitting collisions can produce this FP; the group-like token has no semantic channel in E1.",
+      "next_verification": "Inspect the archived Tranco record for eldisgroup and its opposite-label fitting collision; compare same-length net/com vectors without inferring legitimacy from the token.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "cf52ceb8-61bc-5b6a-a7a1-cf5842860f1e",
+      "case_signature": "0cab1d831608ac659513762a2ef53c37afffd18e519d3fc7557dd09365413ead",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The haraworks token is an all-letter vn hostname. Its full feature vector equals weupgroup despite different source metadata.",
+      "hypothesis": "The identical counts/entropy force the same fold prediction for haraworks and weupgroup; categorical identity and source are not model inputs.",
+      "next_verification": "Cross-check the tranco_vn haraworks record and tinnhiem_org weupgroup record offline, plus the shared phishing collision, to document representation ambiguity rather than a source feature leak.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "05072e1d-7898-54a9-8014-b69a4ef5553e",
+      "case_signature": "ea96a72d40c5bf4eb18bec92a5e6b3e185e01c3089a4b0b4a2fff0e6e41b1042",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "brand_cues",
+        "representation_collision"
+      ],
+      "observation": "The trummomo token visibly ends with momo under me, with low entropy and no path. This is the only sampled Validation FN.",
+      "hypothesis": "The low-entropy/short-domain balance yields a negative final-model logit even though a brand-like substring is visible; a benign fitting collision also shares this vector.",
+      "next_verification": "Ask the data owner for the archived trummomo event/evidence and abuse category; compare with the benign fitting collision, and do not tune on this one Validation positive.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "93e76255-61c4-53c3-8bd6-8eedc844330f",
+      "case_signature": "b2112714a07b85c03c50be1466382f48226f9ffef82a8f31a85340356e1ef0dc",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The nhatnamyvien token is a bare com hostname originally labeled benign by tinnhiem_org; HTTPS contributes no baseline feature.",
+      "hypothesis": "The final-model lexical balance is slightly positive and the vector also occurs under phishing Train labels; clinic/name-like wording is not understood by E1.",
+      "next_verification": "Review the archived nhatnamyvien organization evidence and the cited opposite-label Train record; preserve the Validation role and locked threshold.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "1b1979e5-bf71-562c-a536-d2d898135938",
+      "case_signature": "a2d52a6a8919225c1c975691ca2ee06b16e739f0c41ea88e2b17cc4f98f57837",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The congtysonha token is a bare vn hostname with no digits or subdomain, with a small positive Validation margin.",
+      "hypothesis": "Company-like wording is reduced to counts and entropy; the same vector occurs for both original Train labels, so lexical identity ambiguity can account for this decision pattern.",
+      "next_verification": "Inspect the tinnhiem_web evidence for congtysonha and the Train collision example; separate documentation of a company token from verification of real company ownership.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "e7be1879-1153-5212-95bc-3143f8257765",
+      "case_signature": "4ccde625f2fb45ec2eba563bf5effeb0a17e61e5a64113a7991e23fbf2e56757",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The sirviella token under com has the same entire E1 vector and final-model score as hanoitimes under vn, although their sources differ.",
+      "hypothesis": "The com/vn and token identities disappear into equal counts/entropy. E1 must score both equally; many phishing Train collisions demonstrate a representation limitation, not source leakage.",
+      "next_verification": "Compare sirviella and hanoitimes archived records side by side with the shared collision ID; document categorical suffix and token information omitted by E1.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "9ffc764a-2303-5483-8e41-b6ada263bba8",
+      "case_signature": "d47118f7d80b1885a077e898a9b9a87bbe07534755cb3913b18cf82bea08a781",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The hanoitimes token under vn has the same full vector and Validation score as sirviella under com. News-like wording is only a static textual cue.",
+      "hypothesis": "E1 cannot distinguish the two original benign strings or the phishing Train collisions using these identical aggregate vectors.",
+      "next_verification": "Review the tranco_vn hanoitimes snapshot and sirviella comparison offline; any news/brand-reference features must later be assessed with independent fold-local references.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "9f81061c-e205-59a0-ab33-3318f94ea405",
+      "case_signature": "8453decc86d753f0d064f4badebe15aaf84eb16a0452edfc7174ef2839b02ae7",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The xfcf token is a short repetitive bare xyz hostname; repeated x/f characters lower entropy to 2.5.",
+      "hypothesis": "The negative low-entropy term and benign vector collisions can suppress the score even for this original phishing label. Xyz is not represented as a categorical suffix.",
+      "next_verification": "Review the archived xfcf abuse evidence and matched benign fitting record; compare repetitive short-host Train cases and avoid assigning maliciousness from xyz alone.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "03a03512-5c76-52a6-b5b9-5aaf78bdb0a8",
+      "case_signature": "c7792442c277938e03179929404b62c1d607d5fb9d51d9638e8d79be927a92fc",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The lixi token is a short bare pro hostname with entropy 2.75; the token could have several meanings that the URL string cannot resolve.",
+      "hypothesis": "The fixed linear balance and many benign identical-vector records leave this original phishing label below threshold; there is no categorical pro or token feature.",
+      "next_verification": "Inspect the tinnhiemmang lixi evidence for the actual abuse category, and compare the fitting collision record without asserting a reward-scam mechanism from the token.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "6fa3beb4-4686-5e8a-b940-c29dc75509aa",
+      "case_signature": "520aad7bc89935a69401476816103d35fcdb5a0c7dfb5726e0a47333fc58a49c",
+      "taxonomy": [
+        "domain_subdomain",
+        "subdomain_count_sensitivity"
+      ],
+      "observation": "The nangluongvietnam hostname has a www subdomain and a long 19-character registrable domain, with no path or digits.",
+      "hypothesis": "The large positive subdomain term and positive domain-length term produce a high FP despite negative total-length contribution; www is an ordinary pattern whose meaning E1 cannot represent.",
+      "next_verification": "Inspect the tinnhiem_org nangluongvietnam snapshot and other www benign OOF cases; use a separate static www-removal sensitivity check without treating it as new labeled ground truth.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "ded8609d-abbb-59c4-9ba3-02630a77cd8c",
+      "case_signature": "2d63913a411ef5b1c19c20a4cdc229c2fb8c9249f521f087ff4ee01ee25beef5",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The dongthapbssc token is a bare vn hostname with relatively diverse letters; location-like wording alone does not identify its owner.",
+      "hypothesis": "Positive entropy/length terms and original-label collisions increase its score; the model has no channel for regional or institutional semantics.",
+      "next_verification": "Review the tinnhiem_web dongthapbssc record and opposite-label fitting collision; compare similarly diverse all-letter Train hosts before proposing an entropy interaction.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "f3864c51-c2a9-55f8-a894-1f5e1662eb28",
+      "case_signature": "e0b3e5b890d8ff15bc9ee305d7550bd1c0fe8ac808c65d865b4cb633dff565ed",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "near_threshold"
+      ],
+      "observation": "The sawitindonesia token is a longer all-letter com hostname, scored near the boundary. Exact fitting matches exist but all have the same original benign label.",
+      "hypothesis": "The global linear boundary can classify this local benign-only exact vector as positive; this is not an observed mixed-label exact collision.",
+      "next_verification": "Inspect all same-vector fitting rows for sawitindonesia and their weighted loss contributions; verify the Tranco record, and keep any class-weight comparison confined to existing Train-CV results.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "7ea3d802-1d51-5e0a-9561-4acb9ebece24",
+      "case_signature": "eb16bfac38d74db32a64261b68b95dd2d7a5c8323aae2fe72d6e73b4dbd8dde5",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The xwatch token is a short all-letter vn host, with no subdomain or path. Its FP margin is small.",
+      "hypothesis": "Short URL/letter-count terms and mixed-label fitting collisions leave a slightly positive logit; the watch-like token is not modeled semantically.",
+      "next_verification": "Check the archived tranco_vn xwatch label and opposite-label fitting record; document the low margin rather than selecting a case-specific decision threshold.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "26f9b36f-d6d4-5b2a-8037-564786cfdcb6",
+      "case_signature": "29b55c0e7ff4dc5144083185cfc85042a26a6f8550a4348656aa952cc55d4631",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The gateswq token under net shares all 12 features and the fold score with dieniex and wefinex despite different suffix/token strings.",
+      "hypothesis": "Aggregate statistics collapse these unrelated strings, and the same vector frequently carries original benign fitting labels; suffix identity cannot rescue the FN in E1.",
+      "next_verification": "Review the gateswq collection evidence together with the two same-vector FNs; compare categorical suffix features only in a predeclared Train-fold ablation.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "a9bd7432-3cc7-5941-9c0a-0e784bb7cf8b",
+      "case_signature": "dedd0e963fc9021c158c989c42f4bd7a5a491b1cc87e4053c3801b54e9a23ae0",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The wefinex token under app has the identical feature vector and score as dieniex/com and gateswq/net in fold 1.",
+      "hypothesis": "The app suffix and wefinex text are reduced to equal counts/entropy, making these three distinct strings indistinguishable to this E1 model.",
+      "next_verification": "Inspect the archived wefinex label basis and abuse scope; compare with the other same-vector cases before interpreting any future brand/reference feature as an improvement.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "aad74081-cbb3-5ee8-9605-50194fd40e60",
+      "case_signature": "ffec4f9c3f5047d6b18d24d4c24cf6224290adaa88daf7eda7d239434811a78c",
+      "taxonomy": [
+        "domain_subdomain",
+        "subdomain_count_sensitivity",
+        "lexical_patterns"
+      ],
+      "observation": "The phuong12.vungtau.baria-vungtau.gov hierarchy has two subdomain labels, digits 12 and a hyphen, with four dots and no path. The gov suffix is visible but does not verify authority offline.",
+      "hypothesis": "Strong correlated subdomain/dot terms partly cancel, leaving a modest positive logit; E1 has no categorical government-suffix or organization-identity feature.",
+      "next_verification": "Review the archived tinnhiem_org hierarchy and parser registrable-domain decision; inspect the paired subdomain/dot terms jointly, not as independent causal importance scores.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "34b4ad78-da6a-582e-9307-6c7abc5eaf29",
+      "case_signature": "78f897e73cd9a3e398d139fbf19b71d96d54f3793ef349d36c1e3f2440e5ff19",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The hotelgiatot token is an all-letter bare com hostname, only about 0.006 above threshold. Hotel-like wording is not evidence of business status.",
+      "hypothesis": "Almost cancelling linear terms and one opposite-label fitting collision leave this borderline FP; no semantic accommodation/business feature exists.",
+      "next_verification": "Check the tinnhiem_web hotelgiatot inclusion evidence and the cited phishing collision; record margin sensitivity without optimizing a threshold on this held-out case.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "61e16f16-6c5e-5066-987f-987ab6a508eb",
+      "case_signature": "07c51ce50257dad3c24bcc0ee083b032b2911f6e4fbd37b6e14fd4e2b9e543c5",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The global.fujitsu string has a two-label hostname but the parser treats fujitsu as the public suffix, giving no subdomain. No brand identity lookup was performed.",
+      "hypothesis": "Categorical branded-suffix identity is absent, while counts/entropy collide with phishing fitting labels; parser output should be distinguished from a failure to parse.",
+      "next_verification": "Inspect the pinned PSL interpretation for global.fujitsu offline and the archived Tranco record; verify any future brand dictionary entry independently of this evaluation label.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "d0c43a3b-1a39-517f-b572-97417a3fd5dc",
+      "case_signature": "a669470e10725c84cf894ec24cd7921c5cfe58513565b55e57ceb11f58977fcb",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "lexical_patterns",
+        "representation_collision"
+      ],
+      "observation": "The 123host token contains three leading digits under vn, with no subdomain/path and a high FP score.",
+      "hypothesis": "The positive digit contribution is large in this fold; legitimate-looking service tokens with digits can be indistinguishable from phishing count patterns without verifying the service.",
+      "next_verification": "Review the tranco_vn 123host evidence and its phishing fitting collision; compare leading-digit benign Train errors and coefficient stability across the fixed folds.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "a21f7268-f289-58d5-a3c2-ac83ddd847a5",
+      "case_signature": "49da060246209b87b33d64c20c5747fd6e698d7841daa680738a998cd867e353",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The dltp token is a seven-character bare vn hostname, with the smallest absolute margin among these sampled FNs.",
+      "hypothesis": "The net logit is barely negative and the vector has many benign fitting collisions; this is a representation/boundary case, not evidence of an incorrect label.",
+      "next_verification": "Inspect the original dltp event and exact collision support; report its score precision and fixed threshold without retuning on this near-tie.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "e29de6fb-8ee4-572b-b388-929e76c10a17",
+      "case_signature": "a08c92d228d5c16b1f6e1d6905d19ac77bece1b2308c3726a695d52ef9259eaf",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The daubao token under com has exactly the same feature vector and fold score as winbank under io; word meanings differ but counts coincide.",
+      "hypothesis": "E1 cannot use either the bank substring in winbank or the daubao token semantics; benign fitting collisions and the fixed balance yield the same near-boundary FN.",
+      "next_verification": "Compare archived daubao and winbank records plus the shared collision, and check whether offline abuse categories expose information missing from lexical counts.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "c84247d5-9614-55bc-823c-aae098d52a2e",
+      "case_signature": "3d7c4ca856a3288ed1a7ffff6dea76006e325feb2c0ec712ee004ccc824de943",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The weupgroup token under vn, with an HTTPS scheme, has exactly the same features and fold score as haraworks from another source.",
+      "hypothesis": "HTTPS and source are excluded from X; their equality is an expected consequence of the same lexical vector, while mixed-label fitting matches expose ambiguity.",
+      "next_verification": "Cross-check weupgroup organization evidence and the haraworks comparison; verify identical extractor inputs rather than interpreting equal scores as use of source metadata.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "57f27562-0a5a-5124-b632-f028b03ba7c0",
+      "case_signature": "5caae6ba220191b72cb1271661aaa6fad93599f17085d17917234ba504606718",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision",
+        "near_threshold"
+      ],
+      "observation": "The tksic token is a short bare vn hostname with entropy exactly 3.0, no digits and a small positive FP margin.",
+      "hypothesis": "The short-host count pattern is shared with original phishing fitting records, so the small positive logit does not establish suspicious token meaning.",
+      "next_verification": "Review the tinnhiem_web tksic snapshot and cited fitting collision; compare short-host Train supports while keeping suffix and threshold policies fixed.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    },
+    {
+      "id": "28e03537-b2db-548d-a2ca-041a31746e5a",
+      "case_signature": "0305baf0f820aa3dcc011729fdc77766c79d1313e4356896f3d6c8f777321066",
+      "taxonomy": [
+        "bare_host_lexical_ambiguity",
+        "representation_collision"
+      ],
+      "observation": "The bustle token is an all-letter com hostname, with no path, query or subdomain and a modest positive score.",
+      "hypothesis": "Token identity is discarded and the vector has both original Train labels; aggregate character diversity and length can therefore produce an FP without a visible phishing cue.",
+      "next_verification": "Inspect the archived Tranco bustle record and the opposite-label fitting example; evaluate token/reference additions only in the matched E2 protocol.",
+      "authorship": "Codex offline engineering review; no human semantic or label verification"
+    }
+  ]
+}

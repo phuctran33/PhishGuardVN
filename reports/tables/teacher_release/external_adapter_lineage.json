@@ -1,0 +1,18 @@
+{
+  "revisions": [
+    {
+      "path": "src/phishguard_vn/external_pilot.py",
+      "historical_sha256": "ea396f57ce8942072b3f9a12bf07bac59fd6b212d310f4a8631540c9664b715d",
+      "current_sha256": "0116eb4d891a2771d646fd36e2b605b7916fd1249878d3c6491d20392e14c780",
+      "change": "text_teacher_dispatch_only",
+      "evidence": "Removing exactly the text dispatch restores historical source hash; eligibility/metrics unchanged."
+    },
+    {
+      "path": "scripts/evaluate_external_pilot.py",
+      "historical_sha256": "ca80adaecf0564f44546cd040f6c9d7653bdafb355de9bc4aa33ab0dcf699659",
+      "current_sha256": "98c6e28ccb09f8748d282468249c2b1c7160492547836fb3a9494245b60912ea",
+      "change": "reviewed_text_teacher_cli",
+      "evidence": "CLI now uses explicit adapter lineage and separate run outputs; original audit manifest/labels/eligibility retained."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "python_runtime": {
+    "implementation": "CPython",
+    "major": 3,
+    "minor": 11
+  },
+  "selected_by": "core_train_group_cv",
+  "external_used_for_selection": false,
+  "official_test_evaluated": false,
+  "decision_rule": "score >= threshold",
+  "operating_point_scope": "full_train_group_oof_fpr_target_0.01",
+  "threshold": 0.6945740700635259,
+  "bundle": {
+    "path": "models/teacher_v2_candidate.joblib",
+    "sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1"
+  },
+  "teacher_finalized": true,
+  "promoted": true,
+  "model_version": "teacher-stacking-v2",
+  "candidate_lock": {
+    "path": "configs/teacher_v2_candidate_lock.json",
+    "sha256": "e393942a6001f4fab55967c9d34bd09c92e37bff5b1dc134caf57d272de5652b"
+  }
+}

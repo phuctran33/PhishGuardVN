@@ -1,0 +1,5 @@
+scope,column,n,missing,parsed,invalid_nonmissing
+raw,collected_at,53116,31455,21661,0
+raw,scraped_at,53116,0,53116,0
+core_train,collected_at,13080,9345,3735,0
+core_train,scraped_at,13080,0,13080,0

@@ -1,0 +1,22 @@
+experiment,status,note
+hybrid_e1,completed,resumed persisted family
+hybrid_brand,completed,resumed persisted family
+hybrid_e2,completed,resumed persisted family
+hybrid_e2_w0p25,completed,resumed persisted family
+hybrid_e2_w4,completed,resumed persisted family
+regex,completed,resumed persisted family
+char_regex,completed,resumed persisted family
+l1_select,completed,resumed persisted family
+bpe,completed,resumed persisted family
+wordpiece,completed,resumed persisted family
+unigram,completed,resumed persisted family
+canonical,completed,resumed persisted family
+canonical_lower,completed,resumed persisted family
+host_only,completed,resumed persisted family
+count,completed,resumed persisted family
+binary,completed,resumed persisted family
+log_tf,completed,resumed persisted family
+char_cnn,completed,
+fasttext_style,completed,
+ft_transformer,completed,
+pretrained_url_transformer,completed,

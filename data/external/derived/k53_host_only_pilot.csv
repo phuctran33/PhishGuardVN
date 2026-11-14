@@ -1,0 +1,168 @@
+id,snapshot_id,model_input_host,label,source,review_status,eligible_host_only
+ext_pilot_phishing_0001,k53_current_167,acb.chamsoc-the-uudaikhachhang-tructuyen.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0002,k53_current_167,acb.chamsockhachhang-capnhatuudai-thang11.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0003,k53_current_167,acb.chamsockhachhang-hotrothe-thang11.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0004,k53_current_167,acb.chamsockhachhang-thang10-tructuyen.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0005,k53_current_167,acb.chamsockhachhang-tructuyen-capnhatuudai.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0006,k53_current_167,acb.chamsockhachhang-tructuyen-thang10.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0007,k53_current_167,acb.chamsockhachhang-tructuyenthang10.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0008,k53_current_167,acb.chamsockhachhang-uudaithehapdan-thang10.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0009,k53_current_167,acb.chamsockhachhang-uudaithethang10.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0010,k53_current_167,acb.chamsockhachhangthe-thang9.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0011,k53_current_167,acb.chamsockhachhangthe-uudai-thang10.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0012,k53_current_167,acb.chamsocthekhachhang-thang10-tructuyen.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0013,k53_current_167,acb.chamsocthekhachhang-thang9.online,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0014,k53_current_167,acb.chamsocthekhachhang-tructuyen-thang8.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0015,k53_current_167,acb.hotrokhachhang-uudaithetructuyen.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0016,k53_current_167,acb.uudaikhachhang-chamsocthe-tructuyen.online,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0017,k53_current_167,acb.uudaikhachhangthe-thang10-tructuyen.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0018,k53_current_167,acb.uudaikhachhangthe-tructuyen-thang9.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0019,k53_current_167,acb.uudaithe-chamsockhachhang.online,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0020,k53_current_167,acb.uudaithekhachhang-thang10.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0021,k53_current_167,acb.uudaithekhachhang-tructuyen-thang9.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0022,k53_current_167,acb.uudaithekhachhang-tructuyen-thang9.com.vn,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0023,k53_current_167,agribanks.biz,phishing,Agribank official warning of spoofed domains,pending,False
+ext_pilot_phishing_0024,k53_current_167,chinhphu.dancuquocgia.org,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0025,k53_current_167,chinhphu.hodancu.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0026,k53_current_167,dichvucong.bcavnvngov.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0027,k53_current_167,dichvucong.capnhatcutru.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0028,k53_current_167,dichvucong.dinhdanhcutru.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0029,k53_current_167,dichvucong.snggov.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0030,k53_current_167,dichvucong.vnvgov.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0031,k53_current_167,dichvucongbca.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0032,k53_current_167,dichvuconginfo.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0033,k53_current_167,dkvn.govkp.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0034,k53_current_167,ebanking-shopee.vn,phishing,BIDV official consumer fraud warning,verified,True
+ext_pilot_phishing_0035,k53_current_167,govn.cc,phishing,ACB official list of fake websites,pending,False
+ext_pilot_phishing_0036,k53_current_167,ibank-shopee.vn,phishing,BIDV official consumer fraud warning,verified,True
+ext_pilot_phishing_0037,k53_current_167,ibanking-shopee.vn,phishing,BIDV official consumer fraud warning,verified,True
+ext_pilot_phishing_0038,k53_current_167,newagribank.cc,phishing,Agribank official warning of spoofed domains,verified,True
+ext_pilot_phishing_0039,k53_current_167,org.govqp.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0040,k53_current_167,shopeemobilebanking.vn,phishing,BIDV official consumer fraud warning,verified,True
+ext_pilot_phishing_0041,k53_current_167,vaagribank.cc,phishing,Agribank official warning of spoofed domains,verified,True
+ext_pilot_phishing_0042,k53_current_167,vn-agribank.cc,phishing,Agribank official warning of spoofed domains,pending,False
+ext_pilot_phishing_0043,k53_current_167,vn-eid.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0044,k53_current_167,vnagribank.cc,phishing,Agribank official warning of spoofed domains,pending,False
+ext_pilot_phishing_0045,k53_current_167,vnagribanks.cc,phishing,Agribank official warning of spoofed domains,pending,False
+ext_pilot_phishing_0046,k53_current_167,vssid.govne.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0047,k53_current_167,vssid.govnn.cc,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0048,k53_current_167,vssids.com,phishing,ACB official list of fake websites,verified,True
+ext_pilot_phishing_0049,k53_current_167,dichvucong-vn.com,phishing,Bac Ninh government local public-service scam alert,verified,True
+ext_pilot_phishing_0050,k53_current_167,dichvucong.cvgov.com,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0051,k53_current_167,dichvucong.dancuso.com,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0052,k53_current_167,dichvucong.dulieuqucogia.com,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0053,k53_current_167,dichvucong.hhlpa.com,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0054,k53_current_167,dichvucong.xgovvn.net,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0055,k53_current_167,nganhangsaison.org,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0056,k53_current_167,policeonline.club,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0057,k53_current_167,sotuyenvcb.vietcombanker.com,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0058,k53_current_167,vdbank.com.vn,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0059,k53_current_167,vietgcv.cc,phishing,Quang Ngai police publication of NCSC warning,verified,True
+ext_pilot_phishing_0060,k53_current_167,558-558-559.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0061,k53_current_167,acb.chamsockhachhang-uudaithetructuyen-thang8.online,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0062,k53_current_167,amazoni1.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0063,k53_current_167,amazonl4.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0064,k53_current_167,applecenter.info.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0065,k53_current_167,baovietin.top,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0066,k53_current_167,baovietn.vip,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0067,k53_current_167,baovietvay.top,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0068,k53_current_167,bidvnanghanguutien.duy2.name.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0069,k53_current_167,cct-giaohangtietkiem.com,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0070,k53_current_167,chinh-phu.cc,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0071,k53_current_167,chinhphu-vn.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0072,k53_current_167,chinhphu.dulieucutru.org,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0073,k53_current_167,chinhphu.khaibaoshkdt.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0074,k53_current_167,chinhphu.thongtincutru.org,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0075,k53_current_167,dautuphattrienvnfic.com,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0076,k53_current_167,dichvucong.thongtincancuoc.org,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0077,k53_current_167,dichvucong.wrgov.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0078,k53_current_167,dienmayxanh389.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0079,k53_current_167,doitac.shb-bank.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0080,k53_current_167,evnspc.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0081,k53_current_167,evnspccskh.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0082,k53_current_167,ggiao.hangtietkiem.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0083,k53_current_167,giaohangtietkiem247.com,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0084,k53_current_167,giaohangtietkiem247.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0085,k53_current_167,giaohangtietkiem247.top,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0086,k53_current_167,giaohangtietkiemm.net,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0087,k53_current_167,giaohangtietkiemvn.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0088,k53_current_167,hdbank.chamsockhachhang-hotro247-capnhatuudai-thang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0089,k53_current_167,hdbank.uudaidacbiet-khuyenmaikhachhang-thang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0090,k53_current_167,hdbank.uudaikhachhang-trungtamcapnhatthe-thang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0091,k53_current_167,hethongtikicareers24.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0092,k53_current_167,hethongtikicareers24h.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0093,k53_current_167,hotro0nline28.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0094,k53_current_167,ihomeficvn.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0095,k53_current_167,kbthuhoivontreo.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0096,k53_current_167,khachhangcnvib.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0097,k53_current_167,kpd63519s.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0098,k53_current_167,kyaj11.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0099,k53_current_167,lazada68.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0100,k53_current_167,mbbkh-canhan.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0101,k53_current_167,mmbonline01.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0102,k53_current_167,nappxutiktok.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0103,k53_current_167,nuk36952s.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0104,k53_current_167,nzu62352s.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0105,k53_current_167,ocb.hotrokhachhang-tructuyenthe.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0106,k53_current_167,ocbcccreonline.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0107,k53_current_167,sdfsshop1.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0108,k53_current_167,sellings-global.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0109,k53_current_167,sendotv.shop,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0110,k53_current_167,shinhan.hotrokhachhang-uudaithemoi-thang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0111,k53_current_167,shopeesopp.com,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0112,k53_current_167,sjfku11.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0113,k53_current_167,sjfku88.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0114,k53_current_167,sp56188p.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0115,k53_current_167,sp61889p.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0116,k53_current_167,taichinheximbak.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0117,k53_current_167,tdke03.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0118,k53_current_167,tikicareers.vip,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0119,k53_current_167,tikijaj3.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0120,k53_current_167,tikimuasam24h.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0121,k53_current_167,tikinew.club,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0122,k53_current_167,tikivn84.com,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0123,k53_current_167,tiktok-svip11.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0124,k53_current_167,ungdung6buoc.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0125,k53_current_167,vaythechapvib.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0126,k53_current_167,vib.cham-soc-the-truc-tuyen.com.vn,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0127,k53_current_167,vib.chamsockhachhang-capnhatthethang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0128,k53_current_167,vib.khach-hang-nang-han-muc-ca-nhan.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0129,k53_current_167,vietnamtctgooc.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0130,k53_current_167,vn-chinhphu.com,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0131,k53_current_167,vnsehotro.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0132,k53_current_167,vnsendotv.vip,phishing,NCSC warning republished by Dak Lak government,pending,False
+ext_pilot_phishing_0133,k53_current_167,vnviettel.com,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0134,k53_current_167,vpbank.chamsockhachhang-hotro247-trungtamcapnhatthe-thang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0135,k53_current_167,vpbank.khuyenmaidacbiet-uudaikhachhang-thang11.com.vn,phishing,NCSC warning republished by Nghe An tech centre,pending,False
+ext_pilot_phishing_0136,k53_current_167,vssid.pddgov.cc,phishing,NCSC warning republished by Dak Lak government,verified,True
+ext_pilot_phishing_0137,k53_current_167,nestlegroup.pro,phishing,NCSC weekly scam warnings on Ministry portal,verified,True
+ext_pilot_phishing_0138,k53_current_167,online.acbvnx.com,phishing,VNCERT/CC warning on Ministry portal,verified,True
+ext_pilot_benign_0004,k53_current_167,vietnam.gov.vn,benign,government_portal,pending,False
+ext_pilot_benign_0005,k53_current_167,ubgialai.gov.vn,benign,government_portal,pending,False
+ext_pilot_benign_0006,k53_current_167,kttv.gov.vn,benign,government_portal,pending,False
+ext_pilot_benign_0007,k53_current_167,news.gov.vn,benign,government_portal,pending,False
+ext_pilot_benign_0008,k53_current_167,vcbneo.com.vn,benign,vnba_member_directory,verified,True
+ext_pilot_benign_0009,k53_current_167,sbvamc.vn,benign,vnba_member_directory,verified,True
+ext_pilot_benign_0010,k53_current_167,mbv.com.vn,benign,vnba_member_directory,verified,True
+ext_pilot_benign_0011,k53_current_167,www.co-opbank.vn,benign,vnba_member_directory,verified,True
+ext_pilot_benign_0012,k53_current_167,www.niceinfo.com.vn,benign,vnba_member_directory,verified,True
+ext_pilot_benign_0013,k53_current_167,vrbank.com.vn,benign,vnba_member_directory,verified,True
+ext_pilot_benign_0014,k53_current_167,7-eleven.vn,benign,official_business_site,pending,False
+ext_pilot_benign_0015,k53_current_167,www.ministop.vn,benign,official_business_site,pending,False
+ext_pilot_benign_0016,k53_current_167,shop.annam-gourmet.com,benign,official_business_site,pending,False
+ext_pilot_benign_0017,k53_current_167,farmersmarket.vn,benign,official_business_site,pending,False
+ext_pilot_benign_0018,k53_current_167,coopxtra.net,benign,official_business_site,pending,False
+ext_pilot_benign_0019,k53_current_167,coopsmile.vn,benign,official_business_site,pending,False
+ext_pilot_benign_0020,k53_current_167,famima.vn,benign,official_business_site,pending,False
+ext_pilot_benign_0021,k53_current_167,mmvietnam.com,benign,official_business_site,pending,False
+ext_pilot_benign_0022,k53_current_167,namanmarket.com,benign,official_business_site,pending,False
+ext_pilot_benign_0023,k53_current_167,fujimart.vn,benign,official_business_site,pending,False
+ext_pilot_benign_0024,k53_current_167,aeoneshop.com,benign,aeon_official_corporate_profile,verified,True
+ext_pilot_benign_0025,k53_current_167,www.fahasa.com,benign,official_business_site,pending,False
+ext_pilot_benign_0026,k53_current_167,gearvn.com,benign,official_business_site,pending,False
+ext_pilot_benign_0027,k53_current_167,hoanghamobile.com,benign,official_business_site,pending,False
+ext_pilot_benign_0028,k53_current_167,concung.com,benign,official_business_site,pending,False
+ext_pilot_benign_0029,k53_current_167,bachlongmobile.com,benign,official_business_site,pending,False
+ext_pilot_benign_0030,k53_current_167,ahamove.com,benign,official_business_site,pending,False
+ext_pilot_benign_0031,k53_current_167,vexere.com,benign,official_business_site,pending,False
+ext_pilot_benign_0032,k53_current_167,futaexpress.vn,benign,official_business_site,pending,False

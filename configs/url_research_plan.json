@@ -1,0 +1,341 @@
+{
+  "status": "registered_before_new_results",
+  "seed": 42,
+  "base_commit": "2355bcc369325edd822b679362594be105bc7c49",
+  "search_origin": "No original 496/224 grid accessible; this is a new finite plan, not a reproduction of 496.",
+  "train_rows": 13078,
+  "outer_folds": 3,
+  "inner_folds": 2,
+  "primary_metric": "average_precision_score; mean outer folds for descriptive comparison",
+  "default_threshold": "0.5 probabilities; 0 SVM margins",
+  "pretrained": {
+    "checkpoint": "google/bert_uncased_L-2_H-128_A-2",
+    "revision": "30b0a37ccaaa32f332884b96992754e246e48c5f",
+    "license": "apache-2.0",
+    "max_length": 64,
+    "epochs": 2
+  },
+  "shared": {
+    "char_ngrams": [
+      3,
+      5
+    ],
+    "min_df": 2,
+    "max_features": 50000,
+    "lowercase": false,
+    "subword_vocab": 2048,
+    "l1_selector_C": 1,
+    "numeric_scaling": "StandardScaler fitted within each partition; numeric inputs use frozen original-URL E1/E2",
+    "normalization_default": "raw",
+    "linear_solver": "liblinear",
+    "max_iter": 2000,
+    "neural_batch_size": 256,
+    "neural_epochs": [
+      2,
+      4
+    ],
+    "threads": 2,
+    "neural_architectures": "CNN embed32/channels32/kernels3,5,7/length256; FastText-style embed32+word vocabulary4000+4096 subword hash buckets/max512 terms; FT-Transformer token32/2 heads/1 layer; BERT-tiny pretrained end-to-end, batch64"
+  },
+  "experiments": [
+    {
+      "id": "hybrid_e1",
+      "group": "A",
+      "representation": "e1",
+      "question": "Does the numeric branch add information to the unchanged char 3–5 LR?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "hybrid_brand",
+      "group": "A",
+      "representation": "brand",
+      "question": "Does the numeric branch add information to the unchanged char 3–5 LR?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "hybrid_e2",
+      "group": "A",
+      "representation": "e2",
+      "question": "Does the numeric branch add information to the unchanged char 3–5 LR?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "hybrid_e2_w0p25",
+      "group": "A",
+      "representation": "e2",
+      "question": "Does relative numeric branch weight change the trade-off?",
+      "baseline": "hybrid_e2",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "numeric_weight": 0.25
+    },
+    {
+      "id": "hybrid_e2_w4",
+      "group": "A",
+      "representation": "e2",
+      "question": "Does relative numeric branch weight change the trade-off?",
+      "baseline": "hybrid_e2",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "numeric_weight": 4
+    },
+    {
+      "id": "regex",
+      "group": "B",
+      "representation": "regex",
+      "question": "Do structural URL tokens help compared with char n-grams?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "char_regex",
+      "group": "B",
+      "representation": "char_regex",
+      "question": "Do character and structural tokens complement each other?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "l1_select",
+      "group": "C",
+      "representation": "l1",
+      "question": "Can fitting-only L1 selection reduce vocabulary with limited quality loss?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "bpe",
+      "group": "D",
+      "representation": "bpe",
+      "question": "Do fitting-only learned subwords improve over char 3–5?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "wordpiece",
+      "group": "D",
+      "representation": "wordpiece",
+      "question": "Do fitting-only learned subwords improve over char 3–5?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "unigram",
+      "group": "D",
+      "representation": "unigram",
+      "question": "Do fitting-only learned subwords improve over char 3–5?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      }
+    },
+    {
+      "id": "canonical",
+      "group": "E",
+      "representation": "char",
+      "question": "Does normalization reduce collection-format cues or remove useful information?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "normalization": "canonical"
+    },
+    {
+      "id": "canonical_lower",
+      "group": "E",
+      "representation": "char",
+      "question": "Does normalization reduce collection-format cues or remove useful information?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "normalization": "canonical_lower"
+    },
+    {
+      "id": "host_only",
+      "group": "E",
+      "representation": "char",
+      "question": "Does normalization reduce collection-format cues or remove useful information?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "normalization": "host_only"
+    },
+    {
+      "id": "count",
+      "group": "F",
+      "representation": "char",
+      "question": "What changes when only feature weighting changes?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "weighting": "count"
+    },
+    {
+      "id": "binary",
+      "group": "F",
+      "representation": "char",
+      "question": "What changes when only feature weighting changes?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "weighting": "binary"
+    },
+    {
+      "id": "log_tf",
+      "group": "F",
+      "representation": "char",
+      "question": "What changes when only feature weighting changes?",
+      "baseline": "tfidf_logistic_regression",
+      "grid": {
+        "C": [
+          0.5,
+          2
+        ]
+      },
+      "weighting": "log_tf"
+    },
+    {
+      "id": "char_cnn",
+      "group": "neural",
+      "representation": "char_cnn",
+      "question": "Does a model-specific learned representation justify its compute cost?",
+      "baseline": "tfidf_linear_svm",
+      "grid": {
+        "epochs": [
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "fasttext_style",
+      "group": "neural",
+      "representation": "fasttext_style",
+      "question": "Does a model-specific learned representation justify its compute cost?",
+      "baseline": "tfidf_linear_svm",
+      "grid": {
+        "epochs": [
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "ft_transformer",
+      "group": "neural",
+      "representation": "ft_transformer",
+      "question": "Does a model-specific learned representation justify its compute cost?",
+      "baseline": "catboost",
+      "grid": {
+        "epochs": [
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "pretrained_url_transformer",
+      "group": "neural",
+      "representation": "pretrained_url_transformer",
+      "question": "Does a model-specific learned representation justify its compute cost?",
+      "baseline": "tfidf_linear_svm",
+      "grid": {
+        "learning_rate": [
+          0.0002,
+          0.0005
+        ]
+      }
+    }
+  ],
+  "budget": {
+    "families": 21,
+    "configurations": 42,
+    "outer_config_evaluations": 126,
+    "inner_fits": 252,
+    "outer_refits": 63,
+    "max_full_train_candidate_fits": 10,
+    "total_fit_ceiling": 325,
+    "cached_baselines": [
+      "catboost",
+      "tfidf_linear_svm",
+      "tfidf_logistic_regression"
+    ],
+    "cached_baseline_fits": 0
+  },
+  "candidate_policy": "Recommend highest mean outer AP (then F1, FPR, name); optionally compact pipeline within 0.01 AP with smallest mean serialized outer size. These are descriptive proposals on repeatedly observed folds, not independent confirmation.",
+  "teacher_finalized": false,
+  "registered_utc": "2026-11-13T07:24:30.639940+00:00"
+}

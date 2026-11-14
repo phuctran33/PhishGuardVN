@@ -1,0 +1,1093 @@
+{
+  "audited_at_utc": "2026-11-07T02:12:24.292423+00:00",
+  "pr": 10,
+  "source_head": "e214d3d910c29a8316c1855bcb742a151bfa188c",
+  "schema_version": "e2-brand-v1",
+  "reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+  "v0_source_revision": "0054a1b1844ce12b84030e52952106488b0cbc10",
+  "v0_reference_sha256": "32198c1734bacd23263eae979465e22d95c2038bfa63cb2107fdbe8cd115f1cf",
+  "v0_code_sha256": "58c41d9451bd3e4409400e10a038523fff106178b4ea160c56835efaecb7bc7c",
+  "input_sha256": "140d6a4837c4b18730b6d87555eca1ac86b89139255964ab11a2536ca5a1ed9f",
+  "raw_core_train_urls": 13080,
+  "eligible_train_rows": 13078,
+  "excluded_train_ids": [
+    "27984223-c2e3-5068-a777-02f4becd0d10",
+    "74648118-c397-5d04-ab64-9c2973953892"
+  ],
+  "fresh_trainval_matrix_rows": 14663,
+  "fresh_trainval_matrix_sha256": "9b7abe866a4546dceb55ed4fbd3755bd4e87afc03b2e35d8698b97a89e737c7b",
+  "fresh_lexical_matrix_sha256": "c3039b30cf896df2355e8bb5115e05bdc6f9a7e0aa1f4e20a7ee33a060b6e7c9",
+  "train_ids_sha256": "9a472631fa44a43c5ac7c30826985b72b46c39c0a8d98461ac488eb5bf335f65",
+  "statistics_scope": "Eligible Core Train IDs only; no labels and no Validation/Test IDs in train_check aggregation",
+  "fresh_generation": "All preprocessing and E2 matrices freshly built from tracked raw data with Python at the exact PR head; no pre-existing matrix was loaded",
+  "v0_comparison": "Re-extracted all 13,080 Core Train URLs with v0 code/reference; two invalid rows excluded identically. v0 reference has no official_suffixes, so the v1 tightened suffix condition cannot change v0-reference values.",
+  "before_after": [
+    {
+      "feature": "brand_in_domain",
+      "dictionary_before": "train n=13078: 283 dòng khác 0 (2.16%); 2 giá trị khác nhau",
+      "fresh_v0_nonzero": 283,
+      "fresh_v1_nonzero": 290,
+      "fresh_v0_unique": 2,
+      "fresh_v1_unique": 2,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 290 dòng khác 0 (2.22%); 2 giá trị khác nhau"
+    },
+    {
+      "feature": "brand_in_subdomain",
+      "dictionary_before": "train n=13078: 146 dòng khác 0 (1.12%); 2 giá trị khác nhau",
+      "fresh_v0_nonzero": 146,
+      "fresh_v1_nonzero": 146,
+      "fresh_v0_unique": 2,
+      "fresh_v1_unique": 2,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 146 dòng khác 0 (1.12%); 2 giá trị khác nhau"
+    },
+    {
+      "feature": "brand_in_path",
+      "dictionary_before": "train n=13078: 0 dòng khác 0 (0.00%); 1 giá trị khác nhau; HẰNG trên train",
+      "fresh_v0_nonzero": 0,
+      "fresh_v1_nonzero": 0,
+      "fresh_v0_unique": 1,
+      "fresh_v1_unique": 1,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 0 dòng khác 0 (0.00%); 1 giá trị khác nhau; HẰNG trên train"
+    },
+    {
+      "feature": "brand_domain_mismatch",
+      "dictionary_before": "train n=13078: 320 dòng khác 0 (2.45%); 2 giá trị khác nhau",
+      "fresh_v0_nonzero": 320,
+      "fresh_v1_nonzero": 287,
+      "fresh_v0_unique": 2,
+      "fresh_v1_unique": 2,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 287 dòng khác 0 (2.19%); 2 giá trị khác nhau"
+    },
+    {
+      "feature": "brand_typo_score",
+      "dictionary_before": "train n=13078: 34 dòng khác 0 (0.26%); 8 giá trị khác nhau",
+      "fresh_v0_nonzero": 34,
+      "fresh_v1_nonzero": 31,
+      "fresh_v0_unique": 8,
+      "fresh_v1_unique": 8,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 31 dòng khác 0 (0.24%); 8 giá trị khác nhau"
+    },
+    {
+      "feature": "susp_token_cnt",
+      "dictionary_before": "train n=13078: 122 dòng khác 0 (0.93%); 3 giá trị khác nhau",
+      "fresh_v0_nonzero": 122,
+      "fresh_v1_nonzero": 122,
+      "fresh_v0_unique": 3,
+      "fresh_v1_unique": 3,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 122 dòng khác 0 (0.93%); 3 giá trị khác nhau"
+    },
+    {
+      "feature": "idna_flag",
+      "dictionary_before": "train n=13078: 15 dòng khác 0 (0.11%); 2 giá trị khác nhau",
+      "fresh_v0_nonzero": 15,
+      "fresh_v1_nonzero": 15,
+      "fresh_v0_unique": 2,
+      "fresh_v1_unique": 2,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 15 dòng khác 0 (0.11%); 2 giá trị khác nhau"
+    },
+    {
+      "feature": "homoglyph_brand_hit",
+      "dictionary_before": "train n=13078: 1 dòng khác 0 (0.01%); 2 giá trị khác nhau",
+      "fresh_v0_nonzero": 1,
+      "fresh_v1_nonzero": 1,
+      "fresh_v0_unique": 2,
+      "fresh_v1_unique": 2,
+      "train_rows": 13078,
+      "dictionary_after": "train n=13078: 1 dòng khác 0 (0.01%); 2 giá trị khác nhau"
+    }
+  ],
+  "feature_value_changes": [
+    {
+      "id": "83a82923-26ba-56b8-a1bc-fb4911551280",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "062aace2-9488-53e9-a380-3607327e0c7d",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "3640e19a-1b48-5b06-a5e2-a99d3d4ab9f1",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "3f2002de-6761-523b-8f54-64888c92e4cc",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "b8a3a9d7-6b21-5145-b829-d4261bda7de0",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "0d65211f-24d3-5485-a860-bfba5f5e3202",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "d46b3d6a-0e89-5bc1-a879-806dbe90a77c",
+      "feature": "brand_in_domain",
+      "v0": 0.0,
+      "v1": 1.0
+    },
+    {
+      "id": "2394adf4-cd51-5b78-a254-f9953ba3693b",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "8363f6e4-1e2b-51cc-b997-fc7229c5443d",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "18e0306f-0031-5e0b-b57e-9519aee15a58",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "35e9beae-4182-5c50-8a53-1aab31f8dd79",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "0f787a7d-1a3a-5ea7-9e8f-18f3083a4ae0",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "daeb3ada-2ed3-5b03-ad98-51819558ba41",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "d68bf165-9f2c-5e71-af18-16c10c8ebb39",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "85d41349-fc6f-5916-9016-a91804727519",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "1fdb7f78-6e59-5709-954d-5dd410b9127e",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "f1b49529-3772-5bda-a4f4-95894a57b4b8",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "32826f51-b4a5-5d50-9281-d558e0cc1d7c",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "b9bc8669-5e91-5e90-a5e1-3e779b2a7dde",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "4e2f5f28-2dce-529d-b506-a3974bb697cf",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "55995c67-6733-5dbc-9999-c5edda3cc620",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "0b297e5b-42a5-52c0-90f7-76b5311facc5",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "f2a8c6f7-d3e1-5f85-967d-688c520ffe83",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "7c71643e-6124-579c-9f10-d2b8d471dce3",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "27cec751-c1e7-55a5-af8f-0035f6cf832d",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "6c8ee988-d360-5b58-9fc5-98d99287e65a",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "ec8014c0-7945-5f86-883e-efce9f04a3c0",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "b041eb78-07f8-500a-8cd0-dba202034cfd",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "87bb4e1d-4a1d-5736-8c18-41a3c9a49ed9",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "c603f531-4d9a-5595-a7e0-b0749f5030df",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "bedb4e82-fe4c-53ea-b459-59d72a91f3fd",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "4cd527c3-cc5a-5ffa-90eb-d2afcd749a77",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "880323fe-b6ee-5650-8ff7-664d0593db6b",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "01badfe7-ed8a-5ecb-b955-238e64b5c403",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "46222b48-a8c8-5417-b3d1-cbef2ecd3062",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "19658a36-e4b8-5327-adcc-5116b1464123",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "395efda5-f58f-530a-9f97-9047d308eea8",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "acf2b3ae-98d7-5855-a91d-fee3dbabff3e",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "b28a3f4a-2255-5652-8cb0-fea876c2a083",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "524c2609-db97-5961-a775-b0c77b72170e",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0
+    },
+    {
+      "id": "7bf3c506-75ae-5db3-90cc-15bb0b2ab3d7",
+      "feature": "brand_typo_score",
+      "v0": 0.0,
+      "v1": 0.8333333333333334
+    },
+    {
+      "id": "db14edb3-feaa-5b44-81ec-e3cf0cb2f585",
+      "feature": "brand_typo_score",
+      "v0": 0.0,
+      "v1": 0.75
+    },
+    {
+      "id": "d93bd8d3-ca53-5cec-bf2f-1e1776562a7b",
+      "feature": "brand_typo_score",
+      "v0": 0.7777777777777778,
+      "v1": 0.0
+    },
+    {
+      "id": "6c021027-c5ed-5db9-9d3a-747e813551bb",
+      "feature": "brand_typo_score",
+      "v0": 0.7777777777777778,
+      "v1": 0.0
+    },
+    {
+      "id": "83a82923-26ba-56b8-a1bc-fb4911551280",
+      "feature": "brand_typo_score",
+      "v0": 0.8333333333333334,
+      "v1": 0.0
+    },
+    {
+      "id": "3640e19a-1b48-5b06-a5e2-a99d3d4ab9f1",
+      "feature": "brand_typo_score",
+      "v0": 0.8,
+      "v1": 0.0
+    },
+    {
+      "id": "b8a3a9d7-6b21-5145-b829-d4261bda7de0",
+      "feature": "brand_typo_score",
+      "v0": 0.8,
+      "v1": 0.0
+    },
+    {
+      "id": "0d65211f-24d3-5485-a860-bfba5f5e3202",
+      "feature": "brand_typo_score",
+      "v0": 0.7777777777777778,
+      "v1": 0.0
+    },
+    {
+      "id": "d46b3d6a-0e89-5bc1-a879-806dbe90a77c",
+      "feature": "brand_typo_score",
+      "v0": 0.8333333333333334,
+      "v1": 0.0
+    },
+    {
+      "id": "bacb7511-75f8-53e5-8841-dd792532a075",
+      "feature": "brand_typo_score",
+      "v0": 0.0,
+      "v1": 0.8333333333333334
+    },
+    {
+      "id": "758f9d28-9380-5429-97a6-58b4072c82e2",
+      "feature": "brand_typo_score",
+      "v0": 0.0,
+      "v1": 0.75
+    }
+  ],
+  "mismatch_1_to_0_cases": [
+    {
+      "id": "2394adf4-cd51-5b78-a254-f9953ba3693b",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]hanoi[.]gov[.]vn",
+      "registrable_domain": "hanoi.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "8363f6e4-1e2b-51cc-b997-fc7229c5443d",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]quangninh[.]gov[.]vn",
+      "registrable_domain": "quangninh.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "18e0306f-0031-5e0b-b57e-9519aee15a58",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]angiang[.]gov[.]vn",
+      "registrable_domain": "angiang.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "35e9beae-4182-5c50-8a53-1aab31f8dd79",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]haiphong[.]gov[.]vn",
+      "registrable_domain": "haiphong.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "0f787a7d-1a3a-5ea7-9e8f-18f3083a4ae0",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]tuyenquang[.]gov[.]vn",
+      "registrable_domain": "tuyenquang.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "daeb3ada-2ed3-5b03-ad98-51819558ba41",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]bocongan[.]gov[.]vn",
+      "registrable_domain": "bocongan.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "d68bf165-9f2c-5e71-af18-16c10c8ebb39",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]dongnai[.]gov[.]vn",
+      "registrable_domain": "dongnai.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "85d41349-fc6f-5916-9016-a91804727519",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]ssc[.]gov[.]vn",
+      "registrable_domain": "ssc.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "1fdb7f78-6e59-5709-954d-5dd410b9127e",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]caobang[.]gov[.]vn",
+      "registrable_domain": "caobang.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "f1b49529-3772-5bda-a4f4-95894a57b4b8",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]mof[.]gov[.]vn",
+      "registrable_domain": "mof.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "32826f51-b4a5-5d50-9281-d558e0cc1d7c",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]mofa[.]gov[.]vn",
+      "registrable_domain": "mofa.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "b9bc8669-5e91-5e90-a5e1-3e779b2a7dde",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]backan[.]gov[.]vn",
+      "registrable_domain": "backan.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "4e2f5f28-2dce-529d-b506-a3974bb697cf",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]moj[.]gov[.]vn",
+      "registrable_domain": "moj.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "55995c67-6733-5dbc-9999-c5edda3cc620",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]moh[.]gov[.]vn",
+      "registrable_domain": "moh.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "0b297e5b-42a5-52c0-90f7-76b5311facc5",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]lamdong[.]gov[.]vn",
+      "registrable_domain": "lamdong.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "f2a8c6f7-d3e1-5f85-967d-688c520ffe83",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]moit[.]gov[.]vn",
+      "registrable_domain": "moit.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "7c71643e-6124-579c-9f10-d2b8d471dce3",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]laocai[.]gov[.]vn",
+      "registrable_domain": "laocai.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "27cec751-c1e7-55a5-af8f-0035f6cf832d",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]cantho[.]gov[.]vn",
+      "registrable_domain": "cantho.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "6c8ee988-d360-5b58-9fc5-98d99287e65a",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]bacninh[.]gov[.]vn",
+      "registrable_domain": "bacninh.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "ec8014c0-7945-5f86-883e-efce9f04a3c0",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]thainguyen[.]gov[.]vn",
+      "registrable_domain": "thainguyen.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "b041eb78-07f8-500a-8cd0-dba202034cfd",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]mard[.]gov[.]vn",
+      "registrable_domain": "mard.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "87bb4e1d-4a1d-5736-8c18-41a3c9a49ed9",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]thuathienhue[.]gov[.]vn",
+      "registrable_domain": "thuathienhue.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "c603f531-4d9a-5595-a7e0-b0749f5030df",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]hungyen[.]gov[.]vn",
+      "registrable_domain": "hungyen.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "bedb4e82-fe4c-53ea-b459-59d72a91f3fd",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]daklak[.]gov[.]vn",
+      "registrable_domain": "daklak.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "4cd527c3-cc5a-5ffa-90eb-d2afcd749a77",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: dichvucong[.]langson[.]gov[.]vn",
+      "registrable_domain": "langson.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "880323fe-b6ee-5650-8ff7-664d0593db6b",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]daknong[.]gov[.]vn",
+      "registrable_domain": "daknong.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "01badfe7-ed8a-5ecb-b955-238e64b5c403",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]binhdinh[.]gov[.]vn",
+      "registrable_domain": "binhdinh.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "46222b48-a8c8-5417-b3d1-cbef2ecd3062",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]hoabinh[.]gov[.]vn",
+      "registrable_domain": "hoabinh.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "19658a36-e4b8-5327-adcc-5116b1464123",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]tiengiang[.]gov[.]vn",
+      "registrable_domain": "tiengiang.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "395efda5-f58f-530a-9f97-9047d308eea8",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]kiengiang[.]gov[.]vn",
+      "registrable_domain": "kiengiang.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "acf2b3ae-98d7-5855-a91d-fee3dbabff3e",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]baria-vungtau[.]gov[.]vn",
+      "registrable_domain": "baria-vungtau.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "b28a3f4a-2255-5652-8cb0-fea876c2a083",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: https[:]//dichvucong[.]binhthuan[.]gov[.]vn",
+      "registrable_domain": "binhthuan.gov.vn",
+      "reason": "brand_specific_subdomain_suffix_exemption",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "dvcquocgia",
+          "key": "dichvucong",
+          "text": "dichvucong",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    },
+    {
+      "id": "524c2609-db97-5961-a775-b0c77b72170e",
+      "feature": "brand_domain_mismatch",
+      "v0": 1.0,
+      "v1": 0.0,
+      "url_safe": "URL_TEXT: bhxh[.]gov[.]vn",
+      "registrable_domain": "bhxh.gov.vn",
+      "reason": "official_domain_added",
+      "v0_mismatch_events": [
+        {
+          "rule": "brand_domain_mismatch",
+          "brand_id": "bhxh",
+          "key": "bhxh",
+          "text": "bhxh",
+          "value": 1.0
+        }
+      ],
+      "v1_mismatch_events": []
+    }
+  ],
+  "mismatch_1_to_0_count": 33,
+  "mismatch_0_to_1_count": 0,
+  "research_models_trained_or_tuned": false,
+  "test_used_for_training_or_train_statistics": false,
+  "all_manifest_scope_note": "The existing all-scope frozen artifact includes deterministic feature extraction for all core URLs, including Test; no fitting, model selection or Train aggregation uses those Test rows.",
+  "pytest_before_freeze": {
+    "command": "PYTHONPATH=<PR10 worktree>/src <existing .venv>/bin/python -m pytest -q -rs",
+    "passed": 168,
+    "summary": "168 passed, 1 skipped in 4.62s",
+    "failed": 0,
+    "skipped": 1,
+    "skip_reason": "tests/test_brand_regressions.py:58: empty parameter set for CONFIRMED_STILL_FLAGGED; no remaining known flagged cases supplied"
+  },
+  "train_check_command": "python scripts/05_train_only_check.py --matrix data/interim/05_matrix_X_brand_trainval.csv --write-dictionary",
+  "matrix_command": "python scripts/05_build_matrix_x_brand.py --partition trainval",
+  "dictionary_change_scope": "Only train_check text changes; all formulas/keys/scope/version/owner/reference and E1 dictionary unchanged.",
+  "exclusion_scope": "Only the 13,080 Gold/Silver Core Train IDs, not Bronze or other IDs in the official Train split.",
+  "freeze": {
+    "source_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+    "source_worktree_was_clean": true,
+    "all_exit_code": 0,
+    "trainval_exit_code": 0,
+    "brand_dictionary_sha256": "8fdc9d897810956fb04031969a2473f2aff82faa81e71ad72819b7957bd004ea",
+    "e1_dictionary_sha256": "dca0607bb4c38560a6156ae1beca180de20bb8f62b3adb791e5ebcac57e9786e",
+    "manifest_files": {
+      "05_matrix_X_brand_v1.manifest.json": {
+        "sha256": "6ca6e20bc04c6a10f95756673dd72f1bc37852c18c67c2af6134fe522e97f546",
+        "partition": "all",
+        "rows_x": 18995,
+        "rows_excluded": 2,
+        "git_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+        "git_dirty": false,
+        "frozen": true
+      },
+      "05_matrix_X_brand_trainval_v1.manifest.json": {
+        "sha256": "3d34c8f842f35e41cf80deb68c35cb7b93f7a89f37ec0e39f83615acf93f267a",
+        "partition": "trainval",
+        "rows_x": 14663,
+        "rows_excluded": 2,
+        "git_commit": "45908a693256d3124a64b02b5fd590a36f1535ad",
+        "git_dirty": false,
+        "frozen": true
+      }
+    },
+    "trainval_matrix_identical_after_refreeze": true,
+    "all_matrix_sha256": "68a0572843d917b74c57b7de383162c4abe4b88d5a1048eb0a60f8097d47cc5a",
+    "parity_check": "PASS: 05_make_parity_vectors.py --check regenerated values in memory and matched the committed parity file exactly",
+    "parity_sha256": "e51c67f853c5424c1c7dfc2df33c0354a12bdb30b91fc40df5a84389bce7e00a",
+    "final_verification_command": "python scripts/05_verify_e2_artifacts.py (run after committing these artifacts)"
+  }
+}

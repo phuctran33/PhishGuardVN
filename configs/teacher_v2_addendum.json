@@ -1,0 +1,9 @@
+{
+  "registered_before_full_train_candidate": true,
+  "histgb": {
+    "new_candidate_fits": "early_stopping=False, max_iter=300 everywhere in full-Train selection/meta/threshold/refit",
+    "historical_cv": "Keep original auto models and metrics. 42 HistGB fits had <=8719 fitting rows, auto disabled effectively; no grid rerun."
+  },
+  "stress": "Audit hostname-only case changes, preserve path/query/userinfo/fragment/port; use persisted outer models only.",
+  "source_bias": "Report eligible Train source x label; Group CV and excluded source column do not prove source independence; no relabeling or dataset edits."
+}

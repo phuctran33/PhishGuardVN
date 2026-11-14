@@ -1,0 +1,13 @@
+experiment,context,config_id,inner_fold,parameters,ap
+stack_lgbm,outer0,0,0,"{""C"": 0.1, ""scale"": false}",0.8865809136086437
+stack_lgbm,outer0,0,1,"{""C"": 0.1, ""scale"": false}",0.9018196142569008
+stack_lgbm,outer0,1,0,"{""C"": 0.1, ""scale"": true}",0.88983909172197
+stack_lgbm,outer0,1,1,"{""C"": 0.1, ""scale"": true}",0.9022904260789952
+stack_lgbm,outer0,2,0,"{""C"": 1, ""scale"": false}",0.888618843569167
+stack_lgbm,outer0,2,1,"{""C"": 1, ""scale"": false}",0.9022833564328591
+stack_lgbm,outer0,3,0,"{""C"": 1, ""scale"": true}",0.8889770844673764
+stack_lgbm,outer0,3,1,"{""C"": 1, ""scale"": true}",0.9022731447886703
+stack_lgbm,outer0,4,0,"{""C"": 10, ""scale"": false}",0.8888994315936461
+stack_lgbm,outer0,4,1,"{""C"": 10, ""scale"": false}",0.902273547014505
+stack_lgbm,outer0,5,0,"{""C"": 10, ""scale"": true}",0.8889259792107248
+stack_lgbm,outer0,5,1,"{""C"": 10, ""scale"": true}",0.9022750769919703

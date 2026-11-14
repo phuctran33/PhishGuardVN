@@ -1,0 +1,17 @@
+reference,key,overlapping_current_rows
+dataset_url.csv,normalized_url,0
+dataset_url.csv,comparison_url_key,0
+dataset_url.csv,hostname,0
+dataset_url.csv,registrable_domain,0
+vn_compphish.csv,normalized_url,0
+vn_compphish.csv,comparison_url_key,0
+vn_compphish.csv,hostname,0
+vn_compphish.csv,registrable_domain,0
+abuse_type.csv,normalized_url,0
+abuse_type.csv,comparison_url_key,0
+abuse_type.csv,hostname,0
+abuse_type.csv,registrable_domain,0
+legacy_106,normalized_url,29
+legacy_106,comparison_url_key,29
+legacy_106,hostname,29
+legacy_106,registrable_domain,29

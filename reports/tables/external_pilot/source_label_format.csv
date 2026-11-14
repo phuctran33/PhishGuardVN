@@ -1,0 +1,17 @@
+source,source_family,label,review_status,n,observed_scheme,has_path,has_query,has_fragment,has_port,has_userinfo,unicode,punycode,brand_cues
+ACB official list of fake websites,ACB official list of fake websites,phishing,pending,1,0,0,0,0,0,0,0,0,0
+ACB official list of fake websites,ACB official list of fake websites,phishing,verified,37,0,0,0,0,0,0,0,0,30
+Agribank official warning of spoofed domains,Agribank official warning of spoofed domains,phishing,pending,4,0,0,0,0,0,0,0,0,4
+Agribank official warning of spoofed domains,Agribank official warning of spoofed domains,phishing,verified,2,0,0,0,0,0,0,0,0,2
+BIDV official consumer fraud warning,BIDV official consumer fraud warning,phishing,verified,4,0,0,0,0,0,0,0,0,4
+Bac Ninh government local public-service scam alert,Bac Ninh government local public-service scam alert,phishing,verified,1,0,0,0,0,0,0,0,0,1
+NCSC warning republished by Dak Lak government,NCSC_warning_or_republication,phishing,pending,8,0,0,0,0,0,0,0,0,3
+NCSC warning republished by Dak Lak government,NCSC_warning_or_republication,phishing,verified,36,0,0,0,0,0,0,0,0,7
+NCSC warning republished by Nghe An tech centre,NCSC_warning_or_republication,phishing,pending,33,0,0,0,0,0,0,0,0,12
+NCSC weekly scam warnings on Ministry portal,NCSC_warning_or_republication,phishing,verified,1,0,0,0,0,0,0,0,0,0
+Quang Ngai police publication of NCSC warning,NCSC_warning_or_republication,phishing,verified,10,0,0,0,0,0,0,0,0,6
+VNCERT/CC warning on Ministry portal,VNCERT_warning,phishing,verified,1,0,0,0,0,0,0,0,0,0
+aeon_official_corporate_profile,aeon_official_corporate_profile,benign,verified,1,1,1,0,0,0,0,0,0,0
+government_portal,government_portal,benign,pending,4,4,4,0,0,0,0,0,0,0
+official_business_site,official_business_site,benign,pending,18,18,18,0,0,0,0,0,0,0
+vnba_member_directory,vnba_member_directory,benign,verified,6,6,6,0,0,0,0,0,0,1

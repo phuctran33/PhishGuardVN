@@ -1,0 +1,103 @@
+{
+  "checked_utc": "2026-11-13T08:20:30.271683+00:00",
+  "research_families_completed": 21,
+  "research_families_planned": 21,
+  "configuration_status": {
+    "success": 42
+  },
+  "fit_success": 325,
+  "fit_failed": 0,
+  "fit_total": 325,
+  "plan_fit_ceiling": 325,
+  "max_metric_recompute_error": 0.0,
+  "all_oof_ids_folds_labels_checked": true,
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.1.1",
+    "scikit-learn": "1.9.1",
+    "tokenizers": "0.21.4",
+    "torch": "2.6.0+cpu",
+    "transformers": "4.48.3"
+  },
+  "pretrained": {
+    "checkpoint": "google/bert_uncased_L-2_H-128_A-2",
+    "revision": "30b0a37ccaaa32f332884b96992754e246e48c5f",
+    "license": "apache-2.0",
+    "accessed_utc": "2026-11-13T08:16:54.409950+00:00",
+    "files": [
+      {
+        "file": "config.json",
+        "url": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2/resolve/30b0a37ccaaa32f332884b96992754e246e48c5f/config.json",
+        "bytes": 382,
+        "sha256": "508e1f01aae55d73355cbdd82609be2f43ba5a0d3428837adbe56cf8391f8b39",
+        "status": "available"
+      },
+      {
+        "file": "vocab.txt",
+        "url": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2/resolve/30b0a37ccaaa32f332884b96992754e246e48c5f/vocab.txt",
+        "bytes": 231508,
+        "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+        "status": "available"
+      },
+      {
+        "file": "model.safetensors",
+        "url": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2/resolve/30b0a37ccaaa32f332884b96992754e246e48c5f/model.safetensors",
+        "bytes": 17739144,
+        "sha256": "7fb69ad9f6866d8983183c930e33828f326470bf6ad8bbb2ad4ed957a92e9414",
+        "status": "available"
+      },
+      {
+        "file": "README.md",
+        "url": "https://huggingface.co/google/bert_uncased_L-2_H-128_A-2/resolve/30b0a37ccaaa32f332884b96992754e246e48c5f/README.md",
+        "bytes": 4617,
+        "sha256": "d13a54d652a2a54fbbc50e063b465fb273295870867821e1b06baba1d49d68a9",
+        "status": "available"
+      }
+    ]
+  },
+  "teacher_finalized": false,
+  "not_evaluated": [
+    "Validation",
+    "Official Test",
+    "external"
+  ],
+  "tests": {
+    "research_command": "python -m pytest tests/test_url_research.py -q -rs",
+    "research": {
+      "passed": 27,
+      "skipped": 0,
+      "failed": 0,
+      "skip_details": []
+    },
+    "full_command": "python -m pytest -q -rs",
+    "full": {
+      "passed": 427,
+      "skipped": 1,
+      "failed": 0,
+      "skip_details": [
+        {
+          "name": "test_correct_flags_are_still_flagged[NOTSET]",
+          "reason": "got empty parameter set for (url, rule, brand_id, key)"
+        }
+      ]
+    },
+    "warning_notes": "Two sklearn 1.9 L1 API deprecation/inconsistent-argument warnings; no ConvergenceWarning was accepted as a successful classical fit. Neural fixed epoch completion is not convergence."
+  },
+  "independent_audit": {
+    "checked_utc": "2026-11-13T08:15:28.711342+00:00",
+    "input_and_executed_source_hashes_match": true,
+    "pretrained_file_hashes_match": true,
+    "partition_group_separation": true,
+    "frozen_benchmark_preserved": true,
+    "portable_candidate_inference_without_dataset": {
+      "roles": 2,
+      "urls_per_role": 5,
+      "passed": true
+    },
+    "teacher_lock_unchanged": true
+  },
+  "setup_notes": [
+    "Initial official CPU PyTorch 2.8 install failed hash verification; no hash check was bypassed. Official CPU 2.6 installed successfully.",
+    "Classical fits used a separate review environment; neural fits used a separate CPU research environment. Core numpy/pandas/sklearn versions are recorded per fit."
+  ]
+}

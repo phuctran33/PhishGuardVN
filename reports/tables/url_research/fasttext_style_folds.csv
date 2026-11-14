@@ -1,0 +1,4 @@
+experiment,group,fold,config_id,parameters,inner_ap,ap,precision,recall,f1,fpr,tn,fp,fn,tp,features_before,features_after,model_bytes,latency_p50_ms,latency_p95_ms,batch_size,latency_scope
+fasttext_style,neural,0,1,"{""epochs"": 4}",0.2435389444006678,0.34483632878973064,0.0,0.0,0.0,0.0,3668,0,691,0,512,512,1113630,3.1050999969011173,3.36710000410676,16,CPU offline URL-to-score incl required extraction; threads=2; warmup2/repeats5
+fasttext_style,neural,1,1,"{""epochs"": 4}",0.25602320895242464,0.329667442416633,0.0,0.0,0.0,0.0,3668,0,691,0,512,512,1113364,3.2556999940425158,4.356979992007837,16,CPU offline URL-to-score incl required extraction; threads=2; warmup2/repeats5
+fasttext_style,neural,2,1,"{""epochs"": 4}",0.2393689562055376,0.36039979524400095,0.0,0.0,0.0,0.0,3668,0,692,0,512,512,1113485,3.4837999992305413,4.036559993983246,16,CPU offline URL-to-score incl required extraction; threads=2; warmup2/repeats5

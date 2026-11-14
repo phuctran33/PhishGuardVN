@@ -1,0 +1,21 @@
+model,context,parameters
+logistic_regression,0,{}
+logistic_regression,1,{}
+logistic_regression,2,{}
+logistic_regression_balanced,0,{}
+logistic_regression_balanced,1,{}
+logistic_regression_balanced,2,{}
+svm_rbf,0,"{""model__C"": 0.5}"
+svm_rbf,1,"{""model__C"": 2.0}"
+svm_rbf,2,"{""model__C"": 2.0}"
+mlp,0,"{""model__hidden_layer_sizes"": [32]}"
+mlp,1,"{""model__hidden_layer_sizes"": [32]}"
+mlp,2,"{""model__hidden_layer_sizes"": [32]}"
+hist_gradient_boosting,0,"{""max_leaf_nodes"": 7}"
+hist_gradient_boosting,1,"{""max_leaf_nodes"": 7}"
+hist_gradient_boosting,2,"{""max_leaf_nodes"": 7}"
+logistic_regression,full_train,{}
+logistic_regression_balanced,full_train,{}
+svm_rbf,full_train,"{""model__C"": 0.5}"
+mlp,full_train,"{""model__hidden_layer_sizes"": [32, 16]}"
+hist_gradient_boosting,full_train,"{""max_leaf_nodes"": 7}"

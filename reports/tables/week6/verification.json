@@ -1,0 +1,156 @@
+{
+  "checked_at_utc": "2026-11-11T14:22:26.949370+00:00",
+  "branch": "phuc-week6-teacher-v1",
+  "notebook": {
+    "executed_code_cells": 12,
+    "errors": 0,
+    "code_hash_matches": true
+  },
+  "pre_run_plan": {
+    "recorded_before_extended_run_utc": "2026-11-11T14:17:37.917206+00:00",
+    "base_commit": "19ceb7b",
+    "notebook_code_sha256": "f69bbe5398ef6616a23e3b05925179c3d61cddaf01a5efcb78f797caaa372c8e",
+    "train_selection_only": true,
+    "external_prior_results_already_observed": true,
+    "model_count": 13,
+    "e2_model_count": 11,
+    "raw_model_count": 2,
+    "teacher_finalized": false
+  },
+  "pytest_summary": "396 passed, 1 skipped in 29.56s",
+  "models": 13,
+  "e2_model_count": 11,
+  "teacher_finalized": false,
+  "raw_url_controls": 2,
+  "oof_rows": 170014,
+  "cv_metric_max_abs_error": 0.0,
+  "all_id_fold_partition_checks": true,
+  "low_fpr_thresholds_calibrated_only_in_fitting": true,
+  "threshold_analysis_changes_deployment": false,
+  "unfinalized_teacher_inference_blocked": true,
+  "external_skipped_pending_teacher": true,
+  "error_examples": 12,
+  "reload_parity_urls": 6,
+  "reload_score_max_abs_error": 0.0,
+  "portable_candidate_inference_without_dataset": {
+    "passed": true,
+    "urls": 5
+  },
+  "old_artifacts_unchanged": 24,
+  "old_artifact_hashes": {
+    "reports/tables/06_ablation_metadata.json": "677262f6c91a75149769c9bf8dd41c205531e13dfce6cdceac6fbff99ab0f493",
+    "reports/tables/06_brand_subgroups.csv": "d7a5699e527a61ace61da73e7d91e23c6351f0c61d3cf268887df56fed968691",
+    "reports/tables/06_comparison.csv": "b42162a70325a241a3d796c0d3647c47de00eb827eb7aa37deb297021cab259b",
+    "reports/tables/06_cv_metrics.csv": "995e20237896988593c036fa4cf323f4a567585e5b1078dbe2d31556b0db34ad",
+    "reports/tables/06_deltas.csv": "b807452944ee769caef34a7190beed3f8c8a6ee6a46dc243de9fd54456f0c59f",
+    "reports/tables/06_error_changes.csv": "71fa79ec0cf56435eece512ea95005a86245cf58d211f3ec1e1ef42fbf2c894f",
+    "reports/tables/06_error_examples.csv": "2ad5012645c3e86bfccd65e00a05ef69dba18c31ea9a6a191261b9189ea48bcf",
+    "reports/tables/06_oof_predictions.csv.gz": "4468b1c5f22a4d4380faec8f2a1183e785611bb357f0ba9560ecb6f80184fb79",
+    "reports/tables/06_paired_folds.csv": "3fd8502b9fb5c162bf50d4d41103d343f9d35de170a55def4d94305b145d5e4f",
+    "reports/tables/06_parameters.csv": "d407c139e7b6b070c068a6eef0f1094682e1cb123f92d84497576eee2b83542e",
+    "reports/tables/06_resources.csv": "8e52d8ba5a567030dd494589827f2d88c021c3cbbdffb9c48040bb5b22054fbc",
+    "reports/tables/06_shortlist.csv": "e06e3aa68a02a161785662450e3a989dac4a5fbf9e100927b1d5251f0683a6ae",
+    "reports/tables/06_training_partitions.csv.gz": "7be9b4875b146c51e76ac5b79626aa5a9bfaadc25be39102918ede7c3a35d5d8",
+    "reports/tables/06_validation.csv": "0f6696991d08273dc67c2de82020d84ce50e102494d34b8286d5fc1fdd7095da",
+    "reports/tables/06_validation_predictions.csv.gz": "80c6b5cd9f5379889a37e11f551323f5a8a3a943ba0db30b3c49c3953d553459",
+    "reports/tables/06_verification.json": "fa14a0f8bf8d787c1aa3b61f519aa29d246b2e86560a2219f386104f4be65ab4",
+    "models/week5_e1_ablation.joblib": "a14c981b7083cadaf4d4b4f23319bddfda188169c5ce7b4f0b45e5f8619b9c1a",
+    "models/week5_e2_ablation.joblib": "50056710b557b314cf70b79e3a364a23dac306843871c3b45f5e2ef4c9a13b90",
+    "models/week5_lexical_models.joblib": "e7c3c254cb787ccadcb9efa51e192e3aa56145733f7f92116763f8176c61261e",
+    "models/week5_lexical_models_metadata.json": "6fee9dd2a873737b51adf66e8dc2e040f681f1b7f6c637823870896116f45992",
+    "models/week5_readable_models.joblib": "a785dc15ce5524e33ffd6b2a98d15115062f65010340f8e920599494f69ee6a8",
+    "data/dataset_url.csv": "8e1c6325a82177014ac892a9aaf8c4d3cbbc986b47fd1ecac8899c865fb6eade",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb"
+  },
+  "existing_six_model_oof_predictions_unchanged": true,
+  "existing_six_model_score_max_abs_error": 0.0,
+  "local_candidate_bundle_sha256": "7f0c2b3f8ec8a434d326f1adf1df2e3165a111147502c7faebf2e2be23aab047",
+  "previous_teacher_artifact_unchanged": true,
+  "official_test_evaluated": false,
+  "upstream_e2_verifier": {
+    "not_modified": true,
+    "not_rerun_in_this_audit": true,
+    "known_limitations": "Whole-repo freeze guards and exact floating-point equality; not claimed PASS."
+  },
+  "historical_record_note": "Các mục kiểm chứng top-level và pytest_summary là bản ghi lịch sử của lần chạy notebook ngày 11/11/2026; handoff_review ghi kiểm chứng mới, không retrain.",
+  "handoff_review": {
+    "checked_at_utc": "2026-11-13T06:41:49.373395+00:00",
+    "source_git_revision": "ac08a377cad390f3ee6fd96fb65a747ffb127c39",
+    "scope": "clean temporary Windows virtual environment; no notebook retraining",
+    "install_command": "python -m pip install -e \".[teacher,test]\"",
+    "install_exit_code": 0,
+    "initial_install_note": "First package-index attempt could not resolve pytest; retry succeeded without upgrading the existing ML environment.",
+    "pip_check": "No broken requirements found.",
+    "environment": {
+      "python": "3.11.7 (tags/v3.11.7:fa7a6f2, Dec  4 2023, 19:24:49) [MSC v.1937 64 bit (AMD64)]",
+      "packages": {
+        "pytest": "9.2.0",
+        "numpy": "2.4.6",
+        "pandas": "3.1.1",
+        "scipy": "1.17.1",
+        "scikit-learn": "1.9.1",
+        "nbformat": "5.11.1",
+        "ipython": "9.18.1",
+        "nbclient": "0.11.0",
+        "ipykernel": "7.4.0",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.2.0",
+        "catboost": "1.2.10",
+        "imbalanced-learn": "0.14.2"
+      }
+    },
+    "teacher_command": "python -m pytest tests/test_teacher_week6.py -q -rs --junitxml=<temp>/teacher.xml",
+    "teacher_tests": {
+      "collected": 13,
+      "passed": 13,
+      "skipped": 0,
+      "failed": 0,
+      "skip_details": []
+    },
+    "optional_library_fixture_fits": [
+      "lightgbm",
+      "xgboost",
+      "catboost",
+      "imblearn BalancedRandomForestClassifier"
+    ],
+    "full_command": "python -m pytest -q -rs --junitxml=<temp>/full.xml",
+    "full_suite": {
+      "collected": 401,
+      "passed": 400,
+      "skipped": 1,
+      "failed": 0,
+      "skip_details": [
+        {
+          "test": "test_correct_flags_are_still_flagged[NOTSET]",
+          "reason": "got empty parameter set for (url, rule, brand_id, key)"
+        }
+      ]
+    },
+    "artifacts": {
+      "checked_at_utc": "2026-11-13T06:38:25.607392+00:00",
+      "read_csv_float_precision": "round_trip",
+      "models": 13,
+      "e2_models": 11,
+      "raw_url_models": 2,
+      "oof_rows": 170014,
+      "duplicate_model_id": 0,
+      "models_ids_folds_consistent": true,
+      "max_metric_abs_error": 2.220446049250313e-16,
+      "validation_metrics_recomputed": true,
+      "old_artifact_hashes_checked": 24,
+      "pending_lock_metadata_consistent": true,
+      "training_code_hash_unchanged": true,
+      "input_reference_feature_order_source_hashes_unchanged": true,
+      "historical_mlp_bytes_unchanged": true,
+      "external_status": "NOT_RUN_PENDING_TEACHER",
+      "retrained": false,
+      "not_run": [
+        "whole-repo E2 freeze/parity verifier",
+        "Official Test",
+        "new external evaluation"
+      ]
+    },
+    "ci_scope": "Python 3.11 Ubuntu fixture tests + available suite; no full-data training or target-URL calls"
+  }
+}

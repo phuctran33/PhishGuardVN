@@ -1,0 +1,100 @@
+id,source,label,prediction,score,score_kind,model_input
+ext_pilot_phishing_0001,ACB official list of fake websites,phishing,benign,-0.42411841757866675,decision_function,acb.chamsoc-the-uudaikhachhang-tructuyen.com.vn
+ext_pilot_phishing_0002,ACB official list of fake websites,phishing,benign,-0.7390854651925933,decision_function,acb.chamsockhachhang-capnhatuudai-thang11.com.vn
+ext_pilot_phishing_0003,ACB official list of fake websites,phishing,benign,-0.5193551564386174,decision_function,acb.chamsockhachhang-hotrothe-thang11.com.vn
+ext_pilot_phishing_0004,ACB official list of fake websites,phishing,benign,-0.39485799217047196,decision_function,acb.chamsockhachhang-thang10-tructuyen.com.vn
+ext_pilot_phishing_0005,ACB official list of fake websites,phishing,benign,-0.5894793140839527,decision_function,acb.chamsockhachhang-tructuyen-capnhatuudai.com.vn
+ext_pilot_phishing_0006,ACB official list of fake websites,phishing,benign,-0.2225810243878758,decision_function,acb.chamsockhachhang-tructuyen-thang10.com.vn
+ext_pilot_phishing_0007,ACB official list of fake websites,phishing,benign,-0.25156329743212585,decision_function,acb.chamsockhachhang-tructuyenthang10.com.vn
+ext_pilot_phishing_0008,ACB official list of fake websites,phishing,benign,-0.31400073446425014,decision_function,acb.chamsockhachhang-uudaithehapdan-thang10.com.vn
+ext_pilot_phishing_0009,ACB official list of fake websites,phishing,benign,-0.11099718410079962,decision_function,acb.chamsockhachhang-uudaithethang10.com.vn
+ext_pilot_phishing_0010,ACB official list of fake websites,phishing,benign,-0.3532773518402665,decision_function,acb.chamsockhachhangthe-thang9.com.vn
+ext_pilot_phishing_0011,ACB official list of fake websites,phishing,benign,-0.4113288170454406,decision_function,acb.chamsockhachhangthe-uudai-thang10.com.vn
+ext_pilot_phishing_0012,ACB official list of fake websites,phishing,benign,-0.37606911343058635,decision_function,acb.chamsocthekhachhang-thang10-tructuyen.com.vn
+ext_pilot_phishing_0013,ACB official list of fake websites,phishing,phishing,0.0625921675102653,decision_function,acb.chamsocthekhachhang-thang9.online
+ext_pilot_phishing_0014,ACB official list of fake websites,phishing,benign,-0.2772538969603143,decision_function,acb.chamsocthekhachhang-tructuyen-thang8.com.vn
+ext_pilot_phishing_0015,ACB official list of fake websites,phishing,benign,-0.33071367837119314,decision_function,acb.hotrokhachhang-uudaithetructuyen.com.vn
+ext_pilot_phishing_0016,ACB official list of fake websites,phishing,phishing,0.1397663387483865,decision_function,acb.uudaikhachhang-chamsocthe-tructuyen.online
+ext_pilot_phishing_0017,ACB official list of fake websites,phishing,benign,-0.2780357730936686,decision_function,acb.uudaikhachhangthe-thang10-tructuyen.com.vn
+ext_pilot_phishing_0018,ACB official list of fake websites,phishing,benign,-0.06167295859941824,decision_function,acb.uudaikhachhangthe-tructuyen-thang9.com.vn
+ext_pilot_phishing_0019,ACB official list of fake websites,phishing,phishing,0.020443332810054615,decision_function,acb.uudaithe-chamsockhachhang.online
+ext_pilot_phishing_0020,ACB official list of fake websites,phishing,benign,-0.28476280814209465,decision_function,acb.uudaithekhachhang-thang10.com.vn
+ext_pilot_phishing_0021,ACB official list of fake websites,phishing,phishing,0.3128451728762388,decision_function,acb.uudaithekhachhang-tructuyen-thang9.com
+ext_pilot_phishing_0022,ACB official list of fake websites,phishing,benign,-0.07782498078168743,decision_function,acb.uudaithekhachhang-tructuyen-thang9.com.vn
+ext_pilot_phishing_0024,ACB official list of fake websites,phishing,benign,-0.728284998808607,decision_function,chinhphu.dancuquocgia.org
+ext_pilot_phishing_0025,ACB official list of fake websites,phishing,benign,-0.39071004247283325,decision_function,chinhphu.hodancu.com
+ext_pilot_phishing_0026,ACB official list of fake websites,phishing,benign,-0.4882491601047713,decision_function,dichvucong.bcavnvngov.com
+ext_pilot_phishing_0027,ACB official list of fake websites,phishing,benign,-0.5991380220397456,decision_function,dichvucong.capnhatcutru.com
+ext_pilot_phishing_0028,ACB official list of fake websites,phishing,benign,-0.5362988289976575,decision_function,dichvucong.dinhdanhcutru.com
+ext_pilot_phishing_0029,ACB official list of fake websites,phishing,benign,-0.681620297109235,decision_function,dichvucong.snggov.com
+ext_pilot_phishing_0030,ACB official list of fake websites,phishing,benign,-1.0634629842731447,decision_function,dichvucong.vnvgov.com
+ext_pilot_phishing_0031,ACB official list of fake websites,phishing,benign,-0.2131482997960369,decision_function,dichvucongbca.com
+ext_pilot_phishing_0032,ACB official list of fake websites,phishing,benign,-0.3642661458056892,decision_function,dichvuconginfo.com
+ext_pilot_phishing_0033,ACB official list of fake websites,phishing,benign,-0.6103908435351474,decision_function,dkvn.govkp.com
+ext_pilot_phishing_0034,BIDV official consumer fraud warning,phishing,phishing,1.061162992350041,decision_function,ebanking-shopee.vn
+ext_pilot_phishing_0036,BIDV official consumer fraud warning,phishing,phishing,0.7294835549053371,decision_function,ibank-shopee.vn
+ext_pilot_phishing_0037,BIDV official consumer fraud warning,phishing,phishing,0.8441856784270645,decision_function,ibanking-shopee.vn
+ext_pilot_phishing_0038,Agribank official warning of spoofed domains,phishing,phishing,0.3979270077413619,decision_function,newagribank.cc
+ext_pilot_phishing_0039,ACB official list of fake websites,phishing,benign,-1.2533006996300387,decision_function,org.govqp.com
+ext_pilot_phishing_0040,BIDV official consumer fraud warning,phishing,phishing,0.3699779798625813,decision_function,shopeemobilebanking.vn
+ext_pilot_phishing_0041,Agribank official warning of spoofed domains,phishing,phishing,0.42267643355023843,decision_function,vaagribank.cc
+ext_pilot_phishing_0043,ACB official list of fake websites,phishing,phishing,0.15463058223833548,decision_function,vn-eid.com
+ext_pilot_phishing_0046,ACB official list of fake websites,phishing,benign,-1.1609221584550715,decision_function,vssid.govne.com
+ext_pilot_phishing_0047,ACB official list of fake websites,phishing,benign,-0.775347193195101,decision_function,vssid.govnn.cc
+ext_pilot_phishing_0048,ACB official list of fake websites,phishing,benign,-0.891509824819282,decision_function,vssids.com
+ext_pilot_phishing_0049,Bac Ninh government local public-service scam alert,phishing,phishing,0.3539188134876132,decision_function,dichvucong-vn.com
+ext_pilot_phishing_0050,Quang Ngai police publication of NCSC warning,phishing,benign,-0.524170645482824,decision_function,dichvucong.cvgov.com
+ext_pilot_phishing_0051,Quang Ngai police publication of NCSC warning,phishing,benign,-0.5229808987933314,decision_function,dichvucong.dancuso.com
+ext_pilot_phishing_0052,Quang Ngai police publication of NCSC warning,phishing,benign,-0.4711077127920948,decision_function,dichvucong.dulieuqucogia.com
+ext_pilot_phishing_0053,Quang Ngai police publication of NCSC warning,phishing,benign,-0.5003828962294925,decision_function,dichvucong.hhlpa.com
+ext_pilot_phishing_0054,Quang Ngai police publication of NCSC warning,phishing,benign,-0.19617786780212504,decision_function,dichvucong.xgovvn.net
+ext_pilot_phishing_0055,Quang Ngai police publication of NCSC warning,phishing,phishing,0.06598470480420959,decision_function,nganhangsaison.org
+ext_pilot_phishing_0056,Quang Ngai police publication of NCSC warning,phishing,benign,-0.07172771086701757,decision_function,policeonline.club
+ext_pilot_phishing_0057,Quang Ngai police publication of NCSC warning,phishing,phishing,0.6391283545687847,decision_function,sotuyenvcb.vietcombanker.com
+ext_pilot_phishing_0058,Quang Ngai police publication of NCSC warning,phishing,benign,-0.6054446598983436,decision_function,vdbank.com.vn
+ext_pilot_phishing_0059,Quang Ngai police publication of NCSC warning,phishing,benign,-0.10190721956622362,decision_function,vietgcv.cc
+ext_pilot_phishing_0060,NCSC warning republished by Dak Lak government,phishing,benign,-0.49186294611515313,decision_function,558-558-559.com
+ext_pilot_phishing_0061,NCSC warning republished by Dak Lak government,phishing,benign,-0.0016991927875714685,decision_function,acb.chamsockhachhang-uudaithetructuyen-thang8.online
+ext_pilot_phishing_0063,NCSC warning republished by Dak Lak government,phishing,benign,-0.3873109366446369,decision_function,amazonl4.com
+ext_pilot_phishing_0066,NCSC warning republished by Dak Lak government,phishing,phishing,0.5201760509649367,decision_function,baovietn.vip
+ext_pilot_phishing_0072,NCSC warning republished by Dak Lak government,phishing,benign,-0.8220953161325408,decision_function,chinhphu.dulieucutru.org
+ext_pilot_phishing_0074,NCSC warning republished by Dak Lak government,phishing,benign,-0.06282460131617429,decision_function,chinhphu.thongtincutru.org
+ext_pilot_phishing_0078,NCSC warning republished by Dak Lak government,phishing,phishing,0.7581633773049496,decision_function,dienmayxanh389.com
+ext_pilot_phishing_0082,NCSC warning republished by Dak Lak government,phishing,benign,-0.20143453331121491,decision_function,ggiao.hangtietkiem.com
+ext_pilot_phishing_0085,NCSC warning republished by Dak Lak government,phishing,phishing,0.7207793695241749,decision_function,giaohangtietkiem247.top
+ext_pilot_phishing_0087,NCSC warning republished by Dak Lak government,phishing,phishing,0.3445675776092907,decision_function,giaohangtietkiemvn.com
+ext_pilot_phishing_0091,NCSC warning republished by Dak Lak government,phishing,benign,-0.26827185316672075,decision_function,hethongtikicareers24.com
+ext_pilot_phishing_0092,NCSC warning republished by Dak Lak government,phishing,phishing,0.14093849496983557,decision_function,hethongtikicareers24h.com
+ext_pilot_phishing_0093,NCSC warning republished by Dak Lak government,phishing,phishing,0.18651316621752423,decision_function,hotro0nline28.com
+ext_pilot_phishing_0095,NCSC warning republished by Dak Lak government,phishing,benign,-0.5274701922703366,decision_function,kbthuhoivontreo.com
+ext_pilot_phishing_0097,NCSC warning republished by Dak Lak government,phishing,benign,-0.6603604548122562,decision_function,kpd63519s.com
+ext_pilot_phishing_0098,NCSC warning republished by Dak Lak government,phishing,benign,-0.9043618728070981,decision_function,kyaj11.com
+ext_pilot_phishing_0099,NCSC warning republished by Dak Lak government,phishing,phishing,1.0059180523195579,decision_function,lazada68.com
+ext_pilot_phishing_0100,NCSC warning republished by Dak Lak government,phishing,benign,-0.28417808479654666,decision_function,mbbkh-canhan.com
+ext_pilot_phishing_0101,NCSC warning republished by Dak Lak government,phishing,phishing,0.23931478488914226,decision_function,mmbonline01.com
+ext_pilot_phishing_0103,NCSC warning republished by Dak Lak government,phishing,benign,-0.7639220636779238,decision_function,nuk36952s.com
+ext_pilot_phishing_0105,NCSC warning republished by Dak Lak government,phishing,phishing,0.016355809425320333,decision_function,ocb.hotrokhachhang-tructuyenthe.com
+ext_pilot_phishing_0107,NCSC warning republished by Dak Lak government,phishing,benign,-0.22933589325921244,decision_function,sdfsshop1.com
+ext_pilot_phishing_0109,NCSC warning republished by Dak Lak government,phishing,benign,-0.357142149539022,decision_function,sendotv.shop
+ext_pilot_phishing_0112,NCSC warning republished by Dak Lak government,phishing,benign,-0.8248887307620826,decision_function,sjfku11.com
+ext_pilot_phishing_0113,NCSC warning republished by Dak Lak government,phishing,phishing,0.4939195433086778,decision_function,sjfku88.com
+ext_pilot_phishing_0115,NCSC warning republished by Dak Lak government,phishing,benign,-0.8267865491320704,decision_function,sp61889p.com
+ext_pilot_phishing_0116,NCSC warning republished by Dak Lak government,phishing,benign,-0.39670355901824195,decision_function,taichinheximbak.com
+ext_pilot_phishing_0117,NCSC warning republished by Dak Lak government,phishing,phishing,0.23286099858118547,decision_function,tdke03.com
+ext_pilot_phishing_0118,NCSC warning republished by Dak Lak government,phishing,benign,-0.12455095269189143,decision_function,tikicareers.vip
+ext_pilot_phishing_0119,NCSC warning republished by Dak Lak government,phishing,phishing,0.47280814471218635,decision_function,tikijaj3.com
+ext_pilot_phishing_0120,NCSC warning republished by Dak Lak government,phishing,phishing,0.021955236142301993,decision_function,tikimuasam24h.com
+ext_pilot_phishing_0121,NCSC warning republished by Dak Lak government,phishing,phishing,0.48728760874887356,decision_function,tikinew.club
+ext_pilot_phishing_0126,NCSC warning republished by Dak Lak government,phishing,benign,-0.8865198264763485,decision_function,vib.cham-soc-the-truc-tuyen.com.vn
+ext_pilot_phishing_0131,NCSC warning republished by Dak Lak government,phishing,benign,-0.4384136516200896,decision_function,vnsehotro.com
+ext_pilot_phishing_0133,NCSC warning republished by Dak Lak government,phishing,benign,-0.8961721785861259,decision_function,vnviettel.com
+ext_pilot_phishing_0136,NCSC warning republished by Dak Lak government,phishing,benign,-1.14868472343729,decision_function,vssid.pddgov.cc
+ext_pilot_phishing_0137,NCSC weekly scam warnings on Ministry portal,phishing,benign,-0.4235622156596173,decision_function,nestlegroup.pro
+ext_pilot_phishing_0138,VNCERT/CC warning on Ministry portal,phishing,phishing,0.6919436926500846,decision_function,online.acbvnx.com
+ext_pilot_benign_0008,vnba_member_directory,benign,benign,-1.0565419232044921,decision_function,vcbneo.com.vn
+ext_pilot_benign_0009,vnba_member_directory,benign,benign,-1.3200934041086332,decision_function,sbvamc.vn
+ext_pilot_benign_0010,vnba_member_directory,benign,benign,-1.599119535706731,decision_function,mbv.com.vn
+ext_pilot_benign_0011,vnba_member_directory,benign,phishing,0.7797340756746081,decision_function,www.co-opbank.vn
+ext_pilot_benign_0012,vnba_member_directory,benign,benign,-0.456558322994545,decision_function,www.niceinfo.com.vn
+ext_pilot_benign_0013,vnba_member_directory,benign,benign,-0.5552749490220266,decision_function,vrbank.com.vn
+ext_pilot_benign_0024,aeon_official_corporate_profile,benign,benign,-0.9008656393293928,decision_function,aeoneshop.com

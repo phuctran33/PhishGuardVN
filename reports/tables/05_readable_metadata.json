@@ -1,0 +1,152 @@
+{
+  "protocol": "week5_readable_v2",
+  "created_utc": "2026-11-02T09:08:36.434959+00:00",
+  "primary_metric": "average_precision",
+  "seed": 42,
+  "outer_folds": 3,
+  "inner_folds": 2,
+  "selected_model": "mlp",
+  "feature_set": "lexical_12",
+  "feature_names": [
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len"
+  ],
+  "score_kinds": {
+    "logistic_regression": "probability",
+    "logistic_regression_balanced": "probability",
+    "svm_rbf": "decision_function",
+    "mlp": "probability",
+    "hist_gradient_boosting": "probability"
+  },
+  "decision_rule": "estimator.predict",
+  "train_rows": 13078,
+  "validation_rows": 1585,
+  "test_evaluated": false,
+  "parameters": [
+    {
+      "model": "logistic_regression",
+      "context": 0,
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression",
+      "context": 1,
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression",
+      "context": 2,
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": 0,
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": 1,
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": 2,
+      "parameters": "{}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": 0,
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": 1,
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": 2,
+      "parameters": "{\"model__C\": 2.0}"
+    },
+    {
+      "model": "mlp",
+      "context": 0,
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "model": "mlp",
+      "context": 1,
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "model": "mlp",
+      "context": 2,
+      "parameters": "{\"model__hidden_layer_sizes\": [32]}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": 0,
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": 1,
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": 2,
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    },
+    {
+      "model": "logistic_regression",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "context": "full_train",
+      "parameters": "{}"
+    },
+    {
+      "model": "svm_rbf",
+      "context": "full_train",
+      "parameters": "{\"model__C\": 0.5}"
+    },
+    {
+      "model": "mlp",
+      "context": "full_train",
+      "parameters": "{\"model__hidden_layer_sizes\": [32, 16]}"
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "context": "full_train",
+      "parameters": "{\"max_leaf_nodes\": 7}"
+    }
+  ],
+  "python": "3.11.7",
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0"
+  },
+  "input_sha256": {
+    "data/interim/core_gold_silver.csv": "24a7ea370217492e185e112ab3e4330737cbcfa3d6a1d3dc99779300b9bf541f",
+    "data/interim/03_matrix_X_features.csv": "3f529abdcffe43e43809f523ecbc42826631c204b203e03b9f221c70afefaecb",
+    "data/interim/03_registrable_domains.csv": "926cafce69aaee4347923e21ea3aab0b1def25d814b9d0db504529788c13ab1f",
+    "data/interim/02_group_folds_train.csv": "3049e5f2f03e8cacdc23eea431083cedbe921712bbd0915cb2dceef3e0c19820"
+  },
+  "notebook_code_sha256": "aaaa8e914bc40b0e88b8750bd5c3111a6b97b8c3549d953beb5a6e064c0a238b",
+  "model_sha256": "a785dc15ce5524e33ffd6b2a98d15115062f65010340f8e920599494f69ee6a8"
+}

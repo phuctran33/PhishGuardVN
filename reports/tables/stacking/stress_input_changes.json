@@ -1,0 +1,20 @@
+{
+  "add_https": {
+    "raw_strings_changed": 11424,
+    "canonical_text_changed": 0,
+    "e2_rows_changed": 0,
+    "e2_max_abs_delta": 0.0
+  },
+  "remove_scheme": {
+    "raw_strings_changed": 1659,
+    "canonical_text_changed": 0,
+    "e2_rows_changed": 0,
+    "e2_max_abs_delta": 0.0
+  },
+  "uppercase_hostname": {
+    "raw_strings_changed": 13078,
+    "canonical_text_changed": 0,
+    "e2_rows_changed": 22,
+    "e2_max_abs_delta": 0.6505865002596152
+  }
+}

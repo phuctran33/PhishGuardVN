@@ -1,0 +1,9 @@
+{
+  "historical_protocol": "nested_group_selection_with_group_svm_calibration",
+  "snapshot_zip": "data/interim/week5_nested_v1_snapshot.zip",
+  "snapshot_sha256": "54ad6719a7e68acfc5624be3609f388cb019fea8a949b7a49b0d322c096af07d",
+  "original_source_manifest_sha256": "e4999ae0a0555e6a0edf86f84b7d8cdc35a3505f5683172ec95d756ee67d1f5d",
+  "original_output_prefix": "05_",
+  "original_model": "models/week5_lexical_models.joblib",
+  "note": "Archive created before readable v2 edits. Old tables05 and model kept unchanged. ZIP contains original source/config/notebook/handoffs/model to restore the original experiment in a separate folder. ZIP is local and ignored by Git."
+}

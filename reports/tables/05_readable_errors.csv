@@ -1,0 +1,13 @@
+id,model,fold_id,evaluation_partition,true_label,predicted_label,score,score_kind,error_type,url,source,tier
+0017a2da-35d5-588f-8062-349ea6be2ec7,mlp,0,group_cv,1,0,0.1746624355469846,probability,FN,kokatrade[.]com,tinnhiemmang,gold
+0041597b-64fe-5b47-88fe-40388a88a466,mlp,0,group_cv,1,0,0.18365949662132094,probability,FN,mrhmfund[.]com,tinnhiemmang,gold
+00c6d664-b0bd-57ac-8c17-c030f6008ff7,mlp,2,group_cv,1,0,0.3733025448168501,probability,FN,vn-inc[.]info,tinnhiemmang,gold
+00dd46cf-3bb2-5276-b4dc-497dd8e8f9d3,mlp,1,group_cv,1,0,0.20415332625905216,probability,FN,b1dv[.]xyz,tinnhiemmang,gold
+00f4afa6-d2b5-5e4f-b30e-c448d4fb2cbf,mlp,1,group_cv,0,1,0.5660600308041278,probability,FP,https://www[.]binhthuan[.]dcs[.]vn,tinnhiem_org,gold
+011bd9f8-1450-5346-a9b6-638e651b6fd3,mlp,0,group_cv,0,1,0.5969084399578785,probability,FP,pos365[.]vn,tranco_vn,silver
+018a7b82-c2cd-598a-8cfe-df160fa3f408,mlp,1,group_cv,1,0,0.15794987719464235,probability,FN,masothue[.]biz,tinnhiemmang,gold
+01e34709-db9f-52dd-b60c-a064312ff7f4,mlp,2,group_cv,1,0,0.18120081188924278,probability,FN,pinuian[.]top,tinnhiemmang,gold
+04dd5f6a-beae-54a3-a594-2f4af4dc75d0,mlp,0,group_cv,0,1,0.5599981072152094,probability,FP,24hstore[.]vn,tinnhiem_web,gold
+0611f9f8-e788-5a50-9925-4aa102c7b5e5,mlp,1,group_cv,0,1,0.5552247309595452,probability,FP,1001hry[.]cz,tranco,silver
+0e637e72-ed58-5f8d-bd67-4ebe85d3dc19,mlp,2,group_cv,0,1,0.8053454171234011,probability,FP,h-chan[.]me,tranco,silver
+1421ce6a-eb96-5c87-8d54-9d59d98bb15a,mlp,2,group_cv,0,1,0.5131269965345442,probability,FP,tivi360[.]vn,tranco_vn,silver
