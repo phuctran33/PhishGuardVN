@@ -27,7 +27,7 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
       - name: Install declared teacher and test dependencies
-        run: python -m pip install -e ".[teacher,test]"
+        run: python -m pip install -e ".[teacher,test,api]"
       - name: Install frozen Teacher runtime (Python 3.11)
         run: python -m pip install -r requirements-teacher.txt
       - name: Check installed dependencies
