@@ -1,119 +1,108 @@
 # Chạy QA — Issue #17
 
-## Runtime và source được kiểm
+Chạy tại root nhánh `test/api-contract-qa`, đã tích hợp backend PR #22 tại `bbc9eae`. Teacher phát hành nằm ngay trong checkout; không cần cài source từ thư mục PR riêng. Dùng **CPython 3.11**, giữ nguyên `requirements-teacher.txt`, bundle và release lock.
 
-Teacher phát hành cần **CPython 3.11**, toàn bộ versions trong `requirements-teacher.txt`, cùng release lock/bundle chính thức. Môi trường Python 3.13 cũ không dùng cho nghiệm thu Teacher stacking.
+## Cài môi trường mới
 
-Lần kiểm hiện tại dùng source backend PR #22 tại `7dfeec5f96f106f3544163466e2cf312494eb41f`, Web PR #23 tại `a2bb0dcedb7d12777774462a5fdea680aca2ff7e`. Teacher đã phát hành là `teacher-stacking-v2`, không còn là candidate mặc định. Đọc `docs/backend.md` và `docs/api_contract.md` của backend revision này.
-
-Ví dụ dưới đây chạy từ gốc checkout QA, với checkout backend nằm cạnh nó. Điều chỉnh hai đường dẫn tương đối nếu bố trí thư mục khác:
+Trên Windows, nếu đã cài Python 3.11 qua Python Launcher:
 
 ```powershell
-$backendRoot = (Resolve-Path ..\PhishGuardVN-pr22).Path;
-$qaPython = (Resolve-Path ..\.qa-envs\release-311\Scripts\python.exe).Path;
-& $qaPython -c "import sys, phishguard_vn.api as api; print(sys.version); print(api.__file__)";
-& $qaPython -m pip check;
+py -3.11 -m venv .venv;
+& .\.venv\Scripts\python.exe -m pip install -r requirements-teacher.txt -e ".[api,test,teacher]";
+& .\.venv\Scripts\python.exe -m pip check
 ```
 
-Trên máy khác, tạo venv CPython 3.11 tại đường dẫn tự chọn, rồi đặt `$qaPython` tới executable đó. Cài source backend được kiểm và runtime khóa phiên bản:
+Nếu dùng Python portable, thay `py -3.11` bằng đường dẫn Python 3.11 thực tế. Không dùng môi trường Python 3.13 cũ cho Teacher phát hành. Trên macOS/Linux dùng `python3.11 -m venv .venv` và `.venv/bin/python`. README gốc có bước cài `requirements.txt` cho notebook; nghiệm thu API dùng runtime khóa phiên bản và extras trên, không cần chạy lại notebook/train model.
+
+## Full suite và Teacher API bắt buộc
+
+Mỗi lần chạy trên Windows dùng một `--basetemp` mới để tránh thư mục pytest do tài khoản khác tạo. Các lệnh có dấu `;` để paste thành một dòng vẫn đúng.
 
 ```powershell
-& $qaPython -m pip install -r "$backendRoot\requirements-teacher.txt" -e "${backendRoot}[api,test]"
+$qaTemp=Join-Path $env:TEMP ('pgvn-qa-'+[guid]::NewGuid().ToString('N')); & .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider -q -rs --tb=short "--basetemp=$qaTemp" --teacher-root=. --teacher-api -k 'not test_real_external_bundle_matches_saved_scores'
 ```
 
-`api.__file__` phải trỏ tới backend được chọn. Bộ test sẽ báo lỗi nếu API và release root thuộc hai checkout khác nhau. Sau khi nhánh QA đã merge backend mới, có thể cài chính checkout QA và dùng nó làm `$backendRoot`.
-
-## Full suite QA và Teacher thật
-
-Dùng temp có GUID mới để tránh quyền thư mục pytest bị dùng chung giữa terminal người dùng và sandbox. Mỗi lệnh dưới đây đã có dấu chấm phẩy nên có thể paste thành một dòng:
+Kiểm riêng Teacher integration và công cụ benchmark:
 
 ```powershell
-$qaTemp = Join-Path $env:TEMP ('phishguard-qa-' + [guid]::NewGuid().ToString('N')); $env:OMP_NUM_THREADS='1'; & $qaPython -m pytest -p no:cacheprovider -q -rs "--basetemp=$qaTemp" "--teacher-root=$backendRoot" --teacher-api
+$qaTemp=Join-Path $env:TEMP ('pgvn-teacher-'+[guid]::NewGuid().ToString('N')); & .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider -q -rs --tb=short "--basetemp=$qaTemp" tests\test_teacher_integration.py tests\test_api_benchmark.py --teacher-root=. --teacher-api
 ```
 
-Kết quả đã kiểm trên working tree hiện tại: **490 passed, 2 skipped**. Hai skip là bộ tham số brand rỗng và handoff notebook 02/03 chưa có. Lệnh có `--teacher-api`, nên các ca API Teacher đã thực thi; không tính skip gate là pass. Số đếm thay đổi khi thêm test hoặc merge upstream; ghi SHA/source/môi trường thay vì sửa test cho khớp số cũ.
-
-Chạy riêng phần Teacher/parity/security và benchmark:
+Kiểm lại API/Teacher, bao gồm bản sửa QA-WIN-01 của Hưng:
 
 ```powershell
-$qaTemp = Join-Path $env:TEMP ('phishguard-teacher-' + [guid]::NewGuid().ToString('N')); & $qaPython -m pytest -p no:cacheprovider -q -rs "--basetemp=$qaTemp" "--teacher-root=$backendRoot" --teacher-api tests\test_teacher_integration.py tests\test_api_benchmark.py
+$qaTemp=Join-Path $env:TEMP ('pgvn-api-'+[guid]::NewGuid().ToString('N')); & .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider -q -rs --tb=short "--basetemp=$qaTemp" tests\test_api.py tests\test_api_teacher.py --teacher-root=. --teacher-api
 ```
 
-Kết quả đã kiểm: **53 passed**. Parity dùng 13 input và cùng artifact; tolerance score tuyệt đối `1e-12`. Nhãn Teacher theo `score >= threshold`; ngưỡng đọc từ lock, không mặc định .5.
+File `test_api.py` của QA có thêm ca độc lập so với bản 48 test upstream, nên số đếm cuối có thể lớn hơn 48. Xem số thực tế tại `reports/week6_api_qa.md`.
 
-## Kiểm lại test nguyên bản PR #22
+Các suite cũ `test_ablation_ml.py`, `test_readable_ml.py`, `test_brand_features.py`, `test_external_pilot.py` vẫn giữ nguyên. Các lý do skip có thể gặp:
 
-Chạy từ gốc checkout backend, dùng `$qaPython` đã đặt là đường dẫn tuyệt đối:
+- Bộ tham số brand regression rỗng.
+- Thiếu handoff local notebook 02/03; không chạy notebook chỉ để khớp số pass.
+- `test_url_research.py` cần extra `research` (Torch/Transformers), không thuộc runtime API; workflow nghiên cứu riêng của Phúc vẫn được giữ.
+- Teacher API bị skip nếu quên `--teacher-api`; **không tính skip này là nghiệm thu pass**.
+
+Lệnh QA loại đúng `test_real_external_bundle_matches_saved_scores` để không mở rộng tác vụ sang chấm external. Không tắt assertion hoặc đổi lỗi thành skip. Nếu cần nghiên cứu upstream, xem `docs/week6_phuc_handoff.md` và `week6-benchmark.yml`; không train lại project data để chạy QA.
+
+## Backend thật và latency
+
+Terminal A, tại root checkout:
 
 ```powershell
-Set-Location $backendRoot; $apiTemp=Join-Path $env:TEMP ('phishguard-pr22-'+[guid]::NewGuid().ToString('N')); & $qaPython -m pytest -p no:cacheprovider -q -rs --tb=short "--basetemp=$apiTemp" tests\test_api.py tests\test_api_teacher.py
+$env:PHISHGUARD_BUNDLE_FORMAT='teacher'; $env:PHISHGUARD_TEACHER_ROOT=(Get-Location).Path; $env:PHISHGUARD_CORS_ORIGINS='http://localhost:3000,http://127.0.0.1:3000'; Remove-Item Env:PHISHGUARD_MODEL_BUNDLE,Env:PHISHGUARD_MODEL_NAME,Env:PHISHGUARD_MODEL_SHA256 -ErrorAction SilentlyContinue; & .\.venv\Scripts\python.exe -m uvicorn phishguard_vn.api:app --host 127.0.0.1 --port 8000 --no-access-log
 ```
 
-Bản `7dfeec5` trên Windows hiện **47 passed, 1 failed** tại test offline do chặn socketpair khi TestClient khởi tạo event loop. Chi tiết QA-WIN-01 được ghi trong `reports/week6_api_qa.md` để phản hồi trực tiếp trên PR #22. Source test nguyên bản chưa được sửa trong lần QA này; bản sao thử đề xuất đạt 48/48.
-
-Full upstream suite cần thêm extras `teacher,research` theo hướng dẫn backend, vẫn giữ `-r requirements-teacher.txt`. Khi đối chiếu tác vụ này, loại đúng bài `test_real_external_bundle_matches_saved_scores` bằng `-k`; không huấn luyện project data, chấm Official Test hoặc chạy benchmark external mới. Kết quả đã ghi: **552 passed, 2 skipped, 1 failed, 1 deselected**.
-
-## Chạy backend thật và đo latency
-
-Trong terminal backend, đặt cấu hình Teacher và xóa các override numeric cũ:
+Giữ terminal A chạy. Terminal B:
 
 ```powershell
-$env:PHISHGUARD_BUNDLE_FORMAT='teacher'; $env:PHISHGUARD_TEACHER_ROOT=$backendRoot; $env:PHISHGUARD_CORS_ORIGINS='http://127.0.0.1:3000,http://localhost:3000'; $env:OMP_NUM_THREADS='1'; Remove-Item Env:PHISHGUARD_MODEL_BUNDLE,Env:PHISHGUARD_MODEL_NAME,Env:PHISHGUARD_MODEL_SHA256 -ErrorAction SilentlyContinue;
-& $qaPython -m uvicorn phishguard_vn.api:app --host 127.0.0.1 --port 8000 --no-access-log
+curl.exe -i http://127.0.0.1:8000/health
 ```
 
-Giữ terminal đó chạy. Trong terminal QA khác, kiểm health và đo; đặt lại `$qaPython` nếu chưa khai báo trong terminal mới:
+Kỳ vọng HTTP 200, `status=ok`, `model_ready=true`, model `teacher-stacking-v2`, hash/protocol đúng lock. HTTP 200 với `degraded` chỉ chứng minh server hoạt động.
 
-```powershell
-curl.exe -i http://127.0.0.1:8000/health;
-& $qaPython scripts\benchmark_api_latency.py --base-url http://127.0.0.1:8000 --url https://example.com/login --warmup 10 --requests 100 --output reports\tables\week6\api_latency_teacher_local.json
-```
-
-Health phải `model_ready=true`, model/hash đúng release lock. Kết quả đã lưu ở `api_latency_teacher.json`: mean **16.0741 ms**, p95 **19.8404 ms**, 100 requests sau 10 warm-up, HTTP keep-alive/concurrency 1 trên Windows CPython 3.11.14. Kết quả máy khác có thể khác. Công cụ từ chối health degraded, response sai contract hoặc mất kết nối; không tạo số đo thành công giả và không ghi raw URL.
-
-PowerShell smoke POST ổn định qua JSON UTF-8 file:
+POST bằng JSON file UTF-8 để tránh khác biệt quoting PowerShell/curl:
 
 ```powershell
 $bodyPath=Join-Path $env:TEMP ('pgvn-request-'+[guid]::NewGuid().ToString('N')+'.json'); [IO.File]::WriteAllText($bodyPath,'{"url":"example.com"}',[Text.UTF8Encoding]::new($false)); curl.exe -i -X POST http://127.0.0.1:8000/predict -H 'Content-Type: application/json' --data-binary "@$bodyPath"
 ```
 
+Công cụ latency kiểm response, decision rule và threshold, đồng thời lưu cấu hình/artifact. Giữ một process, concurrency 1 và cùng runtime khi đối chiếu số đo:
+
+```powershell
+& .\.venv\Scripts\python.exe scripts\benchmark_api_latency.py --help
+```
+
+## CI và clean clone
+
+Workflow `tests.yml` chạy **Ubuntu và Windows, CPython 3.11**, cài source của chính checkout, chạy full QA và gate Teacher API riêng. Gate yêu cầu đủ test và không skip; JUnit được tải lên artifacts. Workflow benchmark/research upstream giữ nguyên. CI xanh chỉ áp dụng cho commit đã chạy; thay đổi chưa push chưa có kết quả Actions.
+
+Sau khi tự commit và push, xem Actions đúng SHA vừa push và kiểm cả hai job. Để clone sạch:
+
+```powershell
+git clone --branch test/api-contract-qa https://github.com/phuctran33/PhishGuardVN.git PhishGuardVN-clean;
+Set-Location .\PhishGuardVN-clean;
+git rev-parse HEAD;
+py -3.11 -m venv .venv;
+& .\.venv\Scripts\python.exe -m pip install -r requirements-teacher.txt -e ".[api,test,teacher]";
+& .\.venv\Scripts\python.exe -m pip check
+```
+
+Chạy pytest, startup backend, GET health và POST predict bằng các lệnh trên. Không dùng lại venv/handoff dữ liệu/cache model của checkout làm việc. Ghi revision, Python/OS, dependencies, lệnh, exit code, pass/fail/skip và artifact/hash. Bản thử chưa commit phải ghi rõ parents và patch hash, không gọi đó là revision đã phát hành. Xem `reports/tables/week6/clean_clone.json`.
+
 ## Web và final E2E
 
-Từ `apps/web` của checkout PR #23:
+Web thuộc PR #23, checkout riêng chỉ cần cho kiểm UI. Từ `apps/web`, với backend đang chạy:
 
 ```powershell
 flutter pub get;
 flutter analyze;
 flutter test;
-flutter build web --release --no-web-resources-cdn --dart-define=API_BASE_URL=http://127.0.0.1:8000;
-& $qaPython -m http.server 3000 --bind 127.0.0.1 --directory build/web
+flutter build web --release --no-web-resources-cdn --dart-define=API_BASE_URL=http://127.0.0.1:8000
 ```
 
-Mở `http://127.0.0.1:3000`. Ghi SHA backend/Web/QA, hash artifact, runtime, từng bước và kết quả:
+Dùng Python của venv QA để phục vụ thư mục `build/web` trên port 3000. Kiểm đủ: URL hợp lệ → HTTP 200 và UI đúng response; URL sai port → 422 `invalid_port`; dừng backend thật → UI báo mất kết nối; bật lại → retry thành công cùng trang không reload. Teacher dùng `score >= threshold` từ lock, score meta-LR chưa calibrated, không phải phần trăm an toàn.
 
-| Tình huống | Kiểm tra |
-| --- | --- |
-| URL hợp lệ | POST 200; nhãn/model/score/rule hiển thị đúng response. Thử `https://example.com/Login?Q=A`: score khoảng .576056 nhưng vẫn benign theo ngưỡng lock. |
-| URL sai | `https://example.com:99999` trả 422 `invalid_port`; UI báo lỗi và sửa input được. |
-| Backend mất kết nối | Dừng process backend thật, gửi lại từ Web; loading kết thúc, có lỗi/retry. Bật lại cùng artifact/port; retry thành công trên cùng trang. |
+Đã có bằng chứng browser thật trên Web `a2bb0dc`, backend `7dfeec5`; commit sửa test `bbc9eae` không đổi source API/model/Web. Kết quả tại `reports/tables/week6/release_e2e.json` và sáu ảnh `reports/figures/week6/khiem_teacher_*.png`. Widget tests dùng HTTP mock; bằng chứng browser dùng Teacher thật. Viewport emulation không phải Android vật lý.
 
-Đã kiểm đủ ba tình huống với Teacher thật, thêm empty/no POST, phishing từ ví dụ bàn giao, thiếu model/503 và năm viewport. Bằng chứng tại `reports/tables/week6/release_e2e.json`, ảnh `reports/figures/week6/khiem_teacher_*.png`. Widget tests dùng HTTP mock; kết quả browser nêu trên gọi API/model thật. Test viewport không phải test Android vật lý.
-
-## CI, merge và clean clone cuối
-
-`.github/workflows/tests.yml` checkout backend/Teacher đúng SHA được review, cài runtime khóa phiên bản, chạy full QA với `--teacher-api` và gate Teacher riêng. Diff này chưa được push/chạy trên Actions; trạng thái xanh của commit cũ không chứng minh diff mới.
-
-Nhánh QA hiện có thay đổi chưa commit, nên không tự merge hoặc tạo merge commit. Sau khi tự kiểm và commit phần QA, người phụ trách cập nhật backend vào cùng nhánh, xử lý conflict cấu hình nếu có, rồi cài lại source của nhánh vừa hợp nhất và chạy tests. Cuối cùng push, kiểm Actions và clean clone **đúng revision đó**.
-
-Sau commit QA do người phụ trách thực hiện, có thể chuẩn bị merge để xem trước mà chưa tạo merge commit:
-
-```powershell
-git fetch origin feat/w6-fastapi-backend;
-git merge --no-commit --no-ff origin/feat/w6-fastapi-backend
-```
-
-Kiểm tra diff/conflicts, giữ đầy đủ các extras upstream và cấu hình pytest của QA, chạy lại tests rồi người phụ trách mới tự commit merge. Nếu backend đã có commit sửa QA-WIN-01, cập nhật SHA pin trong workflow theo revision vừa kiểm.
-
-Clean clone phải có đủ bằng chứng: `git rev-parse HEAD`, tạo venv CPython 3.11 mới, cài theo README và requirements lock, `pip check`, pytest, startup backend và GET `/health`. Ghi pass/fail/skip/blocker riêng; health 200 nhưng degraded không phải inference thành công. Baseline clean clone `cef4aea` đã có 439 passed/2 skipped và smoke không model; revision QA mới chưa được xác nhận clean clone.
-
-Tests/security/CI/clean clone giữ hạn 14/11/2026; final E2E trước nghiệm thu 15/11. Khi báo lỗi, ghi revision/môi trường/lệnh/expected/actual; ẩn URL riêng tư, token và đường dẫn cá nhân. Lịch sử Teacher v1/candidate trong `reports/history/week6_api_qa_pre_release.md`; runtime và kết quả hiện tại lấy từ báo cáo release mới.
+Khi báo lỗi, ghi revision/môi trường/lệnh/expected/actual; ẩn URL riêng tư, token và đường dẫn cá nhân. Tests/security/CI/clean clone hạn 14/11/2026; E2E hậu kiểm trước nghiệm thu 15/11.

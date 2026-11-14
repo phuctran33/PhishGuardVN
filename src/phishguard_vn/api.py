@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 import hashlib
+import json
+import math
 import os
 from pathlib import Path
 from typing import Literal
@@ -44,13 +46,20 @@ class PredictionResponse(BaseModel):
     score: FiniteFloat
     score_kind: Literal["probability", "decision_function"]
     score_definition: str
-    decision_rule: Literal["estimator.predict"]
+    decision_rule: Literal["estimator.predict", "score >= threshold"]
     protocol: str
+    threshold: FiniteFloat | None = None
 
     @model_validator(mode="after")
     def probability_range(self):
         if self.score_kind == "probability" and not 0 <= self.score <= 1:
             raise ValueError("invalid_probability")
+        if self.decision_rule == "score >= threshold":
+            if (self.score_kind != "probability" or self.threshold is None
+                    or not 0 <= self.threshold <= math.nextafter(1., math.inf)):
+                raise ValueError("invalid_threshold_contract")
+        elif self.threshold is not None:
+            raise ValueError("unexpected_threshold")
         return self
 
 
@@ -127,11 +136,64 @@ def _validate_bundle(bundle: dict, model_name: str | None) -> str:
     return name
 
 
-def _load(app: FastAPI, bundle_path, bundle_format, model_name, expected_sha256):
+def _teacher_prediction(row: dict, lock: dict) -> dict:
+    """Keep the released adapter's label/score/threshold; never use estimator.predict."""
+    if (row.get("candidate_only") is not False or row.get("promoted") is not True
+            or row.get("model_version") != lock["model_version"]
+            or row.get("threshold") != lock["threshold"]
+            or row.get("decision_rule") != lock["decision_rule"]):
+        raise ValueError("Teacher response differs from release lock")
+    return {key: row[key] for key in (
+        "label", "score", "score_kind", "score_definition", "decision_rule", "threshold"
+    )} | {"model": row["model_version"], "protocol": lock["operating_point_scope"]}
+
+
+def _load_teacher(app: FastAPI, root: Path, bundle_path, model_name, expected_sha256):
+    # The official loader owns runtime, dependency, source, reference and promotion
+    # guards. Do not deserialize a candidate directly or silently use its v1 fallback.
+    app.state.model_error = "artifact_incompatible"
+    try:
+        lock_path = root / "configs/teacher_lock.json"
+        if not lock_path.is_file():
+            app.state.model_error = "artifact_missing"
+            return
+        lock = json.loads(lock_path.read_text(encoding="utf-8"))
+        if bundle_path or model_name:
+            raise ValueError("Teacher artifact/model must come from release lock")
+        path = root / lock["bundle"]["path"]
+        if not path.is_file():
+            app.state.model_error = "artifact_missing"
+            return
+        if expected_sha256 and expected_sha256.lower() != lock["bundle"]["sha256"]:
+            raise ValueError("Configured SHA differs from official release")
+        from phishguard_vn.teacher import load_teacher
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", InconsistentVersionWarning)
+            teacher = load_teacher(root)
+        with threadpool_limits(limits=1):
+            row = teacher.predict_one("https://example.com")
+            PredictionResponse.model_validate(_teacher_prediction(row, lock))
+        app.state.bundle = {"feature_set": row["preprocessing_version"],
+                            "protocol": lock["operating_point_scope"]}
+        app.state.model_name = lock["model_version"]
+        app.state.artifact_sha256 = lock["bundle"]["sha256"]
+        app.state.teacher = teacher
+        app.state.teacher_lock = lock
+        app.state.model_error = None
+    except Exception:
+        # Sanitized reason only; no local path, raw URL, exception or fallback.
+        app.state.model_error = "artifact_incompatible"
+
+
+def _load(app: FastAPI, bundle_path, bundle_format, model_name, expected_sha256, teacher_root):
     app.state.bundle = None
     app.state.model_name = None
     app.state.artifact_sha256 = None
     app.state.model_error = "not_configured"
+    app.state.teacher = None
+    if bundle_format == "teacher":
+        _load_teacher(app, Path(teacher_root), bundle_path, model_name, expected_sha256)
+        return
     if not bundle_path:
         return
     path = Path(bundle_path)
@@ -172,6 +234,7 @@ def _load(app: FastAPI, bundle_path, bundle_format, model_name, expected_sha256)
 
 def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v2",
                model_name: str | None = None, expected_sha256: str | None = None,
+               teacher_root: str | Path = Path(__file__).resolve().parents[2],
                cors_origins: tuple[str, ...] | list[str] = ()) -> FastAPI:
     """Explicit factory for TestClient; module-level app below reads environment."""
     origins = [origin.strip().rstrip("/") for origin in cors_origins if origin.strip()]
@@ -183,9 +246,10 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
 
     @asynccontextmanager
     async def lifespan(app):
-        _load(app, bundle_path, bundle_format, model_name, expected_sha256)
+        _load(app, bundle_path, bundle_format, model_name, expected_sha256, teacher_root)
         yield
         app.state.bundle = None
+        app.state.teacher = None
 
     app = FastAPI(title="PhishGuardVN API", version="1.0.0", lifespan=lifespan,
                   description="Offline URL classification; benign is not a safety guarantee.")
@@ -218,7 +282,7 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
                 "protocol": bundle["protocol"] if bundle else None,
                 "artifact_sha256": app.state.artifact_sha256, "model_error": app.state.model_error}
 
-    @app.post("/predict", response_model=PredictionResponse,
+    @app.post("/predict", response_model=PredictionResponse, response_model_exclude_none=True,
               responses={status: {"model": ErrorResponse} for status in (422, 503, 500)})
     def predict(payload: PredictRequest):
         url = payload.url.strip()
@@ -236,7 +300,9 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
             return error(503, "MODEL_UNAVAILABLE", "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.", app.state.model_error)
         try:
             with threadpool_limits(limits=1):
-                result = predict_url(url, app.state.bundle, app.state.model_name)
+                result = (_teacher_prediction(app.state.teacher.predict_one(url), app.state.teacher_lock)
+                          if app.state.teacher is not None else
+                          predict_url(url, app.state.bundle, app.state.model_name))
             return PredictionResponse.model_validate(result)
         except Exception:
             return error(500, "INFERENCE_FAILED", "Không thể thực hiện suy luận.", "prediction_failed")
@@ -251,4 +317,5 @@ app = create_app(bundle_path=os.getenv("PHISHGUARD_MODEL_BUNDLE"),
                  bundle_format=os.getenv("PHISHGUARD_BUNDLE_FORMAT", "v2"),
                  model_name=os.getenv("PHISHGUARD_MODEL_NAME") or None,
                  expected_sha256=os.getenv("PHISHGUARD_MODEL_SHA256") or None,
+                 teacher_root=os.getenv("PHISHGUARD_TEACHER_ROOT") or Path(__file__).resolve().parents[2],
                  cors_origins=os.getenv("PHISHGUARD_CORS_ORIGINS", "").split(","))

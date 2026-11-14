@@ -1,128 +1,675 @@
 {
-  "artifact_sha256": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
-  "model": "logistic_regression_balanced",
-  "feature_set": "lexical_12",
-  "protocol": "week5_e1_audit",
-  "teacher_v1": false,
-  "tests_are_not_ml_benchmark": true,
-  "real_http_checks": [
-    {
-      "case": "valid",
-      "http_status": 200,
-      "response": {
-        "label": "benign",
-        "model": "logistic_regression_balanced",
-        "score": 0.4949721386878221,
-        "score_kind": "probability",
-        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
-        "decision_rule": "estimator.predict",
-        "protocol": "week5_e1_audit"
-      }
+  "current_teacher": {
+    "upstream_main": "7d2d60091c971dd3081b0b71fbf35b4cdd80c165",
+    "reviewed_teacher_revision": "398ee2ce9e587644ebe21b529fba485536a9aac1",
+    "implementation_base": "9c8632a53f9fa5e91cc2d75e6b63dad42c0883fe",
+    "artifact": {
+      "path": "models/teacher_v2_candidate.joblib",
+      "sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1"
     },
-    {
-      "case": "empty",
-      "http_status": 422,
-      "response": {
-        "error": {
-          "code": "INVALID_REQUEST",
-          "message": "Body phải gồm duy nhất url là chuỗi 1–4096 ký tự, không chỉ khoảng trắng.",
-          "reason": "schema_validation"
-        }
-      }
+    "model_version": "teacher-stacking-v2",
+    "threshold": 0.6945740700635259,
+    "python": "3.11.17",
+    "implementation": "CPython",
+    "runtime_versions": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "pandas": "3.1.0",
+      "joblib": "1.6.0",
+      "tldextract": "5.4.0",
+      "idna": "3.20"
     },
-    {
-      "case": "missing_scheme",
-      "http_status": 200,
-      "response": {
-        "label": "benign",
-        "model": "logistic_regression_balanced",
-        "score": 0.4949721386878221,
-        "score_kind": "probability",
-        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
-        "decision_rule": "estimator.predict",
-        "protocol": "week5_e1_audit"
+    "tolerance": 1e-12,
+    "cases": [
+      {
+        "input": "example.com",
+        "http_status": 200,
+        "python_cli": {
+          "url": "example.com",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://example.com",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://example.com",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://EXAMPLE.com",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://EXAMPLE.com",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://example.com/Login?Q=A",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://example.com/Login?Q=A",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.5760558654872865,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.5760558654872865,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://example.com/Case?Q=%2F&x=1",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://example.com/Case?Q=%2F&x=1",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.5100075146703615,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.5100075146703615,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "//example.com/path",
+        "http_status": 200,
+        "python_cli": {
+          "url": "//example.com/path",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.13606203745425968,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.13606203745425968,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://example.com:8443/path",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://example.com:8443/path",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.339381918793285,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.339381918793285,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://BÜCHER.de/Path?Q=A",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://BÜCHER.de/Path?Q=A",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.039104604528425305,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.039104604528425305,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://xn--bcher-kva.de/",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://xn--bcher-kva.de/",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.012134028943238761,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.012134028943238761,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "http://192.0.2.1/login",
+        "http_status": 200,
+        "python_cli": {
+          "url": "http://192.0.2.1/login",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.20108650807152198,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.20108650807152198,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "http://[2001:db8::1]/",
+        "http_status": 200,
+        "python_cli": {
+          "url": "http://[2001:db8::1]/",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.6664354162588207,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.6664354162588207,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "https://account-verify.example.com/login?password=demo",
+        "http_status": 200,
+        "python_cli": {
+          "url": "https://account-verify.example.com/login?password=demo",
+          "label": "benign",
+          "class_id": 0,
+          "score": 0.4810097054396213,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.4810097054396213,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
+      },
+      {
+        "input": "9944789.com",
+        "http_status": 200,
+        "python_cli": {
+          "url": "9944789.com",
+          "label": "phishing",
+          "class_id": 1,
+          "score": 0.9319661170520045,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "threshold": 0.6945740700635259,
+          "decision_rule": "score >= threshold",
+          "model_version": "teacher-stacking-v2",
+          "preprocessing_version": "canonical-reference-v1",
+          "candidate_only": false,
+          "promoted": true,
+          "artifact_model_version": "teacher-stacking-v2-candidate"
+        },
+        "http_api": {
+          "label": "phishing",
+          "model": "teacher-stacking-v2",
+          "score": 0.9319661170520045,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        },
+        "abs_score_delta": 0.0,
+        "status": "PASS"
       }
+    ],
+    "invalid_cases": [
+      {
+        "input": "",
+        "http_status": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_REQUEST",
+            "message": "Body phải gồm duy nhất url là chuỗi 1–4096 ký tự, không chỉ khoảng trắng.",
+            "reason": "schema_validation"
+          }
+        },
+        "status": "PASS"
+      },
+      {
+        "input": "https://example.com:99999",
+        "http_status": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_URL",
+            "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+            "reason": "invalid_port"
+          }
+        },
+        "status": "PASS"
+      },
+      {
+        "input": "ftp://example.com",
+        "http_status": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_URL",
+            "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+            "reason": "unsupported_scheme"
+          }
+        },
+        "status": "PASS"
+      },
+      {
+        "input": "https://example.com/a b",
+        "http_status": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_URL",
+            "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+            "reason": "invalid_characters"
+          }
+        },
+        "status": "PASS"
+      }
+    ],
+    "max_abs_score_delta": 0.0,
+    "phishing_example_source": {
+      "id": "024efd11-58b4-57c4-8d40-383a1034b19f",
+      "split": "val",
+      "url": "9944789.com",
+      "url_defanged": "9944789[.]com"
     },
-    {
-      "case": "invalid",
-      "http_status": 422,
-      "response": {
-        "error": {
-          "code": "INVALID_URL",
-          "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
-          "reason": "invalid_port"
-        }
-      }
+    "health": {
+      "status": "ok",
+      "model_ready": true,
+      "model": "teacher-stacking-v2",
+      "feature_set": "canonical-reference-v1",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+      "model_error": null
     },
-    {
-      "case": "unicode",
-      "http_status": 200,
-      "response": {
-        "label": "phishing",
-        "model": "logistic_regression_balanced",
-        "score": 0.9014940244617446,
-        "score_kind": "probability",
-        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
-        "decision_rule": "estimator.predict",
-        "protocol": "week5_e1_audit"
-      }
+    "external_scored": false,
+    "official_test_scored": false,
+    "training": false,
+    "tested_source_sha256": {
+      "src/phishguard_vn/api.py": "9720a6862e000ebc88650f5f4e320d4c4728d32b20f9748f5440f689a46921f2",
+      "tests/test_api.py": "2071eabb1dc0fe77d355a8dcb7faed43391a915bce5bb7b823eeb7e25e570aa7",
+      "tests/test_api_teacher.py": "446705e76859779f2c1ac37cd13a851bc6ebbd5ffc86c148bb5b1de75473a4b3"
     },
-    {
-      "case": "ipv4",
-      "http_status": 200,
-      "response": {
-        "label": "benign",
-        "model": "logistic_regression_balanced",
-        "score": 0.0007515540016442981,
-        "score_kind": "probability",
-        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
-        "decision_rule": "estimator.predict",
-        "protocol": "week5_e1_audit"
-      }
+    "tests": {
+      "focused_passed": 48,
+      "full_passed": 554,
+      "failed": 0,
+      "skipped": 1,
+      "deselected": 1,
+      "warnings": 3,
+      "skip_reason": "historical empty brand regression parameter set",
+      "deselected_test": "tests/test_teacher_release.py::test_real_external_bundle_matches_saved_scores",
+      "deselected_reason": "No external dataset execution requested for this integration task",
+      "environment_note": "Final full run: CPython 3.11.17 + locked dependencies and Homebrew libomp 23.1.4; no DYLD_LIBRARY_PATH override.",
+      "full_elapsed_seconds": 31.44
     },
-    {
-      "case": "ipv6",
-      "http_status": 200,
-      "response": {
-        "label": "phishing",
-        "model": "logistic_regression_balanced",
-        "score": 0.9999540215944692,
-        "score_kind": "probability",
-        "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
-        "decision_rule": "estimator.predict",
-        "protocol": "week5_e1_audit"
-      }
-    }
-  ],
-  "fresh_environment_no_model": [
-    {
-      "path": "health",
-      "status": 200,
-      "body": {
+    "unsupported_interpreter_api": {
+      "python": "3.14.0",
+      "health": {
         "status": "degraded",
         "model_ready": false,
         "model": null,
         "feature_set": null,
         "protocol": null,
         "artifact_sha256": null,
-        "model_error": "not_configured"
-      }
-    },
-    {
-      "path": "docs",
-      "status": 200,
-      "body": "Swagger HTML available"
-    },
-    {
-      "path": "predict",
-      "status": 503,
-      "body": {
+        "model_error": "artifact_incompatible"
+      },
+      "http_status": 503,
+      "error": {
         "error": {
           "code": "MODEL_UNAVAILABLE",
           "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
-          "reason": "not_configured"
+          "reason": "artifact_incompatible"
         }
       }
+    },
+    "preservation": {
+      "upstream_files_checked": 546,
+      "changed_existing_files": [
+        ".github/workflows/week6-benchmark.yml",
+        "README.md",
+        "pyproject.toml"
+      ],
+      "comparison": "git cat-file --filters, including upstream .gitattributes CRLF policy",
+      "model_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1"
     }
-  ]
+  },
+  "legacy_e1_2026_11_09": {
+    "artifact_sha256": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+    "model": "logistic_regression_balanced",
+    "feature_set": "lexical_12",
+    "protocol": "week5_e1_audit",
+    "teacher_v1": false,
+    "tests_are_not_ml_benchmark": true,
+    "real_http_checks": [
+      {
+        "case": "valid",
+        "http_status": 200,
+        "response": {
+          "label": "benign",
+          "model": "logistic_regression_balanced",
+          "score": 0.4949721386878221,
+          "score_kind": "probability",
+          "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+          "decision_rule": "estimator.predict",
+          "protocol": "week5_e1_audit"
+        }
+      },
+      {
+        "case": "empty",
+        "http_status": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_REQUEST",
+            "message": "Body phải gồm duy nhất url là chuỗi 1–4096 ký tự, không chỉ khoảng trắng.",
+            "reason": "schema_validation"
+          }
+        }
+      },
+      {
+        "case": "missing_scheme",
+        "http_status": 200,
+        "response": {
+          "label": "benign",
+          "model": "logistic_regression_balanced",
+          "score": 0.4949721386878221,
+          "score_kind": "probability",
+          "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+          "decision_rule": "estimator.predict",
+          "protocol": "week5_e1_audit"
+        }
+      },
+      {
+        "case": "invalid",
+        "http_status": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_URL",
+            "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+            "reason": "invalid_port"
+          }
+        }
+      },
+      {
+        "case": "unicode",
+        "http_status": 200,
+        "response": {
+          "label": "phishing",
+          "model": "logistic_regression_balanced",
+          "score": 0.9014940244617446,
+          "score_kind": "probability",
+          "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+          "decision_rule": "estimator.predict",
+          "protocol": "week5_e1_audit"
+        }
+      },
+      {
+        "case": "ipv4",
+        "http_status": 200,
+        "response": {
+          "label": "benign",
+          "model": "logistic_regression_balanced",
+          "score": 0.0007515540016442981,
+          "score_kind": "probability",
+          "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+          "decision_rule": "estimator.predict",
+          "protocol": "week5_e1_audit"
+        }
+      },
+      {
+        "case": "ipv6",
+        "http_status": 200,
+        "response": {
+          "label": "phishing",
+          "model": "logistic_regression_balanced",
+          "score": 0.9999540215944692,
+          "score_kind": "probability",
+          "score_definition": "predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế",
+          "decision_rule": "estimator.predict",
+          "protocol": "week5_e1_audit"
+        }
+      }
+    ],
+    "fresh_environment_no_model": [
+      {
+        "path": "health",
+        "status": 200,
+        "body": {
+          "status": "degraded",
+          "model_ready": false,
+          "model": null,
+          "feature_set": null,
+          "protocol": null,
+          "artifact_sha256": null,
+          "model_error": "not_configured"
+        }
+      },
+      {
+        "path": "docs",
+        "status": 200,
+        "body": "Swagger HTML available"
+      },
+      {
+        "path": "predict",
+        "status": 503,
+        "body": {
+          "error": {
+            "code": "MODEL_UNAVAILABLE",
+            "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
+            "reason": "not_configured"
+          }
+        }
+      }
+    ]
+  }
 }

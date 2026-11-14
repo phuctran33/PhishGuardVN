@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-14",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "remote": "https://github.com/phuctran33/PhishGuardVN.git",
+  "cloned_from_remote": true,
+  "system_site_packages": false,
+  "local_dataset_handoff_reused": false,
+  "local_model_cache_reused": false,
+  "model_from_git": true,
+  "environment_created_for_this_run": true,
+  "pip_wheel_cache_allowed": true,
+  "preparation_commands": [
+    "git clone --branch test/api-contract-qa https://github.com/phuctran33/PhishGuardVN.git <checkout>",
+    "git worktree add --detach teacher-handoff 7dfeec5f96f106f3544163466e2cf312494eb41f",
+    "<CPython-3.11> -m venv .venv",
+    "python -m pip install -r teacher-handoff/requirements-teacher.txt -e ./teacher-handoff[api,test]",
+    "git merge --no-commit --no-ff bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
+    "resolve pyproject.toml and tests/README.md; apply QA workflow update; verify code patch hash",
+    "python -m pip install -r requirements-teacher.txt -e .[api,test,teacher]"
+  ],
+  "installation_exit_codes": {
+    "published_baseline": 0,
+    "merged_candidate": 0
+  },
+  "published_baseline": {
+    "stage": "baseline",
+    "fresh_virtualenv": true,
+    "commands": [
+      {
+        "command": "python -c import json,sys,platform,importlib.metadata as m; print(json.dumps({'python':platform.python_version(),'os':platform.platform(),'libraries':{n:m.version(n) for n in ['scikit-learn','numpy','scipy','pandas','joblib','tldextract','idna']}}))",
+        "exit_code": 0,
+        "duration_seconds": 0.194
+      },
+      {
+        "command": "python -m pip check",
+        "exit_code": 0,
+        "duration_seconds": 1.286
+      },
+      {
+        "command": "python -m pytest -p no:cacheprovider -q -rs --tb=short --basetemp=<temp>\\pgvn-clean-baseline-wptrgjtf --teacher-root=<checkout>\\teacher-handoff --teacher-api -k not test_real_external_bundle_matches_saved_scores --junitxml=<logs>\\clean-final-baseline.xml",
+        "exit_code": 0,
+        "duration_seconds": 66.657
+      }
+    ],
+    "qa_revision": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+    "backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f",
+    "candidate_contains_uncommitted_merge": false,
+    "runtime": {
+      "python": "3.11.14",
+      "os": "Windows-10-10.0.26200-SP0",
+      "libraries": {
+        "scikit-learn": "1.9.1",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1",
+        "pandas": "3.1.0",
+        "joblib": "1.6.0",
+        "tldextract": "5.4.0",
+        "idna": "3.20"
+      }
+    },
+    "pytest": {
+      "passed": 490,
+      "skipped": 2,
+      "failed": 0,
+      "skip_reasons": [
+        "got empty parameter set for (url, rule, brand_id, key)",
+        "Run notebook 03 and notebook 02 to generate local real-data handoffs."
+      ],
+      "deselected": 0
+    },
+    "backend_smoke": {
+      "startup": "passed",
+      "health_status": 200,
+      "health": {
+        "status": "ok",
+        "model_ready": true,
+        "model": "teacher-stacking-v2",
+        "feature_set": "canonical-reference-v1",
+        "protocol": "full_train_group_oof_fpr_target_0.01",
+        "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+        "model_error": null
+      },
+      "valid_prediction_status": 200,
+      "prediction": {
+        "label": "benign",
+        "model": "teacher-stacking-v2",
+        "score": 0.0288165553314368,
+        "score_kind": "probability",
+        "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+        "decision_rule": "score >= threshold",
+        "protocol": "full_train_group_oof_fpr_target_0.01",
+        "threshold": 0.6945740700635259
+      },
+      "invalid_port_status": 422,
+      "invalid_port_reason": "invalid_port",
+      "http_target": "loopback only",
+      "access_log_enabled": false
+    },
+    "status": "passed"
+  },
+  "merged_candidate": {
+    "stage": "candidate",
+    "fresh_virtualenv": true,
+    "commands": [
+      {
+        "command": "python -c import json,sys,platform,importlib.metadata as m; print(json.dumps({'python':platform.python_version(),'os':platform.platform(),'libraries':{n:m.version(n) for n in ['scikit-learn','numpy','scipy','pandas','joblib','tldextract','idna']}}))",
+        "exit_code": 0,
+        "duration_seconds": 0.204
+      },
+      {
+        "command": "python -m pip check",
+        "exit_code": 0,
+        "duration_seconds": 1.434
+      },
+      {
+        "command": "python -m pytest -p no:cacheprovider -q -rs --tb=short --basetemp=<temp>\\pgvn-clean-candidate-4cos5hsu --teacher-root=<checkout> --teacher-api -k not test_real_external_bundle_matches_saved_scores --junitxml=<logs>\\clean-final-candidate.xml",
+        "exit_code": 0,
+        "duration_seconds": 88.706
+      },
+      {
+        "command": "python -m pytest -p no:cacheprovider -q --tb=short --basetemp=<temp>\\pgvn-clean-gate-s1p_zo_5 tests/test_teacher_integration.py --teacher-root=. --teacher-api -m teacher_api --junitxml=<logs>\\clean-final-teacher-gate.xml",
+        "exit_code": 0,
+        "duration_seconds": 5.508
+      },
+      {
+        "command": "python scripts/benchmark_api_latency.py --base-url http://127.0.0.1:60913 --url https://example.com/login --warmup 10 --requests 100 --output <logs>\\clean-final-latency.json",
+        "exit_code": 0,
+        "duration_seconds": 1.57
+      }
+    ],
+    "qa_revision": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+    "backend_revision": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
+    "candidate_contains_uncommitted_merge": true,
+    "runtime": {
+      "python": "3.11.14",
+      "os": "Windows-10-10.0.26200-SP0",
+      "libraries": {
+        "scikit-learn": "1.9.1",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1",
+        "pandas": "3.1.0",
+        "joblib": "1.6.0",
+        "tldextract": "5.4.0",
+        "idna": "3.20"
+      }
+    },
+    "pytest": {
+      "passed": 597,
+      "skipped": 3,
+      "failed": 0,
+      "skip_reasons": [
+        "optional research fixtures: Install .[research]",
+        "empty brand regression parameter set",
+        "missing notebook 02/03 local real-data handoff"
+      ],
+      "deselected": 1
+    },
+    "teacher_api_gate": {
+      "passed": 15,
+      "skipped": 0
+    },
+    "backend_smoke": {
+      "startup": "passed",
+      "health_status": 200,
+      "health": {
+        "status": "ok",
+        "model_ready": true,
+        "model": "teacher-stacking-v2",
+        "feature_set": "canonical-reference-v1",
+        "protocol": "full_train_group_oof_fpr_target_0.01",
+        "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+        "model_error": null
+      },
+      "valid_prediction_status": 200,
+      "prediction": {
+        "label": "benign",
+        "model": "teacher-stacking-v2",
+        "score": 0.0288165553314368,
+        "score_kind": "probability",
+        "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+        "decision_rule": "score >= threshold",
+        "protocol": "full_train_group_oof_fpr_target_0.01",
+        "threshold": 0.6945740700635259
+      },
+      "invalid_port_status": 422,
+      "invalid_port_reason": "invalid_port",
+      "http_target": "loopback only",
+      "access_log_enabled": false
+    },
+    "latency": {
+      "timestamp_utc": "2026-11-14T03:53:34.814941+00:00",
+      "endpoint": "http://127.0.0.1:60913",
+      "method": "HTTP/1.1 keep-alive",
+      "python_version": "3.11.14",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "warmup_requests": 10,
+      "measured_requests": 100,
+      "url_length": 25,
+      "raw_url_recorded": false,
+      "p95_method": "nearest-rank",
+      "mean_ms": 12.420117999936338,
+      "p95_ms": 13.346799998544157,
+      "model": "teacher-stacking-v2",
+      "feature_set": "canonical-reference-v1",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+      "score_kind": "probability",
+      "decision_rule": "score >= threshold",
+      "threshold": 0.6945740700635259
+    },
+    "status": "passed",
+    "same_fresh_venv_as_baseline": true
+  },
+  "candidate_code_patch": {
+    "qa_parent": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+    "backend_parent": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
+    "scope": [
+      "src",
+      "scripts",
+      "tests",
+      "models",
+      "configs",
+      "data",
+      "notebooks",
+      "pyproject.toml",
+      "requirements-teacher.txt",
+      ".github/workflows"
+    ],
+    "sha256": "d2ff546c0f2252f6f311fc12270b21cb3c5100536e89ad725d0b12be8bd6c7e1"
+  },
+  "candidate_matches_qa_worktree": true,
+  "candidate_is_published_commit": false,
+  "final_published_merge_revision_verified": false,
+  "remaining_publication_steps": [
+    "user resolves index with git add and commits the prepared merge",
+    "user pushes; new Ubuntu/Windows CI must pass at the resulting SHA",
+    "clean clone the final published SHA and record the results"
+  ]
+}

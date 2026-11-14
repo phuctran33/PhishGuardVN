@@ -239,6 +239,9 @@ def evaluate_verified(ledger, predictor, *, representation="host_only", two_clas
 
 def load_locked_teacher(root, lock):
     """Only trusted local bundles with a pre-external, Core-CV Teacher decision."""
+    if lock.get("feature_set")=="url_raw_char_3_5":
+        from phishguard_vn.teacher import load_teacher
+        return load_teacher(root,lock).predict_one
     from phishguard_vn.brand_features import FEATURE_SCHEMA_VERSION
     from phishguard_vn.features import CANDIDATE_FEATURES
     from phishguard_vn.prediction import predict_url

@@ -1,0 +1,11 @@
+url,stage,model,label,score,score_kind,score_definition,decision_rule,protocol
+https://www.vietcombank.com.vn,candidate_not_final_teacher,catboost,benign,0.0020748125556778073,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_expanded
+https://www.vietcombank.com.vn,candidate_not_final_teacher,tfidf_linear_svm,benign,-0.08716402246372557,decision_function,,,
+https://vietcombank-login.example.com/xacminh,candidate_not_final_teacher,catboost,phishing,0.9966283509023058,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_expanded
+https://vietcombank-login.example.com/xacminh,candidate_not_final_teacher,tfidf_linear_svm,benign,-0.03559837377321029,decision_function,,,
+https://example.com/login?account=123,candidate_not_final_teacher,catboost,phishing,0.9642434498615025,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_expanded
+https://example.com/login?account=123,candidate_not_final_teacher,tfidf_linear_svm,benign,-0.7120898536428012,decision_function,,,
+https://xn--bcher-kva.de,candidate_not_final_teacher,catboost,benign,0.031135230650394682,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_expanded
+https://xn--bcher-kva.de,candidate_not_final_teacher,tfidf_linear_svm,benign,-1.9168991244188085,decision_function,,,
+https://www.hcmus.edu.vn,candidate_not_final_teacher,catboost,benign,0.00739023233556584,probability,predict_proba cho phishing; chưa hiệu chuẩn nguy cơ thực tế,estimator.predict,week6_e2_v1_teacher_groupcv_expanded
+https://www.hcmus.edu.vn,candidate_not_final_teacher,tfidf_linear_svm,benign,-1.5791867032537095,decision_function,,,

@@ -7,6 +7,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
 import pandas as pd
+from phishguard_vn.external_provenance import validate_audit_manifest
 from phishguard_vn.external_pilot import evaluate_verified,load_locked_teacher,sha256
 
 
@@ -15,10 +16,14 @@ def main():
     ap.add_argument('--teacher-lock',type=Path)
     ap.add_argument('--representation',choices=['host_only','full_url'],default='host_only')
     ap.add_argument('--two-class',action='store_true',help='Exploratory only; requires both verified classes')
+    ap.add_argument('--output-dir',type=Path,default=ROOT/'data/interim/external_teacher_eval')
     args=ap.parse_args()
-    out=ROOT/'reports/tables/external_pilot';manifest=json.loads((out/'manifest.json').read_text(encoding='utf-8'))
-    for path,digest in {**manifest['inputs_sha256'],**manifest['outputs_sha256']}.items():
-        if sha256(ROOT/path)!=digest: raise ValueError(f'Stale audit input/output: {path}; rerun audit')
+    audit=ROOT/'reports/tables/external_pilot'
+    manifest=json.loads((audit/'manifest.json').read_text(encoding='utf-8'))
+    validate_audit_manifest(ROOT,manifest)
+    out=args.output_dir.resolve()
+    if out==audit.resolve():raise ValueError('Use a separate output directory; preserve historical audit files')
+    out.mkdir(parents=True,exist_ok=True)
     ledger=pd.read_csv(ROOT/'data/external/derived/k53_candidates.csv',keep_default_na=False,encoding='utf-8')
     reasons=[]
     if not ledger.review_status.eq('verified').any():reasons.append('NO_VERIFIED_LABELS')
@@ -32,6 +37,10 @@ def main():
         predictor=load_locked_teacher(ROOT,lock)
         result,predictions=evaluate_verified(ledger,predictor,representation=args.representation,two_class=args.two_class)
         result['teacher_lock_sha256']=sha256(args.teacher_lock)
+        result['teacher_bundle_sha256']=lock['bundle']['sha256']
+        result['audit_manifest_sha256']=sha256(audit/'manifest.json')
+        lineage=ROOT/'reports/tables/teacher_release/external_adapter_lineage.json'
+        if lineage.exists():result['adapter_lineage_sha256']=sha256(lineage)
         if not predictions.empty:
             predictions.to_csv(out/'verified_predictions.csv',index=False,encoding='utf-8',lineterminator='\n')
     # Prevent stale previous predictions surviving a newly blocked audit/run.

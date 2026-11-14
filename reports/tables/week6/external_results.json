@@ -1,0 +1,34 @@
+{
+  "status": "NOT_RUN_PENDING_TEACHER",
+  "teacher_finalized": false,
+  "external_evaluated_in_current_comparison": false,
+  "official": false,
+  "prior_external_results_already_observed": true,
+  "historical_observations_not_for_selection": [
+    {
+      "model": "mlp",
+      "record": "19ceb7b",
+      "scope": "historical_host_only",
+      "tp": 62,
+      "fn": 30,
+      "phishing_support": 92,
+      "benign_support": 7,
+      "fp": 1
+    },
+    {
+      "model": "catboost",
+      "record": "initial_expanded_run_before_reopening_decision",
+      "scope": "historical_host_only",
+      "tp": 59,
+      "fn": 33,
+      "phishing_support": 92,
+      "benign_support": 7,
+      "fp": 1
+    }
+  ],
+  "limitations": [
+    "Không dùng các quan sát external đã thấy để chọn/tune.",
+    "99 historical-hostname verified; 68 pending không phải ground truth.",
+    "Chỉ chạy external cho model cuối sau khi nhóm chốt lại Teacher."
+  ]
+}

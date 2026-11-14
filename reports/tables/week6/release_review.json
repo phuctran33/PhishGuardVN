@@ -1,10 +1,10 @@
 {
-  "review_date_local": "2026-11-13",
+  "review_date_local": "2026-11-14",
   "timezone": "Asia/Ho_Chi_Minh",
   "qa_branch": "test/api-contract-qa",
-  "qa_head": "cef4aea917711188931c0849f5caee9911c70ff4",
+  "qa_head": "b0d448d3e7dbd9b266afb55f0400157de487d790",
   "qa_worktree_contains_uncommitted_changes": true,
-  "backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f",
+  "backend_revision": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
   "web_revision": "a2bb0dcedb7d12777774462a5fdea680aca2ff7e",
   "teacher_release_revision": "398ee2ce9e587644ebe21b529fba485536a9aac1",
   "upstream_main_revision": "7d2d60091c971dd3081b0b71fbf35b4cdd80c165",
@@ -28,11 +28,14 @@
     "calibrated": false
   },
   "qa_full_suite": {
-    "passed": 490,
+    "passed": 624,
     "skipped": 2,
     "failed": 0,
-    "duration_seconds": 56.46,
+    "deselected": 1,
+    "duration_seconds": 93.02,
     "teacher_api_acceptance_enabled": true,
+    "research_dependencies_installed": true,
+    "source_imported_from_qa_checkout": true,
     "skip_reasons": [
       "empty brand regression parameter set",
       "missing notebook 02/03 local real-data handoff"
@@ -48,28 +51,19 @@
     "score_absolute_tolerance": 1e-12
   },
   "original_pr22_api_tests": {
-    "passed": 47,
-    "failed": 1,
-    "duration_seconds": 7.33,
-    "failure_id": "QA-WIN-01"
-  },
-  "original_pr22_full_suite": {
-    "passed": 552,
-    "failed": 1,
-    "skipped": 2,
-    "deselected": 1,
-    "duration_seconds": 65.62,
-    "excluded_test": "test_real_external_bundle_matches_saved_scores",
-    "teacher_and_research_extras_installed": true,
-    "failure_id": "QA-WIN-01"
-  },
-  "proposed_windows_test_fix": {
-    "applied_to_original_pr22": false,
-    "verified_on_temporary_copy": true,
     "passed": 48,
     "failed": 0,
-    "duration_seconds": 3.85,
-    "guards_cover_load_warmup_prediction": true
+    "duration_seconds": 5.62,
+    "revision": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1"
+  },
+  "original_pr22_full_suite": {
+    "passed": 553,
+    "skipped": 2,
+    "failed": 0,
+    "deselected": 1,
+    "duration_seconds": 77.09,
+    "excluded_test": "test_real_external_bundle_matches_saved_scores",
+    "revision": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1"
   },
   "web": {
     "tests_passed": 28,
@@ -81,17 +75,16 @@
     "browser_evidence": "release_e2e.json",
     "latency_evidence": "api_latency_teacher.json"
   },
-  "backend_review": "request_windows_test_fix_before_approval",
+  "backend_review": "QA-WIN-01 fixed and verified on Windows at bbc9eae",
   "web_review": "no_issues_found_within_verified_scope",
-  "qa_ci_for_uncommitted_diff": "not_run_on_github",
-  "clean_clone_final_qa_revision": "pending_user_commit_merge_push",
-  "backend_source_installed_from_separate_checkout": true,
-  "qa_branch_merged_with_new_backend": false,
+  "qa_ci_for_uncommitted_diff": "pending user merge commit/push; prior published b0d448d CI success",
+  "clean_clone_final_qa_revision": "published b0d448d passed; prepared merge candidate passed; final published merge SHA not created",
+  "backend_source_installed_from_separate_checkout": false,
+  "qa_branch_merged_with_new_backend": true,
   "original_backend_web_model_code_modified": false,
   "project_data_training_performed": false,
   "external_dataset_scoring_performed": false,
   "official_test_scored": false,
-  "staged_or_committed_by_assistant": false,
   "source_sha256": {
     "backend/src/phishguard_vn/api.py": "9720a6862e000ebc88650f5f4e320d4c4728d32b20f9748f5440f689a46921f2",
     "backend/configs/teacher_lock.json": "781e1670a96df52b830bc40eb40af046d47db5f0a1b963bd2d42195c740db96c",
@@ -105,5 +98,98 @@
     "khiem_teacher_phishing.png": "e231cc534a5172c64303cc4a023813a19c9205b99d081a33b790f63b167158fc",
     "khiem_teacher_unavailable.png": "ae4fd928da4e037554e1223997a38162f103278ced4e6efd20586c7fc02e72ec",
     "khiem_teacher_valid.png": "cd846ca38af1303c525a63f0ecd91d17fa134027f58b0b4b5fe12b0d5665ff08"
-  }
+  },
+  "previous_pr22_review": {
+    "backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f",
+    "original_api_tests": {
+      "passed": 47,
+      "failed": 1,
+      "duration_seconds": 7.33,
+      "failure_id": "QA-WIN-01"
+    },
+    "original_full_suite": {
+      "passed": 552,
+      "failed": 1,
+      "skipped": 2,
+      "deselected": 1,
+      "duration_seconds": 65.62,
+      "excluded_test": "test_real_external_bundle_matches_saved_scores",
+      "teacher_and_research_extras_installed": true,
+      "failure_id": "QA-WIN-01"
+    },
+    "temporary_proposed_fix": {
+      "applied_to_original_pr22": false,
+      "verified_on_temporary_copy": true,
+      "passed": 48,
+      "failed": 0,
+      "duration_seconds": 3.85,
+      "guards_cover_load_warmup_prediction": true
+    }
+  },
+  "published_qa_ci": {
+    "head_sha": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+    "status": "completed",
+    "conclusion": "success",
+    "run_id": 43475240445,
+    "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43475240445",
+    "full_suite_step": "success",
+    "teacher_api_acceptance_step": "success",
+    "tested_backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f"
+  },
+  "new_ci_configuration": {
+    "operating_systems": [
+      "ubuntu-latest",
+      "windows-latest"
+    ],
+    "python": "3.11",
+    "source": "same checkout as QA tests",
+    "teacher_api_no_skip_gate": true,
+    "junit_uploaded": true,
+    "status": "not run on GitHub before user commit/push"
+  },
+  "clean_clone_evidence": "clean_clone.json",
+  "candidate_code_patch": {
+    "qa_parent": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+    "backend_parent": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
+    "scope": [
+      "src",
+      "scripts",
+      "tests",
+      "models",
+      "configs",
+      "data",
+      "notebooks",
+      "pyproject.toml",
+      "requirements-teacher.txt",
+      ".github/workflows"
+    ],
+    "sha256": "d2ff546c0f2252f6f311fc12270b21cb3c5100536e89ad725d0b12be8bd6c7e1"
+  },
+  "clean_clone_candidate_tests": {
+    "passed": 597,
+    "skipped": 3,
+    "failed": 0,
+    "skip_reasons": [
+      "optional research fixtures: Install .[research]",
+      "empty brand regression parameter set",
+      "missing notebook 02/03 local real-data handoff"
+    ],
+    "deselected": 1
+  },
+  "clean_clone_teacher_api_gate": {
+    "passed": 15,
+    "skipped": 0
+  },
+  "latency_latest": {
+    "mean_ms": 12.420117999936338,
+    "p95_ms": 13.346799998544157,
+    "requests": 100,
+    "warmup": 10,
+    "evidence": "api_latency_teacher.json"
+  },
+  "production_source_unchanged_since_e2e": true,
+  "backend_merge_prepared_without_commit": true,
+  "committed_by_assistant": false,
+  "incoming_backend_staged_by_git_merge": true,
+  "conflict_resolutions_staged_by_assistant": false
 }

@@ -1,6 +1,6 @@
 {
-  "timestamp_utc": "2026-11-13T15:27:18.803254+00:00",
-  "endpoint": "http://127.0.0.1:18765",
+  "timestamp_utc": "2026-11-14T03:53:34.814941+00:00",
+  "endpoint": "http://127.0.0.1:60913",
   "method": "HTTP/1.1 keep-alive",
   "python_version": "3.11.14",
   "platform": "Windows-10-10.0.26200-SP0",
@@ -9,13 +9,22 @@
   "url_length": 25,
   "raw_url_recorded": false,
   "p95_method": "nearest-rank",
-  "mean_ms": 16.074093999995966,
-  "p95_ms": 19.840400000248337,
+  "mean_ms": 12.420117999936338,
+  "p95_ms": 13.346799998544157,
   "model": "teacher-stacking-v2",
   "feature_set": "canonical-reference-v1",
   "protocol": "full_train_group_oof_fpr_target_0.01",
   "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
   "score_kind": "probability",
   "decision_rule": "score >= threshold",
-  "threshold": 0.6945740700635259
+  "threshold": 0.6945740700635259,
+  "server": {
+    "workers": 1,
+    "access_log": false,
+    "omp_num_threads": 1
+  },
+  "client_concurrency": 1,
+  "backend_revision": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
+  "qa_parent_revision": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+  "uncommitted_candidate": true
 }

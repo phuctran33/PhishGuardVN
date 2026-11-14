@@ -1,51 +1,52 @@
 name: Python tests
-
 on:
   push:
   pull_request:
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: tests-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   pytest:
-    name: Python 3.11 / Ubuntu
-    runs-on: ubuntu-latest
+    name: Python 3.11 / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     timeout-minutes: 20
     env:
       OMP_NUM_THREADS: "1"
       PYTHONIOENCODING: utf-8
+      MPLBACKEND: Agg
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: pip
-          cache-dependency-path: pyproject.toml
-
-      - name: Check out reviewed backend and released Teacher
-        uses: actions/checkout@v7
-        with:
-          repository: phuctran33/PhishGuardVN
-          ref: 7dfeec5f96f106f3544163466e2cf312494eb41f
-          path: teacher-handoff
-
+          cache-dependency-path: |
+            pyproject.toml
+            requirements-teacher.txt
       - name: Install package and API/test dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r teacher-handoff/requirements-teacher.txt -e "./teacher-handoff[api,test]"
+          python -m pip install -r requirements-teacher.txt -e ".[api,test,teacher]"
           python -m pip check
-
       - name: Run test suite
-        run: python -m pytest -p no:cacheprovider -q --teacher-root=teacher-handoff --teacher-api -k "not test_real_external_bundle_matches_saved_scores"
-
+        run: python -m pytest -p no:cacheprovider -q -rs --teacher-root=. --teacher-api -k "not test_real_external_bundle_matches_saved_scores" --junitxml=test-results/full.xml
       - name: Teacher API acceptance
-        run: python -m pytest -p no:cacheprovider -q --tb=short tests/test_teacher_integration.py --teacher-root=teacher-handoff --teacher-api -m teacher_api
+        run: |
+          python -m pytest -p no:cacheprovider -q --tb=short tests/test_teacher_integration.py --teacher-root=. --teacher-api -m teacher_api --junitxml=test-results/teacher-api.xml
+          python -c "import xml.etree.ElementTree as E; cases=E.parse('test-results/teacher-api.xml').findall('.//testcase'); assert len(cases)>=15, 'Teacher API tests missing'; assert all(c.find('skipped') is None for c in cases), 'Teacher API tests must not skip'"
+      - name: Upload QA test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-reports-${{ matrix.os }}
+          path: test-results/*.xml
+          if-no-files-found: warn
