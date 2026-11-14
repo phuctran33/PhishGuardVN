@@ -2,7 +2,7 @@
   "review_date_local": "2026-11-14",
   "timezone": "Asia/Ho_Chi_Minh",
   "qa_branch": "test/api-contract-qa",
-  "qa_head": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+  "qa_head": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
   "qa_worktree_contains_uncommitted_changes": true,
   "backend_revision": "bbc9eaeecb3c80beba9e099f539731e6c72b97b1",
   "web_revision": "a2bb0dcedb7d12777774462a5fdea680aca2ff7e",
@@ -39,7 +39,8 @@
     "skip_reasons": [
       "empty brand regression parameter set",
       "missing notebook 02/03 local real-data handoff"
-    ]
+    ],
+    "source_patch_published_as": "441a88cd686a7fc4a84a0dd8991960804b7e5625"
   },
   "focused_qa_teacher_and_benchmark": {
     "passed": 53,
@@ -77,8 +78,7 @@
   },
   "backend_review": "QA-WIN-01 fixed and verified on Windows at bbc9eae",
   "web_review": "no_issues_found_within_verified_scope",
-  "qa_ci_for_uncommitted_diff": "pending user merge commit/push; prior published b0d448d CI success",
-  "clean_clone_final_qa_revision": "published b0d448d passed; prepared merge candidate passed; final published merge SHA not created",
+  "clean_clone_final_qa_revision": "passed at published revision 441a88cd686a7fc4a84a0dd8991960804b7e5625",
   "backend_source_installed_from_separate_checkout": false,
   "qa_branch_merged_with_new_backend": true,
   "original_backend_web_model_code_modified": false,
@@ -127,14 +127,247 @@
     }
   },
   "published_qa_ci": {
-    "head_sha": "b0d448d3e7dbd9b266afb55f0400157de487d790",
-    "status": "completed",
-    "conclusion": "success",
-    "run_id": 43475240445,
-    "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43475240445",
-    "full_suite_step": "success",
-    "teacher_api_acceptance_step": "success",
-    "tested_backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f"
+    "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+    "checks": [
+      {
+        "name": "Python 3.11 / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555764634/job/132328130655"
+      },
+      {
+        "name": "Python 3.11 / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555764634/job/132328130485"
+      },
+      {
+        "name": "Python 3.11 / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555760391/job/132328117234"
+      },
+      {
+        "name": "Python 3.11 / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555760391/job/132328116949"
+      }
+    ],
+    "runs": [
+      {
+        "id": 43555764634,
+        "event": "pull_request",
+        "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555764634",
+        "jobs": [
+          {
+            "name": "Python 3.11 / ubuntu-latest",
+            "conclusion": "success",
+            "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555764634/job/132328130485",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install package and API/test dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run test suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Teacher API acceptance",
+                "conclusion": "success"
+              },
+              {
+                "name": "Upload QA test reports",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ]
+          },
+          {
+            "name": "Python 3.11 / windows-latest",
+            "conclusion": "success",
+            "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555764634/job/132328130655",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install package and API/test dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run test suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Teacher API acceptance",
+                "conclusion": "success"
+              },
+              {
+                "name": "Upload QA test reports",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 43555760391,
+        "event": "push",
+        "head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555760391",
+        "jobs": [
+          {
+            "name": "Python 3.11 / windows-latest",
+            "conclusion": "success",
+            "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555760391/job/132328116949",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install package and API/test dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run test suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Teacher API acceptance",
+                "conclusion": "success"
+              },
+              {
+                "name": "Upload QA test reports",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ]
+          },
+          {
+            "name": "Python 3.11 / ubuntu-latest",
+            "conclusion": "success",
+            "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43555760391/job/132328117234",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install package and API/test dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run test suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Teacher API acceptance",
+                "conclusion": "success"
+              },
+              {
+                "name": "Upload QA test reports",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Python",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "new_ci_configuration": {
     "operating_systems": [
@@ -145,7 +378,8 @@
     "source": "same checkout as QA tests",
     "teacher_api_no_skip_gate": true,
     "junit_uploaded": true,
-    "status": "not run on GitHub before user commit/push"
+    "status": "verified on GitHub: push and pull_request, Ubuntu and Windows",
+    "verified_head_sha": "441a88cd686a7fc4a84a0dd8991960804b7e5625"
   },
   "clean_clone_evidence": "clean_clone.json",
   "candidate_code_patch": {
@@ -188,8 +422,36 @@
     "evidence": "api_latency_teacher.json"
   },
   "production_source_unchanged_since_e2e": true,
-  "backend_merge_prepared_without_commit": true,
+  "backend_merge_prepared_without_commit": false,
   "committed_by_assistant": false,
-  "incoming_backend_staged_by_git_merge": true,
-  "conflict_resolutions_staged_by_assistant": false
+  "incoming_backend_staged_by_git_merge": false,
+  "conflict_resolutions_staged_by_assistant": false,
+  "previous_published_qa_ci": {
+    "head_sha": "b0d448d3e7dbd9b266afb55f0400157de487d790",
+    "status": "completed",
+    "conclusion": "success",
+    "run_id": 43475240445,
+    "url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/43475240445",
+    "full_suite_step": "success",
+    "teacher_api_acceptance_step": "success",
+    "tested_backend_revision": "7dfeec5f96f106f3544163466e2cf312494eb41f"
+  },
+  "acceptance_revision": "441a88cd686a7fc4a84a0dd8991960804b7e5625",
+  "uncommitted_changes_scope": "QA acceptance reports only",
+  "qa_ci_current_revision": "4 successful checks at 441a88cd686a7fc4a84a0dd8991960804b7e5625",
+  "clean_clone_published_tests": {
+    "passed": 597,
+    "skipped": 3,
+    "failed": 0,
+    "skip_reasons": [
+      "optional research fixtures: Install .[research]",
+      "empty brand regression parameter set",
+      "missing notebook 02/03 local real-data handoff"
+    ],
+    "deselected": 1
+  },
+  "source_matches_precommit_tested_candidate": true,
+  "technical_acceptance_complete": true,
+  "report_publication_pending_user_commit": true,
+  "remaining_technical_blockers": []
 }

@@ -1,12 +1,12 @@
 # Báo cáo QA API — Issue #17
 
-Cập nhật ngày **14/11/2026**, múi giờ Asia/Ho_Chi_Minh. Báo cáo phân biệt kết quả commit đã push với bản hợp nhất đang chuẩn bị; không nhận CI hoặc clean clone của commit chưa được tạo là đã hoàn tất.
+Cập nhật ngày **14/11/2026**, múi giờ Asia/Ho_Chi_Minh. Nghiệm thu code tại **`441a88cd686a7fc4a84a0dd8991960804b7e5625`**: CI 4/4 success và clean clone đúng SHA đã đạt. Báo cáo giữ riêng các lần kiểm lịch sử trước khi commit.
 
 ## Phiên bản và phạm vi
 
-- QA đã push: `b0d448d3e7dbd9b266afb55f0400157de487d790`, nhánh `test/api-contract-qa`.
+- QA đã merge và push: `441a88cd686a7fc4a84a0dd8991960804b7e5625`, nhánh `test/api-contract-qa`; commit QA trước đó là `b0d448d`.
 - Backend PR #22 đã sửa QA-WIN-01: `bbc9eaeecb3c80beba9e099f539731e6c72b97b1`.
-- Đã chuẩn bị merge backend trên nhánh QA, giải quyết nội dung conflict ở `pyproject.toml` và `tests/README.md`; **chưa commit/push merge**. Index còn cần người phụ trách `git add` hai file này để đánh dấu đã giải quyết.
+- Người phụ trách đã hoàn tất merge và xử lý conflict cấu hình/hướng dẫn. Code/config/tests công bố khớp chính xác bản candidate đã kiểm; không còn merge đang chờ xử lý.
 - Web PR #23: `a2bb0dcedb7d12777774462a5fdea680aca2ff7e`, chưa có commit mới so với lần browser E2E.
 - Teacher release: `398ee2c`, đã có trên main `7d2d600`; model `teacher-stacking-v2`, preprocessing `canonical-reference-v1`, `promoted=true`.
 - Bundle giữ tên lịch sử `models/teacher_v2_candidate.joblib`; SHA256 `63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1`.
@@ -22,7 +22,8 @@ Cập nhật ngày **14/11/2026**, múi giờ Asia/Ho_Chi_Minh. Báo cáo phân 
 | PR #22 nguyên bản, full available suite | **553 passed, 2 skipped, 1 deselected in 77.09s**. |
 | Clean clone commit QA đã push `b0d448d`, source backend `7dfeec5` theo workflow của commit đó | **490 passed, 2 skipped**; venv mới, pip check đạt, backend Teacher thật startup/health/predict đạt. |
 | Bản merge candidate trong clone sạch, runtime API/teacher theo workflow mới | **597 passed, 3 skipped, 1 deselected**; không fail/error. |
-| Gate Teacher API riêng trong clone sạch | **15 passed, 0 skipped**; các bài Teacher không bị bỏ qua. |
+| Clean clone code công bố `441a88c`, venv mới độc lập | **597 passed, 3 skipped, 1 deselected**; pip check đạt, startup/health/predict bằng Teacher thật đạt. |
+| Gate Teacher API riêng trong clone sạch `441a88c` | **15 passed, 0 skipped**; các bài Teacher không bị bỏ qua. |
 | Flutter/Web đã kiểm tại `a2bb0dc` | **28 passed**, analyze không lỗi, release build đạt; browser thật đạt **9 nhóm tình huống**. |
 
 Hai skip lịch sử: bộ tham số brand regression rỗng và thiếu handoff local notebook 02/03. Clone sạch với extras API/teacher có thêm một skip collection `test_url_research.py` vì không cài Torch/Transformers. Nhóm nghiên cứu này đã được chạy trong môi trường đầy đủ của lần **624 passed**; workflow nghiên cứu upstream được giữ nguyên. Không chạy notebook để khớp số đếm.
@@ -47,13 +48,13 @@ Các test chặn DNS/socket, kiểm log từ DEBUG, không lộ raw URL/secret/t
 
 ## CI và clean clone
 
-[GitHub Actions run 43475240445](https://github.com/phuctran33/PhishGuardVN/actions/runs/43475240445) của **commit `b0d448d`** đã success; kiểm trực tiếp cả bước full suite và Teacher API acceptance. Đây là kết quả CI thực, không thay bằng số local.
+Commit **`441a88c` đạt 4/4 checks**: [push run 43555760391](https://github.com/phuctran33/PhishGuardVN/actions/runs/43555760391) và [pull_request run 43555764634](https://github.com/phuctran33/PhishGuardVN/actions/runs/43555764634), mỗi run gồm Windows và Ubuntu. Đã đọc trạng thái từng job và xác nhận cả `Run test suite` lẫn `Teacher API acceptance` đều success, không skip. CI cũ tại `b0d448d` được giữ trong JSON lịch sử.
 
-Workflow mới của bản merge dùng source ngay trong checkout, matrix **Windows/Ubuntu, CPython 3.11**, runtime khóa phiên bản, gate Teacher API không skip và upload JUnit. **Chưa có kết quả Actions cho bản merge chưa commit/push.**
+Workflow dùng source ngay trong checkout, matrix **Windows/Ubuntu, CPython 3.11**, runtime khóa phiên bản, gate Teacher API không skip và upload JUnit. Cả bốn jobs của bản merge công bố đều thành công.
 
 Clean clone đã thực hiện bằng clone mới từ GitHub, venv mới không system-site-packages, model/lock từ Git, không chép handoff dữ liệu hoặc model cache local. Đã cài dependencies theo hướng dẫn, chạy `pip check`, pytest, startup Uvicorn thật, GET health **200/ok/model_ready=true**, POST hợp lệ **200**, port lỗi **422/invalid_port**, và dừng server sau kiểm tra.
 
-Bản merge candidate được dựng trong clone sạch từ hai parents nêu trên. Hash patch code/config/tests khớp checkout QA: `d2ff546c0f2252f6f311fc12270b21cb3c5100536e89ad725d0b12be8bd6c7e1`. Bằng chứng lệnh/runtime/status/skip: `tables/week6/clean_clone.json`. Candidate chưa có commit SHA; sau khi người phụ trách tự commit/push cần xác nhận CI và clean clone tại **SHA công bố cuối** trước khi đóng Issue #17.
+Sau khi push, đã clone mới từ GitHub, checkout đúng **`441a88c`**, tạo một venv CPython 3.11 mới và cài theo README. Không dùng venv của lần candidate. Kết quả **597 passed, 3 skipped, 1 deselected**, gate Teacher **15 passed/0 skipped**; health 200/ready, predict 200, invalid port 422. Checkout giữ sạch sau kiểm thử. Code/config/tests khớp patch candidate `d2ff546c0f2252f6f311fc12270b21cb3c5100536e89ad725d0b12be8bd6c7e1`. Lệnh, runtime, revision, artifact và kết quả CI trong `tables/week6/clean_clone.json`.
 
 ## E2E Web → API → model thật
 
@@ -69,11 +70,11 @@ Bằng chứng đã chạy gồm URL hợp lệ/thiếu scheme, benign có score
 | API–Python/CLI parity, security, lỗi mất kết nối | Đạt trong tests và browser đã chạy. |
 | Latency mean/p95 và cấu hình/artifact | Đã có số đo Teacher thật trong clone sạch. |
 | Hướng dẫn chạy và báo cáo lỗi | Đã cập nhật `tests/README.md` và bằng chứng JSON. |
-| CI commit đã push | `b0d448d` success; matrix mới chờ người phụ trách commit/push rồi chạy. |
-| Clean clone | Commit đã push và candidate đều đã kiểm; cần ghi SHA merge công bố cuối. |
+| CI code công bố | `441a88c` **4/4 success**, đủ hai OS và hai sự kiện. |
+| Clean clone | **Đạt tại `441a88c`**, venv mới, đủ install/pip check/pytest/backend/health/predict và lý do skip. |
 | Dependency Hưng/Phúc | Không còn blocker code/artifact được biết trong phạm vi đã kiểm. |
 | Final E2E trước nghiệm thu 15/11 | Đã có đủ ba tình huống bắt buộc với Teacher thật, kèm các ca bổ sung. |
 
-Còn thao tác bàn giao do người phụ trách thực hiện: đánh dấu hai conflict đã giải quyết bằng `git add`, kiểm diff, tự commit merge và push; xác nhận Actions tại SHA mới và ghi clean clone đúng SHA đó. Chưa đánh dấu toàn bộ Definition of Done hoàn tất khi các bước công bố cuối chưa có bằng chứng. Không cần chờ thêm Teacher hoặc backend từ Hưng cho phần đã kiểm.
+Các hạng mục kỹ thuật của Issue #17 đã có bằng chứng nghiệm thu tại **`441a88c`**, không còn blocker đã biết trong phạm vi được giao. Người phụ trách tự commit/push bản cập nhật báo cáo này và ghi kết quả vào Issue #17 để nhóm nghiệm thu. Đây là cập nhật bằng chứng, không thay code/model/config/tests đã kiểm; không cần lặp clean clone chỉ vì bổ sung báo cáo. Không tự merge PR hoặc đóng issue thay người phụ trách.
 
 Lịch sử v1/candidate: `history/week6_api_qa_pre_release.md`, `tables/week6/teacher_integration.json`. Kết quả hiện tại: `tables/week6/release_review.json`; không dùng trạng thái chờ trong lịch sử để mô tả bản release hiện tại.
