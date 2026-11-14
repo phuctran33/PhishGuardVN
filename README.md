@@ -289,3 +289,8 @@ Phần nghiên cứu A–F và bốn hướng neural được thực hiện ti�
 Teacher v1 remains the default. New stacking results and limitations: [report](reports/teacher_v2_stacking.md).
 Offline candidate inference and code flow: [handoff](docs/teacher_v2_handoff.md).
 Run `python scripts/predict_stacking_candidate.py --examples` in the recorded runtime environment.
+
+
+Flutter Web (#19): [cài/chạy và smoke test](apps/web/README.md). Chạy Web ở port 3000,
+trỏ `API_BASE_URL` tới backend port 8000 và cấu hình CORS theo hướng dẫn.
+Web gọi Teacher stacking thật qua API, không tự tính lại features hoặc mở URL đích.
