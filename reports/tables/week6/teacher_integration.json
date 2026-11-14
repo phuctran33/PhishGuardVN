@@ -1,0 +1,189 @@
+{
+  "historical": true,
+  "superseded_by": "release_review.json",
+  "timestamp_utc": "2026-11-13T12:31:45.157214+00:00",
+  "qa_base_revision": "cef4aea917711188931c0849f5caee9911c70ff4",
+  "qa_worktree_contains_uncommitted_integration_tests": true,
+  "backend_revision": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
+  "teacher_source_revision": "35c7d8d1b6c7e907aaa539ca145b3abacf1cba7f",
+  "model": "tfidf_linear_svm",
+  "feature_set": "url_raw_char_3_5",
+  "model_version": "teacher-tfidf-svm-v1",
+  "preprocessing_version": "raw-char-3-5-v1",
+  "bundle_path": "models/teacher_tfidf_svm_v1.joblib",
+  "bundle_sha256": "5a6d9b500ee147ae2f6cc78f986ac3122658eab58dfd9ad636f11d0ba19494b5",
+  "metadata_sha256": "999d03349d7ca879fbdeed6e8afab0fdd533f853706ef78c9def74c0bd2095e7",
+  "python_version": "3.13.7",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "package_versions": {
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "joblib": "1.6.0",
+    "fastapi": "0.162.2",
+    "uvicorn": "0.54.0"
+  },
+  "python_cli_tests": {
+    "passed": 24,
+    "deselected": 1,
+    "command": "python -m pytest tests/test_teacher_integration.py --teacher-root=<teacher-checkout> -m \"not teacher_api\" -q"
+  },
+  "teacher_api_acceptance": {
+    "failed": 1,
+    "deselected": 24,
+    "reason": "model_ready=false; artifact_incompatible",
+    "command": "python -m pytest tests/test_teacher_integration.py --teacher-root=<teacher-checkout> --teacher-api -m teacher_api -q",
+    "duration_seconds": 2.41
+  },
+  "http": {
+    "endpoint": "http://127.0.0.1:63520",
+    "access_log": false,
+    "health": {
+      "status": 200,
+      "body": {
+        "status": "degraded",
+        "model_ready": false,
+        "model": null,
+        "feature_set": null,
+        "protocol": null,
+        "artifact_sha256": null,
+        "model_error": "artifact_incompatible"
+      }
+    },
+    "valid_predict": {
+      "status": 503,
+      "body": {
+        "error": {
+          "code": "MODEL_UNAVAILABLE",
+          "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
+          "reason": "artifact_incompatible"
+        }
+      }
+    },
+    "invalid_port_predict": {
+      "status": 422,
+      "body": {
+        "error": {
+          "code": "INVALID_URL",
+          "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+          "reason": "invalid_port"
+        }
+      }
+    }
+  },
+  "api_latency": {
+    "status": "blocked",
+    "benchmark_exit_code": 2,
+    "output_written": false,
+    "stderr": "Benchmark không hoàn tất: Model chưa sẵn sàng theo /health; không đo latency inference."
+  },
+  "raw_urls_recorded": false,
+  "integration_status": "blocked_by_backend_raw_url_bundle_support",
+  "full_suite": {
+    "passed": 472,
+    "skipped": 3,
+    "duration_seconds": 43.67,
+    "command": "python -m pytest -p no:cacheprovider -q -rs --basetemp=<fresh-run-directory> --teacher-root=<teacher-checkout>",
+    "teacher_api_acceptance_included": false,
+    "collected": 475,
+    "skip_reasons": [
+      "empty brand regression parameter set",
+      "missing notebook 02/03 real-data handoff",
+      "Teacher API acceptance requires --teacher-api; separate run failed"
+    ]
+  },
+  "final_audit": {
+    "timestamp_utc": "2026-11-13T13:03:41.868531+00:00",
+    "self_verification_status": "agent_and_user_verified_backend_api_acceptance_blocked",
+    "previous_test_results_cover_final_audit_changes": true,
+    "new_benchmark_cases": 9,
+    "changes": [
+      "capture DEBUG/INFO logs and block connect_ex",
+      "validate successful prediction contract before recording HTTP latency",
+      "handle interrupted HTTP without traceback/output",
+      "require separate Teacher API gate in CI"
+    ],
+    "pytest_run_by_assistant_during_final_audit": true
+  },
+  "previous_full_suite": {
+    "passed": 463,
+    "skipped": 3,
+    "duration_seconds": 39.26,
+    "command": "python -m pytest -p no:cacheprovider -q -rs --teacher-root=<teacher-checkout>",
+    "teacher_api_acceptance_included": false,
+    "skip_reasons": [
+      "empty brand regression parameter set",
+      "missing notebook 02/03 real-data handoff",
+      "Teacher API acceptance requires explicit --teacher-api; separate run failed"
+    ]
+  },
+  "user_verification": {
+    "date_local": "2026-11-13",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "evidence": "user terminal screenshots and confirmation in chat",
+    "fresh_basetemp_used": true,
+    "full_suite": {
+      "passed": 472,
+      "skipped": 3,
+      "duration_seconds": 43.13,
+      "teacher_api_acceptance_included": false
+    },
+    "teacher_api_acceptance": {
+      "failed": 1,
+      "deselected": 24,
+      "duration_seconds": 2.44,
+      "reason": "model_ready=false; artifact_incompatible"
+    }
+  },
+  "optional_candidate_review": {
+    "pull_request": 26,
+    "source_revision": "1b07af3debd225efafb04b06d3af82af65e8b38a",
+    "candidate_only": true,
+    "promoted": false,
+    "model_version": "teacher-stacking-v2-candidate",
+    "preprocessing_version": "canonical-reference-v1",
+    "bundle_path": "models/teacher_v2_candidate.joblib",
+    "bundle_size_bytes": 2130586,
+    "bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "threshold": 0.6945740700635259,
+    "calibrated": false,
+    "runtime_versions_match_lock": true,
+    "pip_check_exit_code": 0,
+    "fixtures": {
+      "test_file": "tests/test_stacking.py",
+      "passed": 53,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "duration_seconds": 13.94,
+      "fresh_basetemp_used": true
+    },
+    "portable_real_bundle": {
+      "official_cli_examples": 5,
+      "single_batch_max_score_delta": 1.6653345369377348e-16,
+      "cli_batch_max_score_delta": 0.0,
+      "score_absolute_tolerance": 1e-12,
+      "labels_match_threshold": true,
+      "dns_socket_attempts": 0,
+      "dataset_reports_reference_csv_present": false
+    },
+    "v1_bundle_lock_loader_cli_metadata_unchanged": true,
+    "qa_teacher_pin_changed": false,
+    "full_pr26_research_suite_rerun": false,
+    "backend_revision_on_remote": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
+    "web_revision_on_remote": "3c90552509cfb5dfa38ca896b866033d0cc0998b",
+    "api_acceptance_blocker_resolved": false
+  },
+  "user_run_setup_error": {
+    "passed": 338,
+    "skipped": 3,
+    "errors": 134,
+    "tests_requiring_temp_fixture": 134,
+    "traceback_stage": "_pytest.tmpdir.getbasetemp / numbered directory enumeration",
+    "default_temp_root_owner": "CodexSandboxOffline",
+    "cause": "shared pytest temporary root permissions across sandbox/user accounts",
+    "workaround": "fresh GUID directory passed via --basetemp",
+    "user_rerun_confirmation": "confirmed_472_passed_3_skipped_with_fresh_basetemp",
+    "temporary_directory_issue_resolved": true
+  }
+}
