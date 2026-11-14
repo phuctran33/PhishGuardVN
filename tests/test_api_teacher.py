@@ -95,9 +95,16 @@ def test_real_released_teacher_warmup_and_prediction_are_offline(monkeypatch):
     import socket
     def forbidden(*args, **kwargs):
         pytest.fail("Teacher inference must not access target DNS/network")
-    monkeypatch.setattr(socket, "getaddrinfo", forbidden)
-    monkeypatch.setattr(socket, "create_connection", forbidden)
-    monkeypatch.setattr(socket.socket, "connect", forbidden)
+    original_loader = teacher_module.load_teacher
+    def load_offline(root):
+        # TestClient's event loop (including Windows socketpair) is ready now.
+        # Keep guards active through the real load, warm-up and HTTP prediction.
+        monkeypatch.setattr(socket, "getaddrinfo", forbidden)
+        monkeypatch.setattr(socket, "create_connection", forbidden)
+        monkeypatch.setattr(socket.socket, "connect", forbidden)
+        monkeypatch.setattr(socket.socket, "connect_ex", forbidden)
+        return original_loader(root)
+    monkeypatch.setattr(teacher_module, "load_teacher", load_offline)
     with TestClient(create_app(bundle_format="teacher", teacher_root=ROOT)) as client:
         health = client.get("/health").json()
         lock = json.loads((ROOT / "configs/teacher_lock.json").read_text())
