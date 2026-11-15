@@ -7,4 +7,6 @@ export 'src/extractor.dart';
 export 'src/features.dart' show lexicalFeatureOrder;
 export 'src/parity.dart';
 export 'src/psl.dart' show PublicSuffixList;
+export 'src/svm.dart'
+    show SvmModel, canonicalizeTeacherUrl, normalizeSklearnCharWhitespace;
 export 'src/url_parser.dart' show ParsedUrl, UrlParser;

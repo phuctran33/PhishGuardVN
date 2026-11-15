@@ -41,13 +41,20 @@
       2,
       5
     ],
+    "min_df": 2,
     "vocabulary_size": 37106,
     "sublinear_tf": true,
     "use_idf": true,
     "norm": "l2",
     "lowercase": false,
+    "idf_dtype": "float64",
     "canonical_enabled": true,
-    "canonical_implementation": "Must match source CanonicalText"
+    "canonical_implementation": "src/phishguard_vn/stacking.py:canonical_url",
+    "coefficient_shape": [
+      1,
+      37106
+    ],
+    "intercept": -0.6350001346001896
   },
   "hist": {
     "iterations": 300,
@@ -379,12 +386,16 @@
   "brand_reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
   "files": {
     "svm_vocabulary.json": {
-      "size_bytes": 549421,
-      "sha256": "0e0d81caeed5d077017aac6e9d002d6642dcfabc0ce6f9db44be0a29634d1193"
+      "size_bytes": 475210,
+      "sha256": "c0325c9452e40bc1fec2a2aa5fe6f5b4737e48cfd5622ebf639c5e5fb39a6e2c"
     },
     "teacher_numeric.npz": {
       "size_bytes": 563412,
       "sha256": "1c372797cf5284452ec347f38d18484c13ea5aa159728abb221009c538c38dd2"
+    },
+    "dart_svm_model.json": {
+      "size_bytes": 1781836,
+      "sha256": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62"
     }
   }
 }
