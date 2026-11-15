@@ -1,5 +1,17 @@
 # Báo cáo suy luận Dart SVM của Teacher v2
 
+> **Lưu ý về trạng thái:** Đây là báo cáo lịch sử ghi nhận giai đoạn triển khai
+> Teacher v2 SVM-only. Các kết quả 289 Dart tests và 41/41 SVM reference
+> cases bên dưới thuộc giai đoạn đó, không phải trạng thái kiểm thử mới nhất.
+>
+> Sau báo cáo này, Dart-native full Teacher v2 inference đã được triển khai,
+> bao gồm SVM, HistGradientBoosting và Meta Logistic Regression. Full pipeline
+> parity đạt 41/41 fixtures; Dart test suite mới nhất đạt 294/294 tests.
+>
+> Xem trạng thái triển khai hiện tại, phạm vi xác minh và các giới hạn còn lại tại:
+> [`docs/week6_teacher_deployment_assessment.md`](../docs/week6_teacher_deployment_assessment.md).
+
+
 ## Phạm vi và triển khai
 
 Đã triển khai `SvmModel` thuần Dart, chỉ dành riêng cho nhánh SVM của `teacher-stacking-v2` đã được đóng băng (frozen).
