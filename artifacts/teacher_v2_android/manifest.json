@@ -396,6 +396,20 @@
     "dart_svm_model.json": {
       "size_bytes": 1781836,
       "sha256": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62"
+    },
+    "dart_teacher_v2_model.json": {
+      "size_bytes": 765558,
+      "sha256": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1"
     }
+  },
+  "full_teacher_export": {
+    "artifact": "dart_teacher_v2_model.json",
+    "fixture": "mobile/packages/phishguard_features/test/fixtures/teacher_v2_pipeline_reference.json",
+    "hist_tree_count": 300,
+    "hist_node_count": 8700,
+    "meta_input_order": [
+      "svm",
+      "hist"
+    ]
   }
 }

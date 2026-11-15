@@ -183,3 +183,141 @@ print("Vocabulary:", len(tfidf.vocabulary_))
 print("Python SVM reference cases:", len(fixture["cases"]))
 print("Feature order:", feature_order)
 print("Threshold:", c.threshold)
+
+
+
+# Full Teacher v2 export and official per-stage golden fixture.
+# This block intentionally uses the frozen fitted candidate only; it does not fit
+# or modify any model, feature, threshold, or reference data.
+hist_pipeline = model.bases["hist"]
+hist_estimator = hist_pipeline.named_steps["model"]
+hist_transformer = hist_pipeline.named_steps["features"]
+meta_pipeline = model.meta
+meta_scaler = meta_pipeline.named_steps["scale"]
+meta_lr = meta_pipeline.named_steps["lr"]
+
+from phishguard_vn.stacking import raw_frame
+
+valid_cases = [case for case in parity["cases"] if case["parsed"]["is_valid"]]
+full_urls = [case["url"] for case in valid_cases]
+full_frame = raw_frame(full_urls, c.reference, numeric=True)
+
+svm_margins = np.asarray(svm.decision_function(full_frame), dtype=np.float64)
+hist_raw_scores = np.asarray(
+    hist_pipeline.decision_function(full_frame), dtype=np.float64
+).reshape(-1)
+hist_probabilities = np.asarray(
+    hist_pipeline.predict_proba(full_frame)[:, 1], dtype=np.float64
+)
+meta_inputs = np.column_stack([svm_margins, hist_probabilities])
+meta_raw_scores = np.asarray(
+    meta_pipeline.decision_function(meta_inputs), dtype=np.float64
+).reshape(-1)
+meta_probabilities = np.asarray(
+    meta_pipeline.predict_proba(meta_inputs)[:, 1], dtype=np.float64
+)
+
+full_trees = []
+for iteration in hist_estimator._predictors:
+    nodes = iteration[0].nodes
+    exported_nodes = []
+    for node in nodes:
+        is_leaf = bool(node["is_leaf"])
+        item = {
+            "is_leaf": is_leaf,
+            "value": float(node["value"]),
+        }
+        if not is_leaf:
+            item.update({
+                "feature_idx": int(node["feature_idx"]),
+                "num_threshold": float(node["num_threshold"]),
+                "left": int(node["left"]),
+                "right": int(node["right"]),
+                "missing_go_to_left": bool(node["missing_go_to_left"]),
+            })
+        exported_nodes.append(item)
+    full_trees.append(exported_nodes)
+
+full_teacher = {
+    "schema_version": "teacher-v2-dart-full-v1",
+    "model_version": "teacher-stacking-v2",
+    "decision_rule": "score >= threshold",
+    "threshold": float(c.threshold),
+    "members_order": ["svm", "hist"],
+    "meta_input_order": ["svm", "hist"],
+    "class_order": [0, 1],
+    "feature_order": feature_order,
+    "source_bundle_sha256": manifest["source_bundle_sha256"],
+    "brand_reference_sha256": manifest["brand_reference_sha256"],
+    "leaf_values_include_shrinkage": True,
+    "hist": {
+        "iterations": len(hist_estimator._predictors),
+        "learning_rate": float(hist_estimator.learning_rate),
+        "baseline": float(np.asarray(hist_estimator._baseline_prediction).reshape(-1)[0]),
+        "trees": full_trees,
+    },
+    "meta": {
+        "input_order": ["svm", "hist"],
+        "scaler_mean": meta_scaler.mean_.astype(np.float64).tolist(),
+        "scaler_scale": meta_scaler.scale_.astype(np.float64).tolist(),
+        "coefficients": meta_lr.coef_[0].astype(np.float64).tolist(),
+        "intercept": float(meta_lr.intercept_[0]),
+    },
+}
+full_model_path = OUT / "dart_teacher_v2_model.json"
+full_model_path.write_text(
+    json.dumps(full_teacher, ensure_ascii=False, separators=(",", ":"), allow_nan=False),
+    encoding="utf-8",
+)
+
+full_cases = []
+for i, case in enumerate(valid_cases):
+    score = float(meta_probabilities[i])
+    class_id = int(score >= float(c.threshold))
+    full_cases.append({
+        "name": case["name"],
+        "url": case["url"],
+        "e2": [float(full_frame.iloc[i][name]) for name in feature_order],
+        "svm_margin": float(svm_margins[i]),
+        "hist_raw_score": float(hist_raw_scores[i]),
+        "hist_probability": float(hist_probabilities[i]),
+        "meta_raw_score": float(meta_raw_scores[i]),
+        "meta_probability": score,
+        "final_score": score,
+        "class_id": class_id,
+        "label": "phishing" if class_id == 1 else "benign",
+    })
+full_fixture = {
+    "schema_version": "teacher-v2-full-reference-v1",
+    "model_version": "teacher-stacking-v2",
+    "source": "frozen fitted sklearn Teacher v2 pipeline",
+    "absolute_tolerance": 1e-6,
+    "cases": full_cases,
+}
+full_fixture_path = (
+    ROOT / "mobile" / "packages" / "phishguard_features" / "test"
+    / "fixtures" / "teacher_v2_pipeline_reference.json"
+)
+full_fixture_path.parent.mkdir(parents=True, exist_ok=True)
+full_fixture_path.write_text(
+    json.dumps(full_fixture, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
+    encoding="utf-8",
+)
+
+manifest["full_teacher_export"] = {
+    "artifact": full_model_path.name,
+    "fixture": str(full_fixture_path.relative_to(ROOT)),
+    "hist_tree_count": len(full_trees),
+    "hist_node_count": sum(len(tree) for tree in full_trees),
+    "meta_input_order": ["svm", "hist"],
+}
+manifest.setdefault("files", {})[full_model_path.name] = {
+    "size_bytes": full_model_path.stat().st_size,
+    "sha256": sha256(full_model_path),
+}
+with (OUT / "manifest.json").open("w", encoding="utf-8") as f:
+    json.dump(manifest, f, indent=2, ensure_ascii=False)
+
+print("Full Teacher artifact:", full_model_path.name, full_model_path.stat().st_size, "bytes")
+print("Full Teacher fixture cases:", len(full_cases))
+print("HistGB nodes:", sum(len(tree) for tree in full_trees))

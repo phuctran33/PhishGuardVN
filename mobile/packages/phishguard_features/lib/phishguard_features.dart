@@ -9,4 +9,6 @@ export 'src/parity.dart';
 export 'src/psl.dart' show PublicSuffixList;
 export 'src/svm.dart'
     show SvmModel, canonicalizeTeacherUrl, normalizeSklearnCharWhitespace;
+export 'src/teacher_v2.dart'
+    show TeacherV2OfflineModel, TeacherV2Prediction, teacherV2FeatureOrder;
 export 'src/url_parser.dart' show ParsedUrl, UrlParser;
