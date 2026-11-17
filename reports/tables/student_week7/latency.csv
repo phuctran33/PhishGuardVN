@@ -1,0 +1,3 @@
+candidate,json_load_ms,warmup,requests,p50_ms,p95_ms,scope,android_measured
+hard_only,7.178800005931407,50,300,0.07584999548271298,0.12907499331049624,desktop sequential raw URL to score,False
+kd_mixed,8.102499996311963,50,300,0.07369997911155224,0.11259998718742281,desktop sequential raw URL to score,False

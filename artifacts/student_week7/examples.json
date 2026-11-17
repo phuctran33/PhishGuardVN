@@ -1,0 +1,62 @@
+[
+  {
+    "url": "example.com",
+    "label": "benign",
+    "class_id": 0,
+    "score": 0.07668018300612421,
+    "score_kind": "uncalibrated_sigmoid",
+    "calibrated": false,
+    "threshold": 0.564855787905593,
+    "model_version": "student-week7-kd_mixed",
+    "release_status": "experimental",
+    "android_verified": false
+  },
+  {
+    "url": "https://EXAMPLE.com/Login?Q=%2F",
+    "label": "benign",
+    "class_id": 0,
+    "score": 0.1750135058578919,
+    "score_kind": "uncalibrated_sigmoid",
+    "calibrated": false,
+    "threshold": 0.564855787905593,
+    "model_version": "student-week7-kd_mixed",
+    "release_status": "experimental",
+    "android_verified": false
+  },
+  {
+    "url": "https://www.hcmus.edu.vn",
+    "label": "benign",
+    "class_id": 0,
+    "score": 0.04696222372443479,
+    "score_kind": "uncalibrated_sigmoid",
+    "calibrated": false,
+    "threshold": 0.564855787905593,
+    "model_version": "student-week7-kd_mixed",
+    "release_status": "experimental",
+    "android_verified": false
+  },
+  {
+    "url": "https://example.com:8443/path",
+    "label": "benign",
+    "class_id": 0,
+    "score": 0.07097443655129655,
+    "score_kind": "uncalibrated_sigmoid",
+    "calibrated": false,
+    "threshold": 0.564855787905593,
+    "model_version": "student-week7-kd_mixed",
+    "release_status": "experimental",
+    "android_verified": false
+  },
+  {
+    "url": "https://bücher.de/",
+    "label": "benign",
+    "class_id": 0,
+    "score": 0.03589811030657832,
+    "score_kind": "uncalibrated_sigmoid",
+    "calibrated": false,
+    "threshold": 0.564855787905593,
+    "model_version": "student-week7-kd_mixed",
+    "release_status": "experimental",
+    "android_verified": false
+  }
+]
