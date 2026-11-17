@@ -177,3 +177,36 @@ curl -X POST http://127.0.0.1:8000/predict -H 'Content-Type: application/json' -
 Tests có thể dùng `from phishguard_vn.api import create_app`, rồi `with TestClient(create_app(...)) as client` để chạy lifespan thật. Factory nhận `bundle_path`, `bundle_format`, `model_name`, `expected_sha256`, `cors_origins`; cấu hình truyền trực tiếp ưu tiên hơn biến môi trường. Chi tiết tests hiện có và cách chạy nằm trong README backend. Fixtures giả chỉ dùng trong unit tests, không phải artifact/demo nghiệm thu.
 
 Kiểm tra cả health degraded/503 và model ready; body-invalid phải 422 trước readiness; không echo URL lỗi; CORS đúng allowlist. #17 tiếp tục phụ trách QA/security/CI đầy đủ và clean clone; #15 chỉ bổ sung smoke tests implementation. Sau #19 có hướng dẫn môi trường Web → API → model thật để Khiêm hậu kiểm. Nếu đổi contract, phải cập nhật tài liệu/OpenAPI/tests và ghi rõ thay đổi khi bàn giao; không âm thầm đổi score semantics hoặc error schema.
+
+## POST /inspect — Week 7 Brand Detector / URL X-Ray (#30)
+
+Request/schema/trim, HTTP(S)-only validation và giới hạn 4096 ký tự giống `/predict`.
+Endpoint độc lập với model readiness: model degraded vẫn có thể trả inspection 200.
+Không có label, score, threshold hoặc intrinsic model attribution trong response này.
+
+Response 200: `scope="rule_based_url_inspection"`, `hostname`, `registrable_domain`
+(string hoặc bỏ khi không có), `subdomain`, `path`, `is_ip`, `scheme_was_added`,
+`reference_sha256`, `reference_brands`, `official_brand_ids`, `features`, `matches`,
+`limitations`. OpenAPI `/openapi.json` là schema thực thi. `features` là tám brand
+features của extractor đóng băng; mỗi match có `rule`, `brand_id`, `brand_name`,
+`key`, `text`, `value`, optional `distance`. `text` là chuỗi engine đã chuẩn hóa,
+không phải trích nguyên văn URL. Vùng path evidence gồm path + query decoded.
+
+`official_brand_ids` chỉ là đối chiếu registrable domain với danh sách domain
+tham chiếu; không xác nhận chủ sở hữu hiện tại hoặc chứng nhận website an toàn.
+Mismatch, typo và homoglyph chỉ là heuristic trong phạm vi reference 45 brands;
+IDNA tự nó không độc hại. Không tìm thấy match không có nghĩa an toàn. Parser,
+matching engine và reference dùng trực tiếp `parse_url`/`explain_brand_matches`;
+không thêm DNS/HTTP/crawl, không đổi feature extraction của Teacher.
+
+Lỗi 422 dùng envelope v1 `INVALID_REQUEST`/`INVALID_URL`. Reference/adapter lỗi:
+503 `INSPECTION_UNAVAILABLE`, reason `reference_unavailable`; không trả exception
+hoặc đường dẫn local. Có thể retry. CORS như API hiện tại. Ví dụ kiểm tra offline:
+
+```sh
+curl -s http://127.0.0.1:8000/inspect -H 'Content-Type: application/json' \
+  --data '{"url":"https://vietcombank.com.vn.example.com/login"}'
+```
+
+Domain thực tế là `example.com`, thương hiệu nằm trong subdomain. Kết quả này
+không được thay thế nhãn Teacher trả từ `/predict`.
