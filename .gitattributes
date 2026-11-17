@@ -82,3 +82,15 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /reports/tables/student_comparison/*.csv text eol=lf
 /reports/tables/student_comparison/*.json text eol=lf
 /reports/tables/student_comparison/*.gz -text
+
+# Requested hybrid LightGBM Student, stable export bytes.
+/configs/week7_lightgbm_student.json text eol=lf
+/artifacts/student_lightgbm/*.json text eol=lf
+/artifacts/student_lightgbm/*.txt -text
+/artifacts/student_lightgbm/*.csv text eol=lf
+/artifacts/student_lightgbm/cv_targets/*.json text eol=lf
+/artifacts/student_lightgbm/cv_targets/*.gz -text
+/reports/tables/student_lightgbm/*.csv text eol=lf
+/reports/tables/student_lightgbm/*.json text eol=lf
+/reports/tables/student_lightgbm/*.gz -text
+/reports/tables/student_kd_analysis/*.csv text eol=lf
