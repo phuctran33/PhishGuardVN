@@ -1,3 +1,5 @@
+> Historical Week 6 proposal. Not applicable to Week 7 Student work. Use [the current Student plan](week7_student_offline_plan.md) and [development protocol](week7_student_protocol.md).
+
 # Week 6 — KD evaluation protocol (Hưng)
 
 Status: PREPARED, no Teacher or KD experiments have been performed. Phúc owns model training. Hưng owns evaluation, artifact checks and interpretation. PhishVN labels remain phishing=1/benign=0; broad fraud/abuse semantics and label uncertainty remain in scope.

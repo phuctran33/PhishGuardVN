@@ -1,0 +1,30 @@
+{
+  "protocol": "week7-student-dev-v1",
+  "seed": 42,
+  "train_split": "train",
+  "selection_split": "val",
+  "official_test_evaluated": false,
+  "input": "raw URL -> frozen canonical_url -> char TF-IDF",
+  "ngram_range": [
+    3,
+    5
+  ],
+  "max_features": 8192,
+  "min_df": 2,
+  "C": 1,
+  "max_iter": 2000,
+  "kd_alpha": 0.5,
+  "candidates": [
+    "hard_only",
+    "kd_mixed"
+  ],
+  "primary_metric": "validation_average_precision",
+  "ranking_rule": "AP descending, then hard_only on exact tie",
+  "threshold_rule": "midpoint in lowest score interval with validation FPR <= 0.01",
+  "fpr_budget": 0.01,
+  "model_size_goal_bytes": 1048576,
+  "size_goal_status": "research goal; Android device budgets not agreed",
+  "target_definition": "q=(1-alpha)*ground_truth + alpha*released_teacher_raw_score",
+  "teacher_targets_scope": "in-sample official Train, not cross-fitted; validation for selection, not independent final evidence",
+  "test_policy": "do not read, predict or evaluate Official Test in this development run"
+}
