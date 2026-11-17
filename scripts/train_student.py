@@ -232,7 +232,7 @@ def main():
 
     # Static inputs are synthetic fixtures, not evidence of detection accuracy.
     examples = ["example.com", "https://EXAMPLE.com/Login?Q=%2F",
-                "https://www.hcmus.edu.vn", "https://example.com:8443/path", "https://b?cher.de/"]
+                "https://www.hcmus.edu.vn", "https://example.com:8443/path", "https://bücher.de/"]
     model = Student(json.loads((output / model_records[selected]["path"]).read_text(encoding="utf-8")))
     write_json(artifacts / "examples.json", [
         {"url": u, **model.predict_one(u)} for u in examples])

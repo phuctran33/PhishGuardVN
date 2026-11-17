@@ -68,3 +68,10 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /configs/teacher_lock.json text eol=lf
 /requirements-teacher.txt text eol=lf
 /reports/tables/stacking/promotion.json text eol=lf
+
+# Student review artifacts: preserve raw-byte hashes on Windows/Linux.
+/configs/week7_student.json text eol=lf
+/artifacts/student_week7/*.json text eol=lf
+/artifacts/student_week7/*.gz -text
+/reports/tables/student_week7/*.csv text eol=lf
+/reports/tables/student_week7/*.json text eol=lf
