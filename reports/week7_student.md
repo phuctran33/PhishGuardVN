@@ -74,3 +74,4 @@ không dùng để cứu một candidate yếu.
 - CLI inference: five static example URLs passed.
 - Producer source revision and hashes are recorded in artifacts/student_week7/manifest.json.
 - Android integration, device measurements and independent final evaluation remain pending.
+- Fresh local clone with core.autocrlf=true: all 23 source/input/output hashes matched; five CLI examples passed without data/interim files.
