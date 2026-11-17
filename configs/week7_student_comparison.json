@@ -1,0 +1,82 @@
+{
+  "protocol": "week7-student-comparison-v2",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "export_seed": 42,
+  "modes": [
+    "hard_only",
+    "kd_mixed"
+  ],
+  "kd_alpha": 0.5,
+  "families": {
+    "text_lr": {
+      "representation": "char_tfidf_8192",
+      "algorithm": "LogisticRegression",
+      "C": 1,
+      "max_iter": 2000,
+      "reason": "Existing compact lexical baseline."
+    },
+    "e2_lr": {
+      "representation": "frozen_e2_20",
+      "algorithm": "LogisticRegression",
+      "C": 1,
+      "max_iter": 2000,
+      "reason": "Input control: distinguish E2 signal from algorithm capacity."
+    },
+    "e2_mlp": {
+      "representation": "frozen_e2_20",
+      "algorithm": "MLPClassifier",
+      "hidden_layer_sizes": [
+        32,
+        16
+      ],
+      "epochs": 200,
+      "learning_rate_init": 0.001,
+      "alpha": 0.001,
+      "reason": "Small nonlinear model; standardized Train-only E2, no automatic random early stopping."
+    },
+    "e2_hist": {
+      "representation": "frozen_e2_20",
+      "algorithm": "HistGradientBoostingClassifier",
+      "max_iter": 150,
+      "max_leaf_nodes": 7,
+      "learning_rate": 0.05,
+      "min_samples_leaf": 30,
+      "l2_regularization": 1,
+      "reason": "Compact single boosting model approximates E2 interactions without stacking/text branch."
+    },
+    "e2_extra": {
+      "representation": "frozen_e2_20",
+      "algorithm": "ExtraTreesClassifier",
+      "n_estimators": 64,
+      "max_depth": 8,
+      "min_samples_leaf": 5,
+      "reason": "Randomized nonlinear tree ensemble as a different inductive bias, bounded depth/count."
+    }
+  },
+  "primary_metric": "mean_validation_AP_across_training_seeds",
+  "selection": "Within 1 MiB model+required data assets: mean AP descending, then mean recall at validation FPR budget descending, then total bytes ascending, then name. Export seed 42; never best-seed selection.",
+  "fpr_budget": 0.01,
+  "package_budget_bytes": 1048576,
+  "package_budget_status": "research constraint, not agreed Android device budget",
+  "comparison_scope": "all candidates same eligible Train/Validation, same targets, seeds, alpha; compare KD within family before comparing different inputs",
+  "threshold_scope": "each seed/mode uses Validation FPR<=1%; fixed0.5 also reported",
+  "bootstrap": {
+    "replicates": 1000,
+    "seed": 42,
+    "unit": "Validation registrable domain",
+    "scope": "conditional paired mean-seed score AP differences; excludes selection uncertainty"
+  },
+  "official_test_evaluated": false,
+  "external_evaluated": false,
+  "stopping_rule": "No new candidates/grids after seeing this run. Finite predeclared budget, not global optimum.",
+  "protected_baseline": "Original artifacts/student_week7 and 07_student.ipynb stay unchanged.",
+  "references": [
+    "https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html",
+    "https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html",
+    "https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html"
+  ]
+}

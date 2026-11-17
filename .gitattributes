@@ -75,3 +75,10 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /artifacts/student_week7/*.gz -text
 /reports/tables/student_week7/*.csv text eol=lf
 /reports/tables/student_week7/*.json text eol=lf
+
+# Student comparison research artifacts.
+/configs/week7_student_comparison.json text eol=lf
+/artifacts/student_comparison/*.json text eol=lf
+/reports/tables/student_comparison/*.csv text eol=lf
+/reports/tables/student_comparison/*.json text eol=lf
+/reports/tables/student_comparison/*.gz -text
