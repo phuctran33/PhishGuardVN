@@ -95,7 +95,7 @@ Workflow [`week7-web.yml`](../.github/workflows/week7-web.yml) có tên **Week 7
 3. `dart test` của package và analyze/widget tests của app nền; đồng bộ assets từ nguồn chuẩn và giữ lockfile app.
 4. Chromium thật → API → Teacher bằng `web_smoke.cjs`. Browser dùng Chromium do Playwright cài, không phụ thuộc Chrome cài sẵn trên runner.
 
-SHA source được chọn theo thứ tự: input thủ công `web_sha` (đủ 40 ký tự), SHA checkout QA nếu đã có `apps/web`, hoặc giá trị **`WEB_HANDOFF_SHA`** trong workflow. Hiện fallback là `5f112fc597339ea213eff3f07c745629cc18d8fc`. Source được checkout riêng vào `web-source`; SHA QA/Web được ghi trong Job summary và `source.txt`. Workflow không tự chạy theo đầu branch đang thay đổi.
+SHA source được chọn theo thứ tự: input thủ công `web_sha` (đủ 40 ký tự), SHA checkout QA nếu đồng thời có `apps/web/test/week7_test.dart` và `src/phishguard_vn/url_inspection.py`, hoặc giá trị **`WEB_HANDOFF_SHA`** trong workflow. Hiện fallback là `5f112fc597339ea213eff3f07c745629cc18d8fc`. Chỉ có Web tuần 6 từ `main` không đủ để chọn source QA làm source tuần 7. Source được checkout riêng vào `web-source`; SHA QA/Web được ghi trong Job summary và `source.txt`. Workflow không tự chạy theo đầu branch đang thay đổi.
 
 Hai job **Student Python / Ubuntu và Windows** checkout riêng Phúc tại `STUDENT_HANDOFF_SHA=1cad94c88195ebea6e4737bbfc863cbe4b2ff384` (hoặc input `student_sha` đủ 40 ký tự), cài Python 3.11/runtime khóa phiên bản/LightGBM 4.7.0 rồi chạy 43 + 3 + 29 tests K7.4 đã có. Gate kiểm JUnit đủ số ca và không skip; không chạy project training hay đổi engine sang Student.
 

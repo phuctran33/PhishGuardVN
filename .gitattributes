@@ -1,3 +1,4 @@
+
 * text=auto
 *.py text eol=lf
 *.ipynb text eol=lf
@@ -21,6 +22,9 @@
 /LICENSE -text
 /CITATION.cff -text
 /MANIFEST.txt -text
+
+# Android package assets
+mobile/packages/phishguard_features/assets/*.txt text eol=lf
 
 # Stable hashes for shared Teacher/reference artifacts across operating systems.
 /src/phishguard_vn/resources/*.csv text eol=lf

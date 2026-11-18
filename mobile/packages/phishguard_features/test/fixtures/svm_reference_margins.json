@@ -1,0 +1,213 @@
+{
+  "schema_version": "teacher-v2-svm-reference-v1",
+  "model_version": "teacher-stacking-v2",
+  "source": "fitted sklearn SVM decision_function",
+  "absolute_tolerance": 1e-06,
+  "cases": [
+    {
+      "name": "vcb_home",
+      "url": "https://www.vietcombank.com.vn/vi-VN/",
+      "margin": 0.12085624153402097
+    },
+    {
+      "name": "bidv_login_page",
+      "url": "https://bidv.com.vn/ibank/login",
+      "margin": 0.26689924558902267
+    },
+    {
+      "name": "momo_home",
+      "url": "https://momo.vn/",
+      "margin": -0.5580443211359746
+    },
+    {
+      "name": "shopee_home",
+      "url": "https://shopee.vn/",
+      "margin": -0.2545763491562809
+    },
+    {
+      "name": "tcb_two_domains",
+      "url": "https://techcombank.com/personal",
+      "margin": 0.1806877812763602
+    },
+    {
+      "name": "gov_portal_official",
+      "url": "https://dichvucong.gov.vn/p/home/dvc-trang-chu.html",
+      "margin": -0.3489305134890043
+    },
+    {
+      "name": "vcb_login_top",
+      "url": "https://vietcombank-login.top/verify",
+      "margin": 0.8743131694507834
+    },
+    {
+      "name": "shopee_gift",
+      "url": "http://shopee-quatang.example.com/nhanqua",
+      "margin": 0.941737763280169
+    },
+    {
+      "name": "momo_short_token",
+      "url": "https://momo-vn.top/",
+      "margin": 0.9697172963885715
+    },
+    {
+      "name": "short_alias_exact_token",
+      "url": "https://acb-online.com/",
+      "margin": 0.31640467043861753
+    },
+    {
+      "name": "short_alias_not_token",
+      "url": "https://acbdoc.com/",
+      "margin": 0.35424084465930705
+    },
+    {
+      "name": "concatenated_brand",
+      "url": "https://techcombankonline.xyz/",
+      "margin": 1.278793591301974
+    },
+    {
+      "name": "classic_trick",
+      "url": "https://vietcombank.com.vn.xacminh-id.xyz/",
+      "margin": 0.722134767695546
+    },
+    {
+      "name": "bank_login_subdomain",
+      "url": "https://login.bidv.secure-pay.top/",
+      "margin": 0.3833132765673558
+    },
+    {
+      "name": "free_hosting_style",
+      "url": "https://vietcombank-ibank.weebly.com/",
+      "margin": 1.9095914133093665
+    },
+    {
+      "name": "path_only",
+      "url": "https://evil-site.top/vietcombank/login",
+      "margin": 0.9175095506052277
+    },
+    {
+      "name": "query_only",
+      "url": "https://evil-site.top/?redirect=bidv.com.vn",
+      "margin": -0.38426280801269047
+    },
+    {
+      "name": "transposition",
+      "url": "https://vietcombnak.com/",
+      "margin": 0.31271950571102636
+    },
+    {
+      "name": "extra_letter",
+      "url": "https://vietcombanks.top/",
+      "margin": 1.2698264787866371
+    },
+    {
+      "name": "other_brand_name_not_typo",
+      "url": "https://tpbank-online.top/",
+      "margin": 1.5195135280783298
+    },
+    {
+      "name": "short_token_ignored",
+      "url": "https://vcbx.top/",
+      "margin": 1.3186370043534263
+    },
+    {
+      "name": "zero_for_o",
+      "url": "https://vietc0mbank.top/",
+      "margin": 1.3531932047192825
+    },
+    {
+      "name": "one_for_i",
+      "url": "https://b1dv-vn.top/",
+      "margin": 0.8504780150554904
+    },
+    {
+      "name": "rn_for_m",
+      "url": "https://momornomo.top/",
+      "margin": 0.5522260550913133
+    },
+    {
+      "name": "punycode_host",
+      "url": "http://xn--bcher-kva.de/Path",
+      "margin": -1.1221151934678057
+    },
+    {
+      "name": "unicode_host",
+      "url": "http://bücher.de/Path",
+      "margin": -1.1221151934678057
+    },
+    {
+      "name": "vietnamese_diacritics_path",
+      "url": "https://example.com/dang-nhap/Đăng%20Nhập",
+      "margin": -0.012943604059348468
+    },
+    {
+      "name": "ipv4_with_brand_path",
+      "url": "http://192.168.1.1/vietcombank",
+      "margin": 0.7938996027055
+    },
+    {
+      "name": "ipv6_literal",
+      "url": "http://[2001:db8::1]/login",
+      "margin": -0.18436924066801258
+    },
+    {
+      "name": "uppercase_scheme_host",
+      "url": "HTTPS://WWW.Example.COM/Path?Q=A",
+      "margin": -0.11666263498730867
+    },
+    {
+      "name": "trailing_dot",
+      "url": "http://EXAMPLE.com./",
+      "margin": -1.3029679078717158
+    },
+    {
+      "name": "scheme_relative",
+      "url": "//example.com/Path",
+      "margin": -0.5387565846169182
+    },
+    {
+      "name": "missing_scheme",
+      "url": "vietcombank-login.top/verify",
+      "margin": 0.8743131694507834
+    },
+    {
+      "name": "port_and_userinfo",
+      "url": "http://paypal.com@evil-site.top:8080/login",
+      "margin": 0.19295796998088033
+    },
+    {
+      "name": "path_params",
+      "url": "https://example.com/a;b?x=1",
+      "margin": -0.5267030367201734
+    },
+    {
+      "name": "percent_encoded_path",
+      "url": "https://example.com/%76ietcombank",
+      "margin": 0.6354372127210134
+    },
+    {
+      "name": "multi_level_suffix",
+      "url": "https://a.b.c.example.co.uk/x",
+      "margin": -1.5338179512721046
+    },
+    {
+      "name": "underscore_host",
+      "url": "http://my_site.example.com/a",
+      "margin": -0.4978036606081017
+    },
+    {
+      "name": "many_keywords",
+      "url": "https://secure-login-verify.example.com/account/update",
+      "margin": -0.3563065930716685
+    },
+    {
+      "name": "vietnamese_keywords",
+      "url": "https://uudai-khuyenmai.example.com/xacminh/nhanqua",
+      "margin": 0.025703809926976517
+    },
+    {
+      "name": "very_long_url",
+      "url": "https://example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/vietcombank?x=1111111111111111111111111111111111111111",
+      "margin": -0.5839046073980353
+    }
+  ]
+}

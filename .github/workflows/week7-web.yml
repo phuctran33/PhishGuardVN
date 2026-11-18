@@ -57,7 +57,7 @@ jobs:
           mkdir -p test-results/week7
           if [[ -n "$REQUESTED_WEB_SHA" ]]; then
             web_sha="$REQUESTED_WEB_SHA"
-          elif [[ -f apps/web/pubspec.yaml ]]; then
+          elif [[ -f apps/web/test/week7_test.dart && -f src/phishguard_vn/url_inspection.py ]]; then
             web_sha="$(git rev-parse HEAD)"
           else
             web_sha="$WEB_HANDOFF_SHA"

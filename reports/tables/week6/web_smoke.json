@@ -1,0 +1,378 @@
+{
+  "current_teacher": {
+    "model_version": "teacher-stacking-v2",
+    "artifact": {
+      "path": "models/teacher_v2_candidate.joblib",
+      "sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1"
+    },
+    "threshold": 0.6945740700635259,
+    "teacher_revision": "398ee2ce9e587644ebe21b529fba485536a9aac1",
+    "upstream_main": "7d2d60091c971dd3081b0b71fbf35b4cdd80c165",
+    "python": "3.11.17",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "browser": "Chrome headless / Playwright, Flutter release + actual HTTP",
+    "mocked_predictions": false,
+    "cases": [
+      {
+        "case": "real_teacher_benign_above_0_5",
+        "status": "PASS",
+        "input": "https://example.com/Login?Q=A",
+        "response": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.5760558654872865,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        }
+      },
+      {
+        "case": "real_teacher_phishing",
+        "status": "PASS",
+        "input_defanged": "9944789[.]com",
+        "source": "024efd11-58b4-57c4-8d40-383a1034b19f",
+        "split": "val",
+        "response": {
+          "label": "phishing",
+          "model": "teacher-stacking-v2",
+          "score": 0.9319661170520045,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        }
+      },
+      {
+        "case": "empty_url_no_post",
+        "status": "PASS"
+      },
+      {
+        "case": "missing_scheme",
+        "status": "PASS",
+        "response": {
+          "label": "benign",
+          "model": "teacher-stacking-v2",
+          "score": 0.02881655533143681,
+          "score_kind": "probability",
+          "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+          "decision_rule": "score >= threshold",
+          "protocol": "full_train_group_oof_fpr_target_0.01",
+          "threshold": 0.6945740700635259
+        }
+      },
+      {
+        "case": "invalid_url",
+        "status": "PASS",
+        "http": 422,
+        "response": {
+          "error": {
+            "code": "INVALID_URL",
+            "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+            "reason": "invalid_port"
+          }
+        }
+      },
+      {
+        "case": "model_unavailable",
+        "status": "PASS",
+        "method": "real server restarted with empty release root; official artifact untouched",
+        "response": {
+          "error": {
+            "code": "MODEL_UNAVAILABLE",
+            "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
+            "reason": "artifact_missing"
+          }
+        }
+      },
+      {
+        "case": "backend_offline",
+        "status": "PASS",
+        "method": "actual SIGTERM, no mocking"
+      },
+      {
+        "case": "restart_retry_same_page",
+        "status": "PASS",
+        "method": "actual restart; same page, no reload"
+      },
+      {
+        "case": "responsive_real_teacher",
+        "status": "PASS",
+        "viewports": [
+          {
+            "width": 390,
+            "height": 844,
+            "status": "PASS",
+            "keyboard_enter": true,
+            "reduced_motion": true
+          },
+          {
+            "width": 320,
+            "height": 844,
+            "status": "PASS",
+            "keyboard_enter": true,
+            "reduced_motion": true
+          },
+          {
+            "width": 844,
+            "height": 390,
+            "status": "PASS",
+            "keyboard_enter": true,
+            "reduced_motion": true
+          },
+          {
+            "width": 768,
+            "height": 1024,
+            "status": "PASS",
+            "keyboard_enter": true,
+            "reduced_motion": true
+          },
+          {
+            "width": 1440,
+            "height": 900,
+            "status": "PASS",
+            "keyboard_enter": true,
+            "reduced_motion": true
+          }
+        ]
+      }
+    ],
+    "page_errors": [],
+    "request_hosts": [
+      "127.0.0.1"
+    ],
+    "screenshots": [
+      "desktop.png",
+      "phishing.png",
+      "unavailable.png",
+      "offline.png",
+      "mobile.png"
+    ],
+    "screenshots_sha256": {
+      "desktop.png": "faf3b7dcee47e47773e8f0aa8af04d864a552510c561bf2411a3a9984bad3baa",
+      "phishing.png": "5dd6d6736817d85c18abfa38ba645d2f0a20a144f71774c6ccf1aff0b74015a6",
+      "unavailable.png": "0979935d869cb28f210e2e0b928a40f3088c8fae63faed0cf7137397e0a72a62",
+      "offline.png": "3007604fe285e139f8a69a3bcb1140a10b4eb898b1fc2e07d055f7664e4b13b7",
+      "mobile.png": "3dbcae5ac2476a526d5f027a34d60df16c4a0a1395e30552e15da611123e6361"
+    },
+    "tested_source_sha256": {
+      "apps/web/lib/api_client.dart": "dff2ae5acdf75fe0edbca5b524a953c5bda3bc31e21a43043559f6faeadcdac8",
+      "apps/web/lib/main.dart": "74cb882831f0b27dd55c3138a78c22130bcd99fdf64241aaddf7d971ad8b2fb6",
+      "apps/web/test/api_client_test.dart": "e473e37a4f072dd0f6a68ec2a807184a46570e804e4fd148bba7f17ab1f7f828",
+      "apps/web/test/web_app_test.dart": "755882d8a9f9541fbd1ee250fb0fb01135cf73f5f1db4ee731744b06d7941e3f"
+    },
+    "tests": {
+      "flutter_passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "analyze": "No issues found",
+      "release_build": "PASS --no-web-resources-cdn",
+      "real_browser_case_groups_passed": 9
+    },
+    "runtime_base_revision": "3c90552509cfb5dfa38ca896b866033d0cc0998b",
+    "implementation_note": "Source hashes identify the tested integration changes; runtime base revision is not the later published commit.",
+    "backend_commit": "7dfeec5f96f106f3544163466e2cf312494eb41f",
+    "post_merge_revision": "213795abcc3d986099397cb46cfd75754cdeab61"
+  },
+  "legacy_e1_2026_11_09": {
+    "backend_artifact_sha256": "6bd8324a56bba9f98615599419349947f461f77d6a9e11f578db22836dd6014c",
+    "model": "logistic_regression_balanced",
+    "feature_set": "lexical_12",
+    "teacher_v1": false,
+    "synthetic_predictions_used": false,
+    "browser": "Google Chrome headless via Playwright",
+    "frontend": "Flutter release; real HTTP API; no route mocking",
+    "cases": [
+      {
+        "case": "valid_url",
+        "status": "PASS",
+        "http": 200,
+        "model": "logistic_regression_balanced",
+        "score": 0.4949721386878221,
+        "score_kind": "probability"
+      },
+      {
+        "case": "phishing_warning",
+        "status": "PASS",
+        "http": 200,
+        "input": "https://example.com/login",
+        "label": "phishing",
+        "score": 0.809465335516596,
+        "note": "Model prediction on a reserved example URL, not a verified malicious website"
+      },
+      {
+        "case": "empty_url",
+        "status": "PASS",
+        "validation": "local; no POST"
+      },
+      {
+        "case": "missing_scheme",
+        "status": "PASS",
+        "http": 200,
+        "score": 0.4949721386878221
+      },
+      {
+        "case": "invalid_url",
+        "status": "PASS",
+        "http": 422,
+        "reason": "invalid_port"
+      },
+      {
+        "case": "backend_offline",
+        "status": "PASS",
+        "method": "actual backend process stopped, no route mocking"
+      },
+      {
+        "case": "retry_after_restart",
+        "status": "PASS",
+        "method": "same page, actual backend restarted, no reload"
+      },
+      {
+        "case": "mobile_390px",
+        "status": "PASS",
+        "http": 200,
+        "layout": "no document horizontal overflow"
+      },
+      {
+        "case": "responsive_keyboard_reduced_motion",
+        "status": "PASS",
+        "viewports": [
+          {
+            "width": 320,
+            "height": 844,
+            "reduced_motion": true,
+            "keyboard_enter_submit": true,
+            "status": "PASS"
+          },
+          {
+            "width": 375,
+            "height": 812,
+            "reduced_motion": true,
+            "keyboard_enter_submit": true,
+            "status": "PASS"
+          },
+          {
+            "width": 844,
+            "height": 390,
+            "reduced_motion": true,
+            "keyboard_enter_submit": true,
+            "status": "PASS"
+          },
+          {
+            "width": 768,
+            "height": 1024,
+            "reduced_motion": true,
+            "keyboard_enter_submit": true,
+            "status": "PASS"
+          },
+          {
+            "width": 1024,
+            "height": 768,
+            "reduced_motion": true,
+            "keyboard_enter_submit": true,
+            "status": "PASS"
+          },
+          {
+            "width": 1440,
+            "height": 900,
+            "reduced_motion": true,
+            "keyboard_enter_submit": true,
+            "status": "PASS"
+          }
+        ]
+      }
+    ],
+    "page_errors": [],
+    "page_request_hosts": [
+      "127.0.0.1"
+    ],
+    "screenshots": [
+      "desktop.png",
+      "offline.png",
+      "mobile.png",
+      "phishing.png"
+    ],
+    "screenshots_sha256": {
+      "desktop.png": "65097c67ed33214fbb4d3cd64498f666b8c806241eb49d782e57b04e2de85e58",
+      "offline.png": "3007604fe285e139f8a69a3bcb1140a10b4eb898b1fc2e07d055f7664e4b13b7",
+      "mobile.png": "e85e91f02c0bc8d1aab8077faa17863d54ecff84a8c44f8dd9f08bf0ea66065c",
+      "phishing.png": "e8ad77001f3f4c008dbc42e137ba71c76310cd4e725ca03d46c21c91bd5eaa38"
+    },
+    "backend_commit": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
+    "flutter_version": "3.47.9",
+    "dart_version": "3.13.7",
+    "flutter_tests": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "flutter_analyze": "No issues found",
+    "release_build": "passed; --no-web-resources-cdn",
+    "mobile_note": "Chrome viewport 390x844 emulation, not a real phone/Android demo; mobile feedback auto-scrolls into view.",
+    "backend_remote_clean_clone": {
+      "revision": "509e6a3cb93fd64a8fa459cd8173e90f9ed045a4",
+      "backend_tests_passed": 33,
+      "http_checks": [
+        {
+          "path": "health",
+          "status": 200,
+          "content": {
+            "status": "degraded",
+            "model_ready": false,
+            "model": null,
+            "feature_set": null,
+            "protocol": null,
+            "artifact_sha256": null,
+            "model_error": "not_configured"
+          }
+        },
+        {
+          "path": "docs",
+          "status": 200,
+          "content": "Swagger HTML"
+        },
+        {
+          "path": "predict",
+          "status": 503,
+          "content": {
+            "error": {
+              "code": "MODEL_UNAVAILABLE",
+              "message": "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.",
+              "reason": "not_configured"
+            }
+          }
+        }
+      ]
+    },
+    "design_system": {
+      "skill": "ui-ux-pro-max",
+      "cli_version": "2.15.0",
+      "loaded": "manually read SKILL.md and executed search.py; automatic discovery after assistant restart",
+      "master": "apps/web/design-system/phishguardvn/MASTER.md",
+      "style": "Glassmorphism",
+      "theme": "dark navy/cyan/red",
+      "layout": "Minimalism / Swiss",
+      "implementation": "Flutter/Dart + Material 3"
+    },
+    "accessibility_checks": [
+      "200% text / 320px widget layout without overflow",
+      "reduced motion widget/browser",
+      "semantic text contrast >=4.5:1 and input boundary >=3:1",
+      "keyboard Enter submit across six viewports",
+      "loading duplicate-submit lock, explicit status/error/warning text"
+    ],
+    "immutable_original_files": {
+      "base": "5509ed1",
+      "unchanged": 265,
+      "changed": [
+        "README.md",
+        "pyproject.toml"
+      ],
+      "model_sha256_unchanged": true
+    },
+    "screenshot_directory": "reports/figures/week6_web/legacy_e1_2026_11_09"
+  }
+}

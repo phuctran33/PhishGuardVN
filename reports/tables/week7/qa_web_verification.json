@@ -174,7 +174,7 @@
   "web_ci_preparation": {
     "workflow": ".github/workflows/week7-web.yml",
     "workflow_name": "Week 7 QA",
-    "workflow_sha256": "be49196761ff96b855a6705e0b98f52095ac0e9622a5da91396df9777b59a027",
+    "workflow_sha256": "21872492a27cdddf502e9a527ffd46f0ad9b0c5e0091a35abb69be5c7cdd19f0",
     "web_source_sha": "5f112fc597339ea213eff3f07c745629cc18d8fc",
     "student_source_sha": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
     "configured_jobs": [
@@ -183,7 +183,7 @@
       "Student Python / ubuntu-latest",
       "Student Python / windows-latest"
     ],
-    "github_actions_status": "not_run_uncommitted",
+    "github_actions_status": "published_3bfd45a_passed_6_of_6; main_sync_guard_fix_pending_user_commit_push",
     "local_actionlint": "passed (1.7.12)",
     "bash_syntax_steps": 19,
     "powershell_syntax_steps": 6,
@@ -207,6 +207,11 @@
         "case": "moving-branch-rejected",
         "status": "passed",
         "exit_code": 1
+      },
+      {
+        "case": "week6-web-from-main-uses-reviewed-week7-pin",
+        "status": "passed",
+        "exit_code": 0
       },
       {
         "case": "web-present-uses-own-commit",
@@ -456,7 +461,7 @@
       "android_parity_accepted": false
     },
     "ci": {
-      "status": "configuration_locally_validated_actions_pending_user_push",
+      "status": "published_baseline_passed_6_of_6; main_sync_update_pending_user_commit_push",
       "source_selection": "pinned Web/Student revisions, recorded separately from QA workflow revision"
     },
     "hy_new_handoff": {
@@ -472,5 +477,50 @@
         "actual new CI runs and final acceptance report"
       ]
     }
-  }
+  },
+  "published_qa_ci": {
+    "revision": "3bfd45ac2b5c78b0b251584478c607cfe31018a3",
+    "passed": 6,
+    "total": 6,
+    "checks": [
+      {
+        "name": "Student Python / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677428"
+      },
+      {
+        "name": "Flutter Web / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677396"
+      },
+      {
+        "name": "Flutter Web / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677386"
+      },
+      {
+        "name": "Student Python / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677077"
+      },
+      {
+        "name": "Python 3.11 / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238298906/job/134579676801"
+      },
+      {
+        "name": "Python 3.11 / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238298906/job/134579676395"
+      }
+    ],
+    "current_uncommitted_changes_tested_by_actions": false
+  },
+  "main_sync_evidence": "main_sync_verification.json"
 }

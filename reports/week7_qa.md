@@ -1,6 +1,6 @@
 # QA tuần 7 — Khiêm
 
-**Cập nhật 18/11/2026:** đã kiểm lại Web tại `5f112fc597339ea213eff3f07c745629cc18d8fc`; lỗi QR focus đã sửa, browser đạt **20/20**. Kết quả hiện hành nằm ở mục K7.5 cuối báo cáo và `qa_web_verification.json`; các mục trên `701b8f5` giữ lịch sử phát hiện lỗi. Student Python đã kiểm tại `1cad94c`; Android/device và Actions của workflow mới chưa nghiệm thu.
+**Cập nhật 18/11/2026:** đã kiểm lại Web tại `5f112fc597339ea213eff3f07c745629cc18d8fc`; lỗi QR focus đã sửa, browser đạt **20/20**. Kết quả hiện hành nằm ở mục K7.5 và `qa_web_verification.json`; các mục trên `701b8f5` giữ lịch sử phát hiện lỗi. Student Python đã kiểm tại `1cad94c`; CI commit QA `3bfd45a` đạt **6/6**, còn thay đổi sau đồng bộ main chờ người dùng tạo commit. Android/device chưa nghiệm thu.
 
 ## Chốt phạm vi bàn giao Hưng và Phúc
 
@@ -9,7 +9,7 @@
 | K7.1 — QR Web của Hưng | Đạt trên `5f112fc`: decoder/validation/error/timeout tests, xác nhận trước predict và browser Teacher thật. 48 Flutter tests và 20 browser checks bao gồm các luồng liên quan. Timeout có kiểm soát ở unit tests; mất kết nối/restart kiểm bằng process backend thật. |
 | K7.2 — Brand Detector / X-Ray của Hưng | Đạt trên cùng revision: 73 API/inspection/Teacher tests và 25 QA tests, cùng full regression. Alias/false-positive dùng lại `test_short_alias_requires_whole_token`, official-domain và reference tests trong `test_brand_features.py`; giữ nguyên reference/E2. Không suy ra đây là đánh giá accuracy trên dữ liệu mới. |
 | K7.4 — phần Student Python/artifact của Phúc | Đạt trên `1cad94c`: 43 QA + 3 LightGBM + 29 Student tests cũ, chạy riêng; đủ hash/version/config/threshold/edge cases/native–JSON parity. Không còn lỗi mở trong phạm vi Python đã kiểm. |
-| K7.5 — Web/API/Dart/widget regression và cấu hình CI | Các kiểm tra tại máy đạt; workflow đã chuẩn bị và kiểm cấu hình. Actions mới chưa chạy, cần người dùng tự commit/push rồi xem đúng SHA. |
+| K7.5 — Web/API/Dart/widget regression và cấu hình CI | Các kiểm tra tại máy đạt; CI `3bfd45a` đạt 6/6. Thay đổi tương thích sau đồng bộ main chưa commit/push, nên chưa có Actions mới cho thay đổi đó. |
 | Các bước liên quan Hy và nghiệm thu cuối | Chưa tiếp nhận/kiểm riêng bàn giao mới của Hy trong đợt này. Chưa chốt K7.3, Student Python–Dart parity, Android Teacher network-disabled smoke hoặc nghiệm thu toàn bộ Issue #31. |
 
 Phần Hưng/Phúc nêu trên sẵn sàng để người dùng tự commit test, workflow và bằng chứng QA. Không cần chờ Hy để bàn giao phần đã đạt. Source hai bạn được kiểm ở checkout riêng và giữ sạch; không chép model/code sản phẩm vào repo QA. Việc approve PR Hưng và commit/push QA do người dùng thực hiện; báo cáo không tự nhận review đã được gửi chỉ từ ảnh màn hình soạn review.
@@ -125,6 +125,28 @@ Browser chạy Chromium 158.0.8127.18/Playwright 1.65.0 trên Windows với CPyt
 
 Workflow `.github/workflows/week7-web.yml` hiện tên **Week 7 QA**: hai job Web Ubuntu/Windows và hai job Student Python Ubuntu/Windows. Source Web ghim `5f112fc`, Student ghim `1cad94c`; mỗi nguồn checkout riêng. Có analyze/test/build Web, API/full regression, gate Teacher tuần 6, Dart test và app widget tests, real-browser smoke, 43 + 3 + 29 tests Student. Upload versions/SHA/logs/JSON/JUnit/ảnh kể cả khi fail; gate trọng tâm không nhận thiếu test hoặc skip. Full regression cần extras `api,test,teacher`; thử cấu hình chỉ `api,test` đã bộc lộ thiếu LightGBM, nên CI đã sửa dependency, không bỏ test để né lỗi.
 
-Workflow đã qua actionlint và kiểm cú pháp/logic chọn SHA tại máy. **Actions của workflow mới chưa chạy vì QA chưa commit/push**; 6/6 checks upstream được xác minh riêng trên đúng commit Hưng, không dùng làm bằng chứng workflow QA mới. Có source checkout sạch sau cập nhật và venv riêng được dùng lại; không gọi lần fetch này là clean clone/venv mới hoàn toàn tại `5f112fc`.
+Workflow đã qua actionlint và kiểm cú pháp/logic chọn SHA tại máy. Khi chuẩn bị đợt kiểm này, workflow QA chưa commit/push; sau đó người dùng đã phát hành `3bfd45a` và 6/6 checks đạt (xem cập nhật đồng bộ main bên dưới). Sáu checks upstream Hưng được xác minh riêng, không dùng thay cho CI QA. Có source checkout sạch sau cập nhật và venv riêng được dùng lại; không gọi lần fetch này là clean clone/venv mới hoàn toàn tại `5f112fc`.
 
 **Kết luận:** QA-W7-WEB-01 đã khắc phục; trong phạm vi Web đã chạy không còn lỗi mở cần Hưng sửa. Có thể gửi review approve cho commit này dựa trên các kết quả trên. **K7.5 chưa hoàn tất toàn bộ**: cần chạy Actions sau khi người dùng tự commit/push, nhận build/adapter tương ứng để chạy Android network-disabled Teacher smoke và hoàn thiện báo cáo nghiệm thu cuối. Không tick Android/device bằng kết quả Dart/widget hoặc browser responsive. QA chưa commit, push, gửi review hoặc merge.
+
+## Đồng bộ main vào checkout QA — kiểm tại máy ngày 18/11/2026
+
+Người dùng đã commit/push QA tại `3bfd45ac2b5c78b0b251584478c607cfe31018a3`; đã xác minh **6/6 checks success** của đúng commit này. Sau đó lấy `origin/main=19eaaa3f3ddbd4d6e1ffaef01a6c31ce89b02fcf` vào nhánh `test/week7-web-student-qa` bằng merge **dừng trước commit**. Không có conflict; chưa tạo merge commit hoặc push, không thay đổi nhánh `main`. Trước commit kết thúc, `HEAD` vẫn là `3bfd45a` nên Git vẫn báo **behind 18/ahead 1**, mặc dù cây file và index đã chứa các thay đổi main.
+
+Đã kiểm trực tiếp cây file đang ghép này, không dùng kết quả checkout Hưng để thay cho QA:
+
+| Kiểm tra trong checkout QA | Kết quả |
+| --- | --- |
+| Python 3.11.14, đủ extras và research | `pip check` đạt; **624 passed, 2 skipped, 1 deselected**, 3 cảnh báo upstream |
+| Backend chạy thật với Python 3.11 | Health `model_ready=true`, predict hợp lệ HTTP 200, port sai HTTP 422 `invalid_port` |
+| Web lấy từ main | Analyze sạch; **28 tests passed** |
+| Dart package lấy từ main | **294 tests passed**; analyzer còn 1 warning và 8 info có sẵn trong source, không có error |
+| Flutter app nền lấy từ main | Analyze sạch; **3 widget tests passed** |
+
+Lần chạy Dart đầu phát hiện reference CSV đã có CRLF ở máy làm sai raw-byte SHA-256 (`247c6b5d...`). Đã xác nhận khác biệt chỉ ở xuống dòng và khôi phục nguyên bytes LF từ Git `origin/main`; SHA trở lại đúng `6d434533...`, sau đó 294 tests đạt. Không chỉnh nội dung reference, không sửa hash kỳ vọng hoặc nới test. Các assets chạy app được đồng bộ vào thư mục ignored theo README.
+
+`.venv` cũ tại QA là Python 3.13.7, không được dùng để nhận nghiệm thu Teacher đóng băng. Lần kiểm trên dùng môi trường QA CPython 3.11 đã có và được xác nhận dependencies. Cấu hình VS Code cục bộ `.vscode/settings.json` trỏ interpreter 3.11/Flutter SDK; file này được ignore, không gửi lên repo. Cần chọn lại interpreter hoặc restart analysis server nếu VS Code giữ lựa chọn/cache cũ; không tuyên bố bảng Problems đã trống khi chưa xem lại UI.
+
+Web/app nền từ main chưa chứa QR/inspect tuần 7 hoặc Teacher UI mới của Hy. Vì vậy workflow QA đã sửa điều kiện chọn source: chỉ dùng checkout QA làm Web tuần 7 khi có đủ `week7_test.dart` và `url_inspection.py`; nếu không, tiếp tục dùng pin đã kiểm `5f112fc`. Actionlint và 10 ca chọn SHA đã qua, trong đó có ca main chỉ chứa Web tuần 6. Thay đổi guard này chưa có Actions mới đến khi người dùng tự commit/push.
+
+Bằng chứng: [`main_sync_verification.json`](tables/week7/main_sync_verification.json). Các warning/info Dart thuộc source package hiện có ở main, không phải conflict do merge; chưa chỉnh code người phụ trách package để làm sạch lint. Bản Hy `a4d7b0e` đã lấy riêng và chạy được 46 Flutter/294 Dart tests; phần kiểm độc lập và Android device tiếp tục riêng sau khi chốt đồng bộ. Android SDK/thiết bị chưa được tìm thấy tại máy QA, không nhận device/offline smoke là pass từ test host.
