@@ -133,6 +133,36 @@ class PredictionApi {
     }
   }
 
+  Future<Inspection> inspect(String url) async {
+    final response = await _request(
+      () => _client.post(
+        _endpoint('/inspect'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({'url': url}),
+      ),
+    );
+    final body = _decode(response);
+    if (response.statusCode != 200) {
+      throw ApiFailure(
+        response.statusCode == 422 ? 'INVALID_URL' : 'INSPECTION_UNAVAILABLE',
+        response.statusCode == 422
+            ? 'URL không hợp lệ. Kiểm tra tên miền, ký tự và cổng.'
+            : 'Chưa thể phân tích quy tắc URL. Vui lòng thử lại.',
+      );
+    }
+    try {
+      return Inspection.fromJson(body);
+    } on FormatException {
+      throw const ApiFailure(
+        'INVALID_RESPONSE',
+        'Phản hồi quy tắc chưa đúng API contract.',
+      );
+    }
+  }
+
   Map<String, dynamic> _decode(http.Response response) {
     try {
       final value = jsonDecode(utf8.decode(response.bodyBytes));
@@ -163,4 +193,71 @@ class PredictionApi {
   }
 
   void close() => _client.close();
+}
+
+class Inspection {
+  const Inspection(
+    this.hostname,
+    this.domain,
+    this.subdomain,
+    this.path,
+    this.isIp,
+    this.referenceSha,
+    this.officialBrands,
+    this.features,
+    this.matches,
+  );
+  final String hostname, subdomain, path, referenceSha;
+  final String? domain;
+  final bool isIp;
+  final List<String> officialBrands;
+  final Map<String, num> features;
+  final List<Map<String, dynamic>> matches;
+  factory Inspection.fromJson(Map<String, dynamic> j) {
+    if (j['scope'] != 'rule_based_url_inspection' ||
+        j['hostname'] is! String ||
+        (j['registrable_domain'] != null &&
+            j['registrable_domain'] is! String) ||
+        j['subdomain'] is! String ||
+        j['path'] is! String ||
+        j['is_ip'] is! bool ||
+        j['reference_sha256'] is! String ||
+        j['reference_brands'] != 45 ||
+        j['official_brand_ids'] is! List ||
+        j['features'] is! Map ||
+        j['matches'] is! List) {
+      throw const FormatException('Invalid inspection response');
+    }
+    final features = j['features'] as Map;
+    final brands = j['official_brand_ids'] as List;
+    final matches = j['matches'] as List;
+    if (!brands.every((x) => x is String) ||
+        !features.values.every((v) => v is num && v.isFinite) ||
+        !matches.every(
+          (m) =>
+              m is Map<String, dynamic> &&
+              [
+                'rule',
+                'brand_id',
+                'brand_name',
+                'key',
+                'text',
+              ].every((k) => m[k] is String) &&
+              m['value'] is num &&
+              (m['value'] as num).isFinite,
+        )) {
+      throw const FormatException('Invalid inspection evidence');
+    }
+    return Inspection(
+      j['hostname'] as String,
+      j['registrable_domain'] as String?,
+      j['subdomain'] as String,
+      j['path'] as String,
+      j['is_ip'] as bool,
+      j['reference_sha256'] as String,
+      brands.cast<String>(),
+      features.cast<String, num>(),
+      matches.cast<Map<String, dynamic>>(),
+    );
+  }
 }
