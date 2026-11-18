@@ -1,0 +1,1303 @@
+{
+  "task": "K7.4",
+  "checked_on": "2026-11-18",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "python_verified_android_parity_pending",
+  "source": {
+    "repository": "https://github.com/phuctran33/PhishGuardVN",
+    "branch": "phuc-week7-student",
+    "revision": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+    "working_tree_clean": true,
+    "checkout_example": "../PhishGuardVN-w7-student-review"
+  },
+  "environment": {
+    "python": "3.11.14",
+    "implementation": "CPython",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "architecture": "AMD64",
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.0",
+      "joblib": "1.6.0",
+      "lightgbm": "4.7.0",
+      "tldextract": "5.4.0",
+      "idna": "3.20",
+      "pytest": "9.2.0"
+    },
+    "pip_check": {
+      "exit_code": 0,
+      "output": "No broken requirements found."
+    }
+  },
+  "pytest_runs": [
+    {
+      "name": "qa_independent",
+      "tests": 43,
+      "passed": 43,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "command": "python -m pytest -p no:cacheprovider -q -rs --tb=short tests/week7/student_qa.py",
+      "exit_code": 0,
+      "test_names": [
+        "test_manifest_covers_packaged_assets_and_frozen_teacher",
+        "test_feature_layout_and_fixture_coverage",
+        "test_all_reference_fields_and_sklearn_native_json_parity[hard_only]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-False]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-42]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-value2]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-value3]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only- https://example.com]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-example.com ]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-https://example.com/a\\x00b]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[hard_only-https://example.com/a\\tb]",
+        "test_decision_at_locked_threshold[hard_only-below]",
+        "test_decision_at_locked_threshold[hard_only-equal]",
+        "test_decision_at_locked_threshold[hard_only-above]",
+        "test_all_reference_fields_and_sklearn_native_json_parity[kd_mixed]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-False]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-42]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-value2]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-value3]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed- https://example.com]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-example.com ]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-https://example.com/a\\x00b]",
+        "test_additional_invalid_inputs_do_not_return_a_prediction[kd_mixed-https://example.com/a\\tb]",
+        "test_decision_at_locked_threshold[kd_mixed-below]",
+        "test_decision_at_locked_threshold[kd_mixed-equal]",
+        "test_decision_at_locked_threshold[kd_mixed-above]",
+        "test_inference_without_network_teacher_or_training",
+        "test_default_mode_and_unknown_mode",
+        "test_tampered_inference_assets_are_rejected[features.json]",
+        "test_tampered_inference_assets_are_rejected[kd_mixed.json]",
+        "test_tampered_inference_assets_are_rejected[hard_only.json]",
+        "test_tampered_inference_assets_are_rejected[brand_reference_v1.csv]",
+        "test_tampered_inference_assets_are_rejected[psl_icann_tldextract_5.4.0.txt]",
+        "test_missing_model_and_changed_runtime_source_fail_explicitly",
+        "test_changed_model_version_is_rejected_by_published_loader",
+        "test_changed_model_contract_is_rejected[schema-wrong-schema]",
+        "test_changed_model_contract_is_rejected[numpy_version-0.0]",
+        "test_changed_model_contract_is_rejected[decision_rule-score > threshold]",
+        "test_changed_feature_order_is_rejected",
+        "test_cv_targets_lineage_from_exported_files_without_teacher_cache",
+        "test_cli_uses_published_mode_and_reports_invalid_input[hard_only]",
+        "test_cli_uses_published_mode_and_reports_invalid_input[kd_mixed]",
+        "test_portable_json_inference_without_dataset_teacher_or_native_lightgbm"
+      ]
+    },
+    {
+      "name": "upstream_lightgbm",
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "command": "python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_student_lightgbm.py",
+      "exit_code": 0,
+      "test_names": [
+        "test_fractional_cross_entropy_and_portable_hybrid",
+        "test_saved_lightgbm_study_and_fold_boundaries",
+        "test_published_reference_fixtures_and_complete_hashes"
+      ]
+    },
+    {
+      "name": "upstream_student_regression",
+      "tests": 29,
+      "passed": 29,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "command": "python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_student.py tests/test_student_comparison.py",
+      "exit_code": 0,
+      "test_names": [
+        "test_weighted_binary_copies_equal_hard_training",
+        "test_fractional_targets_optimize_fractional_bce",
+        "test_json_inference_matches_sklearn_on_unseen_inputs",
+        "test_invalid_urls_rejected[]",
+        "test_invalid_urls_rejected[ ]",
+        "test_invalid_urls_rejected[ example.com]",
+        "test_invalid_urls_rejected[https://example.com:bad]",
+        "test_invalid_urls_rejected[https://]",
+        "test_invalid_urls_rejected[example.com/\\x00]",
+        "test_invalid_urls_rejected[None]",
+        "test_threshold_handles_tied_benign_scores[scores0-0]",
+        "test_threshold_handles_tied_benign_scores[scores1-0.25]",
+        "test_threshold_handles_tied_benign_scores[scores2-0]",
+        "test_bad_targets_rejected",
+        "test_metrics_use_ap_and_explicit_confusion_counts",
+        "test_contract_rejects_corrupt_weights",
+        "test_data_loader_rejects_domain_leakage",
+        "test_data_loader_does_not_need_official_test",
+        "test_teacher_failure_cannot_be_silently_imputed",
+        "test_real_artifacts_and_saved_metrics",
+        "test_loader_rejects_modified_model",
+        "test_json_scores_match_sklearn_for_soft_targets[e2_lr]",
+        "test_json_scores_match_sklearn_for_soft_targets[e2_mlp]",
+        "test_json_scores_match_sklearn_for_soft_targets[e2_hist]",
+        "test_json_scores_match_sklearn_for_soft_targets[e2_extra]",
+        "test_soft_target_copies_keep_total_weight",
+        "test_bootstrap_is_paired_and_reproducible",
+        "test_e2_order_and_scaler_corruption_rejected",
+        "test_saved_research_outputs"
+      ]
+    }
+  ],
+  "artifact_manifest_sha256": "09c8e23a95af862debe423adfde237a375a0dd0958f333f49a6502067981bc9c",
+  "feature_assets_sha256": {
+    "features.json": "aac9a276288b0d29ada3b2ffd27bad3d7a3d186bc85fca63ce09865b796d81f6",
+    "brand_reference_v1.csv": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+    "psl_icann_tldextract_5.4.0.txt": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f",
+    "python_reference.json": "ec620d5d5d8468e805ff3a1bbdfaf87653bbfd0d5995a5a151e4a4918edaa02b"
+  },
+  "checked_hash_groups": [
+    "bundle_files_sha256",
+    "input_sha256",
+    "inference_source_sha256",
+    "runtime_assets_sha256",
+    "cv_targets_manifest_sha256",
+    "cv_targets.files_sha256",
+    "cv_targets.input_sha256"
+  ],
+  "inference_contract": {
+    "terms": 8192,
+    "e2_features": 20,
+    "total_features": 8212,
+    "normalization": "canonical-reference-v1; whitespace-collapse-v1",
+    "ngrams": [
+      3,
+      5
+    ],
+    "tf": "1 + ln(count)",
+    "text_norm": "l2",
+    "selected_mode": "kd_mixed",
+    "decision_rule": "score >= threshold",
+    "score_kind": "uncalibrated_sigmoid",
+    "calibrated": false,
+    "release_status": "experimental",
+    "student_default": false,
+    "android_verified": false
+  },
+  "modes": {
+    "hard_only": {
+      "model_version": "lightgbm-student-hard_only",
+      "threshold": 0.6157178977907972,
+      "tree_count": 400,
+      "feature_count": 8212,
+      "json_sha256": "99ee3fd7a267c60220e85c6b2f699581111a3c0d3b57faf7cc39f430ca5076b4",
+      "native_sha256": "031a72256d291e6160958bd77cacfa63676af18e220fda14dc0de42ca4c3b95a",
+      "valid": 52,
+      "rejected": 6,
+      "labels_equal": true,
+      "absolute_tolerance": 1e-12,
+      "max_native_json_abs_delta": 6.938893903907228e-18,
+      "max_fixture_abs_delta": 0.0,
+      "cases": [
+        {
+          "name": "example_0",
+          "status": "classified",
+          "score": 0.053994752498524604,
+          "native_score": 0.053994752498524604,
+          "expected_score": 0.053994752498524604,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_1",
+          "status": "classified",
+          "score": 0.810416151926371,
+          "native_score": 0.810416151926371,
+          "expected_score": 0.810416151926371,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "example_2",
+          "status": "classified",
+          "score": 0.003425640965639096,
+          "native_score": 0.003425640965639096,
+          "expected_score": 0.003425640965639096,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_3",
+          "status": "classified",
+          "score": 0.6293990492450114,
+          "native_score": 0.6293990492450114,
+          "expected_score": 0.6293990492450114,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "example_4",
+          "status": "classified",
+          "score": 0.01006721331107765,
+          "native_score": 0.010067213311077648,
+          "expected_score": 0.01006721331107765,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_5",
+          "status": "classified",
+          "score": 0.03971423045281117,
+          "native_score": 0.03971423045281116,
+          "expected_score": 0.03971423045281117,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_6",
+          "status": "classified",
+          "score": 0.23037334274366628,
+          "native_score": 0.23037334274366628,
+          "expected_score": 0.23037334274366628,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_7",
+          "status": "classified",
+          "score": 0.09129797011190965,
+          "native_score": 0.09129797011190965,
+          "expected_score": 0.09129797011190965,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_8",
+          "status": "classified",
+          "score": 0.07408542778004897,
+          "native_score": 0.07408542778004897,
+          "expected_score": 0.07408542778004897,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_9",
+          "status": "classified",
+          "score": 0.4463860771014687,
+          "native_score": 0.4463860771014687,
+          "expected_score": 0.4463860771014687,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_10",
+          "status": "classified",
+          "score": 0.10453447684792422,
+          "native_score": 0.10453447684792422,
+          "expected_score": 0.10453447684792422,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "vcb_home",
+          "status": "classified",
+          "score": 0.3268120151603863,
+          "native_score": 0.3268120151603863,
+          "expected_score": 0.3268120151603863,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "bidv_login_page",
+          "status": "classified",
+          "score": 0.7817937413053241,
+          "native_score": 0.7817937413053241,
+          "expected_score": 0.7817937413053241,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "momo_home",
+          "status": "classified",
+          "score": 0.03818541059883611,
+          "native_score": 0.03818541059883611,
+          "expected_score": 0.03818541059883611,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "shopee_home",
+          "status": "classified",
+          "score": 0.011213052368446164,
+          "native_score": 0.011213052368446164,
+          "expected_score": 0.011213052368446164,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "tcb_two_domains",
+          "status": "classified",
+          "score": 0.7054528290307189,
+          "native_score": 0.7054528290307189,
+          "expected_score": 0.7054528290307189,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "gov_portal_official",
+          "status": "classified",
+          "score": 0.000960305893051823,
+          "native_score": 0.000960305893051823,
+          "expected_score": 0.000960305893051823,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "vcb_login_top",
+          "status": "classified",
+          "score": 0.9940091797059986,
+          "native_score": 0.9940091797059986,
+          "expected_score": 0.9940091797059986,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "shopee_gift",
+          "status": "classified",
+          "score": 0.9932406853410876,
+          "native_score": 0.9932406853410876,
+          "expected_score": 0.9932406853410876,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "momo_short_token",
+          "status": "classified",
+          "score": 0.980770998627512,
+          "native_score": 0.980770998627512,
+          "expected_score": 0.980770998627512,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "short_alias_exact_token",
+          "status": "classified",
+          "score": 0.8863999636852926,
+          "native_score": 0.8863999636852926,
+          "expected_score": 0.8863999636852926,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "short_alias_not_token",
+          "status": "classified",
+          "score": 0.22436739865172345,
+          "native_score": 0.22436739865172345,
+          "expected_score": 0.22436739865172345,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "concatenated_brand",
+          "status": "classified",
+          "score": 0.9961452907161839,
+          "native_score": 0.9961452907161839,
+          "expected_score": 0.9961452907161839,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "classic_trick",
+          "status": "classified",
+          "score": 0.9854981542438533,
+          "native_score": 0.9854981542438533,
+          "expected_score": 0.9854981542438533,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "bank_login_subdomain",
+          "status": "classified",
+          "score": 0.9748058029064108,
+          "native_score": 0.9748058029064108,
+          "expected_score": 0.9748058029064108,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "free_hosting_style",
+          "status": "classified",
+          "score": 0.9883250635127157,
+          "native_score": 0.9883250635127157,
+          "expected_score": 0.9883250635127157,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "path_only",
+          "status": "classified",
+          "score": 0.9612493670331694,
+          "native_score": 0.9612493670331694,
+          "expected_score": 0.9612493670331694,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "query_only",
+          "status": "classified",
+          "score": 0.8185385682721961,
+          "native_score": 0.8185385682721961,
+          "expected_score": 0.8185385682721961,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "transposition",
+          "status": "classified",
+          "score": 0.044753128824943735,
+          "native_score": 0.044753128824943735,
+          "expected_score": 0.044753128824943735,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "extra_letter",
+          "status": "classified",
+          "score": 0.9905209802244547,
+          "native_score": 0.9905209802244547,
+          "expected_score": 0.9905209802244547,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "other_brand_name_not_typo",
+          "status": "classified",
+          "score": 0.9910513458498756,
+          "native_score": 0.9910513458498756,
+          "expected_score": 0.9910513458498756,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "short_token_ignored",
+          "status": "classified",
+          "score": 0.46036535002859047,
+          "native_score": 0.46036535002859047,
+          "expected_score": 0.46036535002859047,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "zero_for_o",
+          "status": "classified",
+          "score": 0.6795099332551482,
+          "native_score": 0.6795099332551482,
+          "expected_score": 0.6795099332551482,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "one_for_i",
+          "status": "classified",
+          "score": 0.27001693899655077,
+          "native_score": 0.27001693899655077,
+          "expected_score": 0.27001693899655077,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "rn_for_m",
+          "status": "classified",
+          "score": 0.8186283478682439,
+          "native_score": 0.8186283478682439,
+          "expected_score": 0.8186283478682439,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "punycode_host",
+          "status": "classified",
+          "score": 0.017335160142570902,
+          "native_score": 0.017335160142570902,
+          "expected_score": 0.017335160142570902,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "unicode_host",
+          "status": "classified",
+          "score": 0.016687660510376907,
+          "native_score": 0.016687660510376907,
+          "expected_score": 0.016687660510376907,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "vietnamese_diacritics_path",
+          "status": "classified",
+          "score": 0.7482261906827382,
+          "native_score": 0.7482261906827382,
+          "expected_score": 0.7482261906827382,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "ipv4_with_brand_path",
+          "status": "classified",
+          "score": 0.6596728509671482,
+          "native_score": 0.6596728509671482,
+          "expected_score": 0.6596728509671482,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "ipv6_literal",
+          "status": "classified",
+          "score": 0.7338507661361685,
+          "native_score": 0.7338507661361685,
+          "expected_score": 0.7338507661361685,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "uppercase_scheme_host",
+          "status": "classified",
+          "score": 0.8090818344822054,
+          "native_score": 0.8090818344822054,
+          "expected_score": 0.8090818344822054,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "trailing_dot",
+          "status": "classified",
+          "score": 0.011644042233966834,
+          "native_score": 0.011644042233966834,
+          "expected_score": 0.011644042233966834,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "scheme_relative",
+          "status": "classified",
+          "score": 0.15131018598725382,
+          "native_score": 0.15131018598725382,
+          "expected_score": 0.15131018598725382,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "missing_scheme",
+          "status": "classified",
+          "score": 0.9940091797059986,
+          "native_score": 0.9940091797059986,
+          "expected_score": 0.9940091797059986,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "port_and_userinfo",
+          "status": "classified",
+          "score": 0.05875251691163537,
+          "native_score": 0.05875251691163537,
+          "expected_score": 0.05875251691163537,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "path_params",
+          "status": "classified",
+          "score": 0.4876524120798102,
+          "native_score": 0.4876524120798102,
+          "expected_score": 0.4876524120798102,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "percent_encoded_path",
+          "status": "classified",
+          "score": 0.9104263099830905,
+          "native_score": 0.9104263099830905,
+          "expected_score": 0.9104263099830905,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "multi_level_suffix",
+          "status": "classified",
+          "score": 0.41262222263381587,
+          "native_score": 0.41262222263381587,
+          "expected_score": 0.41262222263381587,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "underscore_host",
+          "status": "classified",
+          "score": 0.8704003765784177,
+          "native_score": 0.8704003765784177,
+          "expected_score": 0.8704003765784177,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "many_keywords",
+          "status": "classified",
+          "score": 0.9432770809219414,
+          "native_score": 0.9432770809219414,
+          "expected_score": 0.9432770809219414,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "vietnamese_keywords",
+          "status": "classified",
+          "score": 0.9680114164922617,
+          "native_score": 0.9680114164922617,
+          "expected_score": 0.9680114164922617,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "very_long_url",
+          "status": "classified",
+          "score": 0.9356779310423435,
+          "native_score": 0.9356779310423435,
+          "expected_score": 0.9356779310423435,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "invalid_port",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "invalid_port_text",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "unresolved_domain",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "empty_string",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "whitespace_only",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "none_input",
+          "status": "rejected",
+          "exception": "TypeError"
+        }
+      ]
+    },
+    "kd_mixed": {
+      "model_version": "lightgbm-student-kd_mixed",
+      "threshold": 0.6204500086017339,
+      "tree_count": 400,
+      "feature_count": 8212,
+      "json_sha256": "85487dbddceb9bd56468e7afcbc7faa63db23154b83df9989bd4c041ef26069c",
+      "native_sha256": "79265ddde436d8748ca3cfcf7b2a1f2f00c5260f1969c905e450aee4d102969a",
+      "valid": 52,
+      "rejected": 6,
+      "labels_equal": true,
+      "absolute_tolerance": 1e-12,
+      "max_native_json_abs_delta": 1.3877787807814457e-17,
+      "max_fixture_abs_delta": 0.0,
+      "cases": [
+        {
+          "name": "example_0",
+          "status": "classified",
+          "score": 0.05418895367061694,
+          "native_score": 0.05418895367061694,
+          "expected_score": 0.05418895367061694,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_1",
+          "status": "classified",
+          "score": 0.7437445834210804,
+          "native_score": 0.7437445834210804,
+          "expected_score": 0.7437445834210804,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "example_2",
+          "status": "classified",
+          "score": 0.00882293227854726,
+          "native_score": 0.00882293227854726,
+          "expected_score": 0.00882293227854726,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_3",
+          "status": "classified",
+          "score": 0.5271603455672811,
+          "native_score": 0.5271603455672811,
+          "expected_score": 0.5271603455672811,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_4",
+          "status": "classified",
+          "score": 0.014679705795550786,
+          "native_score": 0.014679705795550786,
+          "expected_score": 0.014679705795550786,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_5",
+          "status": "classified",
+          "score": 0.08768394361856817,
+          "native_score": 0.08768394361856816,
+          "expected_score": 0.08768394361856817,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_6",
+          "status": "classified",
+          "score": 0.3063872832955921,
+          "native_score": 0.3063872832955921,
+          "expected_score": 0.3063872832955921,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_7",
+          "status": "classified",
+          "score": 0.08506438532123689,
+          "native_score": 0.08506438532123689,
+          "expected_score": 0.08506438532123689,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_8",
+          "status": "classified",
+          "score": 0.07834162141951938,
+          "native_score": 0.07834162141951938,
+          "expected_score": 0.07834162141951938,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_9",
+          "status": "classified",
+          "score": 0.42560636922591916,
+          "native_score": 0.42560636922591916,
+          "expected_score": 0.42560636922591916,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "example_10",
+          "status": "classified",
+          "score": 0.15803530832222268,
+          "native_score": 0.15803530832222268,
+          "expected_score": 0.15803530832222268,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "vcb_home",
+          "status": "classified",
+          "score": 0.3494986280546352,
+          "native_score": 0.3494986280546352,
+          "expected_score": 0.3494986280546352,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "bidv_login_page",
+          "status": "classified",
+          "score": 0.7040427466748862,
+          "native_score": 0.7040427466748862,
+          "expected_score": 0.7040427466748862,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "momo_home",
+          "status": "classified",
+          "score": 0.05268446403036809,
+          "native_score": 0.05268446403036809,
+          "expected_score": 0.05268446403036809,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "shopee_home",
+          "status": "classified",
+          "score": 0.023767313998407483,
+          "native_score": 0.023767313998407483,
+          "expected_score": 0.023767313998407483,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "tcb_two_domains",
+          "status": "classified",
+          "score": 0.8238060125706947,
+          "native_score": 0.8238060125706947,
+          "expected_score": 0.8238060125706947,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "gov_portal_official",
+          "status": "classified",
+          "score": 0.009656929127543987,
+          "native_score": 0.009656929127543986,
+          "expected_score": 0.009656929127543987,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "vcb_login_top",
+          "status": "classified",
+          "score": 0.9949438666245138,
+          "native_score": 0.9949438666245138,
+          "expected_score": 0.9949438666245138,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "shopee_gift",
+          "status": "classified",
+          "score": 0.9941861132498551,
+          "native_score": 0.9941861132498551,
+          "expected_score": 0.9941861132498551,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "momo_short_token",
+          "status": "classified",
+          "score": 0.9795504693820156,
+          "native_score": 0.9795504693820156,
+          "expected_score": 0.9795504693820156,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "short_alias_exact_token",
+          "status": "classified",
+          "score": 0.8775680567110876,
+          "native_score": 0.8775680567110876,
+          "expected_score": 0.8775680567110876,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "short_alias_not_token",
+          "status": "classified",
+          "score": 0.21398788325032453,
+          "native_score": 0.21398788325032453,
+          "expected_score": 0.21398788325032453,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "concatenated_brand",
+          "status": "classified",
+          "score": 0.9933918558126388,
+          "native_score": 0.9933918558126388,
+          "expected_score": 0.9933918558126388,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "classic_trick",
+          "status": "classified",
+          "score": 0.9782013800379388,
+          "native_score": 0.9782013800379388,
+          "expected_score": 0.9782013800379388,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "bank_login_subdomain",
+          "status": "classified",
+          "score": 0.9828103575020095,
+          "native_score": 0.9828103575020095,
+          "expected_score": 0.9828103575020095,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "free_hosting_style",
+          "status": "classified",
+          "score": 0.9828062615403785,
+          "native_score": 0.9828062615403785,
+          "expected_score": 0.9828062615403785,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "path_only",
+          "status": "classified",
+          "score": 0.9685316674120907,
+          "native_score": 0.9685316674120907,
+          "expected_score": 0.9685316674120907,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "query_only",
+          "status": "classified",
+          "score": 0.8597520202115232,
+          "native_score": 0.8597520202115232,
+          "expected_score": 0.8597520202115232,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "transposition",
+          "status": "classified",
+          "score": 0.05073372460959918,
+          "native_score": 0.05073372460959918,
+          "expected_score": 0.05073372460959918,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "extra_letter",
+          "status": "classified",
+          "score": 0.9824459871602849,
+          "native_score": 0.9824459871602849,
+          "expected_score": 0.9824459871602849,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "other_brand_name_not_typo",
+          "status": "classified",
+          "score": 0.9876385223840285,
+          "native_score": 0.9876385223840285,
+          "expected_score": 0.9876385223840285,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "short_token_ignored",
+          "status": "classified",
+          "score": 0.4875286462530086,
+          "native_score": 0.4875286462530086,
+          "expected_score": 0.4875286462530086,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "zero_for_o",
+          "status": "classified",
+          "score": 0.6392542317739732,
+          "native_score": 0.6392542317739732,
+          "expected_score": 0.6392542317739732,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "one_for_i",
+          "status": "classified",
+          "score": 0.35909547811971665,
+          "native_score": 0.35909547811971665,
+          "expected_score": 0.35909547811971665,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "rn_for_m",
+          "status": "classified",
+          "score": 0.8120380543106541,
+          "native_score": 0.8120380543106541,
+          "expected_score": 0.8120380543106541,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "punycode_host",
+          "status": "classified",
+          "score": 0.028057434908598577,
+          "native_score": 0.028057434908598577,
+          "expected_score": 0.028057434908598577,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "unicode_host",
+          "status": "classified",
+          "score": 0.025998353043624085,
+          "native_score": 0.025998353043624085,
+          "expected_score": 0.025998353043624085,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "vietnamese_diacritics_path",
+          "status": "classified",
+          "score": 0.7792099291782956,
+          "native_score": 0.7792099291782956,
+          "expected_score": 0.7792099291782956,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "ipv4_with_brand_path",
+          "status": "classified",
+          "score": 0.6897126822568119,
+          "native_score": 0.6897126822568119,
+          "expected_score": 0.6897126822568119,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "ipv6_literal",
+          "status": "classified",
+          "score": 0.7541403708762724,
+          "native_score": 0.7541403708762724,
+          "expected_score": 0.7541403708762724,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "uppercase_scheme_host",
+          "status": "classified",
+          "score": 0.7908299208048968,
+          "native_score": 0.7908299208048968,
+          "expected_score": 0.7908299208048968,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "trailing_dot",
+          "status": "classified",
+          "score": 0.007522709084278309,
+          "native_score": 0.007522709084278309,
+          "expected_score": 0.007522709084278309,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "scheme_relative",
+          "status": "classified",
+          "score": 0.12953096981188988,
+          "native_score": 0.12953096981188988,
+          "expected_score": 0.12953096981188988,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "missing_scheme",
+          "status": "classified",
+          "score": 0.9949438666245138,
+          "native_score": 0.9949438666245138,
+          "expected_score": 0.9949438666245138,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "port_and_userinfo",
+          "status": "classified",
+          "score": 0.16318266448337848,
+          "native_score": 0.16318266448337848,
+          "expected_score": 0.16318266448337848,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "path_params",
+          "status": "classified",
+          "score": 0.4529791435485834,
+          "native_score": 0.4529791435485834,
+          "expected_score": 0.4529791435485834,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "percent_encoded_path",
+          "status": "classified",
+          "score": 0.9241185719240911,
+          "native_score": 0.9241185719240911,
+          "expected_score": 0.9241185719240911,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "multi_level_suffix",
+          "status": "classified",
+          "score": 0.5187690916026965,
+          "native_score": 0.5187690916026965,
+          "expected_score": 0.5187690916026965,
+          "label": "benign",
+          "class_id": 0
+        },
+        {
+          "name": "underscore_host",
+          "status": "classified",
+          "score": 0.8550816158174507,
+          "native_score": 0.8550816158174507,
+          "expected_score": 0.8550816158174507,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "many_keywords",
+          "status": "classified",
+          "score": 0.9701461602101593,
+          "native_score": 0.9701461602101593,
+          "expected_score": 0.9701461602101593,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "vietnamese_keywords",
+          "status": "classified",
+          "score": 0.9845893104704425,
+          "native_score": 0.9845893104704425,
+          "expected_score": 0.9845893104704425,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "very_long_url",
+          "status": "classified",
+          "score": 0.9456104454042265,
+          "native_score": 0.9456104454042265,
+          "expected_score": 0.9456104454042265,
+          "label": "phishing",
+          "class_id": 1
+        },
+        {
+          "name": "invalid_port",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "invalid_port_text",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "unresolved_domain",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "empty_string",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "whitespace_only",
+          "status": "rejected",
+          "exception": "ValueError"
+        },
+        {
+          "name": "none_input",
+          "status": "rejected",
+          "exception": "TypeError"
+        }
+      ]
+    }
+  },
+  "cv_targets": {
+    "manifest_sha256": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+    "train_ids": 13078,
+    "folds": {
+      "0": {
+        "fitting_ids_sha256": "9293a0db58db31c33ad75444eaa89cde10adc541d211f3888dc84edfd2493d88",
+        "held_ids_sha256": "bb44209eab2405fb2391da47479f3d6016629a951bdf886433b98c8f3015b713",
+        "teacher_model_sha256": "0105248c8b6fb98bdde802aaf5c9689a9f6cec3379061465cb20d28ee67dfc68",
+        "historical_record_sha256": "983cdd0690b8b96d7b4b983772c60adf4d6bf886907704aae560c6b2a226485c",
+        "teacher_path": "data/interim/stacking/stack_hist_outer0.joblib",
+        "parameters": {
+          "C": 0.1,
+          "scale": true
+        },
+        "domain_overlap": 0,
+        "held_prediction_parity_max_diff": 0.0,
+        "targets_scope": "in-sample within outer fitting only, no outer-held labels seen by Teacher",
+        "teacher_retrained": false
+      },
+      "1": {
+        "fitting_ids_sha256": "9a6646dde7bebce99bb876fe714a57cbeaa1815009007801f31d956d22aaaa58",
+        "held_ids_sha256": "1b68df822f9fea3e67ce2be1f15e4ef1e368b9e0e36d53e68b4c93c3a8714736",
+        "teacher_model_sha256": "cceb4befb84eaf9207e9ac74acc27214b7ec4a189dfcd8d79a2533e86e1c0923",
+        "historical_record_sha256": "73a3033fcfcc80bb132012e9b9b5a1ddef4732409a816abcc76d67d0995800ac",
+        "teacher_path": "data/interim/stacking/stack_hist_outer1.joblib",
+        "parameters": {
+          "C": 0.1,
+          "scale": true
+        },
+        "domain_overlap": 0,
+        "held_prediction_parity_max_diff": 0.0,
+        "targets_scope": "in-sample within outer fitting only, no outer-held labels seen by Teacher",
+        "teacher_retrained": false
+      },
+      "2": {
+        "fitting_ids_sha256": "2f88f1d159746a8388027a595e09d29837fc6d446d92c05562de6087543790fb",
+        "held_ids_sha256": "4fa168f676caa97fd6b0c0e7b557b830245720d991199a4b8086abf3093a4b6e",
+        "teacher_model_sha256": "c500428a9b6f2d446d00c173dbf024dead774b69607cf91feec6ecd9d8f05563",
+        "historical_record_sha256": "c479a273b36543339e1854b79db7667ae95805d65c98193f2b147e6b2ac42290",
+        "teacher_path": "data/interim/stacking/stack_hist_outer2.joblib",
+        "parameters": {
+          "C": 0.1,
+          "scale": true
+        },
+        "domain_overlap": 0,
+        "held_prediction_parity_max_diff": 0.0,
+        "targets_scope": "in-sample within outer fitting only, no outer-held labels seen by Teacher",
+        "teacher_retrained": false
+      }
+    },
+    "checked": [
+      "target file hashes",
+      "fold mapping hash",
+      "exact fitting/held IDs and labels",
+      "no duplicate IDs or domain overlap",
+      "finite scores in [0,1]",
+      "historical record hashes/IDs/parameters",
+      "held scores match saved OOF"
+    ],
+    "historical_teacher_cache": {
+      "status": "not_present_not_rehashed",
+      "note": "Đối chiếu lineage từ targets/record đã xuất; không load, fit lại hoặc tuyên bố đã hash lại cache Teacher lịch sử."
+    },
+    "teacher_retrained": false
+  },
+  "portable_inference": {
+    "status": "passed",
+    "modes": 2,
+    "isolated_copy": true,
+    "dataset_present": false,
+    "teacher_weights_present": false,
+    "native_lightgbm_files_present": false,
+    "native_lightgbm_import_blocked": true,
+    "network_and_joblib_load_blocked": true
+  },
+  "teacher_artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "qa_source_sha256": "8de100e80e486ce22f7b482556ce9ec4fbf3409579eb44dd59972e4abc37a245",
+  "findings": [],
+  "pending": [
+    {
+      "check": "Python–Dart Student parity",
+      "status": "blocked",
+      "reason": "Chưa nhận Android Student adapter/build của Hy trong đợt này; Python/native–JSON parity không phải Android parity."
+    }
+  ],
+  "limitations": [
+    "Chỉ kiểm K7.4 Python/artifact; không nghiệm thu toàn bộ Issue #31.",
+    "Không huấn luyện lại Teacher/Student trên dữ liệu dự án; upstream có fit nhỏ trên URL tổng hợp.",
+    "Không chọn lại ngưỡng, không chạy benchmark mới, không đánh giá Official Test hoặc external.",
+    "K7.5/CI/Web được theo dõi riêng trong qa_web_verification.json; không suy ra nghiệm thu Android từ đợt kiểm Student Python này."
+  ]
+}

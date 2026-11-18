@@ -1,0 +1,476 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-18",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "scope": [
+    "K7.1 Web QR",
+    "K7.2 inspection/X-Ray",
+    "K7.5 available Web/API/Dart/widget regression and CI configuration"
+  ],
+  "handoff_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+  "overall_status": "web_verified_ci_pending_android_pending",
+  "environment": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "architecture": "AMD64",
+    "python": "CPython 3.11.14",
+    "dependencies": "requirements-teacher.txt + .[api,test,teacher]",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "node": "v26.13.0",
+    "playwright": "1.65.0",
+    "browser": "158.0.8127.18"
+  },
+  "source_lf_sha256": {
+    "src/phishguard_vn/api.py": "d68f3f803fa9754b36322c03a4a743fec1968d1cb083c68544e5225c3fd5dd12",
+    "src/phishguard_vn/url_inspection.py": "3b47bbc919291ebf1089d308ee0177afa101aa2cde933f46b023b83843093bf5",
+    "apps/web/lib/main.dart": "746349348cb86d1ccc2398b72037e1619228133efc564e3badb23938718c3bf3",
+    "apps/web/lib/api_client.dart": "d30f9eeacd6b796d4fcfe7fe7fc755fbb30f33a0ac6c22867fca2222e51ff8b4",
+    "apps/web/lib/qr_image.dart": "e2937835657e6c9c749696921b6eb776f1dc1aea34c3ef7da54f91b51b68c705",
+    "apps/web/pubspec.lock": "cb9623eabb7f892519232424e260f5d38fa7584f14defda00a49610ea3d34647",
+    "scripts/analyze_week7_teacher_errors.py": "5a6d5781dea5a7b7205ddd8bdaa987ea1b2c33660a04d0b4cc9002e53af3b015"
+  },
+  "teacher": {
+    "model": "teacher-stacking-v2",
+    "sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "threshold": 0.6945740700635259
+  },
+  "python_tests": {
+    "upstream_focused": {
+      "passed": 73,
+      "failed": 0,
+      "skipped": 0,
+      "skip_reasons": [],
+      "junit_sha256": "f660a25b8489e08d63dab421267484871ec1505d9ba840f13ac470ed0b830e5c"
+    },
+    "independent_inspection": {
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "skip_reasons": [],
+      "junit_sha256": "ae09e7288d28f8b56bd05365323d15150c9e19a7565ae1a637ddea8c519d1464"
+    },
+    "reused_teacher_acceptance": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "skip_reasons": [],
+      "junit_sha256": "f4295f1b1dbbefc8793905c611a637a31519bacb6ffd15f76ede7d00b884cd67",
+      "deselected": 17
+    },
+    "full_source": {
+      "passed": 612,
+      "failed": 0,
+      "skipped": 3,
+      "skip_reasons": [
+        "collection skipped",
+        "got empty parameter set for (url, rule, brand_id, key)",
+        "Run notebook 03 and notebook 02 to generate local real-data handoffs."
+      ],
+      "junit_sha256": "5e0fe92cf187dc9bb88fc19c092d88d7a3589a35847794d9102a008e2fb68c67",
+      "deselected": 1
+    },
+    "ci_dependency_preflight_full": {
+      "passed": 612,
+      "failed": 0,
+      "skipped": 3,
+      "skip_reasons": [
+        "collection skipped",
+        "got empty parameter set for (url, rule, brand_id, key)",
+        "Run notebook 03 and notebook 02 to generate local real-data handoffs."
+      ],
+      "junit_sha256": "924305fa2ed7fd881a9d48b6cb113a0b4cdf77f6479f3f4d380d92994712da28",
+      "deselected": 1
+    }
+  },
+  "flutter": {
+    "analyze": "passed",
+    "tests": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "5efde211078dc6402d664f700c3d43c36d963334f03af733ed64c3fcb2e874f7"
+    },
+    "release_build": "passed",
+    "build_api_port": 18767,
+    "wasm_dry_run_warning": true
+  },
+  "browser": {
+    "passed": 20,
+    "failed": 0,
+    "page_errors": [],
+    "external_requests": [],
+    "evidence": "web_browser_fixed.json",
+    "focus_regression": {
+      "passed": 1,
+      "failed": 0,
+      "evidence": "qr_focus_fixed.json"
+    },
+    "timeout_coverage": "upstream Flutter unit tests with mocked HTTP; no real-browser timeout claim"
+  },
+  "findings": [
+    {
+      "id": "QA-W7-WEB-01",
+      "severity": "P2",
+      "status": "fixed_verified",
+      "reported_revision": "701b8f5ee2b003573d991dbdee7e33c16ff2c088",
+      "fixed_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+      "reproduction_before": "qr_focus_qa.json",
+      "verification_after": "qr_focus_fixed.json",
+      "full_smoke_after": "web_browser_fixed.json",
+      "owner": "Hung Web UI"
+    }
+  ],
+  "handoff_ci": {
+    "verified_success": 6,
+    "verified_total": 6,
+    "head_sha": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+    "checks": [
+      {
+        "name": "Python 3.11 / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44229772885/job/134551662382"
+      },
+      {
+        "name": "URL research fixtures (no project training)",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44229772884/job/134551662296"
+      },
+      {
+        "name": "Python 3.11 / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44229772885/job/134551662088"
+      },
+      {
+        "name": "Teacher fixtures and unit suite (Python 3.11)",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44229772884/job/134551661978"
+      },
+      {
+        "name": "Python 3.11 / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44229763945/job/134551632375"
+      },
+      {
+        "name": "Python 3.11 / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44229763945/job/134551631900"
+      }
+    ],
+    "covers_new_local_qa_workflow": false
+  },
+  "not_executed_in_this_round": [
+    "Android device/network-disabled Teacher smoke",
+    "Fresh Hy Android Week 7 adapter/build acceptance",
+    "Student Python-Dart parity",
+    "New Week 7 QA workflow on actual GitHub Ubuntu/Windows runners"
+  ],
+  "reproduce": "tests/README.md#qa-web-tuần-7--bàn-giao-của-hưng",
+  "web_ci_preparation": {
+    "workflow": ".github/workflows/week7-web.yml",
+    "workflow_name": "Week 7 QA",
+    "workflow_sha256": "be49196761ff96b855a6705e0b98f52095ac0e9622a5da91396df9777b59a027",
+    "web_source_sha": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+    "student_source_sha": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+    "configured_jobs": [
+      "Flutter Web / ubuntu-latest",
+      "Flutter Web / windows-latest",
+      "Student Python / ubuntu-latest",
+      "Student Python / windows-latest"
+    ],
+    "github_actions_status": "not_run_uncommitted",
+    "local_actionlint": "passed (1.7.12)",
+    "bash_syntax_steps": 19,
+    "powershell_syntax_steps": 6,
+    "source_selection_cases": [
+      {
+        "case": "fallback",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "explicit-sha",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "uppercase-sha",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "moving-branch-rejected",
+        "status": "passed",
+        "exit_code": 1
+      },
+      {
+        "case": "web-present-uses-own-commit",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-fallback",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-explicit",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-uppercase",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-moving-branch-rejected",
+        "status": "passed",
+        "exit_code": 1
+      }
+    ],
+    "report_gates_positive": "passed using actual Web/Dart/Flutter/API/Student reports",
+    "report_gates_negative": "both Web and Student gates rejected injected skip",
+    "web_install_extras": "api,test,teacher",
+    "full_dependency_preflight": {
+      "passed": 612,
+      "failed": 0,
+      "skipped": 3,
+      "skip_reasons": [
+        "collection skipped",
+        "got empty parameter set for (url, rule, brand_id, key)",
+        "Run notebook 03 and notebook 02 to generate local real-data handoffs."
+      ],
+      "junit_sha256": "924305fa2ed7fd881a9d48b6cb113a0b4cdf77f6479f3f4d380d92994712da28",
+      "deselected": 1
+    },
+    "previous_lean_attempt": "api,test-only full regression failed for missing lightgbm; added teacher extras, kept all assertions",
+    "student_evidence": "student_verification.json",
+    "student_results": "43 + 3 + 29 passed in separately recorded runs",
+    "platform_verified_locally": "Windows",
+    "ubuntu_runner_status": "pending Actions after user push"
+  },
+  "history_before_focus_fix": {
+    "date": "2026-11-17",
+    "handoff_revision": "701b8f5ee2b003573d991dbdee7e33c16ff2c088",
+    "overall_status": "changes_requested",
+    "browser": {
+      "passed": 19,
+      "failed": 1,
+      "page_errors": [],
+      "external_requests": [],
+      "evidence": "web_browser_qa.json",
+      "timeout_coverage": "upstream Flutter unit tests with mocked HTTP; no real-browser timeout claim"
+    },
+    "findings": [
+      {
+        "id": "QA-W7-WEB-01",
+        "severity": "P2",
+        "status": "open",
+        "summary": "Clearing the URL after QR failure removes input focus; subsequent typing is lost.",
+        "reproduction_evidence": "qr_focus_qa.json",
+        "screenshot": "../../figures/week7/qa_qr_focus.png",
+        "owner": "Hung Web UI"
+      }
+    ],
+    "python_tests": {
+      "upstream_focused": {
+        "passed": 73,
+        "failed": 0,
+        "skipped": 0,
+        "junit_sha256": "172da4665804f245c38c744624d058a2fc7136d08be8821066cb02a2794ebe03"
+      },
+      "independent_inspection": {
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0,
+        "junit_sha256": "35d0d792f8f70cbfae339fcdbd6fccce41e10ee0815464729983b74f5b666075"
+      },
+      "clean_full": {
+        "passed": 612,
+        "failed": 0,
+        "skipped": 3,
+        "junit_sha256": "c3ebb0c5016c57fd1387766cb42adf8e660659c9a7e3f0573e2a5fdd9bb58236",
+        "deselected": 1,
+        "skip_reasons": [
+          "research extra absent (27-test module)",
+          "empty brand regression parameter set",
+          "local notebook 02/03 data handoff absent"
+        ]
+      },
+      "research_separate": {
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "junit_sha256": "3bd915e146eda2a63f6641e933f3ec283fdc7d815e610bf78ea324d7a1d81084",
+        "environment": "existing CPython 3.11 research venv; source set to handoff checkout; separate execution"
+      }
+    },
+    "clean_clone": {
+      "fresh_remote_checkout": true,
+      "fresh_venv": true,
+      "pip_check": "passed",
+      "backend_startup": "passed",
+      "health": "ok/model_ready=true",
+      "prediction": "real Teacher 200",
+      "degraded_inspect": "200",
+      "degraded_predict": "503 MODEL_UNAVAILABLE",
+      "handoff_tracked_source_modified": false
+    },
+    "web_ci_preparation": {
+      "date": "2026-11-17",
+      "workflow": ".github/workflows/week7-web.yml",
+      "workflow_sha256": "2f382070a79b928ef9666fc9c08b72ce019eeb18dcab54a63e853babcf041424",
+      "workflow_name": "Week 7 Web QA",
+      "matrix": [
+        "ubuntu-latest",
+        "windows-latest"
+      ],
+      "actions_status": "not_run_pending_user_commit_push",
+      "actionlint": {
+        "version": "1.7.12",
+        "exit_code": 0
+      },
+      "local_bash_syntax_steps": 10,
+      "source_selection_checks": [
+        {
+          "case": "fallback",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "case": "explicit-sha",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "case": "uppercase-sha",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "case": "moving-branch-rejected",
+          "status": "passed",
+          "exit_code": 1
+        },
+        {
+          "case": "web-present-uses-own-commit",
+          "status": "passed",
+          "exit_code": 0
+        }
+      ],
+      "pinned_handoff_sha": "701b8f5ee2b003573d991dbdee7e33c16ff2c088",
+      "local_windows_commands": {
+        "locked_pub_get": "passed",
+        "lockfile_changed": false,
+        "flutter_analyze": "passed",
+        "flutter_tests": {
+          "passed": 47,
+          "failed": 0,
+          "skipped": 0
+        },
+        "release_build": "passed",
+        "lean_api_test_venv": "fresh CPython 3.11.14; requirements-teacher.txt + .[api,test]",
+        "pip_check": "passed",
+        "python_tests": {
+          "upstream_api": {
+            "passed": 73,
+            "failed": 0,
+            "skipped": 0
+          },
+          "independent_inspection": {
+            "passed": 25,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        "browser": {
+          "executable": "Playwright-managed Chromium",
+          "version": "158.0.8127.18",
+          "passed": 19,
+          "failed": 1,
+          "exit_code": 1,
+          "finding": "QA-W7-WEB-01",
+          "evidence": "ci_browser_windows.json"
+        }
+      },
+      "ubuntu_execution": "not_run_locally; requires Actions",
+      "artifact_upload": "configured for logs, Flutter JSON, JUnit and browser JSON/PNG even on failure; not uploaded before push",
+      "android_student_ci": "not_configured_pending_corresponding_handoffs"
+    }
+  },
+  "mobile_baseline": {
+    "source_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+    "dart_package": {
+      "passed": 294,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "ea87e7ef10cf4626776f6929502af0e5d61bc384c7a078c601cdc10e23a3a4d1"
+    },
+    "flutter_app_analyze": "passed",
+    "flutter_app_widget": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "44ec2e7495b18d39abb20d6b4465adc858c696067986051e25f2e29273852a75"
+    },
+    "assets_synced_from_frozen_sources": true,
+    "scope": "Desktop package/widget regression; not Android offline/device acceptance"
+  },
+  "source_checkout": {
+    "initial_fresh_clone_revision": "701b8f5ee2b003573d991dbdee7e33c16ff2c088",
+    "tested_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+    "updated_by": "fetch exact SHA and detached checkout",
+    "tracked_source_modified": false,
+    "venv_reused": true,
+    "new_clean_clone_for_fixed_commit": false
+  },
+  "handoff_acceptance": {
+    "hung_web": {
+      "revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+      "status": "verified_in_executed_scope",
+      "scope": [
+        "K7.1",
+        "K7.2",
+        "K7.5 Web/API regression"
+      ],
+      "open_findings": 0,
+      "evidence": [
+        "web_browser_fixed.json",
+        "qr_focus_fixed.json"
+      ],
+      "review_submission": "user_managed_not_inferred_from_draft_screenshot"
+    },
+    "phuc_student_python": {
+      "revision": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+      "status": "verified_in_executed_scope",
+      "scope": [
+        "K7.4 Python/artifact/config/edge cases"
+      ],
+      "evidence": "student_verification.json",
+      "android_parity_accepted": false
+    },
+    "ci": {
+      "status": "configuration_locally_validated_actions_pending_user_push",
+      "source_selection": "pinned Web/Student revisions, recorded separately from QA workflow revision"
+    },
+    "hy_new_handoff": {
+      "status": "not_reviewed_in_this_round",
+      "note": "User has seen the handoff; do not claim it is unavailable or accepted before reviewing it."
+    },
+    "whole_issue_31": {
+      "status": "not_complete",
+      "remaining": [
+        "K7.3 Android Teacher acceptance",
+        "K7.4 Student Python-Dart parity as adapter permits",
+        "K7.5 Android network-disabled Teacher smoke",
+        "actual new CI runs and final acceptance report"
+      ]
+    }
+  }
+}
