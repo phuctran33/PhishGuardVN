@@ -102,3 +102,16 @@ def test_saved_research_outputs():
     # Runtime load checks source, feature assets and model hashes.
     student=load_comparison_student(ROOT)
     assert student.predict_one("example.com")["android_verified"] is False
+    selected=predictions.loc[(predictions.candidate==manifest["selected_candidate"])&
+                             (predictions.seed==42)]
+    raw=pd.read_csv(ROOT/"data/splits/url_val.csv",usecols=["id","url"],dtype=str)
+    selected=selected.merge(raw,on="id",validate="one_to_one")
+    assert len(selected)==1585
+    actual=student.predict_batch(selected.url.tolist())
+    np.testing.assert_allclose([r["score"] for r in actual],selected.score,rtol=0,atol=1e-12)
+    np.testing.assert_array_equal([r["class_id"] for r in actual],selected.prediction)
+    # Reconstruct selection under the declared budget, not a best-seed choice.
+    summary=pd.read_csv(ROOT/"reports/tables/student_comparison/summary.csv")
+    eligible=summary.loc[summary.within_budget].sort_values(
+        ["ap_mean","recall_mean","package_bytes","candidate"],ascending=[False,False,True,True])
+    assert eligible.iloc[0].candidate==manifest["selected_candidate"]

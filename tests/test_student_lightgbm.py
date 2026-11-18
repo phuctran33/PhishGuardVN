@@ -77,3 +77,26 @@ def test_saved_lightgbm_study_and_fold_boundaries():
         actual=predictor.predict_batch(selected.url.tolist())
         np.testing.assert_allclose([r["score"] for r in actual],selected.score,rtol=0,atol=1e-12)
         np.testing.assert_array_equal([r["class_id"] for r in actual],selected.prediction)
+
+
+def test_published_reference_fixtures_and_complete_hashes():
+    folder=ROOT/"artifacts/student_lightgbm"
+    if not (folder/"manifest.json").exists():
+        pytest.skip("Run LightGBM study first")
+    m=json.loads((folder/"manifest.json").read_text(encoding="utf-8"))
+    for name,digest in m["bundle_files_sha256"].items():
+        assert sha256(folder/name)==digest
+    fixture=json.loads((folder/"python_reference.json").read_text(encoding="utf-8"))
+    assert sum(c["status"]=="classified" for c in fixture["cases"])>=30
+    assert any(c["status"]=="rejected" for c in fixture["cases"])
+    for mode in ("hard_only","kd_mixed"):
+        model=load_lightgbm_student(ROOT,mode)
+        for case in fixture["cases"]:
+            if case["status"]=="rejected":
+                with pytest.raises((ValueError,TypeError)):
+                    model.predict_one(case["url"])
+            else:
+                actual=model.predict_one(case["url"])
+                expected=case["expected"][mode]
+                assert actual["score"]==pytest.approx(expected["score"],abs=1e-12)
+                assert actual["class_id"]==expected["class_id"]

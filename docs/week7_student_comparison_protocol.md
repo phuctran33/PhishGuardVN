@@ -71,8 +71,8 @@ Domain disjoint không chứng minh hết near-duplicate, source bias hay chất
 Source × label vẫn confounded; không đổi nhãn hoặc dataset để nâng metrics.
 
 Artifacts, dự đoán theo ID và mọi kết quả yếu đều lưu cùng nghiên cứu mới.
-Không ghi đè artifacts/student_week7, reports/tables/student_week7 hoặc notebook 07.
-Notebook 08 trình bày giả thuyết, bảng, PR/confusion/chi phí và lý do lựa chọn; lưu output thật.
+Không ghi đè artifacts/student_week7 hoặc reports/tables/student_week7. Sau thí nghiệm, Phúc yêu cầu gộp notebook 07/08 thành notebook 07; việc này chỉ đổi trình bày, không đổi artifacts/metrics lịch sử.
+Notebook 07 (đã gộp theo yêu cầu sau thí nghiệm) trình bày giả thuyết, bảng, PR/confusion/chi phí và lý do lựa chọn; lưu output thật.
 
 ## Chạy và đọc code
 

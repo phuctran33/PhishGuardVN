@@ -1,0 +1,76 @@
+{
+  "folds": {
+    "0": {
+      "fitting_ids_sha256": "9293a0db58db31c33ad75444eaa89cde10adc541d211f3888dc84edfd2493d88",
+      "held_ids_sha256": "bb44209eab2405fb2391da47479f3d6016629a951bdf886433b98c8f3015b713",
+      "teacher_model_sha256": "0105248c8b6fb98bdde802aaf5c9689a9f6cec3379061465cb20d28ee67dfc68",
+      "historical_record_sha256": "983cdd0690b8b96d7b4b983772c60adf4d6bf886907704aae560c6b2a226485c",
+      "teacher_path": "data/interim/stacking/stack_hist_outer0.joblib",
+      "parameters": {
+        "C": 0.1,
+        "scale": true
+      },
+      "domain_overlap": 0,
+      "held_prediction_parity_max_diff": 0.0,
+      "targets_scope": "in-sample within outer fitting only, no outer-held labels seen by Teacher",
+      "teacher_retrained": false
+    },
+    "1": {
+      "fitting_ids_sha256": "9a6646dde7bebce99bb876fe714a57cbeaa1815009007801f31d956d22aaaa58",
+      "held_ids_sha256": "1b68df822f9fea3e67ce2be1f15e4ef1e368b9e0e36d53e68b4c93c3a8714736",
+      "teacher_model_sha256": "cceb4befb84eaf9207e9ac74acc27214b7ec4a189dfcd8d79a2533e86e1c0923",
+      "historical_record_sha256": "73a3033fcfcc80bb132012e9b9b5a1ddef4732409a816abcc76d67d0995800ac",
+      "teacher_path": "data/interim/stacking/stack_hist_outer1.joblib",
+      "parameters": {
+        "C": 0.1,
+        "scale": true
+      },
+      "domain_overlap": 0,
+      "held_prediction_parity_max_diff": 0.0,
+      "targets_scope": "in-sample within outer fitting only, no outer-held labels seen by Teacher",
+      "teacher_retrained": false
+    },
+    "2": {
+      "fitting_ids_sha256": "2f88f1d159746a8388027a595e09d29837fc6d446d92c05562de6087543790fb",
+      "held_ids_sha256": "4fa168f676caa97fd6b0c0e7b557b830245720d991199a4b8086abf3093a4b6e",
+      "teacher_model_sha256": "c500428a9b6f2d446d00c173dbf024dead774b69607cf91feec6ecd9d8f05563",
+      "historical_record_sha256": "c479a273b36543339e1854b79db7667ae95805d65c98193f2b147e6b2ac42290",
+      "teacher_path": "data/interim/stacking/stack_hist_outer2.joblib",
+      "parameters": {
+        "C": 0.1,
+        "scale": true
+      },
+      "domain_overlap": 0,
+      "held_prediction_parity_max_diff": 0.0,
+      "targets_scope": "in-sample within outer fitting only, no outer-held labels seen by Teacher",
+      "teacher_retrained": false
+    }
+  },
+  "files_sha256": {
+    "outer0_fitting_targets.csv.gz": "68259a361bd66981731f9dc00219a2ef7432bd24ce2dfb7e5e6c869c15130475",
+    "outer0_held_reference.csv.gz": "d4b6607692d33d1a11f3cd1fa1c730af6ba17a80a766144ab07b4a4e3dd7cce7",
+    "outer1_fitting_targets.csv.gz": "1478e7c6a39625d80936f7c20d7ad18328f97de32fdbc5637671a1b7f3a3dc70",
+    "outer1_held_reference.csv.gz": "ce389a0fd25eeabd25adc0bbb1597b1e98c8468180895b85c29a13cef1f29b5e",
+    "outer2_fitting_targets.csv.gz": "74c6f279e2e304ccaaf190e47cba5fbadfd644c731a2cdbc60581b53ca028baa",
+    "outer2_held_reference.csv.gz": "ba4bdbd04f7d2e371f2b7072431ef9bc35b546aec2e34e3a244e26f143843671"
+  },
+  "fold_map_sha256": "f1661eddef65fe7e86ffce75f5a0ce3ffa2cf7f42860346fdac5e9f5a8d6f29c",
+  "input_sha256": {
+    "data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+    "reports/tables/stacking/train_ids.csv.gz": "f1661eddef65fe7e86ffce75f5a0ce3ffa2cf7f42860346fdac5e9f5a8d6f29c",
+    "reports/tables/stacking/fit_ledger.csv": "bd1ccf7d03a52874088439803ace5d457e2735656e9760bd982e8b7057d64771",
+    "configs/teacher_v2_candidate_lock.json": "e393942a6001f4fab55967c9d34bd09c92e37bff5b1dc134caf57d272de5652b",
+    "src/phishguard_vn/stacking.py": "56267dd25c773a564f5bd441847179e34ec5c2e24c4466f266d01d6fb29f5431",
+    "src/phishguard_vn/features.py": "bb9dffd255a968d536b18d8e585e23c11a4a6322d53ea095256067aea6c9b001",
+    "src/phishguard_vn/brand_features.py": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b",
+    "src/phishguard_vn/url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8",
+    "reports/tables/stacking/stack_hist_outer0.json": "983cdd0690b8b96d7b4b983772c60adf4d6bf886907704aae560c6b2a226485c",
+    "reports/tables/stacking/stack_hist_outer0_oof.csv.gz": "06c20929d4e014dcf56367926190696afe711db65d2efa42ff931c5161a5b69b",
+    "reports/tables/stacking/stack_hist_outer1.json": "73a3033fcfcc80bb132012e9b9b5a1ddef4732409a816abcc76d67d0995800ac",
+    "reports/tables/stacking/stack_hist_outer1_oof.csv.gz": "53adf2c494a19c8e32d43bedae8f4105fc223aa7321a2e9ea4f4d37d87bff999",
+    "reports/tables/stacking/stack_hist_outer2.json": "c479a273b36543339e1854b79db7667ae95805d65c98193f2b147e6b2ac42290",
+    "reports/tables/stacking/stack_hist_outer2_oof.csv.gz": "007c47b5390b16ea57542994b625cf79e5281ffa403a34acf8ba39cfc8a30c18"
+  },
+  "teacher_retrained": false,
+  "scope": "Archived fold Teachers, not released full-Train weights; Student final uses release"
+}

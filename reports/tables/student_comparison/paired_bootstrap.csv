@@ -1,0 +1,3 @@
+candidate,comparator,delta_mean_AP,ci_low,ci_high,valid,undefined,replicates,scope
+e2_hist__kd_mixed,e2_hist__hard_only,0.004806518631191525,-0.019926923148213812,0.025696078947393716,1000,0,1000,"conditional paired domain bootstrap, not selection-adjusted"
+e2_hist__kd_mixed,text_lr__hard_only,0.14445474007874204,-0.10872474676610885,0.36615088239528804,1000,0,1000,"conditional paired domain bootstrap, not selection-adjusted"

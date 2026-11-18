@@ -1,0 +1,7 @@
+candidate,seed,iterations,warning_count,warnings
+e2_mlp__hard_only,42,200,1,Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+e2_mlp__hard_only,43,200,1,Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+e2_mlp__hard_only,44,200,1,Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+e2_mlp__kd_mixed,42,200,1,Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+e2_mlp__kd_mixed,43,200,1,Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+e2_mlp__kd_mixed,44,200,1,Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.

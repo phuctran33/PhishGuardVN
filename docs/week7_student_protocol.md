@@ -1,3 +1,5 @@
+> Protocol baseline đầu tiên. Phạm vi so sánh mở rộng theo yêu cầu Phúc được chốt riêng trong [comparison protocol](week7_student_comparison_protocol.md); không áp dụng lại protocol KD tuần 6.
+
 # Student tuần 7: protocol phát triển và cách đọc code
 
 Căn cứ: [kế hoạch Student mới nhất](week7_student_offline_plan.md) và phân công tuần 7.

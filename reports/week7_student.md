@@ -1,3 +1,5 @@
+> Bản baseline đầu tiên. Xem [nghiên cứu so sánh mở rộng](week7_student_comparison.md) và notebook 08 để đọc lựa chọn candidate mới; số liệu lịch sử bên dưới được giữ nguyên.
+
 # Student tuần 7 — kết quả phát triển ban đầu
 
 **Trạng thái: experimental, chưa thay Teacher, chưa chốt release.**

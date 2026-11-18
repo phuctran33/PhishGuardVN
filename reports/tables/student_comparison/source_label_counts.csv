@@ -1,0 +1,11 @@
+split,source,label,count
+train,tinnhiem_org,benign,1659
+train,tinnhiem_web,benign,3362
+train,tinnhiemmang,phishing,2074
+train,tranco,benign,4170
+train,tranco_vn,benign,1813
+val,tinnhiem_org,benign,9
+val,tinnhiem_web,benign,271
+val,tinnhiemmang,phishing,24
+val,tranco,benign,935
+val,tranco_vn,benign,346

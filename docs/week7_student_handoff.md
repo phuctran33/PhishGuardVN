@@ -1,3 +1,7 @@
+> Cập nhật: baseline được giữ để đối chiếu, toàn bộ thí nghiệm nằm trong notebook 07_student.ipynb. Đọc [LightGBM handoff](week7_lightgbm_handoff.md) cho candidate bổ sung; Teacher vẫn là engine chính.
+
+> Bàn giao baseline lịch sử. Candidate nghiên cứu mới nằm trong [bàn giao so sánh mở rộng](week7_student_comparison_handoff.md); CLI/artifacts bên dưới vẫn dành cho baseline cũ.
+
 # Bàn giao Student tuần 7 — bản nghiên cứu ban đầu
 
 Nhánh: phuc-week7-student. Căn cứ: week7_student_offline_plan.md.

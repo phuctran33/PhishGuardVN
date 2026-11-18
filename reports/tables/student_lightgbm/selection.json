@@ -1,0 +1,11 @@
+{
+  "selected_mode": "kd_mixed",
+  "thresholds": {
+    "hard_only": 0.6157178977907972,
+    "kd_mixed": 0.6204500086017339
+  },
+  "selected_by": "Train domain Group CV AP",
+  "validation_used_for_selection": false,
+  "official_test_evaluated": false,
+  "threshold_scope": "pooled Train Student OOF; final deployment only"
+}
