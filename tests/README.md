@@ -2,7 +2,7 @@
 
 Ma trận bổ sung cho tuần 7 nằm tại [`reports/week7_test_matrix.md`](../reports/week7_test_matrix.md). Các fixture URL và lệnh pytest bên dưới là nền tuần 6 được tái sử dụng; không thay thế các ca QR, X-Ray hay Android mới trong ma trận.
 
-Phần Web của Hưng và Student Python/artifact của Phúc đã có kết quả để bàn giao; xem [bảng chốt phạm vi](../reports/week7_qa.md#chốt-phạm-vi-bàn-giao-hưng-và-phúc). K7.4 chưa bao gồm Student Python–Dart parity; K7.5 còn Actions sau khi tự push và Android offline smoke. Bản bàn giao Android mới của Hy chưa được kiểm riêng trong đợt này. Không dùng trạng thái đã approve Web để đánh dấu hoàn thành các bước Android.
+Phần Web của Hưng và Student Python/artifact của Phúc đã có kết quả để bàn giao; xem [bảng chốt phạm vi](../reports/week7_qa.md#chốt-phạm-vi-bàn-giao-hưng-và-phúc). Teacher và Student đã được đối chiếu Python–Dart trên laptop. Student đã có thêm parity/offline/performance trên Android emulator qua app QA riêng; Teacher Android runtime K7.3 và Actions cho thay đổi mới vẫn theo dõi riêng. Không dùng kết quả Student để tick Teacher hoặc điện thoại vật lý.
 
 ## QA Web tuần 7 — bàn giao của Hưng
 
@@ -88,18 +88,62 @@ $qaAssets='mobile/app/assets'; New-Item -ItemType Directory -Force $qaAssets | O
 
 ### CI Web tuần 7
 
-Workflow [`week7-web.yml`](../.github/workflows/week7-web.yml) có tên **Week 7 QA**, chạy khi push/PR và hỗ trợ chạy thủ công. Hai job **Flutter Web / ubuntu-latest** và **Flutter Web / windows-latest** dùng Flutter 3.47.9, Python 3.11, Node.js 24 và Playwright theo npm lockfile. Mỗi job chạy:
+Workflow [`week7-web.yml`](../.github/workflows/week7-web.yml) có tên **Week 7 QA**, chạy khi push/PR và hỗ trợ chạy thủ công. Hai job **Web and Android host / ubuntu-latest** và **Web and Android host / windows-latest** dùng Flutter 3.47.9, Python 3.11, Node.js 24 và Playwright theo npm lockfile. Mỗi job chạy:
 
 1. `flutter pub get --enforce-lockfile`, analyze, unit/widget tests và release build không CDN.
 2. API/inspection/Teacher tests upstream, full regression và hai gate QA có sẵn (`inspection_qa.py`, Teacher API acceptance), trên cùng source Web đã chọn. Cài đủ `api,test,teacher` extras để full regression không thiếu LightGBM/notebook dependencies.
-3. `dart test` của package và analyze/widget tests của app nền; đồng bộ assets từ nguồn chuẩn và giữ lockfile app.
+3. Checkout riêng bản Hy qua `ANDROID_HANDOFF_SHA=a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e` (hoặc input `android_sha` đủ 40 ký tự), chạy 294 Dart tests, analyze/46 Flutter tests và 5 QA host tests dùng output Python mới. Đồng bộ đủ bảy assets từ nguồn chuẩn, giữ lockfile app; không tính host tests là Android device smoke.
 4. Chromium thật → API → Teacher bằng `web_smoke.cjs`. Browser dùng Chromium do Playwright cài, không phụ thuộc Chrome cài sẵn trên runner.
 
 SHA source được chọn theo thứ tự: input thủ công `web_sha` (đủ 40 ký tự), SHA checkout QA nếu đồng thời có `apps/web/test/week7_test.dart` và `src/phishguard_vn/url_inspection.py`, hoặc giá trị **`WEB_HANDOFF_SHA`** trong workflow. Hiện fallback là `5f112fc597339ea213eff3f07c745629cc18d8fc`. Chỉ có Web tuần 6 từ `main` không đủ để chọn source QA làm source tuần 7. Source được checkout riêng vào `web-source`; SHA QA/Web được ghi trong Job summary và `source.txt`. Workflow không tự chạy theo đầu branch đang thay đổi.
 
-Hai job **Student Python / Ubuntu và Windows** checkout riêng Phúc tại `STUDENT_HANDOFF_SHA=1cad94c88195ebea6e4737bbfc863cbe4b2ff384` (hoặc input `student_sha` đủ 40 ký tự), cài Python 3.11/runtime khóa phiên bản/LightGBM 4.7.0 rồi chạy 43 + 3 + 29 tests K7.4 đã có. Gate kiểm JUnit đủ số ca và không skip; không chạy project training hay đổi engine sang Student.
+Hai job **Student Python and Dart / Ubuntu và Windows** checkout riêng Phúc tại `STUDENT_HANDOFF_SHA=1cad94c88195ebea6e4737bbfc863cbe4b2ff384`, cài Python 3.11/runtime khóa phiên bản/LightGBM 4.7.0 rồi chạy 43 + 3 + 29 tests K7.4 đã có. Có thêm adapter QA riêng: 44 Flutter tests, hai mode parity và 2 tests assets/UI của app QA sinh ra. Gate kiểm đủ số ca và không skip; không chạy project training hay đổi engine sang Student. Lock QA đang ghim artifact/revision này; input revision khác phải được review cùng lock trước khi chạy, không tự chấp nhận bundle mới.
 
-Sau khi bạn tự commit/push, mở **Actions → Week 7 QA**, đối chiếu đúng commit và kiểm đủ **4 job**: Web hai OS, Student hai OS. Tải artifacts `week7-web-<OS>`/`week7-student-<OS>` để xem SHA nguồn, versions, logs, JSON/JUnit và ảnh browser. Job Web giữ ca focus như regression bắt buộc; không dùng `continue-on-error` hoặc skip để làm xanh CI. Các gate trọng tâm Web/Dart/Flutter/Teacher yêu cầu không skip; full regression ghi riêng các skip lịch sử. **Workflow mới chưa có kết quả Actions khi chưa commit/push.** Android network-disabled Teacher smoke và Student Python–Dart parity vẫn cần bàn giao/build tương ứng của Hy.
+Sau khi bạn tự commit/push, mở **Actions → Week 7 QA**, đối chiếu đúng commit và kiểm đủ **4 job**: Web/Android host hai OS, Student hai OS. Tải artifacts `week7-web-<OS>`/`week7-student-<OS>` để xem SHA nguồn, versions, logs, JSON/JUnit và ảnh browser. Job Web giữ ca focus như regression bắt buộc; không dùng `continue-on-error` hoặc skip để làm xanh CI. Các gate trọng tâm Web/Dart/Flutter/Teacher yêu cầu không skip; full regression ghi riêng các skip lịch sử. CI bản `3bfd45a` đã đạt 6/6; thay đổi thêm gate Hy chỉ có kết quả Actions sau khi tự commit/push. Android network-disabled Teacher smoke và Student Python–Dart parity không được tính là pass từ các gate host.
+
+## K7.3 — kiểm Teacher Android của Hy
+
+Snapshot đã kiểm: `a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e`, branch `feat/w7-android-teacher-integration`. Kết quả tại [báo cáo QA](../reports/week7_qa.md#k73--teacher-android-của-hy-kiểm-trên-host), [JSON nghiệm thu](../reports/tables/week7/android_verification.json) và [parity thực tế](../reports/tables/week7/android_host_parity.json). Python chạy mới bằng released loader; không train lại, không dùng output giả.
+
+Nếu chưa có checkout, tạo một lần từ root QA:
+
+```powershell
+git clone --branch feat/w7-android-teacher-integration https://github.com/phuctran33/PhishGuardVN.git ..\PhishGuardVN-w7-hy-review; git -C ..\PhishGuardVN-w7-hy-review checkout --detach a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e
+```
+
+Cần CPython 3.11, Flutter 3.47.9/Dart 3.13.7. Máy QA đã có venv trong checkout Hy; người chạy mới tạo bằng interpreter 3.11 (dùng executable portable nếu `py -3.11` chưa được đăng ký):
+
+```powershell
+py -3.11 -m venv ..\PhishGuardVN-w7-hy-review\.venv; & ..\PhishGuardVN-w7-hy-review\.venv\Scripts\python.exe -m pip install -r ..\PhishGuardVN-w7-hy-review\requirements-teacher.txt -e '../PhishGuardVN-w7-hy-review[test]'; & ..\PhishGuardVN-w7-hy-review\.venv\Scripts\python.exe -m pip check
+```
+
+Từ root checkout Hy, đồng bộ bảy assets. Lệnh tương đương phần chép của `mobile/tool/sync_assets.sh`, dùng được trên Windows và không sửa assets gốc:
+
+```powershell
+$qaAssets='mobile/app/assets'; New-Item -ItemType Directory -Force $qaAssets | Out-Null; $qaSources=@('src/phishguard_vn/resources/brand_reference_v1.csv','mobile/packages/phishguard_features/assets/psl_icann_tldextract_5.4.0.txt','docs/mobile_parity_cases.json','docs/mobile_parity_cases_extra.json','artifacts/teacher_v2_android/dart_svm_model.json','artifacts/teacher_v2_android/dart_teacher_v2_model.json','artifacts/teacher_v2_android/manifest.json'); foreach ($qaSource in $qaSources) { $qaName=if ($qaSource -eq 'artifacts/teacher_v2_android/manifest.json') { 'teacher_v2_manifest.json' } else { Split-Path $qaSource -Leaf }; $qaCopy=Join-Path $qaAssets $qaName; Copy-Item -LiteralPath $qaSource -Destination $qaCopy; if ((Get-FileHash $qaSource).Hash -ne (Get-FileHash $qaCopy).Hash) { throw "Asset mismatch: $qaSource" } }
+```
+
+Cũng từ root Hy: app analyze sạch và **46 tests passed**; package **294 tests passed**:
+
+```powershell
+Push-Location mobile/app; flutter pub get --enforce-lockfile; flutter analyze --no-pub; flutter test --no-pub; Pop-Location; Push-Location mobile/packages/phishguard_features; dart pub get; dart test; Pop-Location
+```
+
+Quay lại root **repo QA**, tạo output Python mới và sinh test Flutter vào `.dart_tool` của Hy (thư mục bị ignore). Nguồn test là `android_teacher_qa_test.dart.in`; không đặt file `.dart` độc lập ngoài Flutter package để VS Code phân tích nhầm dependency. File được sinh giống nguyên bytes nguồn, vẫn phải compile và qua analyzer trong đúng package.
+
+```powershell
+$env:PYTHONIOENCODING='utf-8'; $env:OMP_NUM_THREADS='1'; & ..\PhishGuardVN-w7-hy-review\.venv\Scripts\python.exe tests\week7\android_reference.py --android-root=..\PhishGuardVN-w7-hy-review --output=reports/tables/week7/android_python_reference.json
+```
+
+Kỳ vọng **47 classified, 9 rejected**. Chạy kiểm độc lập trong Flutter host — **5 tests passed**, analyzer không issue:
+
+```powershell
+$qaRoot=(Get-Location).Path; $hyRoot=(Resolve-Path ..\PhishGuardVN-w7-hy-review).Path; $qaRef=Join-Path $qaRoot 'reports/tables/week7/android_python_reference.json'; $qaOut=Join-Path $qaRoot 'reports/tables/week7/android_host_parity.json'; Push-Location "$hyRoot/mobile/app"; flutter analyze --no-pub .dart_tool/week7_teacher_qa_test.dart; flutter test --no-pub .dart_tool/week7_teacher_qa_test.dart "--dart-define=QA_ANDROID_REFERENCE=$qaRef" "--dart-define=QA_ANDROID_OUTPUT=$qaOut" --reporter expanded; Pop-Location
+```
+
+Các test dùng loader/classifier thật, đối chiếu score/label/version/threshold/rule/feature order, thử thiếu model và sai threshold, chặn HTTP trên host. Max score delta ghi nhận `8.881784197001252e-16`, nhỏ hơn `atol=1e-6`. Python bị chặn DNS/socket khi tạo reference. Đây là **host parity và fault injection**, không phải Android chạy khi tắt mạng.
+
+Ở lượt kiểm Teacher host ban đầu máy chưa có SDK/emulator. Sau đó đã cài đầy đủ SDK/NDK và chạy Student trên emulator như phần tiếp theo. **Teacher app của Hy chưa được nghiệm thu Android runtime trong các kết quả Student này**; không tick toàn bộ K7.3 hoặc Teacher offline K7.5 từ một engine khác. Teacher app của Hy không chứa Student; adapter Student QA riêng được hướng dẫn ở phần tiếp theo.
 
 ## K7.4 — Student LightGBM của Phúc
 
@@ -155,7 +199,83 @@ Chạy CLI thử hai mode, mỗi lệnh trả năm dòng JSON:
 
 Mode mặc định của **Student CLI** là `kd_mixed`; engine chính của ứng dụng vẫn là Teacher stacking v2. Student là `experimental`, score `uncalibrated_sigmoid`, quyết định `score >= threshold`: KD `0.6204500086017339`, hard `0.6157178977907972`. Không hiển thị score thành phần trăm an toàn.
 
-52 fixture hợp lệ và 6 fixture bị từ chối được kiểm ở từng mode; Python–native LightGBM–JSON khớp ở `atol=1e-12`. Đây **chưa phải Python–Dart hoặc Android parity**. Chưa nhận adapter/build Student của Hy trong đợt này nên chưa tick toàn bộ K7.4. Các targets/manifest và record lịch sử đủ để kiểm lineage mà không cần load cache Teacher; QA không nhận đã kiểm lại bytes của cache lịch sử không được đưa vào Git. Không train lại Teacher/Student trên dữ liệu dự án, không chạy lại benchmark, Official Test hoặc external. K7.5/Web và CI được hướng dẫn riêng ở phần trên.
+52 fixture hợp lệ và 6 fixture bị từ chối được kiểm ở từng mode; Python–native LightGBM–JSON khớp ở `atol=1e-12`. Đây là kết quả Python trước khi bổ sung adapter Dart, không phải Android parity. Các targets/manifest và record lịch sử đủ để kiểm lineage mà không cần load cache Teacher; QA không nhận đã kiểm lại bytes của cache lịch sử không được đưa vào Git. Không train lại Teacher/Student trên dữ liệu dự án, không chạy lại benchmark, Official Test hoặc external. Kết quả Student Dart mới nằm ngay bên dưới.
+
+## Student Android — triển khai QA theo hướng dẫn Hy `94abdbf`
+
+Hướng dẫn gốc: [`week7_student_android_handover.md`](https://github.com/phuctran33/PhishGuardVN/blob/94abdbf9d9fd1be6452284d2a84f26ec937f2474/docs/week7_student_android_handover.md). Commit này chỉ thêm tài liệu. Adapter nằm tại `tests/week7/student_android/lib/`, dùng lại package `mobile/packages/phishguard_features` hiện có; không sửa source/app của Hy hoặc thay engine Teacher. Đây là adapter thử nghiệm phục vụ QA, chưa phải Student được tích hợp vào sản phẩm Android của Hy.
+
+Điều kiện: Flutter **3.47.9 / Dart 3.13.7**, Python **3.11** với môi trường Student đã cài ở mục trên; checkout Phúc đúng `1cad94c88195ebea6e4737bbfc863cbe4b2ff384`. Manifest, bytes/kích thước của bảy file được ghim trong `student_lock.json`; không chép model vào Git lần nữa. Helper chỉ chép assets vào thư mục ignored của package QA, chạy Python inference offline và tạo reference mới. Teacher/E2/reference giữ nguyên.
+
+Tại root QA, chạy từng dòng (mỗi dòng độc lập, dán một dòng được):
+
+```powershell
+$env:PYTHONIOENCODING='utf-8'; $env:OMP_NUM_THREADS='1'; & ..\PhishGuardVN-w7-student-review\.venv\Scripts\python.exe tests\week7\prepare_student_android.py --student-root=..\PhishGuardVN-w7-student-review --output=reports/tables/week7/student_android_python_reference.json
+```
+
+```powershell
+$qaRoot=(Get-Location).Path; $qaOutput=Join-Path $qaRoot 'reports/tables/week7/student_dart_parity.json'; Push-Location tests\week7\student_android; flutter pub get --enforce-lockfile; flutter analyze --no-pub; flutter test --no-pub --reporter expanded "--dart-define=QA_STUDENT_OUTPUT=$qaOutput"; Pop-Location
+```
+
+Kết quả đã chạy trên Windows: **44 passed, 0 failed, 0 skipped**, analyzer sạch. Mỗi mode có **52 classified + 6 rejected** từ fixture Phúc và **3 classified + 3 rejected** bổ sung: tổng **55 classified + 9 rejected**. Kiểm canonical text, TF-IDF indices/values, 20 E2, combined offset 8192, score/class/label/version/threshold/rule. Có Unicode code points ngoài BMP, IDNA, khoảng trắng Unicode, NUL và khoảng trắng hai đầu. Model loader kiểm thiếu file, kích thước/hash, JSON/schema, mode/threshold/feature order/IDF và cây lỗi. Test biên synthetic xác minh `score == threshold` thuộc phishing; fixture KD gần threshold nhất vẫn cách khoảng 0,0188042, không nhận là đã có URL sát ngưỡng trong sai số `1e-6`.
+
+Sinh app QA Android riêng, chưa build/cài APK:
+
+```powershell
+& ..\PhishGuardVN-w7-student-review\.venv\Scripts\python.exe tests\week7\prepare_student_runtime.py
+```
+
+Nếu `flutter` chưa có trong PATH, thêm `--flutter` với đường dẫn `flutter.bat` thực tế. App sinh tại `tests/week7/student_android/.android_harness` (ignored). Nó có application ID QA riêng, nạp KD để kiểm thử và ghi rõ Student thử nghiệm/score chưa calibrated. Hai test sau kiểm packaging/UI trên laptop, **không phải Android runtime**:
+
+```powershell
+Push-Location tests\week7\student_android\.android_harness; flutter pub get --enforce-lockfile; flutter analyze --no-pub; flutter test --no-pub --reporter expanded test/bootstrap_test.dart; Pop-Location
+```
+
+Đã chạy: analyzer sạch, **2 passed**, không fail/skip. Source test Android runtime và driver cũng được analyzer kiểm, nhưng chưa thực thi trên Android.
+
+### Sau khi cài Android SDK và emulator
+
+Platform Tools chứa `adb` chưa đủ build APK. Cài Android Studio, chọn SDK Platform **API 36**, Build-Tools, Command-line Tools, Emulator và **NDK (Side by side) 28.2.13676358**, cùng system image trong SDK Manager/Device Manager theo [hướng dẫn Flutter](https://docs.flutter.dev/platform-integration/android/setup). Bật Show Package Details để chọn NDK đúng phiên bản. Đây là `compileSdk`/NDK của Flutter 3.47.9; emulator có thể chạy API cao hơn, ví dụ API 37. Không đưa SDK vào repo. Tự đọc/chấp nhận licenses bằng `flutter doctor --android-licenses`, sau đó `flutter doctor -v` và `flutter devices`; doctor xanh không thay thế việc kiểm NDK/API riêng của project. Android CLI mới có thể báo `--licenses` không còn cần thiết; kiểm trạng thái licenses trong doctor thay vì xem cảnh báo deprecation là lỗi. Giữ Flutter phiên bản đã khóa cho lượt QA này.
+
+Helper sinh app QA đặt `android.builtInKotlin=true` để khớp DSL Kotlin mà template Flutter 3.47.9/AGP 9 tạo ra, giữ nguyên compatibility flag `android.newDsl=false`. Nếu giữ built-in Kotlin tắt trong template này, Gradle không resolve được `kotlin.compilerOptions/jvmTarget`. Thay đổi chỉ áp dụng app QA generated, không sửa Gradle project của Hy; xem [hướng dẫn built-in Kotlin](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers).
+
+Từ root QA, xác định đúng một Android target; nếu có nhiều máy, chọn ID mong muốn từ danh sách rồi gán `$qaAndroidId`:
+
+```powershell
+$qaDevices=flutter devices --machine | ConvertFrom-Json; $qaTargets=@($qaDevices | Where-Object { $_.targetPlatform -like 'android*' }); if ($qaTargets.Count -ne 1) { throw 'Cần chọn đúng một Android target từ flutter devices trước khi chạy.' }; $qaAndroidId=$qaTargets[0].id
+```
+
+Chạy app để smoke UI/offline hoặc chạy test parity thật (hai lệnh là hai lượt riêng; dừng `flutter run` trước lượt test):
+
+```powershell
+Push-Location tests\week7\student_android\.android_harness; flutter run -d $qaAndroidId; Pop-Location
+```
+
+```powershell
+$env:QA_STUDENT_ANDROID_OUTPUT=Join-Path (Get-Location).Path 'reports/tables/week7/student_android_runtime.json'; Push-Location tests\week7\student_android\.android_harness; flutter drive --profile -d $qaAndroidId --driver=test_driver/integration_driver.dart --target=integration_test/student_runtime_test.dart; Pop-Location
+```
+
+Runtime test từ chối chạy trên desktop/web; so hai mode với cùng reference rồi mới đo inference KD (5 warm-up, 10 vòng × 55 URL). Report chứa build mode, OS/Dart, score deltas, p50/p95/mean và loader time. Đã thực thi trên **Android 17/API 37, x86_64 emulator**: 3 test ứng dụng passed (parity/performance, loader errors, UI), thêm 1 teardown framework; không gọi đó là 4 test nghiệp vụ. Mỗi mode 55 classified + 9 rejected, max score delta KD `1.1102230246251565e-16`, hard-only `5.551115123125783e-17`. UI test kiểm soát kênh bàn phím bằng Flutter TestTextInput để tránh native IME trả lại giá trị cũ khi inject text; model/assets/UI là thật, không nhận là kiểm bàn phím vật lý/native IME. Các lỗi thiếu model, hash sai và threshold sai đã chạy trong Android runtime.
+
+Lượt offline profile đạt với airplane mode bật, Wi-Fi/data tắt, không có route; force-stop trước khi mở lại app test. Bằng chứng [`student_android_offline_runtime.json`](../reports/tables/week7/student_android_offline_runtime.json) được ghép với proof ADB trong [`student_android_verification.json`](../reports/tables/week7/student_android_verification.json). Raw Dart report không tự đọc trạng thái mạng OS. Có thể tái lập bằng cách bật airplane mode/tắt Wi-Fi và data trong emulator, xác nhận bằng `adb shell settings get global airplane_mode_on`, `adb shell settings get global wifi_on`, `adb shell settings get global mobile_data`, `adb shell ip route`, rồi chạy lệnh drive ở trên. Khôi phục mạng sau lượt kiểm.
+
+Để ghi offline smoke: tắt Wi-Fi/mobile data hoặc bật airplane mode trên emulator, force-stop rồi mở app từ launcher; thử URL hợp lệ, URL lỗi port và nút parity; giữ USB/ADB để lấy log. Ghi trạng thái mạng, thiết bị/ABI/API, model/hash, từng expected/actual và ảnh/log. Không xem chặn `HttpClient` trong test host là Android OS đã tắt mạng.
+
+Đo bổ sung sau parity, từ root QA (lệnh release x86_64 dành cho emulator đang dùng):
+
+```powershell
+Push-Location tests\week7\student_android\.android_harness; flutter build apk --release --target-platform android-x64 --target=lib/main.dart; Pop-Location
+```
+
+Helper dưới đây chỉ chấp nhận emulator và APK đúng application ID QA, cài APK, tắt mạng, thực hiện 3 lượt force-stop → launch → marker model ready, chạm Predict bằng accessibility/native ADB, lấy PSS/ảnh, rồi khôi phục mạng trong `finally`. `$qaSdk` là Android SDK Location thực tế; dòng dưới dùng vị trí mặc định Windows:
+
+```powershell
+$qaSdk=Join-Path $env:LOCALAPPDATA 'Android/sdk'; & ..\PhishGuardVN-w7-student-review\.venv\Scripts\python.exe tests\week7\measure_student_android.py "--adb=$qaSdk/platform-tools/adb.exe" --device=$qaAndroidId --apk=tests/week7/student_android/.android_harness/build/app/outputs/flutter-apk/app-release.apk --output=reports/tables/week7/student_android_release.json --screenshot=reports/figures/week7/student_android_release_offline.png
+```
+
+Đã chạy release offline từ launcher: model sẵn sàng cả 3 lượt, `example.com` trả benign bằng native touch không dùng keyboard stub, APK **18.498.267 bytes**, PSS sau prediction **87.208 KB**. Launch-to-ready đo tại host khoảng **1.800–2.174 ms**, có overhead ADB/polling; activity launch **1.559–1.680 ms** và loader **822–1.065 ms** được lưu riêng. Đây là process cold start với filesystem/shader cache giữ lại, không phải timing Android thuần hoặc khởi động máy mới. Profile inference offline (550 samples) có p50 **1,018 ms**, p95 **1,761 ms**, mean **1,101 ms**; không ghép với release loader thành một pipeline benchmark duy nhất. Assets/APK QA có thêm hard-only và fixtures, không dùng để tuyên bố kích thước production KD tối thiểu. Xem [`student_android_release.json`](../reports/tables/week7/student_android_release.json).
+
+Chi tiết hiện hành: [`student_android_verification.json`](../reports/tables/week7/student_android_verification.json), [`student_dart_parity.json`](../reports/tables/week7/student_dart_parity.json). Student QA emulator đạt trong phạm vi trên; chưa kiểm thiết bị vật lý hoặc tích hợp Student vào app sản phẩm của Hy. Manifest/model Phúc giữ nguyên `android_verified=false` và `student_default=false`; kết quả QA được ghi riêng, không sửa artifact để đổi trạng thái. Teacher vẫn là engine mặc định. K7.3 Teacher Android và nghiệm thu cuối K7.5 không tự hoàn thành từ kết quả Student này.
 
 ## QA tuần 6 — bộ kiểm thử nền
 

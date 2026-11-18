@@ -166,27 +166,27 @@
   },
   "not_executed_in_this_round": [
     "Android device/network-disabled Teacher smoke",
-    "Fresh Hy Android Week 7 adapter/build acceptance",
-    "Student Python-Dart parity",
-    "New Week 7 QA workflow on actual GitHub Ubuntu/Windows runners"
+    "Python-Dart parity on Android runtime",
+    "Student Python-Dart parity (adapter not in reviewed Hy branch)",
+    "New Hy host CI gates on actual GitHub runners"
   ],
   "reproduce": "tests/README.md#qa-web-tuần-7--bàn-giao-của-hưng",
   "web_ci_preparation": {
     "workflow": ".github/workflows/week7-web.yml",
     "workflow_name": "Week 7 QA",
-    "workflow_sha256": "21872492a27cdddf502e9a527ffd46f0ad9b0c5e0091a35abb69be5c7cdd19f0",
+    "workflow_sha256": "e22f21706972c1b1f98fb71d625355b96c1d45d00c3db1905585fcaabbe88f33",
     "web_source_sha": "5f112fc597339ea213eff3f07c745629cc18d8fc",
     "student_source_sha": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
     "configured_jobs": [
-      "Flutter Web / ubuntu-latest",
-      "Flutter Web / windows-latest",
-      "Student Python / ubuntu-latest",
-      "Student Python / windows-latest"
+      "Web and Android host / ubuntu-latest",
+      "Web and Android host / windows-latest",
+      "Student Python and Dart / ubuntu-latest",
+      "Student Python and Dart / windows-latest"
     ],
-    "github_actions_status": "published_3bfd45a_passed_6_of_6; main_sync_guard_fix_pending_user_commit_push",
+    "github_actions_status": "Teacher host và Student Dart/app host gates configured; pending user commit/push",
     "local_actionlint": "passed (1.7.12)",
-    "bash_syntax_steps": 19,
-    "powershell_syntax_steps": 6,
+    "bash_syntax_steps": 23,
+    "powershell_syntax_steps": 8,
     "source_selection_cases": [
       {
         "case": "fallback",
@@ -237,6 +237,26 @@
         "case": "student-moving-branch-rejected",
         "status": "passed",
         "exit_code": 1
+      },
+      {
+        "case": "android-fallback",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "android-explicit",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "android-uppercase",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "android-moving-branch-rejected",
+        "status": "passed",
+        "exit_code": 1
       }
     ],
     "report_gates_positive": "passed using actual Web/Dart/Flutter/API/Student reports",
@@ -256,9 +276,11 @@
     },
     "previous_lean_attempt": "api,test-only full regression failed for missing lightgbm; added teacher extras, kept all assertions",
     "student_evidence": "student_verification.json",
-    "student_results": "43 + 3 + 29 passed in separately recorded runs",
+    "student_results": "43 + 32 Python tests, 44 Dart adapter tests, 2 QA app host tests; no skips",
     "platform_verified_locally": "Windows",
-    "ubuntu_runner_status": "pending Actions after user push"
+    "ubuntu_runner_status": "pending Actions after user push",
+    "android_source_sha": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+    "student_dart_evidence": "student_android_verification.json"
   },
   "history_before_focus_fix": {
     "date": "2026-11-17",
@@ -461,20 +483,21 @@
       "android_parity_accepted": false
     },
     "ci": {
-      "status": "published_baseline_passed_6_of_6; main_sync_update_pending_user_commit_push",
+      "status": "Hy host changes locally verified; actual new Actions pending user commit/push",
       "source_selection": "pinned Web/Student revisions, recorded separately from QA workflow revision"
     },
     "hy_new_handoff": {
-      "status": "not_reviewed_in_this_round",
-      "note": "User has seen the handoff; do not claim it is unavailable or accepted before reviewing it."
+      "status": "host_verified_android_runtime_pending",
+      "revision": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+      "evidence": "android_verification.json"
     },
     "whole_issue_31": {
       "status": "not_complete",
       "remaining": [
-        "K7.3 Android Teacher acceptance",
-        "K7.4 Student Python-Dart parity as adapter permits",
-        "K7.5 Android network-disabled Teacher smoke",
-        "actual new CI runs and final acceptance report"
+        "K7.3 Android runtime and network-disabled verification",
+        "K7.4 Student Android parity if adapter becomes available",
+        "K7.5 Android device smoke and final acceptance",
+        "Actual Actions for newly added Hy host gates"
       ]
     }
   },
@@ -522,5 +545,8 @@
     ],
     "current_uncommitted_changes_tested_by_actions": false
   },
-  "main_sync_evidence": "main_sync_verification.json"
+  "main_sync_evidence": "main_sync_verification.json",
+  "android_evidence": "android_verification.json",
+  "student_android_evidence": "student_android_verification.json",
+  "student_android_status": "Student host/emulator verified independently; does not complete Teacher Android acceptance"
 }

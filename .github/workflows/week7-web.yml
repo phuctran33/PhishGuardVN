@@ -13,6 +13,10 @@ on:
         description: Full Student source commit SHA; blank uses the pinned Phuc handoff
         required: false
         type: string
+      android_sha:
+        description: Full Hy Android source commit SHA; blank uses the pinned handoff
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -26,6 +30,7 @@ env:
   # Update after receiving and reviewing Hung's next handoff. Never follow a moving branch.
   WEB_HANDOFF_SHA: "5f112fc597339ea213eff3f07c745629cc18d8fc"
   STUDENT_HANDOFF_SHA: "1cad94c88195ebea6e4737bbfc863cbe4b2ff384"
+  ANDROID_HANDOFF_SHA: "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e"
   QA_API_PORT: "18767"
   PYTHONIOENCODING: utf-8
   OMP_NUM_THREADS: "1"
@@ -33,7 +38,7 @@ env:
 
 jobs:
   web:
-    name: Flutter Web / ${{ matrix.os }}
+    name: Web and Android host / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 35
     strategy:
@@ -79,14 +84,39 @@ jobs:
           path: web-source
           persist-credentials: false
 
+      - name: Select the exact Android handoff revision
+        id: android
+        env:
+          REQUESTED_ANDROID_SHA: ${{ inputs.android_sha }}
+        run: |
+          android_sha="${REQUESTED_ANDROID_SHA:-$ANDROID_HANDOFF_SHA}"
+          if [[ ! "$android_sha" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo "Android source must be a full 40-character commit SHA." >&2
+            exit 1
+          fi
+          android_sha="${android_sha,,}"
+          echo "sha=$android_sha" >> "$GITHUB_OUTPUT"
+          printf 'Android revision: %s\n' "$android_sha" | tee -a test-results/week7/source.txt
+          printf 'Android revision: %s\n' "$android_sha" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check out the Android source separately
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.android.outputs.sha }}
+          path: android-source
+          persist-credentials: false
+
       - name: Verify source revision and required files
         env:
           EXPECTED_WEB_SHA: ${{ steps.source.outputs.sha }}
+          EXPECTED_ANDROID_SHA: ${{ steps.android.outputs.sha }}
         run: |
           test "$(git -C web-source rev-parse HEAD)" = "$EXPECTED_WEB_SHA"
           test -f web-source/apps/web/pubspec.lock
           test -f web-source/requirements-teacher.txt
           test -f web-source/configs/teacher_lock.json
+          test "$(git -C android-source rev-parse HEAD)" = "$EXPECTED_ANDROID_SHA"
+          test -f android-source/mobile/app/lib/src/teacher_loader.dart
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -168,7 +198,7 @@ jobs:
           & $env:QA_PYTHON -m pytest -p no:cacheprovider -q -rs --tb=short --teacher-root=. --teacher-api -k "not test_real_external_bundle_matches_saved_scores" --junitxml=../test-results/week7/full.xml
 
       - name: Run existing Dart package regression
-        working-directory: web-source/mobile/packages/phishguard_features
+        working-directory: android-source/mobile/packages/phishguard_features
         run: |
           dart pub get
           dart test --reporter expanded \
@@ -178,19 +208,20 @@ jobs:
       - name: Prepare the documented Flutter app assets
         shell: pwsh
         run: |
-          $qaRoot = (Resolve-Path web-source).Path
+          $qaRoot = (Resolve-Path android-source).Path
           $qaAssets = Join-Path $qaRoot 'mobile/app/assets'
           New-Item -ItemType Directory -Force $qaAssets | Out-Null
-          $qaSources = @('src/phishguard_vn/resources/brand_reference_v1.csv', 'mobile/packages/phishguard_features/assets/psl_icann_tldextract_5.4.0.txt', 'docs/mobile_parity_cases.json', 'docs/mobile_parity_cases_extra.json')
+          $qaSources = @('src/phishguard_vn/resources/brand_reference_v1.csv', 'mobile/packages/phishguard_features/assets/psl_icann_tldextract_5.4.0.txt', 'docs/mobile_parity_cases.json', 'docs/mobile_parity_cases_extra.json', 'artifacts/teacher_v2_android/dart_svm_model.json', 'artifacts/teacher_v2_android/dart_teacher_v2_model.json', 'artifacts/teacher_v2_android/manifest.json')
           foreach ($qaRelative in $qaSources) {
             $qaOriginal = Join-Path $qaRoot $qaRelative
-            $qaCopy = Join-Path $qaAssets (Split-Path $qaOriginal -Leaf)
+            $qaName = if ($qaRelative -eq 'artifacts/teacher_v2_android/manifest.json') { 'teacher_v2_manifest.json' } else { Split-Path $qaOriginal -Leaf }
+            $qaCopy = Join-Path $qaAssets $qaName
             Copy-Item -LiteralPath $qaOriginal -Destination $qaCopy
             if ((Get-FileHash $qaOriginal).Hash -ne (Get-FileHash $qaCopy).Hash) { throw "Asset copy mismatch: $qaRelative" }
           }
 
-      - name: Analyze and test the existing Flutter app
-        working-directory: web-source/mobile/app
+      - name: Analyze and test Hy Teacher app on the host
+        working-directory: android-source/mobile/app
         run: |
           flutter pub get --enforce-lockfile
           git diff --exit-code -- pubspec.lock
@@ -199,6 +230,24 @@ jobs:
             --file-reporter=json:../../../test-results/week7/mobile-tests.json \
             2>&1 | tee ../../../test-results/week7/mobile-tests.log
 
+      - name: Generate fresh released Python Teacher outputs for Android parity
+        shell: pwsh
+        run: |
+          & $env:QA_PYTHON tests/week7/android_reference.py --android-root=android-source --output=test-results/week7/android-python.json
+
+      - name: Run independent Android host parity and loading QA
+        shell: pwsh
+        run: |
+          $qaReference = (Resolve-Path test-results/week7/android-python.json).Path
+          $qaTest = (Resolve-Path android-source/mobile/app/.dart_tool/week7_teacher_qa_test.dart).Path
+          $qaOutput = Join-Path $env:GITHUB_WORKSPACE 'test-results/week7/android-host-parity.json'
+          $qaReporter = Join-Path $env:GITHUB_WORKSPACE 'test-results/week7/android-host-tests.json'
+          Push-Location android-source/mobile/app
+          flutter test --no-pub $qaTest "--dart-define=QA_ANDROID_REFERENCE=$qaReference" "--dart-define=QA_ANDROID_OUTPUT=$qaOutput" --reporter expanded "--file-reporter=json:$qaReporter"
+          $qaExit = $LASTEXITCODE
+          Pop-Location
+          exit $qaExit
+
       - name: Require complete Web Dart and Flutter results
         run: |
           python - <<'PY'
@@ -206,7 +255,7 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as E
           root = Path('test-results/week7')
-          for name, minimum in [('flutter-tests.json', 48), ('dart-tests.json', 294), ('mobile-tests.json', 3)]:
+          for name, minimum in [('flutter-tests.json', 48), ('dart-tests.json', 294), ('mobile-tests.json', 46), ('android-host-tests.json', 5)]:
               rows = [json.loads(line) for line in (root / name).read_text(encoding='utf-8').splitlines() if line.strip()]
               assert rows[-1]['type'] == 'done' and rows[-1]['success'] is True, name
               cases = [r for r in rows if r['type'] == 'testDone' and not r.get('hidden', False)]
@@ -216,6 +265,12 @@ jobs:
               cases = E.parse(root / name).findall('.//testcase')
               assert len(cases) >= minimum, f'{name}: missing tests'
               assert all(c.find(tag) is None for c in cases for tag in ('skipped', 'failure', 'error')), name
+          reference = json.loads((root / 'android-python.json').read_text(encoding='utf-8'))
+          parity = json.loads((root / 'android-host-parity.json').read_text(encoding='utf-8'))
+          assert parity['status'] == 'passed' and not parity['failures']
+          assert parity['source_revision'] == reference['source_revision']
+          assert parity['classified_matched'] >= 47 and parity['rejected_matched'] >= 9
+          assert parity['max_absolute_delta'] <= parity['absolute_tolerance'] == 1e-6
           PY
 
       - name: Set up Node.js
@@ -250,7 +305,7 @@ jobs:
           retention-days: 14
 
   student:
-    name: Student Python / ${{ matrix.os }}
+    name: Student Python and Dart / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     strategy:
@@ -322,6 +377,29 @@ jobs:
         run: |
           python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_student_lightgbm.py --junitxml=../test-results/student/lightgbm.xml
           python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_student.py tests/test_student_comparison.py --junitxml=../test-results/student/regression.xml
+      - name: Set up Flutter for experimental Student adapter QA
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.9'
+          channel: stable
+          cache: true
+      - name: Prepare verified Student assets and fresh Python reference
+        run: python tests/week7/prepare_student_android.py --student-root=student-source --output=test-results/student/live-python-reference.json
+      - name: Analyze and test the separate Student Dart adapter
+        working-directory: tests/week7/student_android
+        run: |
+          set -euo pipefail
+          flutter pub get --enforce-lockfile
+          flutter analyze --no-pub
+          flutter test --no-pub --machine --dart-define=QA_STUDENT_OUTPUT="$GITHUB_WORKSPACE/test-results/student/dart-parity.json" > "$GITHUB_WORKSPACE/test-results/student/dart-tests.json"
+      - name: Verify generated QA app and bundled assets on host
+        run: |
+          set -euo pipefail
+          python tests/week7/prepare_student_runtime.py
+          cd tests/week7/student_android/.android_harness
+          flutter pub get --enforce-lockfile
+          flutter analyze --no-pub
+          flutter test --no-pub --machine test/bootstrap_test.dart > "$GITHUB_WORKSPACE/test-results/student/qa-app-tests.json"
 
       - name: Require complete Student results without skips
         run: |
@@ -332,6 +410,21 @@ jobs:
               cases = E.parse(Path('test-results/student') / name).findall('.//testcase')
               assert len(cases) >= minimum, f'{name}: missing tests'
               assert all(c.find(tag) is None for c in cases for tag in ('skipped', 'failure', 'error')), name
+          import json
+          events = [json.loads(line) for line in Path('test-results/student/dart-tests.json').read_text().splitlines() if line.startswith('{')]
+          completed = [event for event in events if event.get('type') == 'testDone' and not event.get('hidden')]
+          assert len(completed) >= 44 and all(e.get('result') == 'success' and not e.get('skipped') for e in completed)
+          assert any(e.get('type') == 'done' and e.get('success') is True for e in events)
+          app_events = [json.loads(line) for line in Path('test-results/student/qa-app-tests.json').read_text().splitlines() if line.startswith('{')]
+          app_done = [e for e in app_events if e.get('type') == 'testDone' and not e.get('hidden')]
+          assert len(app_done) >= 2 and all(e.get('result') == 'success' and not e.get('skipped') for e in app_done)
+          assert any(e.get('type') == 'done' and e.get('success') is True for e in app_events)
+          parity = json.loads(Path('test-results/student/dart-parity.json').read_text())
+          assert parity['student_revision'] == '1cad94c88195ebea6e4737bbfc863cbe4b2ff384'
+          assert {m['mode'] for m in parity['modes']} == {'kd_mixed', 'hard_only'}
+          for mode in parity['modes']:
+              assert mode['status'] == 'passed' and mode['frozen_classified'] == 52 and mode['frozen_rejected'] == 6
+              assert mode['classified'] == 55 and mode['rejected'] == 9 and mode['max_score_delta'] <= 1e-6
           PY
 
       - name: Upload Student verification evidence even on failure

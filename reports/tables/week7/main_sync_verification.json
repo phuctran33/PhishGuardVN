@@ -160,5 +160,13 @@
       }
     ],
     "current_uncommitted_changes_tested_by_actions": false
+  },
+  "completion_after_recorded_test": {
+    "qa_commit": "d929767a72bbadd59a35d1dc4a9140df9972ac15",
+    "behind_ahead_vs_fetched_main": [
+      0,
+      2
+    ],
+    "note": "User completed the previously recorded pending merge; subsequent Hy QA edits are uncommitted."
   }
 }

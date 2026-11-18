@@ -50,6 +50,8 @@ Ma trận này bổ sung phạm vi tuần 7; không thay thế hay lặp lại b
 | AT-05 | Thiếu asset, asset hỏng, sai hash hoặc metadata không tương thích | Báo lỗi load rõ ràng; không trả prediction giả hoặc dùng model khác âm thầm. |
 | AT-06 | URL hợp lệ, URL Unicode/IDNA, IP, URL lỗi và chuỗi rỗng | Python–Dart xử lý cùng contract; ghi rõ trường hợp hai phía khác nhau. |
 
+Snapshot Hy `a4d7b0e`: AT-01/AT-06 khớp trên Flutter host với Python chạy mới (**47 hợp lệ + 9 lỗi**), max score delta `8.881784197001252e-16` trong `atol=1e-6`. AT-02 dùng lại gate threshold của Dart package; metadata/assets và các lỗi AT-03/AT-05 đạt trên host qua 46 Flutter + 294 Dart + 5 QA tests. AT-04 chỉ có kiểm DNS/socket phía Python và HTTP phía Dart host; **chưa nhận là chặn mạng hoàn toàn trên Android**. Các bước Android runtime/device chưa chạy vì người dùng xác nhận chưa có SDK/emulator/thiết bị. Không tick toàn bộ K7.3 từ kết quả host. Xem [`android_verification.json`](tables/week7/android_verification.json).
+
 ## K7.4 — Student
 
 | ID | Ca kiểm thử | Điều cần xác nhận |
@@ -59,7 +61,7 @@ Ma trận này bổ sung phạm vi tuần 7; không thay thế hay lặp lại b
 | ST-03 | Python–Dart trên cùng input khi có Android adapter | So sánh score theo tolerance đã thống nhất, label theo operating point được bàn giao và kiểm tra edge cases. |
 | ST-04 | Artifact/config sai version, thiếu hoặc hash không khớp | Ghi nhận lỗi cụ thể; không nhận nhầm kết quả Teacher thành kết quả Student. |
 
-Bàn giao Student `1cad94c88195ebea6e4737bbfc863cbe4b2ff384`: ST-01/ST-02 và phần Python của ST-04 đã kiểm bằng `tests/week7/student_qa.py` (**43 passed**), cùng 3 test LightGBM và 29 test Student cũ. Đã kiểm 52 fixture hợp lệ/6 lỗi ở từng mode, native–JSON parity, threshold, assets, portable offline inference và lineage CV targets. ST-03 chưa chạy do chưa nhận Android Student adapter/build; không nhận Python parity thay cho Android. Kết quả chi tiết tại [`week7_qa.md`](week7_qa.md#k74--kiểm-student-lightgbm-ngày-18112026) và [`student_verification.json`](tables/week7/student_verification.json).
+Bàn giao Student `1cad94c88195ebea6e4737bbfc863cbe4b2ff384`: ST-01/ST-02 và phần Python của ST-04 đã kiểm bằng `tests/week7/student_qa.py` (**43 passed**), cùng 3 test LightGBM và 29 test Student cũ. Đã kiểm 52 fixture hợp lệ/6 lỗi ở từng mode, native–JSON parity, threshold, assets, portable offline inference và lineage CV targets. Theo hướng dẫn Hy `94abdbf`, adapter QA riêng đạt **44 Flutter + 2 app host tests**, analyzer sạch; hai mode mỗi mode **55 classified + 9 rejected** khớp cả features/prediction. Đã chạy thêm **3 test Android emulator** (ngoài 1 teardown framework), loader errors và UI với keyboard transport được kiểm soát. OS offline được xác nhận ADB, force-stop/mở lại app rồi parity đạt. Release QA APK, 3 cold-start mẫu, PSS và native touch offline có số đo/bằng chứng; chưa kiểm thiết bị vật lý hoặc tích hợp Student vào app sản phẩm Hy. Teacher vẫn mặc định; không dùng Student để tick AT-04/CI-05 Teacher. Xem [`student_android_verification.json`](tables/week7/student_android_verification.json), [`student_android_offline_runtime.json`](tables/week7/student_android_offline_runtime.json) và [`student_android_release.json`](tables/week7/student_android_release.json).
 
 ## K7.5 — CI, regression và smoke test
 
@@ -73,6 +75,8 @@ Bàn giao Student `1cad94c88195ebea6e4737bbfc863cbe4b2ff384`: ST-01/ST-02 và ph
 | CI-06 | Báo cáo nghiệm thu | Ghi revision, OS/runtime, lệnh, artifact/hash, số pass/fail/skip và expected/actual cho lỗi; chỉ ghi pass khi ca đã chạy thực tế. |
 
 Cập nhật `5f112fc` (18/11): CI-04 đạt **20/20** trên Chromium Windows/Teacher thật; ca focus riêng **1/1**. CI-01/CI-02 đã chạy tại máy (294 Dart tests, 48 Web tests, 3 app widget tests; analyze sạch) và có workflow Ubuntu/Windows; Actions mới chờ người dùng commit/push. CI-03 dùng lại gate Teacher 15 tests, API 73 tests, inspection QA 25 tests và full source 612 passed/3 skipped/1 deselected. CI-05 chưa thực hiện Android offline/device, CI-06 đang tích lũy bằng chứng, chưa nhận nghiệm thu cuối. Chi tiết và các giới hạn xem [`week7_qa.md`](week7_qa.md#k75--regression-và-kiểm-lại-sửa-focus-ngày-18112026).
+
+Sau khi tiếp nhận Hy `a4d7b0e`, gate app nền 3 tests được thay bằng checkout riêng của Hy: 46 app tests, 294 Dart tests và 5 QA độc lập với Python chạy mới. CI tiếp tục giữ Web ở `5f112fc`, Student ở `1cad94c`; không nhập nhầm các nguồn với nhau. Cấu hình/gate đã kiểm tại máy, chưa có Actions cho thay đổi Hy trước khi tự commit/push. Không dùng các job host này để tick CI-05.
 
 ## Quy ước ghi bằng chứng
 

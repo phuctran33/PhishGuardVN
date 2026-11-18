@@ -1289,15 +1289,23 @@
   "findings": [],
   "pending": [
     {
-      "check": "Python–Dart Student parity",
-      "status": "blocked",
-      "reason": "Chưa nhận Android Student adapter/build của Hy trong đợt này; Python/native–JSON parity không phải Android parity."
+      "check": "Physical device / app sản phẩm Android",
+      "status": "not_verified",
+      "reason": "QA emulator đã đạt; chưa có kiểm điện thoại vật lý hoặc tích hợp Student vào app sản phẩm Hy. Student vẫn experimental."
     }
   ],
   "limitations": [
-    "Chỉ kiểm K7.4 Python/artifact; không nghiệm thu toàn bộ Issue #31.",
+    "Số liệu Python trong file này là đợt K7.4 Python/artifact; kết quả Dart theo evidence follow-up riêng, chưa nghiệm thu Android.",
     "Không huấn luyện lại Teacher/Student trên dữ liệu dự án; upstream có fit nhỏ trên URL tổng hợp.",
     "Không chọn lại ngưỡng, không chạy benchmark mới, không đánh giá Official Test hoặc external.",
     "K7.5/CI/Web được theo dõi riêng trong qa_web_verification.json; không suy ra nghiệm thu Android từ đợt kiểm Student Python này."
-  ]
+  ],
+  "android_dart_followup": {
+    "handover_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+    "evidence": "student_android_verification.json",
+    "status": "Student host và Android emulator parity/offline/performance đạt; physical device chưa chạy",
+    "dart_tests_passed": 44,
+    "qa_app_host_tests_passed": 2,
+    "android_application_tests_passed": 3
+  }
 }

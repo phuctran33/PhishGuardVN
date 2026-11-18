@@ -1,0 +1,350 @@
+{
+  "task": "K7.4 Student Python–Dart và chuẩn bị Android theo hướng dẫn Hy",
+  "checked_on": "2026-11-18",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "host_and_android_emulator_passed",
+  "handover": {
+    "revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+    "document": "docs/week7_student_android_handover.md",
+    "document_sha256": "5c97245869adfb6d6da756c634889304f3ea2436e0e668a1bdc45dcaecd07e30",
+    "source_changes": "Commit hướng dẫn chỉ thêm tài liệu; adapter triển khai trong khu vực QA riêng."
+  },
+  "student": {
+    "revision": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+    "checkout_tracked_clean": true,
+    "selected_mode": "kd_mixed",
+    "default_engine": "teacher-stacking-v2",
+    "student_release_status": "experimental",
+    "artifact_lock": {
+      "schema": "qa-student-android-lock-v1",
+      "student_revision": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+      "files": {
+        "manifest.json": {
+          "sha256": "09c8e23a95af862debe423adfde237a375a0dd0958f333f49a6502067981bc9c",
+          "size_bytes": 9918
+        },
+        "features.json": {
+          "sha256": "aac9a276288b0d29ada3b2ffd27bad3d7a3d186bc85fca63ce09865b796d81f6",
+          "size_bytes": 205134
+        },
+        "kd_mixed.json": {
+          "sha256": "85487dbddceb9bd56468e7afcbc7faa63db23154b83df9989bd4c041ef26069c",
+          "size_bytes": 958216
+        },
+        "hard_only.json": {
+          "sha256": "99ee3fd7a267c60220e85c6b2f699581111a3c0d3b57faf7cc39f430ca5076b4",
+          "size_bytes": 957766
+        },
+        "brand_reference_v1.csv": {
+          "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+          "size_bytes": 11032
+        },
+        "psl_icann_tldextract_5.4.0.txt": {
+          "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f",
+          "size_bytes": 75007
+        },
+        "python_reference.json": {
+          "sha256": "ec620d5d5d8468e805ff3a1bbdfaf87653bbfd0d5995a5a151e4a4918edaa02b",
+          "size_bytes": 131367
+        }
+      }
+    }
+  },
+  "qa": {
+    "head": "d929767a72bbadd59a35d1dc4a9140df9972ac15",
+    "working_tree_changes_not_committed": true,
+    "package": "tests/week7/student_android",
+    "runtime_harness": "tests/week7/student_android/.android_harness",
+    "runtime_source_generated_ignored": true,
+    "hy_tracked_source_clean": true,
+    "qa_sources_sha256": {
+      "tests/week7/prepare_student_android.py": "41623bf179e317017e58ab5f232d7ff651edab65e51e9258e623a31b3e952a48",
+      "tests/week7/prepare_student_runtime.py": "c8e4c1fbc8e961875ea29e8a69a4625217c7694ea729d44382c67a19da3b52bd",
+      "tests/week7/student_android/pubspec.lock": "e4e2719933ba03ef64dca8e5f908063ddc6e7c5b7782a385ddd451250df55b12",
+      "tests/week7/student_android/pubspec.yaml": "bffa209986a18fc4371440aa3e729cf9b5b467fe3d45e502dec136c21566dd9e",
+      "tests/week7/student_android/student_lock.json": "e8e669c34112d655d16ce9ba2345182d5a3b0f9ff883e65e74f01ad9d0eef151",
+      "tests/week7/student_android/lib/asset_loader.dart": "61d6f8e6493dd69f43c2f7fb2855c614466c64a0d6cca7213d5e8a725ad7094e",
+      "tests/week7/student_android/lib/parity.dart": "83f3ef11d03fef02ac912c4922763f63cf7e8ef97386bf846c08e46f6dd1d7c7",
+      "tests/week7/student_android/lib/student_adapter.dart": "7cbc1bfbb44bcc1864bb8e5e7ca39f561bc54dd07c98fa1d840606276e5db138",
+      "tests/week7/student_android/runtime/bootstrap_test.dart.in": "9b8e6f26ea3866951ead8c8fe414684fc4e20d594b8d91d1d0419921134ea43d",
+      "tests/week7/student_android/runtime/integration_driver.dart.in": "4772d3c93fe0302d49d7a0901e9da483752adec81039f3019581223aca313147",
+      "tests/week7/student_android/runtime/main.dart.in": "9295e7cae86025a0a544380aefffe4e5beed36f8d4c8d044821d34da1b8ed0b9",
+      "tests/week7/student_android/runtime/pubspec.lock": "a79112eee3a4a92fe9c3606c83af09dbeacf3eff9f03bfe66e8649cb769d45c1",
+      "tests/week7/student_android/runtime/student_runtime_test.dart.in": "14e684fd4cad0d42ddc28a9e8331e7b61371db2ecc600f2c91979c5a0d65d618",
+      "tests/week7/student_android/test/student_test.dart": "71fbae1c7e7f6bb83ab41089b482ee7c6b89c4c359864b96a23dcc2342d61585",
+      "tests/week7/measure_student_android.py": "7f031bce526272a8d02bb41054a827af9f130f47427d78e5273fd30a7ad84709"
+    }
+  },
+  "environment": {
+    "scope": "Windows laptop host; chưa có Android runtime",
+    "python": "3.11.14",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "sdk": {
+      "platform_tools_revision": "37.0.1",
+      "platform_tools_folder_present": true,
+      "flutter_doctor_android_sdk_found": true,
+      "android_studio_found": true,
+      "android_target_available": true,
+      "reason": "SDK/NDK đã cài đủ; emulator API 37 online và đã chạy APK QA.",
+      "android_sdk_found": true,
+      "platforms": [
+        "android-36",
+        "android-37.0"
+      ],
+      "build_tools": "36.0.0",
+      "ndk": "28.2.13676358",
+      "cmdline_tools": "23.0.0",
+      "jdk": "JetBrains Runtime 25.0.4",
+      "licenses_accepted": true
+    },
+    "android_emulator": {
+      "name": "Medium_Phone_API_37.0",
+      "id": "emulator-5554",
+      "release": "17",
+      "api": 37,
+      "abi": "x86_64",
+      "emulator_version": "37.2.13",
+      "physical_device": false,
+      "acceleration": "WHPX installed and usable"
+    }
+  },
+  "checks": {
+    "official_python_cli_examples": {
+      "exit_code": 0
+    },
+    "python_independent": {
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0
+    },
+    "python_upstream_student": {
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 5,
+      "note": "3 LightGBM + 29 Student/regression; warnings upstream."
+    },
+    "dart_adapter_tests": {
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "analyzer": "No issues found"
+    },
+    "generated_qa_app_host": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "analyzer": "No issues found",
+      "android_runtime_executed": false
+    },
+    "fresh_reference": {
+      "classified": 55,
+      "rejected": 9,
+      "frozen_classified": 52,
+      "frozen_rejected": 6,
+      "qa_classified": 3,
+      "qa_rejected": 3
+    },
+    "android_integration": {
+      "application_tests_passed": 3,
+      "framework_teardown_passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "build_mode": "profile",
+      "parity_cases_per_mode": {
+        "classified": 55,
+        "rejected": 9
+      },
+      "loading_error_cases": [
+        "missing_model",
+        "same_size_hash_mismatch",
+        "wrong_threshold"
+      ],
+      "ui_cases": [
+        "benign",
+        "phishing",
+        "invalid_port_rejected"
+      ],
+      "keyboard_transport": "Flutter TestTextInput keyboard transport; not a physical/native IME test"
+    }
+  },
+  "parity": [
+    {
+      "status": "passed",
+      "mode": "kd_mixed",
+      "model_version": "lightgbm-student-kd_mixed",
+      "threshold": 0.6204500086017339,
+      "decision_rule": "score >= threshold",
+      "classified": 55,
+      "rejected": 9,
+      "frozen_classified": 52,
+      "frozen_rejected": 6,
+      "max_tfidf_delta": 5.551115123125783e-17,
+      "max_e2_delta": 3.9968028886505635e-15,
+      "max_score_delta": 1.1102230246251565e-16,
+      "score_atol": 1e-06,
+      "nearest_observed_threshold_distance": 0.018804223172239287
+    },
+    {
+      "status": "passed",
+      "mode": "hard_only",
+      "model_version": "lightgbm-student-hard_only",
+      "threshold": 0.6157178977907972,
+      "decision_rule": "score >= threshold",
+      "classified": 55,
+      "rejected": 9,
+      "frozen_classified": 52,
+      "frozen_rejected": 6,
+      "max_tfidf_delta": 5.551115123125783e-17,
+      "max_e2_delta": 3.9968028886505635e-15,
+      "max_score_delta": 5.551115123125783e-17,
+      "score_atol": 1e-06,
+      "nearest_observed_threshold_distance": 0.013681151454214224
+    }
+  ],
+  "evidence": {
+    "python_reference": "student_android_python_reference.json",
+    "dart_parity": "student_dart_parity.json",
+    "android_runtime": "student_android_runtime.json",
+    "android_offline": "student_android_offline_runtime.json",
+    "android_release": "student_android_release.json"
+  },
+  "network_guards": {
+    "python": [
+      "DNS",
+      "connect",
+      "connect_ex"
+    ],
+    "dart_host": "HttpClient bị chặn trong lúc load/predict; không phải OS offline."
+  },
+  "near_threshold": {
+    "synthetic_boundary_test": "score == threshold thuộc class phishing; kiểm thêm +/-1e-12",
+    "closest_observed_kd_margin": 0.018804223172239287,
+    "url_within_1e_minus_6_of_threshold_tested": false
+  },
+  "asset_sizes": {
+    "selected_kd_runtime_assets_bytes": 1259307,
+    "qa_assets_bytes": 2495243,
+    "note": "QA app có thêm hard-only, frozen/live fixtures và QA lock; không phải kích thước APK/asset production tối thiểu."
+  },
+  "android": {
+    "apk_build": "passed_profile_and_release",
+    "apk_install": "passed",
+    "runtime_parity": "passed_on_emulator",
+    "offline_cold_start_and_inference": "passed_on_emulator",
+    "loading_errors_on_android": "passed_on_emulator",
+    "physical_device": "not_executed",
+    "runtime_test_source_analyzed": true,
+    "prepared_runtime_test": "tests/week7/student_android/runtime/student_runtime_test.dart.in",
+    "offline_controller_proof": {
+      "device": "emulator-5554",
+      "airplane": "1",
+      "wifi": "0",
+      "mobile_data": "0",
+      "routes": [],
+      "original_airplane": "0",
+      "original_wifi": "1",
+      "original_mobile_data": "1"
+    },
+    "offline_integration_evidence": "student_android_offline_runtime.json",
+    "release_evidence": "student_android_release.json",
+    "release_screenshot": "reports/figures/week7/student_android_release_offline.png",
+    "network_restored_after_each_check": true,
+    "release_native_touch_prediction": "example.com => benign; no keyboard stub",
+    "upstream_artifact_flags_unchanged": {
+      "android_verified": false,
+      "student_default": false,
+      "note": "Không sửa manifest/model; QA emulator evidence ghi riêng."
+    }
+  },
+  "performance_android": {
+    "status": "measured_on_emulator",
+    "profile_inference": {
+      "scope": "in-process Android inference, includes vectorization",
+      "samples": 550,
+      "warm_up": 5,
+      "inputs_per_round": 55,
+      "p50_ms": 1.018,
+      "p95_ms": 1.761,
+      "mean_ms": 1.1010472727272729,
+      "loader_ms_first_kd": 134.202
+    },
+    "release_apk_bytes": 18498267,
+    "release_apk_sha256": "e43640d38a45c589e08d494ea4404f904480ffff50e138439fee13424f78bf4e",
+    "release_total_pss_after_prediction_kb": 87208,
+    "release_process_cold_start_samples": [
+      {
+        "pid": "10867",
+        "model_version": "lightgbm-student-kd_mixed",
+        "loader_ms": 1065.424,
+        "launch_to_ready_host_observed_ms": 2174.336099997163,
+        "activity_total_ms": 1680
+      },
+      {
+        "pid": "10923",
+        "model_version": "lightgbm-student-kd_mixed",
+        "loader_ms": 916.944,
+        "launch_to_ready_host_observed_ms": 1915.3697000001557,
+        "activity_total_ms": 1675
+      },
+      {
+        "pid": "10973",
+        "model_version": "lightgbm-student-kd_mixed",
+        "loader_ms": 822.176,
+        "launch_to_ready_host_observed_ms": 1799.7712999931537,
+        "activity_total_ms": 1559
+      }
+    ],
+    "limitations": [
+      "3 lần force-stop; filesystem/shader cache không xóa.",
+      "Launch-to-ready đo tại host gồm overhead ADB/polling; không phải timing Android thuần.",
+      "Activity TotalTime và loader time là hai chỉ số riêng.",
+      "RAM là snapshot QA app có thêm hard-only/fixtures trong APK; không phải budget production.",
+      "Chỉ emulator x86_64, chưa phải điện thoại thật."
+    ],
+    "note": "Profile inference và release cold-start/RAM thuộc hai lượt/build mode riêng, không ghép thành một benchmark production."
+  },
+  "ci": {
+    "workflow": ".github/workflows/week7-web.yml",
+    "workflow_sha256": "e22f21706972c1b1f98fb71d625355b96c1d45d00c3db1905585fcaabbe88f33",
+    "status": "configured_not_pushed",
+    "actionlint": "passed (1.7.12)",
+    "bash_syntax_steps": 23,
+    "source_selection_cases": 14,
+    "student_report_gate_positive": "passed with actual Python JUnit, Dart and app JSON",
+    "student_report_gate_negative": "rejected injected Dart skip",
+    "android_runtime_job": false
+  },
+  "reproduce": {
+    "instructions": "tests/README.md#student-android--triển-khai-qa-theo-hướng-dẫn-hy-94abdbf",
+    "prepare": "python tests/week7/prepare_student_android.py --student-root=../PhishGuardVN-w7-student-review --output=reports/tables/week7/student_android_python_reference.json",
+    "host": "cd tests/week7/student_android; flutter pub get --enforce-lockfile; flutter analyze --no-pub; flutter test --no-pub",
+    "runtime_preparation": "python tests/week7/prepare_student_runtime.py"
+  },
+  "findings": [],
+  "limitations": [
+    "Không sửa source/app Hy, Teacher lock, Student artifacts hoặc frozen E2/reference.",
+    "Không train, tune threshold, chấm Official Test/external hoặc promote Student.",
+    "Đã kiểm app QA riêng; chưa tích hợp Student vào UI sản phẩm Hy.",
+    "Chỉ Android emulator x86_64, chưa xác minh điện thoại vật lý.",
+    "UI integration kiểm keyboard transport bằng stub; native release touch không kiểm nhập liệu IME.",
+    "Cold-start host observation gồm overhead ADB; PSS/APK QA không phải budget production.",
+    "Teacher Android K7.3 và nghiệm thu cuối K7.5 theo dõi riêng.",
+    "CI mới chưa push; không tự commit/push/review/merge."
+  ],
+  "resolved_qa_setup_findings": [
+    {
+      "issue": "Generated Flutter 3.47 Kotlin DSL with android.builtInKotlin=false",
+      "fix": "QA runtime generator sets builtInKotlin=true; retains newDsl=false; release/profile builds passed. No Hy source edits."
+    },
+    {
+      "issue": "NDK/API36 missing despite generic doctor green",
+      "fix": "Installed ndk/28.2.13676358 and platforms/android-36 with Android CLI; no model/source changes."
+    },
+    {
+      "issue": "TestTextInput with native IME restores stale URL; diagnostic finder included SelectableText editor",
+      "fix": "Controlled keyboard transport and scoped URL finder; all Android tests passed. Release native touch also passed."
+    }
+  ]
+}
