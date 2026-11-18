@@ -1,0 +1,543 @@
+{
+  "schema": "k73-android-controller-v1",
+  "status": "passed",
+  "phase": "integration",
+  "device": "emulator-5554",
+  "android_release": "17",
+  "android_api": "37",
+  "abi": "x86_64",
+  "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A2/16418371:user/release-keys",
+  "network_before": {
+    "airplane_mode_on": "0",
+    "wifi_on": "1",
+    "mobile_data": "1"
+  },
+  "prediction_mocking": false,
+  "source_provenance": {
+    "schema": "k73-android-source-copy-v1",
+    "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+    "source_files_sha256": {
+      "mobile/app/android/.gitignore": "c9af75dbc2c8aa867476a09426c80b178c4aeed8b9393ae48503eedfa3273d71",
+      "mobile/app/android/app/build.gradle.kts": "18f2bd54cc61f1918ab0b6b17749ed25827cb75565b39b53ba648322c2e41e7c",
+      "mobile/app/android/app/src/debug/AndroidManifest.xml": "b01a4541a8144c15bc617bab7eb267c99fa1476368fbbda5a12cdbf4e316a34c",
+      "mobile/app/android/app/src/main/AndroidManifest.xml": "dcd54ffa9216ded07c09494828d30d45860338f1eb3a006e30d5f4ca68b1b756",
+      "mobile/app/android/app/src/main/kotlin/com/phishguardvn/phishguard_android/MainActivity.kt": "61c760e633e29080b9d0350be5d6c9c7b52e6336182bc3b141de7bb0ee12df11",
+      "mobile/app/android/app/src/main/res/drawable-v21/launch_background.xml": "dca312ec77de83e43ef70a825c299b51451247286c29167d62f19165750b8793",
+      "mobile/app/android/app/src/main/res/drawable/launch_background.xml": "2df60e2cfbee873ce2858088cf003e6b93498f2f568476da437610467ea1a9d7",
+      "mobile/app/android/app/src/main/res/mipmap-hdpi/ic_launcher.png": "6a7c8f0d703e3682108f9662f813302236240d3f8f638bb391e32bfb96055fef",
+      "mobile/app/android/app/src/main/res/mipmap-mdpi/ic_launcher.png": "c7c0c0189145e4e32a401c61c9bdc615754b0264e7afae24e834bb81049eaf81",
+      "mobile/app/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": "e14aa40904929bf313fded22cf7e7ffcbf1d1aac4263b5ef1be8bfce650397aa",
+      "mobile/app/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": "4d470bf22d5c17d84edc5f82516d1ba8a1c09559cd761cefb792f86d9f52b540",
+      "mobile/app/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": "3c34e1f298d0c9ea3455d46db6b7759c8211a49e9ec6e44b635fc5c87dfb4180",
+      "mobile/app/android/app/src/main/res/values-night/styles.xml": "ea763597dc1a84c8034251caee98d7753e0fbf57340ffc94677427de4b537516",
+      "mobile/app/android/app/src/main/res/values/styles.xml": "cca15a99b59380a548bf6a890f7ca5380ee509b1f9bbb2f5f9ec3589fa25c2f7",
+      "mobile/app/android/app/src/profile/AndroidManifest.xml": "b01a4541a8144c15bc617bab7eb267c99fa1476368fbbda5a12cdbf4e316a34c",
+      "mobile/app/android/build.gradle.kts": "218f400e3fff31c9c986a2535dfb974560e1b4d33cc27b7c1fee96a2b7e44454",
+      "mobile/app/android/gradle.properties": "7714698de712a7872e371f0dbae626c255fc83ac1c15e52e7cd9fcaa241b5092",
+      "mobile/app/android/gradle/wrapper/gradle-wrapper.properties": "594a00250ef7a36609a01f3263bf5ed63963afaf9ca9f82f2cd1de0f6f056383",
+      "mobile/app/android/settings.gradle.kts": "092ba880c8d4a07591aafc082f45deedc9afcf60c113a4bb3d13cbe1a1fce9de",
+      "mobile/app/lib/main.dart": "ffe44ea94c5fa0b007fd38479216bc26b50dc1d7f5e6dc0194ed81141afc9ec7",
+      "mobile/app/lib/src/bootstrap.dart": "10e83bec9a36cbaf5ff6951d42e4b6cf53aac94ff697d779e4086ca595c350d6",
+      "mobile/app/lib/src/extractor_loader.dart": "651328ebf7b312e46490b120f097560479276f58d77facbf60b11864aef43d97",
+      "mobile/app/lib/src/feature_info.dart": "2a5956d0821d363d762f8feda76d3aa7da6a2d7f52cd917808656af43baccba1",
+      "mobile/app/lib/src/home_page.dart": "ec05a53465a7766334a4e2bc1d53f4b86542a64a22f8a046ab0113b87866b1cc",
+      "mobile/app/lib/src/input_validation.dart": "8f22cef5195acd894f075a533e8c53668d8e5beb58bf735b68aa0f4843d890b6",
+      "mobile/app/lib/src/parity_page.dart": "0d157c8333a8c30627d880ce6e025df88d092023cbaf49ace179b9b31d1d0d3d",
+      "mobile/app/lib/src/teacher_contract.dart": "ac0e68f3c0157be192ce3fd5eefc8aa790a9c4a24fef914ca46a9690073d5b64",
+      "mobile/app/lib/src/teacher_loader.dart": "eb97cec1f07bb713e3a67daece751f9c6173e7b8171e36672ae97ec0f7614566",
+      "mobile/app/lib/src/teacher_url_classifier.dart": "ba03a97e7aa253bbef51b4d7a0f9bd1f2a095b21be94216f42377da272c0d6e7",
+      "mobile/app/lib/src/url_classifier.dart": "af5c81f8f41a56f5af2f746b6f4ff0d54d9f69200aafaec324eebfcba7362f72",
+      "mobile/app/pubspec.lock": "935e42f58c24c53842f38bdb15d2adfd31f448a6e4874e03bb53c38d803115b8"
+    },
+    "assets": {
+      "brand_reference_v1.csv": {
+        "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+        "size_bytes": 11032
+      },
+      "psl_icann_tldextract_5.4.0.txt": {
+        "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f",
+        "size_bytes": 75007
+      },
+      "teacher_v2_manifest.json": {
+        "sha256": "629c2efe2bd2cbf806d583cc025870b06c8840c9f1ffa671b23ba58b4ab07752",
+        "size_bytes": 6203
+      },
+      "dart_svm_model.json": {
+        "sha256": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62",
+        "size_bytes": 1781836
+      },
+      "dart_teacher_v2_model.json": {
+        "sha256": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1",
+        "size_bytes": 765558
+      },
+      "mobile_parity_cases.json": {
+        "sha256": "19109f2c594f4de9193937c249fb86c781f9519246947f543d4f24df575152e1",
+        "size_bytes": 51201
+      },
+      "mobile_parity_cases_extra.json": {
+        "sha256": "ede44a2239617dcabf4b7c324b4aa4b3187c44db9e01643ca91f14c93b1ec5a5",
+        "size_bytes": 96012
+      }
+    },
+    "reference_sha256": "fd6260dfea1412b796b11aadd1eb058f9c7cbe4aa30badb50aa59d0493ebb493",
+    "product_source_changed": false,
+    "qa_changes": [
+      "integration_test SDK dependency",
+      "fresh Python reference asset",
+      "QA integration entrypoint",
+      "local extractor dependency path"
+    ]
+  },
+  "network_during": {
+    "airplane_mode_on": "1",
+    "wifi_on": "0",
+    "mobile_data": "0",
+    "ipv4_default_route": "",
+    "ipv6_default_route": ""
+  },
+  "network_restored": {
+    "airplane_mode_on": "0",
+    "wifi_on": "1",
+    "mobile_data": "1"
+  },
+  "runtime": {
+    "schema": "k73-android-runtime-v1",
+    "status": "passed",
+    "platform": "android",
+    "os_version": "CE2A.260420.051.A2",
+    "dart": "3.13.7 (stable) (Thu Oct 22 14:28:57 2026 -0700) on \"android_x64\"",
+    "build_mode": "profile",
+    "prediction_mocking": false,
+    "network": "OS state recorded by host ADB controller",
+    "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+    "parity": {
+      "classified_matched": 47,
+      "rejected_matched": 9,
+      "max_absolute_delta": 8.881784197001252e-16,
+      "absolute_tolerance": 1e-06,
+      "cases": [
+        {
+          "name": "vcb_home",
+          "score": 0.45515599733242773,
+          "python_score": 0.4551559973324278,
+          "absolute_delta": 5.551115123125783e-17,
+          "class_id": 0
+        },
+        {
+          "name": "bidv_login_page",
+          "score": 0.6090793989069907,
+          "python_score": 0.6090793989069898,
+          "absolute_delta": 8.881784197001252e-16,
+          "class_id": 0
+        },
+        {
+          "name": "momo_home",
+          "score": 0.07094838046193148,
+          "python_score": 0.07094838046193147,
+          "absolute_delta": 1.3877787807814457e-17,
+          "class_id": 0
+        },
+        {
+          "name": "shopee_home",
+          "score": 0.26173821012539294,
+          "python_score": 0.261738210125393,
+          "absolute_delta": 5.551115123125783e-17,
+          "class_id": 0
+        },
+        {
+          "name": "tcb_two_domains",
+          "score": 0.5656736017787443,
+          "python_score": 0.5656736017787443,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "gov_portal_official",
+          "score": 0.13080365657523363,
+          "python_score": 0.1308036565752336,
+          "absolute_delta": 2.7755575615628914e-17,
+          "class_id": 0
+        },
+        {
+          "name": "vcb_login_top",
+          "score": 0.9945825143586277,
+          "python_score": 0.9945825143586277,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "shopee_gift",
+          "score": 0.9957925409049642,
+          "python_score": 0.9957925409049642,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "momo_short_token",
+          "score": 0.990468210933336,
+          "python_score": 0.990468210933336,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "short_alias_exact_token",
+          "score": 0.956932687857468,
+          "python_score": 0.956932687857468,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "short_alias_not_token",
+          "score": 0.8583100234609957,
+          "python_score": 0.8583100234609959,
+          "absolute_delta": 2.220446049250313e-16,
+          "class_id": 1
+        },
+        {
+          "name": "concatenated_brand",
+          "score": 0.9986861208910012,
+          "python_score": 0.9986861208910012,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "classic_trick",
+          "score": 0.9906248036137009,
+          "python_score": 0.9906248036137009,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "bank_login_subdomain",
+          "score": 0.9686623896343823,
+          "python_score": 0.9686623896343823,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "free_hosting_style",
+          "score": 0.9998758960803193,
+          "python_score": 0.9998758960803193,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "path_only",
+          "score": 0.9953849086402897,
+          "python_score": 0.9953849086402897,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "query_only",
+          "score": 0.65103722764017,
+          "python_score": 0.65103722764017,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "transposition",
+          "score": 0.8804921399479159,
+          "python_score": 0.8804921399479159,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "extra_letter",
+          "score": 0.9986865624942437,
+          "python_score": 0.9986865624942437,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "other_brand_name_not_typo",
+          "score": 0.9994235761047636,
+          "python_score": 0.9994235761047636,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "short_token_ignored",
+          "score": 0.9924947436603845,
+          "python_score": 0.9924947436603845,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "zero_for_o",
+          "score": 0.9986089491641578,
+          "python_score": 0.9986089491641575,
+          "absolute_delta": 2.220446049250313e-16,
+          "class_id": 1
+        },
+        {
+          "name": "one_for_i",
+          "score": 0.9738422235767544,
+          "python_score": 0.9738422235767544,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "rn_for_m",
+          "score": 0.9149883214048949,
+          "python_score": 0.9149883214048949,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "punycode_host",
+          "score": 0.01601810314548817,
+          "python_score": 0.01601810314548817,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "unicode_host",
+          "score": 0.023035994349379793,
+          "python_score": 0.02303599434937979,
+          "absolute_delta": 3.469446951953614e-18,
+          "class_id": 0
+        },
+        {
+          "name": "vietnamese_diacritics_path",
+          "score": 0.8784783044996349,
+          "python_score": 0.8784783044996349,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "ipv4_with_brand_path",
+          "score": 0.9928015139269706,
+          "python_score": 0.9928015139269706,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "ipv6_literal",
+          "score": 0.7439174170853257,
+          "python_score": 0.7439174170853257,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "uppercase_scheme_host",
+          "score": 0.8258030266320635,
+          "python_score": 0.8258030266320633,
+          "absolute_delta": 2.220446049250313e-16,
+          "class_id": 1
+        },
+        {
+          "name": "trailing_dot",
+          "score": 0.005299937189917396,
+          "python_score": 0.005299937189917396,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "scheme_relative",
+          "score": 0.21822680957242996,
+          "python_score": 0.21822680957243007,
+          "absolute_delta": 1.1102230246251565e-16,
+          "class_id": 0
+        },
+        {
+          "name": "missing_scheme",
+          "score": 0.9945825143586277,
+          "python_score": 0.9945825143586277,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "port_and_userinfo",
+          "score": 0.8328624318156985,
+          "python_score": 0.8328624318156985,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "path_params",
+          "score": 0.4704287434095894,
+          "python_score": 0.47042874340958934,
+          "absolute_delta": 5.551115123125783e-17,
+          "class_id": 0
+        },
+        {
+          "name": "percent_encoded_path",
+          "score": 0.9871679998371489,
+          "python_score": 0.9871679998371489,
+          "absolute_delta": 0.0,
+          "class_id": 1
+        },
+        {
+          "name": "multi_level_suffix",
+          "score": 0.00220123651852011,
+          "python_score": 0.00220123651852011,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "underscore_host",
+          "score": 0.5425259784484343,
+          "python_score": 0.5425259784484343,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "many_keywords",
+          "score": 0.52936165609556,
+          "python_score": 0.5293616560955601,
+          "absolute_delta": 1.1102230246251565e-16,
+          "class_id": 0
+        },
+        {
+          "name": "vietnamese_keywords",
+          "score": 0.8556843764599125,
+          "python_score": 0.8556843764599128,
+          "absolute_delta": 3.3306690738754696e-16,
+          "class_id": 1
+        },
+        {
+          "name": "very_long_url",
+          "score": 0.26231116020597967,
+          "python_score": 0.26231116020597967,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_0",
+          "score": 0.6098543367072835,
+          "python_score": 0.6098543367072836,
+          "absolute_delta": 1.1102230246251565e-16,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_1",
+          "score": 0.2915644219101093,
+          "python_score": 0.2915644219101093,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_2",
+          "score": 0.3480287217465756,
+          "python_score": 0.34802872174657556,
+          "absolute_delta": 5.551115123125783e-17,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_3",
+          "score": 0.251791848180662,
+          "python_score": 0.251791848180662,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_4",
+          "score": 0.6470118265370538,
+          "python_score": 0.6470118265370538,
+          "absolute_delta": 0.0,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_5",
+          "score": 0.34691112623766657,
+          "python_score": 0.3469111262376665,
+          "absolute_delta": 5.551115123125783e-17,
+          "class_id": 0
+        },
+        {
+          "name": "qa_probe_6",
+          "status": "rejected",
+          "outcome": "InvalidInput"
+        },
+        {
+          "name": "qa_probe_7",
+          "status": "rejected",
+          "outcome": "InvalidInput"
+        },
+        {
+          "name": "qa_probe_8",
+          "status": "rejected",
+          "outcome": "InvalidInput"
+        },
+        {
+          "name": "qa_probe_9",
+          "status": "rejected",
+          "outcome": "InvalidInput"
+        },
+        {
+          "name": "qa_probe_10",
+          "status": "rejected",
+          "outcome": "Unclassifiable"
+        },
+        {
+          "name": "qa_probe_11",
+          "status": "rejected",
+          "outcome": "Unclassifiable"
+        },
+        {
+          "name": "qa_probe_12",
+          "status": "rejected",
+          "outcome": "Unclassifiable"
+        },
+        {
+          "name": "qa_probe_13",
+          "status": "rejected",
+          "outcome": "InvalidInput"
+        },
+        {
+          "name": "qa_probe_14",
+          "status": "rejected",
+          "outcome": "InvalidInput"
+        }
+      ]
+    },
+    "contract": {
+      "model_version": "teacher-stacking-v2",
+      "threshold": 0.6945740700635259,
+      "decision_rule": "score >= threshold",
+      "source_bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+      "feature_order": [
+        "url_len",
+        "dom_len",
+        "is_ip",
+        "subdom_cnt",
+        "letter_cnt",
+        "digit_cnt",
+        "dot_cnt",
+        "dash_cnt",
+        "under_cnt",
+        "slash_cnt",
+        "entropy",
+        "path_len",
+        "brand_in_domain",
+        "brand_in_subdomain",
+        "brand_in_path",
+        "brand_domain_mismatch",
+        "brand_typo_score",
+        "susp_token_cnt",
+        "idna_flag",
+        "homoglyph_brand_hit"
+      ],
+      "assets_sha256": {
+        "assets/teacher_v2_manifest.json": "629c2efe2bd2cbf806d583cc025870b06c8840c9f1ffa671b23ba58b4ab07752",
+        "assets/dart_svm_model.json": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62",
+        "assets/dart_teacher_v2_model.json": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1"
+      }
+    },
+    "http_guard": true,
+    "loader_errors": [
+      "missing_model",
+      "corrupt_model",
+      "wrong_threshold"
+    ],
+    "boot_error_and_retry": "passed",
+    "ui_cases": [
+      "real_benign",
+      "real_phishing",
+      "invalid_port"
+    ],
+    "keyboard_scope": "Flutter test keyboard transport; release ADB smoke uses native input separately",
+    "application_tests_passed": 3
+  }
+}

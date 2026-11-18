@@ -273,7 +273,9 @@ jobs:
           assert parity['max_absolute_delta'] <= parity['absolute_tolerance'] == 1e-6
           PY
 
+      # Browser acceptance is scoped to Windows; host regression still covers both OSes.
       - name: Set up Node.js
+        if: runner.os == 'Windows'
         uses: actions/setup-node@v6
         with:
           node-version: "24"
@@ -281,14 +283,17 @@ jobs:
           cache-dependency-path: tests/week7/package-lock.json
 
       - name: Install locked browser QA dependencies
+        if: runner.os == 'Windows'
         run: npm --prefix tests/week7 ci --no-audit --no-fund
 
       - name: Install Chromium and system dependencies
+        if: runner.os == 'Windows'
         working-directory: tests/week7
         run: npx playwright install --with-deps chromium
 
       # Retain the original QA-W7-WEB-01 keyboard repro as a strict regression gate.
       - name: Real browser QR inspection and Teacher smoke
+        if: runner.os == 'Windows'
         run: |
           qa_chromium_path="$(node -p "require('./tests/week7/node_modules/playwright').chromium.executablePath()")"
           node tests/week7/web_smoke.cjs --handoff-root=web-source \

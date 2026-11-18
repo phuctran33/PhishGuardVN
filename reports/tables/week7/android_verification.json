@@ -2,11 +2,16 @@
   "task": "K7.3",
   "checked_on": "2026-11-18",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "host_checks_passed_android_runtime_not_executed",
+  "status": "host_and_android_emulator_passed",
   "source": {
-    "revision": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+    "revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
     "branch": "feat/w7-android-teacher-integration",
-    "working_tree_clean": true
+    "working_tree_clean": false,
+    "initial_host_revision": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+    "tracked_source_unchanged": true,
+    "untracked_build_cache": [
+      "mobile/app/android/.kotlin/"
+    ]
   },
   "environment": {
     "os": "Windows-11-10.0.26200-SP0",
@@ -24,7 +29,7 @@
         "idna": "3.20"
       }
     },
-    "runtime_scope": "Flutter test host on Windows; not Android device/emulator",
+    "runtime_scope": "Windows host và Android emulator 17/API37/x86_64; không phải điện thoại vật lý",
     "discovered_devices": [
       {
         "name": "Windows",
@@ -38,7 +43,14 @@
         "name": "Edge",
         "target_platform": "web-javascript"
       }
-    ]
+    ],
+    "android": {
+      "android_release": "17",
+      "android_api": "37",
+      "abi": "x86_64",
+      "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A2/16418371:user/release-keys",
+      "device": "emulator-5554"
+    }
   },
   "checks": {
     "flutter_analyze": "passed",
@@ -58,7 +70,13 @@
       "passed": 5,
       "failed": 0,
       "skipped": 0,
-      "report_sha256": "48c1c3f854c8bcb97ced6d532d25a2b712f1a5221016f657faaf123f7adc33f2"
+      "report_sha256": "48c1c3f854c8bcb97ced6d532d25a2b712f1a5221016f657faaf123f7adc33f2",
+      "fresh_rerun": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474"
+      }
     },
     "fresh_python_dart": {
       "status": "passed",
@@ -67,10 +85,49 @@
       "absolute_tolerance": 1e-06,
       "max_absolute_delta": 8.881784197001252e-16,
       "reference": "android_python_reference.json",
-      "dart_output": "android_host_parity.json"
+      "dart_output": "android_host_parity.json",
+      "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474"
     },
     "loading_errors": "Upstream: missing/corrupt/schema/hash/runtime-contract/model-init; independent QA: missing model and wrong threshold",
-    "network": "Python DNS/socket blocked; Dart host HTTP client blocked; this is not network-disabled Android proof"
+    "network": "Python DNS/socket guard, scoped Dart HTTP guard, Android OS airplane on/Wi-Fi+data off/no IPv4 or IPv6 default route; restoration verified",
+    "android_runtime": {
+      "status": "passed",
+      "application_tests_passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "setup_teardown_excluded": true,
+      "parity": {
+        "classified_matched": 47,
+        "rejected_matched": 9,
+        "max_absolute_delta": 8.881784197001252e-16,
+        "absolute_tolerance": 1e-06
+      },
+      "loader_errors": [
+        "missing_model",
+        "corrupt_model",
+        "wrong_threshold"
+      ],
+      "ui_cases": [
+        "real_benign",
+        "real_phishing",
+        "invalid_port"
+      ],
+      "evidence": "teacher_android_runtime.json"
+    },
+    "android_release": {
+      "status": "passed",
+      "cold_starts_passed": 3,
+      "application_id": "com.phishguardvn.phishguard_android",
+      "apk": {
+        "relative_path": "mobile/app/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "86b27917e9ad06b1a31ba6726b55d84484242a17da9ffaa733ac78187692c08a",
+        "size_bytes": 19130745,
+        "application_id": "com.phishguardvn.phishguard_android",
+        "source": "unmodified Hy release app, not QA integration entrypoint"
+      },
+      "evidence": "teacher_android_release.json",
+      "screenshot": "../../figures/week7/teacher_android_release_offline.png"
+    }
   },
   "contract": {
     "model_version": "teacher-stacking-v2",
@@ -129,7 +186,11 @@
   },
   "qa_sources_sha256": {
     "tests/week7/android_reference.py": "49af5d75c3dbb5326fe40a2e604b6340be9c3672f2daeef92244eae6036fc075",
-    "tests/week7/android_teacher_qa_test.dart.in": "8b92bf6b12d25d49f374748bab83671b17b506a774513b693faa37476eb156a5"
+    "tests/week7/android_teacher_qa_test.dart.in": "8b92bf6b12d25d49f374748bab83671b17b506a774513b693faa37476eb156a5",
+    "tests/week7/prepare_teacher_runtime.py": "a6a3a023087555f41646951eb99af2bd143b1010d3a9f6fead7b61d9c923e8d6",
+    "tests/week7/run_teacher_android.py": "044581be0e844bed84d3783ef43fa7535d944df81e5ec670d2dd5eba4d37a8d1",
+    "tests/week7/teacher_runtime/teacher_runtime_test.dart.in": "8b971ad82342df289288ed6a930a25ae2ef58484ae24721a64f34d786a6da009",
+    "tests/week7/teacher_runtime/teacher_driver.dart.in": "80f89642a2a69c88f7c51850af998ac7393fd107cac7f1a969e643b42ef687f8"
   },
   "executed_source_lf_sha256": {
     "mobile/app/lib/src/teacher_contract.dart": "317a1c69dae800bc0f7d1d4640734c98731deefacf348823340051a414066b48",
@@ -139,13 +200,13 @@
   },
   "ci": {
     "workflow": ".github/workflows/week7-web.yml",
-    "workflow_sha256": "e22f21706972c1b1f98fb71d625355b96c1d45d00c3db1905585fcaabbe88f33",
+    "workflow_sha256": "cc25a66c24570904b238e49e120917d0e32d5b28d6082b56c0e473cca4ec8ed9",
     "android_source_pin": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
     "configured_runner_os": [
       "ubuntu-latest",
       "windows-latest"
     ],
-    "actual_actions_status": "pending_user_commit_push",
+    "actual_actions_status": "pending_user_commit_push_for_current_scope",
     "actionlint": "passed",
     "bash_syntax_steps": 23,
     "source_selection_cases": [
@@ -221,19 +282,17 @@
       }
     ],
     "powershell_syntax_steps": 8,
-    "combined_report_gate": "passed with actual outputs"
+    "combined_report_gate": "passed with actual outputs",
+    "browser_runner_os": [
+      "windows-latest"
+    ]
   },
   "findings": [],
   "not_executed": [
     {
-      "check": "Android network-disabled cold start and real inference",
-      "status": "blocked",
-      "reason": "SDK/emulator hiện đã sẵn sàng và Student QA đã chạy; Teacher app cần lượt nghiệm thu riêng, không suy ra từ Student."
-    },
-    {
-      "check": "Python-Dart prediction parity on Android runtime",
+      "check": "Điện thoại Android vật lý/ARM64 và mọi native IME",
       "status": "not_run",
-      "reason": "Host parity is verified; the same fixture has not been executed on Android."
+      "reason": "Nghiệm thu hiện tại dùng emulator x86_64; UI integration kiểm soát keyboard transport, release dùng native touch URL mẫu."
     }
   ],
   "supplier_evidence": {
@@ -241,10 +300,10 @@
     "status": "Hy reports emulator smoke; not independently reproduced by Khiem on this machine"
   },
   "limitations": [
-    "No project training, threshold changes, benchmark/Official Test/external evaluation.",
-    "No changes to Hy source, Teacher models/locks, frozen E2/reference or Student.",
-    "No Android device smoke represented as passed.",
-    "No automatic commit/push/review/merge."
+    "Không training, đổi threshold, đánh giá Official Test/external hoặc promote Student.",
+    "Không sửa tracked source Hy, Teacher models/locks, frozen E2/reference.",
+    "Android runtime được kiểm trên emulator, không suy ra physical device/ARM64.",
+    "Không tự commit/push/review/merge; Actions mới còn chờ head người dùng phát hành."
   ],
   "generated_test": {
     "path": "mobile/app/.dart_tool/week7_teacher_qa_test.dart",
@@ -259,6 +318,10 @@
     "sdk_ready": true,
     "emulator": "Android 17/API37 x86_64",
     "student_emulator_evidence": "student_android_verification.json",
-    "teacher_runtime_status": "not_executed_in_student_run"
-  }
+    "teacher_runtime_status": "passed_separately_on_android_emulator"
+  },
+  "qa_controller_notes": [
+    "Lượt release controller đầu chưa đọc content-desc của Flutter Chip; sửa helper rồi chạy lại đạt, không phải lỗi app Hy.",
+    "Đợi chuyển trạng thái Wi-Fi hoàn tất rồi kiểm phục hồi mạng bằng đúng giá trị trước test."
+  ]
 }

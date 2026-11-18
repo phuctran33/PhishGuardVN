@@ -1,6 +1,6 @@
 # QA tuần 7 — Khiêm
 
-**Cập nhật 18/11/2026:** đã kiểm lại Web tại `5f112fc597339ea213eff3f07c745629cc18d8fc`; lỗi QR focus đã sửa, browser đạt **20/20**. Kết quả hiện hành nằm ở mục K7.5 và `qa_web_verification.json`; các mục trên `701b8f5` giữ lịch sử phát hiện lỗi. Student Python đã kiểm tại `1cad94c`; CI commit QA `3bfd45a` đạt **6/6**, còn thay đổi sau đồng bộ main chờ người dùng tạo commit. Android/device chưa nghiệm thu.
+**Cập nhật 18/11/2026:** Web `5f112fc` đạt **20/20** browser checks trên Windows; Student `1cad94c` đã kiểm Python, Dart và Android emulator. Teacher của Hy tại `94abdbf` đã kiểm riêng trên **Android 17/API37/x86_64**: parity 47 classified/9 rejected, loader/UI errors và APK release nguyên bản offline đạt. Xem mục [Teacher Android runtime](#k73--teacher-android-runtime-và-release-offline). Chưa kiểm điện thoại vật lý. CI tại `8943bbe` có một lỗi browser Ubuntu ở lượt PR; phạm vi browser đã thu về Windows, thay đổi mới còn chờ người dùng commit/push rồi kiểm Actions. Không nhận toàn bộ Issue #31 hoàn tất trước bước đó và xác nhận nghiệm thu cuối.
 
 ## Chốt phạm vi bàn giao Hưng và Phúc
 
@@ -9,8 +9,9 @@
 | K7.1 — QR Web của Hưng | Đạt trên `5f112fc`: decoder/validation/error/timeout tests, xác nhận trước predict và browser Teacher thật. 48 Flutter tests và 20 browser checks bao gồm các luồng liên quan. Timeout có kiểm soát ở unit tests; mất kết nối/restart kiểm bằng process backend thật. |
 | K7.2 — Brand Detector / X-Ray của Hưng | Đạt trên cùng revision: 73 API/inspection/Teacher tests và 25 QA tests, cùng full regression. Alias/false-positive dùng lại `test_short_alias_requires_whole_token`, official-domain và reference tests trong `test_brand_features.py`; giữ nguyên reference/E2. Không suy ra đây là đánh giá accuracy trên dữ liệu mới. |
 | K7.4 — phần Student Python/artifact của Phúc | Đạt trên `1cad94c`: 43 QA + 3 LightGBM + 29 Student tests cũ, chạy riêng; đủ hash/version/config/threshold/edge cases/native–JSON parity. Không còn lỗi mở trong phạm vi Python đã kiểm. |
-| K7.5 — Web/API/Dart/widget regression và cấu hình CI | Các kiểm tra tại máy đạt; CI `3bfd45a` đạt 6/6. Thay đổi tương thích sau đồng bộ main chưa commit/push, nên chưa có Actions mới cho thay đổi đó. |
-| Các bước liên quan Hy và nghiệm thu cuối | Teacher host `a4d7b0e` đạt 46 Flutter + 294 Dart + 5 QA tests, parity 47 hợp lệ/9 lỗi. Student QA theo hướng dẫn `94abdbf` đạt host và Android emulator: parity hai mode, loader/UI/offline và số đo performance. Teacher Android K7.3, physical-device validation và nghiệm thu cuối K7.5 theo dõi riêng; chưa chốt toàn bộ Issue #31. |
+| K7.3 — Teacher Android của Hy | Đạt trong phạm vi emulator tại `94abdbf`: 47/9 parity khớp Python, metadata/assets, missing/corrupt model/sai threshold, UI hai nhãn thật/port lỗi/retry. APK release nguyên bản đóng/mở 3 lần khi offline và phân loại URL mẫu đạt. Không sửa mã sản phẩm Hy. |
+| K7.5 — Web/API/Dart/widget regression và cấu hình CI | Web E2E trên Windows, regression và Android Teacher offline đã có bằng chứng thực. Browser Ubuntu còn lỗi chưa xử lý và nằm ngoài phạm vi browser hiện tại; các host jobs vẫn giữ Ubuntu/Windows. Cấu hình CI mới chờ người dùng commit/push và kiểm Actions. |
+| Nghiệm thu cuối | K7.1/K7.2, K7.3 emulator và K7.4 Python/Dart/emulator có kết quả. Còn xác nhận Actions trên head mới và gửi báo cáo/sign-off Issue #31; không bắt buộc điện thoại vật lý theo phạm vi emulator đã thống nhất. |
 
 Phần Hưng/Phúc nêu trên sẵn sàng để người dùng tự commit test, workflow và bằng chứng QA. Không cần chờ Hy để bàn giao phần đã đạt. Source hai bạn được kiểm ở checkout riêng và giữ sạch; không chép model/code sản phẩm vào repo QA. Việc approve PR Hưng và commit/push QA do người dùng thực hiện; báo cáo không tự nhận review đã được gửi chỉ từ ảnh màn hình soạn review.
 
@@ -123,7 +124,7 @@ Browser chạy Chromium 158.0.8127.18/Playwright 1.65.0 trên Windows với CPyt
 
 `dart test` gồm các fixture golden có sẵn của extractor và Teacher pipeline; app widget tests kiểm app nền và assets đã đồng bộ theo README. Đây là kiểm trên desktop runner, không chứng minh đã chạy Teacher trên Android tắt mạng hoặc đã nhận đầy đủ build Android tuần 7 của Hy.
 
-Workflow `.github/workflows/week7-web.yml` hiện tên **Week 7 QA**: hai job Web Ubuntu/Windows và hai job Student Python Ubuntu/Windows. Source Web ghim `5f112fc`, Student ghim `1cad94c`; mỗi nguồn checkout riêng. Có analyze/test/build Web, API/full regression, gate Teacher tuần 6, Dart test và app widget tests, real-browser smoke, 43 + 3 + 29 tests Student. Upload versions/SHA/logs/JSON/JUnit/ảnh kể cả khi fail; gate trọng tâm không nhận thiếu test hoặc skip. Full regression cần extras `api,test,teacher`; thử cấu hình chỉ `api,test` đã bộc lộ thiếu LightGBM, nên CI đã sửa dependency, không bỏ test để né lỗi.
+Workflow `.github/workflows/week7-web.yml` hiện tên **Week 7 QA**: hai job Web Ubuntu/Windows và hai job Student Python Ubuntu/Windows. Source Web ghim `5f112fc`, Student ghim `1cad94c`; mỗi nguồn checkout riêng. Có analyze/test/build Web, API/full regression, gate Teacher tuần 6, Dart test và app widget tests, real-browser smoke trên Windows, 43 + 3 + 29 tests Student. Upload versions/SHA/logs/JSON/JUnit/ảnh kể cả khi fail; gate trọng tâm không nhận thiếu test hoặc skip. Full regression cần extras `api,test,teacher`; thử cấu hình chỉ `api,test` đã bộc lộ thiếu LightGBM, nên CI đã sửa dependency, không bỏ test để né lỗi.
 
 Workflow đã qua actionlint và kiểm cú pháp/logic chọn SHA tại máy. Khi chuẩn bị đợt kiểm này, workflow QA chưa commit/push; sau đó người dùng đã phát hành `3bfd45a` và 6/6 checks đạt (xem cập nhật đồng bộ main bên dưới). Sáu checks upstream Hưng được xác minh riêng, không dùng thay cho CI QA. Có source checkout sạch sau cập nhật và venv riêng được dùng lại; không gọi lần fetch này là clean clone/venv mới hoàn toàn tại `5f112fc`.
 
@@ -174,7 +175,7 @@ Bằng chứng: [`android_verification.json`](tables/week7/android_verification.
 
 CI đã thêm checkout Hy riêng, ghim revision trên; đồng bộ bảy app assets, chạy 294/46/5 tests và parity trên Ubuntu/Windows host. Vẫn có bốn job trong workflow: hai Web/Android host, hai Student. Actionlint, cú pháp và gate báo cáo được kiểm tại máy; thay đổi này **chưa có Actions thực** trước khi người dùng tự commit/push. Không tự thêm job giả Android device hoặc nhận host job là offline smoke Android.
 
-**Kết luận K7.3:** phần parity/metadata/assets/loading-errors trên host đạt, chưa phát hiện lỗi inference/loader trong phạm vi đã chạy. **Chưa đánh dấu toàn bộ K7.3 hoàn thành:** còn Android runtime/network-disabled cold start/inference và bằng chứng device. Nhánh Hy đang kiểm tích hợp Teacher, chưa có Student adapter trong `mobile/`; phần Student QA triển khai riêng theo hướng dẫn mới được ghi ở mục tiếp theo. Chưa commit, push, approve hoặc merge thay người dùng.
+**Kết luận lượt host ban đầu:** parity/metadata/assets/loading-errors trên host đạt; tại thời điểm đó chưa kiểm Android runtime. Kết quả bổ sung trên emulator ở mục [Teacher Android runtime](#k73--teacher-android-runtime-và-release-offline), không suy ra từ Student. Chưa commit, push, approve hoặc merge thay người dùng.
 
 ## K7.4 — Student Dart theo hướng dẫn Hy `94abdbf`
 
@@ -204,4 +205,35 @@ Lượt UI integration đầu bộc lộ stale editing value do dùng `TestTextI
 
 CI Student Ubuntu/Windows được mở rộng để tạo reference, chạy 44 tests/parity và 2 tests app QA trên host; gate không nhận skip/thiếu test. Actionlint và kiểm cú pháp/chọn SHA đã chạy tại máy, **chưa có Actions cho thay đổi mới**. Lệnh tái lập và các bước Android ở [`tests/README.md`](../tests/README.md#student-android--triển-khai-qa-theo-hướng-dẫn-hy-94abdbf). Bằng chứng: [`student_android_verification.json`](tables/week7/student_android_verification.json), [`student_android_python_reference.json`](tables/week7/student_android_python_reference.json), [`student_dart_parity.json`](tables/week7/student_dart_parity.json).
 
-**Kết luận:** Student QA đạt Python–Dart trên host và Android emulator, có offline smoke, loader errors, release APK và số đo performance kèm giới hạn. Chưa phát hiện lỗi model/inference cần yêu cầu Phúc/Hy sửa trong phạm vi Student đã chạy. Kết quả QA không đổi manifest/model (`android_verified=false`, `student_default=false` vẫn giữ nguyên), không promote Student. Teacher Android K7.3 và nghiệm thu cuối K7.5 theo dõi riêng; chưa kiểm điện thoại thật. Chưa commit, push, approve hoặc merge.
+**Kết luận:** Student QA đạt Python–Dart trên host và Android emulator, có offline smoke, loader errors, release APK và số đo performance kèm giới hạn. Chưa phát hiện lỗi model/inference cần yêu cầu Phúc/Hy sửa trong phạm vi Student đã chạy. Kết quả QA không đổi manifest/model (`android_verified=false`, `student_default=false` vẫn giữ nguyên), không promote Student. Teacher Android K7.3 có lượt nghiệm thu riêng ở bên dưới; chưa kiểm điện thoại thật. Chưa commit, push, approve hoặc merge.
+
+## Phạm vi browser CI sau lượt chạy `8943bbe`
+
+Issue #31 yêu cầu CI phù hợp và Web E2E thật, không quy định phải chạy browser trên cả Windows và Ubuntu. Theo phạm vi người phụ trách chọn, workflow giữ browser smoke trên Windows; Ubuntu tiếp tục chạy API/Teacher/Dart/Flutter regression trên host và Student QA. Bốn bước Node.js/npm/Chromium/browser có điều kiện `runner.os == 'Windows'`; giữ nguyên 20 ca trong `web_smoke.cjs`, không thêm retry, bỏ assertion hoặc đổi lỗi thành pass.
+
+Đã đối chiếu cùng head `8943bbe2b3ac18cb304f3505bed1c478c2b0040f`: [lượt push #3](https://github.com/phuctran33/PhishGuardVN/actions/runs/44275253747) đạt cả bốn job; [lượt PR #4](https://github.com/phuctran33/PhishGuardVN/actions/runs/44276030588) đạt ba job, riêng browser Ubuntu có 19 passed/1 failed ở thao tác thay URL sau lỗi QR. Chưa đủ bằng chứng quy lỗi cho hệ điều hành hoặc mã sản phẩm của Hưng; lỗi browser Ubuntu còn chưa được xử lý và nằm ngoài phạm vi nghiệm thu browser hiện tại.
+
+Chạy lại toàn bộ browser smoke bằng Chromium của Playwright trên Windows, source Hưng `5f112fc`: **20 passed, 0 failed**, không page errors hoặc yêu cầu ra ngoài loopback; ca thay URL sau lỗi QR đạt. `actionlint` đạt cho cấu hình mới. Lệnh tự kiểm nằm trong [`tests/README.md`](../tests/README.md). Cấu hình giới hạn browser này còn phải được người dùng commit/push và kiểm kết quả Actions trên head mới; không dùng kết quả cũ để nhận CI mới đã pass.
+
+## K7.3 — Teacher Android runtime và release offline
+
+Ngày 18/11 đã chạy riêng app Teacher của Hy tại `94abdbf9d9fd1be6452284d2a84f26ec937f2474` trên Medium Phone emulator **Android 17/API 37/x86_64**. Flutter 3.47.9/Dart 3.13.7, CPython 3.11.14; source Teacher app bằng bản `a4d7b0e`, commit mới chỉ thêm tài liệu. Build release nguyên bản đạt, không cần sửa Gradle hoặc mã sản phẩm Hy.
+
+| Kiểm tra thực tế | Kết quả |
+| --- | --- |
+| Python mới và Flutter host | 47 classified/9 rejected, 5 QA tests đạt trên `94abdbf` |
+| Teacher Python → Android profile | **47/47 classified, 9/9 rejected**, score delta lớn nhất `8.881784197001252e-16`, atol `1e-6` |
+| Hợp đồng/assets trên runtime | Teacher version, threshold `0.6945740700635259`, rule, 20-feature order và SHA-256 manifest/model khớp |
+| Loader và UI lỗi | Missing model, model hỏng giữ nguyên kích thước, sai threshold đều bị chặn; boot error không có prediction, retry nạp được model thật |
+| UI Android integration | Hai nhãn thật benign/phishing và port lỗi đạt; **3 nhóm kiểm ứng dụng**, không cộng ca setup/teardown framework |
+| Mạng Android | Airplane on, Wi-Fi/data off, không default route IPv4/IPv6; HTTP guard riêng trong lượt parity; mạng được khôi phục đúng `0/1/1` sau mỗi lượt |
+| APK release nguyên bản | 19.130.745 bytes, SHA-256 `86b27917e9ad06b1a31ba6726b55d84484242a17da9ffaa733ac78187692c08a` |
+| Release offline smoke | Force-stop/mở lại **3 lần**, mỗi lần vào được app; native ADB touch URL mẫu trả benign, score hiển thị `0.455156`, model/rule/threshold đúng |
+
+Bản integration là bản chép mã `lib/` và Android build của Hy nguyên bytes vào thư mục ignored của QA, kèm provenance/hashes. Chỉ bổ sung reference Python, SDK `integration_test` và entrypoint test; không mock prediction. Lượt release sau đó cài lại APK được build trực tiếp từ checkout Hy, không dùng integration entrypoint. UI integration dùng keyboard transport của Flutter test; release smoke dùng native ADB touch trên URL mẫu. Không nhận là đã kiểm mọi native IME hoặc điện thoại vật lý/ARM64.
+
+Ba process cold-start có Android Activity TotalTime 1.214/1.485/1.435 ms; thời gian host quan sát tới UI 3.726/4.355/4.040 ms gồm ADB/UIAutomator polling. Các lần mở lại giữ filesystem/shader cache; không coi đây là benchmark thiết bị production. Lượt điều khiển QA đầu tiên đọc mỗi thuộc tính `text` nên không tìm được Chip URL có `content-desc`; đã sửa bộ đọc accessibility, không sửa app, rồi kiểm lại thành công. Controller cũng chờ trạng thái Wi-Fi ổn định trước khi xác nhận phục hồi mạng.
+
+Bằng chứng: [`teacher_android_runtime.json`](tables/week7/teacher_android_runtime.json), [`teacher_android_runtime_results.json`](tables/week7/teacher_android_runtime_results.json), [`teacher_android_release.json`](tables/week7/teacher_android_release.json), [ảnh release offline](figures/week7/teacher_android_release_offline.png), tổng hợp [`android_verification.json`](tables/week7/android_verification.json). Lệnh build/chạy lại và dependencies ở [`tests/README.md`](../tests/README.md#teacher-android-runtime-và-apk-release).
+
+**Kết luận:** K7.3 và smoke Teacher Android offline của K7.5 đạt trong phạm vi emulator đã chạy; chưa phát hiện lỗi trong app Teacher cần yêu cầu Hy sửa ở các ca này. Không sửa models/locks/reference, không thay Teacher bằng Student, không train hoặc chấm Official Test/external. Còn kiểm Actions trên commit QA mới và bàn giao/sign-off cuối; mọi commit/push/review do người dùng thực hiện.

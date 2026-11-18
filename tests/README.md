@@ -88,12 +88,14 @@ $qaAssets='mobile/app/assets'; New-Item -ItemType Directory -Force $qaAssets | O
 
 ### CI Web tuần 7
 
-Workflow [`week7-web.yml`](../.github/workflows/week7-web.yml) có tên **Week 7 QA**, chạy khi push/PR và hỗ trợ chạy thủ công. Hai job **Web and Android host / ubuntu-latest** và **Web and Android host / windows-latest** dùng Flutter 3.47.9, Python 3.11, Node.js 24 và Playwright theo npm lockfile. Mỗi job chạy:
+Workflow [`week7-web.yml`](../.github/workflows/week7-web.yml) có tên **Week 7 QA**, chạy khi push/PR và hỗ trợ chạy thủ công. Hai job **Web and Android host / ubuntu-latest** và **Web and Android host / windows-latest** dùng Flutter 3.47.9 và Python 3.11. Các bước 1–3 chạy trên cả hai hệ điều hành; bước 4 chỉ chạy trên Windows, dùng Node.js 24 và Playwright theo npm lockfile:
 
 1. `flutter pub get --enforce-lockfile`, analyze, unit/widget tests và release build không CDN.
 2. API/inspection/Teacher tests upstream, full regression và hai gate QA có sẵn (`inspection_qa.py`, Teacher API acceptance), trên cùng source Web đã chọn. Cài đủ `api,test,teacher` extras để full regression không thiếu LightGBM/notebook dependencies.
 3. Checkout riêng bản Hy qua `ANDROID_HANDOFF_SHA=a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e` (hoặc input `android_sha` đủ 40 ký tự), chạy 294 Dart tests, analyze/46 Flutter tests và 5 QA host tests dùng output Python mới. Đồng bộ đủ bảy assets từ nguồn chuẩn, giữ lockfile app; không tính host tests là Android device smoke.
-4. Chromium thật → API → Teacher bằng `web_smoke.cjs`. Browser dùng Chromium do Playwright cài, không phụ thuộc Chrome cài sẵn trên runner.
+4. **Chỉ Windows:** Chromium thật → API → Teacher bằng `web_smoke.cjs`. Browser dùng Chromium do Playwright cài, không phụ thuộc Chrome cài sẵn trên runner. Giữ đủ 20 ca, gồm thay URL sau lỗi QR và kiểm focus; không dùng retry hoặc bỏ assertion để đổi kết quả lỗi thành pass.
+
+Issue #31 yêu cầu CI phù hợp và bằng chứng Web E2E, không bắt buộc browser smoke trên cả Windows lẫn Ubuntu. Phạm vi browser hiện tại là Windows; Ubuntu tiếp tục chạy regression API/Teacher/Dart/Flutter trên host. Browser Ubuntu chưa được nghiệm thu trong cấu hình này. Lượt lỗi trên Ubuntu tại `8943bbe` và lý do thu gọn phạm vi được ghi trong [`week7_qa.md`](../reports/week7_qa.md#phạm-vi-browser-ci-sau-lượt-chạy-8943bbe).
 
 SHA source được chọn theo thứ tự: input thủ công `web_sha` (đủ 40 ký tự), SHA checkout QA nếu đồng thời có `apps/web/test/week7_test.dart` và `src/phishguard_vn/url_inspection.py`, hoặc giá trị **`WEB_HANDOFF_SHA`** trong workflow. Hiện fallback là `5f112fc597339ea213eff3f07c745629cc18d8fc`. Chỉ có Web tuần 6 từ `main` không đủ để chọn source QA làm source tuần 7. Source được checkout riêng vào `web-source`; SHA QA/Web được ghi trong Job summary và `source.txt`. Workflow không tự chạy theo đầu branch đang thay đổi.
 
@@ -103,12 +105,12 @@ Sau khi bạn tự commit/push, mở **Actions → Week 7 QA**, đối chiếu �
 
 ## K7.3 — kiểm Teacher Android của Hy
 
-Snapshot đã kiểm: `a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e`, branch `feat/w7-android-teacher-integration`. Kết quả tại [báo cáo QA](../reports/week7_qa.md#k73--teacher-android-của-hy-kiểm-trên-host), [JSON nghiệm thu](../reports/tables/week7/android_verification.json) và [parity thực tế](../reports/tables/week7/android_host_parity.json). Python chạy mới bằng released loader; không train lại, không dùng output giả.
+Snapshot host ban đầu: `a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e`; lượt host/Android hiện tại: `94abdbf9d9fd1be6452284d2a84f26ec937f2474`, branch `feat/w7-android-teacher-integration`. Commit mới chỉ thêm tài liệu; mã app Teacher không đổi. Kết quả tại [báo cáo QA](../reports/week7_qa.md#k73--teacher-android-runtime-và-release-offline), [JSON nghiệm thu](../reports/tables/week7/android_verification.json), [parity host](../reports/tables/week7/android_host_parity.json) và [Android runtime](../reports/tables/week7/teacher_android_runtime.json). Python chạy mới bằng released loader; không train lại, không dùng output giả.
 
 Nếu chưa có checkout, tạo một lần từ root QA:
 
 ```powershell
-git clone --branch feat/w7-android-teacher-integration https://github.com/phuctran33/PhishGuardVN.git ..\PhishGuardVN-w7-hy-review; git -C ..\PhishGuardVN-w7-hy-review checkout --detach a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e
+git clone --branch feat/w7-android-teacher-integration https://github.com/phuctran33/PhishGuardVN.git ..\PhishGuardVN-w7-hy-review; git -C ..\PhishGuardVN-w7-hy-review checkout --detach 94abdbf9d9fd1be6452284d2a84f26ec937f2474
 ```
 
 Cần CPython 3.11, Flutter 3.47.9/Dart 3.13.7. Máy QA đã có venv trong checkout Hy; người chạy mới tạo bằng interpreter 3.11 (dùng executable portable nếu `py -3.11` chưa được đăng ký):
@@ -143,7 +145,37 @@ $qaRoot=(Get-Location).Path; $hyRoot=(Resolve-Path ..\PhishGuardVN-w7-hy-review)
 
 Các test dùng loader/classifier thật, đối chiếu score/label/version/threshold/rule/feature order, thử thiếu model và sai threshold, chặn HTTP trên host. Max score delta ghi nhận `8.881784197001252e-16`, nhỏ hơn `atol=1e-6`. Python bị chặn DNS/socket khi tạo reference. Đây là **host parity và fault injection**, không phải Android chạy khi tắt mạng.
 
-Ở lượt kiểm Teacher host ban đầu máy chưa có SDK/emulator. Sau đó đã cài đầy đủ SDK/NDK và chạy Student trên emulator như phần tiếp theo. **Teacher app của Hy chưa được nghiệm thu Android runtime trong các kết quả Student này**; không tick toàn bộ K7.3 hoặc Teacher offline K7.5 từ một engine khác. Teacher app của Hy không chứa Student; adapter Student QA riêng được hướng dẫn ở phần tiếp theo.
+### Teacher Android runtime và APK release
+
+Đã kiểm riêng Teacher trên Android 17/API 37/x86_64 emulator; không suy ra từ kết quả Student. Cần Android SDK, emulator đã boot, API 36 và NDK 28.2.13676358 theo cấu hình Flutter 3.47.9. `flutter doctor -v` phải nhận toolchain; dùng `flutter emulators`/`flutter devices` để chọn ID. Các lệnh bên dưới dùng `emulator-5554`, thay bằng ID thực tế nếu khác. Flutter phải có trong PATH; nếu chưa có, truyền `--flutter=đường_dẫn_flutter.bat` cho controller.
+
+Sau khi đồng bộ assets và tạo reference Python ở trên, từ root QA tạo bản integration riêng dưới thư mục ignored. Mã `lib/` và Android build của Hy được chép nguyên bytes, kèm hashes; chỉ thêm dependency `integration_test`, reference QA và entrypoint kiểm thử. Không sửa checkout Hy:
+
+```powershell
+& ..\PhishGuardVN-w7-hy-review\.venv\Scripts\python.exe tests/week7/prepare_teacher_runtime.py --android-root=../PhishGuardVN-w7-hy-review; Push-Location tests/week7/.teacher_android_harness; flutter pub get; flutter analyze --no-pub integration_test/teacher_runtime_test.dart test_driver/teacher_driver.dart; Pop-Location
+```
+
+Chạy integration trên emulator. Controller chỉ chấp nhận emulator, xác nhận airplane on/Wi-Fi off/data off và không có default route IPv4/IPv6; khôi phục đúng trạng thái mạng ban đầu trong `finally`, kể cả khi test lỗi:
+
+```powershell
+$qaSdk=Join-Path $env:LOCALAPPDATA 'Android/sdk'; & ..\PhishGuardVN-w7-hy-review\.venv\Scripts\python.exe tests/week7/run_teacher_android.py --android-root=../PhishGuardVN-w7-hy-review "--adb=$qaSdk/platform-tools/adb.exe" --device=emulator-5554 --phase=integration --output=reports/tables/week7/teacher_android_runtime.json
+```
+
+Kỳ vọng **3 nhóm kiểm ứng dụng đạt**: 47 classified/9 rejected khớp Python và metadata/hashes; missing/corrupt model/sai threshold cùng màn hình lỗi/retry; UI benign/phishing/invalid port. Flutter còn in các ca thiết lập/teardown của framework; không cộng thành 5 ca nghiệp vụ. UI integration kiểm soát keyboard transport của Flutter; không nhận là kiểm native IME.
+
+Build APK release nguyên bản của Hy, không dùng entrypoint integration:
+
+```powershell
+Push-Location ../PhishGuardVN-w7-hy-review/mobile/app; flutter build apk --release --target-platform android-x64; Pop-Location
+```
+
+Cài lại chính APK release đó, force-stop/mở lại ba lần khi Android tắt mạng, chạm URL mẫu bằng ADB và kiểm nhãn/model/threshold thật; lưu JSON và ảnh:
+
+```powershell
+$qaSdk=Join-Path $env:LOCALAPPDATA 'Android/sdk'; & ..\PhishGuardVN-w7-hy-review\.venv\Scripts\python.exe tests/week7/run_teacher_android.py --android-root=../PhishGuardVN-w7-hy-review "--adb=$qaSdk/platform-tools/adb.exe" --device=emulator-5554 --phase=release --output=reports/tables/week7/teacher_android_release.json --screenshot=reports/figures/week7/teacher_android_release_offline.png
+```
+
+Lượt thực tế đạt cả integration và release; mạng được khôi phục sau mỗi lượt. Bằng chứng: [runtime](../reports/tables/week7/teacher_android_runtime.json), [release](../reports/tables/week7/teacher_android_release.json), [ảnh offline](../reports/figures/week7/teacher_android_release_offline.png). Kết quả chỉ xác minh emulator x86_64; không nhận điện thoại vật lý/ARM64, mọi IME hoặc browser Linux đã được kiểm. Teacher app vẫn mặc định; không thêm Student vào sản phẩm Hy.
 
 ## K7.4 — Student LightGBM của Phúc
 

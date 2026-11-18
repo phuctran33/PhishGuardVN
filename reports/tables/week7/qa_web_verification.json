@@ -165,10 +165,9 @@
     "covers_new_local_qa_workflow": false
   },
   "not_executed_in_this_round": [
-    "Android device/network-disabled Teacher smoke",
-    "Python-Dart parity on Android runtime",
-    "Student Python-Dart parity (adapter not in reviewed Hy branch)",
-    "New Hy host CI gates on actual GitHub runners"
+    "Điện thoại Android vật lý/ARM64 và mọi native IME",
+    "Browser smoke trên Linux chưa nghiệm thu",
+    "Actions cho cấu hình browser Windows và phần QA hiện tại trước user commit/push"
   ],
   "reproduce": "tests/README.md#qa-web-tuần-7--bàn-giao-của-hưng",
   "web_ci_preparation": {
@@ -183,7 +182,7 @@
       "Student Python and Dart / ubuntu-latest",
       "Student Python and Dart / windows-latest"
     ],
-    "github_actions_status": "Teacher host và Student Dart/app host gates configured; pending user commit/push",
+    "github_actions_status": "Browser Windows scoped; host jobs Ubuntu/Windows retained; current changes pending user commit/push",
     "local_actionlint": "passed (1.7.12)",
     "bash_syntax_steps": 23,
     "powershell_syntax_steps": 8,
@@ -280,7 +279,10 @@
     "platform_verified_locally": "Windows",
     "ubuntu_runner_status": "pending Actions after user push",
     "android_source_sha": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
-    "student_dart_evidence": "student_android_verification.json"
+    "student_dart_evidence": "student_android_verification.json",
+    "browser_runner_os": [
+      "windows-latest"
+    ]
   },
   "history_before_focus_fix": {
     "date": "2026-11-17",
@@ -480,24 +482,23 @@
         "K7.4 Python/artifact/config/edge cases"
       ],
       "evidence": "student_verification.json",
-      "android_parity_accepted": false
+      "android_parity_accepted": true,
+      "android_scope": "Adapter QA riêng trên emulator, không tích hợp Student vào UI sản phẩm Hy; xem student_android_verification.json"
     },
     "ci": {
-      "status": "Hy host changes locally verified; actual new Actions pending user commit/push",
+      "status": "Local verification passed; current browser scope Windows only; new Actions pending user commit/push",
       "source_selection": "pinned Web/Student revisions, recorded separately from QA workflow revision"
     },
     "hy_new_handoff": {
-      "status": "host_verified_android_runtime_pending",
-      "revision": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+      "status": "host_and_android_emulator_verified",
+      "revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
       "evidence": "android_verification.json"
     },
     "whole_issue_31": {
-      "status": "not_complete",
+      "status": "awaiting_current_head_ci_and_user_signoff",
       "remaining": [
-        "K7.3 Android runtime and network-disabled verification",
-        "K7.4 Student Android parity if adapter becomes available",
-        "K7.5 Android device smoke and final acceptance",
-        "Actual Actions for newly added Hy host gates"
+        "Actions thành công trên commit QA mới sau đổi phạm vi browser",
+        "Người dùng kiểm lại và bàn giao/sign-off báo cáo Issue #31"
       ]
     }
   },
@@ -548,5 +549,18 @@
   "main_sync_evidence": "main_sync_verification.json",
   "android_evidence": "android_verification.json",
   "student_android_evidence": "student_android_verification.json",
-  "student_android_status": "Student host/emulator verified independently; does not complete Teacher Android acceptance"
+  "student_android_status": "Student QA host/emulator đạt độc lập; Teacher Android đã có lượt nghiệm thu riêng",
+  "history_before_android_completion": {
+    "not_executed_in_previous_round": [
+      "Android device/network-disabled Teacher smoke",
+      "Python-Dart parity on Android runtime",
+      "Student Python-Dart parity (adapter not in reviewed Hy branch)",
+      "New Hy host CI gates on actual GitHub runners"
+    ]
+  },
+  "teacher_android_evidence": [
+    "teacher_android_runtime.json",
+    "teacher_android_release.json",
+    "android_verification.json"
+  ]
 }
