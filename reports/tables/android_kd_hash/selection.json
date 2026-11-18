@@ -1,0 +1,27 @@
+{
+  "width": 65536,
+  "thresholds": {
+    "hard": 0.4657114056877857,
+    "kd": 0.5161222320007302
+  },
+  "selected_by": "mean 3-fold Train KD AP",
+  "threshold_source": "Train OOF with FPR <= 1%",
+  "temperatures": [
+    2.0
+  ],
+  "seed": 42,
+  "deterministic": true,
+  "modes": [
+    "hard",
+    "kd"
+  ],
+  "alpha": 0.5,
+  "C": 8.0,
+  "widths": [
+    32768,
+    65536
+  ],
+  "source_sha256": "b5446efe0c941c863db962a2177628b0c7056b3b695e574fae4af6f0b32f98f5",
+  "train_fold_manifest_sha256": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+  "final_train_targets_sha256": "00d5edeb1123867ea251d9b18e124efa92803cf49a352b2cad38d0056efc6f0a"
+}

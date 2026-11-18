@@ -1,0 +1,1549 @@
+{
+  "scope": "Static offline parity cases, without accuracy labels",
+  "cases": [
+    {
+      "name": "example_0",
+      "url": "example.com",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.056442077465541585,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.05674977869057848,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_1",
+      "url": "https://EXAMPLE.com/Login?Q=%2F",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.7758204526691683,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.7580962966087175,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_2",
+      "url": "https://www.hcmus.edu.vn",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.0027974430385385067,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.009597770481379551,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_3",
+      "url": "https://example.com:8443/path",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.6200222599488594,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.5422970268431409,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_4",
+      "url": "https://bücher.de/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.00941600301611805,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.012999643829412655,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_5",
+      "url": "http://127.0.0.1/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.06242640491912431,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.0849117196926497,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_6",
+      "url": "http://[2001:db8::1]/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.22818637341181966,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.28739996502681653,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_7",
+      "url": "//example.com/A",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.0754005486868778,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.08326620250389469,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_8",
+      "url": "https://user:pass@example.com/a#fragment",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.07316543083327726,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.07041089707118682,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_9",
+      "url": "https://example.com/a?x=1&y=2",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.41954409262108094,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.4328393770339628,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "example_10",
+      "url": "https://example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.10294471689323763,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.1522240085728502,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "vcb_home",
+      "url": "https://www.vietcombank.com.vn/vi-VN/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.34267114491249673,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.40497998461226314,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "bidv_login_page",
+      "url": "https://bidv.com.vn/ibank/login",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.8767158589196632,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.716970883003958,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "momo_home",
+      "url": "https://momo.vn/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.03476802099037043,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.055737202884337755,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "shopee_home",
+      "url": "https://shopee.vn/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.014225813317412014,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.0239417247781462,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "tcb_two_domains",
+      "url": "https://techcombank.com/personal",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.7640089377663212,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.8243279656425514,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "gov_portal_official",
+      "url": "https://dichvucong.gov.vn/p/home/dvc-trang-chu.html",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.0011872084077329936,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.008946988185623492,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "vcb_login_top",
+      "url": "https://vietcombank-login.top/verify",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9934910572001215,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9897667058323975,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "shopee_gift",
+      "url": "http://shopee-quatang.example.com/nhanqua",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9939874268936082,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9929915770083064,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "momo_short_token",
+      "url": "https://momo-vn.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9886439404020766,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9719725970335168,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "short_alias_exact_token",
+      "url": "https://acb-online.com/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.872721746504258,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.883224475572297,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "short_alias_not_token",
+      "url": "https://acbdoc.com/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.22876718543401184,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.21380023220934324,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "concatenated_brand",
+      "url": "https://techcombankonline.xyz/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9954199877175277,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9929181249492751,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "classic_trick",
+      "url": "https://vietcombank.com.vn.xacminh-id.xyz/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9826710309345504,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9886791871282458,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "bank_login_subdomain",
+      "url": "https://login.bidv.secure-pay.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9803730805899702,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9829822763356356,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "free_hosting_style",
+      "url": "https://vietcombank-ibank.weebly.com/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9873716875139353,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9811474538140978,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "path_only",
+      "url": "https://evil-site.top/vietcombank/login",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9615568037298136,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9430654877635749,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "query_only",
+      "url": "https://evil-site.top/?redirect=bidv.com.vn",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.8475572666551794,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.7959306506706909,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "transposition",
+      "url": "https://vietcombnak.com/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.04647338666992086,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.04759749540362998,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "extra_letter",
+      "url": "https://vietcombanks.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9866281479659545,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9778036507417559,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "other_brand_name_not_typo",
+      "url": "https://tpbank-online.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9889628234079774,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9859961241639585,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "short_token_ignored",
+      "url": "https://vcbx.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.43517872262055796,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.5025806735794563,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "zero_for_o",
+      "url": "https://vietc0mbank.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.7833881995971604,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.6459908497340836,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "one_for_i",
+      "url": "https://b1dv-vn.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.48114595008527894,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.39046789889766476,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "rn_for_m",
+      "url": "https://momornomo.top/",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.80291260851659,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.8185413646560393,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "punycode_host",
+      "url": "http://xn--bcher-kva.de/Path",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.017037298670041102,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.025199309908246134,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "unicode_host",
+      "url": "http://bücher.de/Path",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.015890710170855443,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.02316896007673267,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "vietnamese_diacritics_path",
+      "url": "https://example.com/dang-nhap/Đăng%20Nhập",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.8046002778192825,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.7781823188495137,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "ipv4_with_brand_path",
+      "url": "http://192.168.1.1/vietcombank",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.6238090203123048,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.7595239737855038,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "ipv6_literal",
+      "url": "http://[2001:db8::1]/login",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.7615147528182228,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.7318956255391412,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "uppercase_scheme_host",
+      "url": "HTTPS://WWW.Example.COM/Path?Q=A",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.8067081264460754,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.8259510681123143,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "trailing_dot",
+      "url": "http://EXAMPLE.com./",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.011483745724789734,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.008455692145354736,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "scheme_relative",
+      "url": "//example.com/Path",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.1283605556781543,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.1338132228976633,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "missing_scheme",
+      "url": "vietcombank-login.top/verify",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9934910572001215,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9897667058323975,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "port_and_userinfo",
+      "url": "http://paypal.com@evil-site.top:8080/login",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.11741095293175964,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.15340486693855648,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "path_params",
+      "url": "https://example.com/a;b?x=1",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.4369197142886901,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.47845305052861176,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "percent_encoded_path",
+      "url": "https://example.com/%76ietcombank",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9263161924732141,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.8904932488474825,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "multi_level_suffix",
+      "url": "https://a.b.c.example.co.uk/x",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.3825876077019997,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.5612878033403789,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "benign",
+          "class_id": 0,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "underscore_host",
+      "url": "http://my_site.example.com/a",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.8270802876654241,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.8624224287591005,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "many_keywords",
+      "url": "https://secure-login-verify.example.com/account/update",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9539517121205023,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9562590480739667,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "vietnamese_keywords",
+      "url": "https://uudai-khuyenmai.example.com/xacminh/nhanqua",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9722345086391405,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9817945712358553,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "very_long_url",
+      "url": "https://example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/vietcombank?x=1111111111111111111111111111111111111111",
+      "status": "classified",
+      "expected": {
+        "hard_only": {
+          "score": 0.9537785460113797,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6054060264142265,
+          "model_version": "lr0.10_200x15_hard_only",
+          "release_status": "experimental",
+          "android_verified": false
+        },
+        "kd_mixed": {
+          "score": 0.9168001103150183,
+          "score_kind": "uncalibrated_sigmoid",
+          "calibrated": false,
+          "label": "phishing",
+          "class_id": 1,
+          "threshold": 0.6138319444287572,
+          "model_version": "lr0.10_200x15_kd_mixed",
+          "release_status": "experimental",
+          "android_verified": false
+        }
+      }
+    },
+    {
+      "name": "invalid_port",
+      "url": "https://example.com:99999/",
+      "status": "rejected",
+      "error_type": "ValueError"
+    },
+    {
+      "name": "invalid_port_text",
+      "url": "https://example.com:bad/p",
+      "status": "rejected",
+      "error_type": "ValueError"
+    },
+    {
+      "name": "unresolved_domain",
+      "url": "invalid_url",
+      "status": "rejected",
+      "error_type": "ValueError"
+    },
+    {
+      "name": "empty_string",
+      "url": "",
+      "status": "rejected",
+      "error_type": "ValueError"
+    },
+    {
+      "name": "whitespace_only",
+      "url": "   ",
+      "status": "rejected",
+      "error_type": "ValueError"
+    },
+    {
+      "name": "none_input",
+      "url": null,
+      "status": "rejected",
+      "error_type": "TypeError"
+    }
+  ]
+}

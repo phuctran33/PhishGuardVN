@@ -1,0 +1,3 @@
+model,file,sha256,zip_bytes,valid,rejected
+boost200,artifacts/android_kd_handoff/boost200.zip,81792cfa632ab81247f8c4b86f4baa0b84401be1fce56de5982f3dd313420849,133292,52,6
+additive16k,artifacts/android_kd_handoff/additive16k.zip,790ce0faa4b9188c4f246c7babff2bcb201b44e1de806300efd0dca33cee7867,245695,52,6

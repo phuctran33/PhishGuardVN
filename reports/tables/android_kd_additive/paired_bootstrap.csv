@@ -1,0 +1,2 @@
+candidate,baseline,mean_fold_ap,baseline_mean_fold_ap,delta_mean_fold_ap,ci_low,ci_high,valid_replicates,replicates,bootstrap_seed
+add16384_kd,add16384_hard,0.9345686478336119,0.9366127351396707,-0.0020440873060587617,-0.003557791150485226,-0.0005812269366624768,1000,1000,42

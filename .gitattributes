@@ -94,3 +94,10 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /reports/tables/student_lightgbm/*.json text eol=lf
 /reports/tables/student_lightgbm/*.gz -text
 /reports/tables/student_kd_analysis/*.csv text eol=lf
+
+# Android Student experiments: raw export hashes must match across checkouts.
+/artifacts/android_kd_*/*.json text eol=lf
+/artifacts/android_kd_*/*.zip -text
+/reports/tables/android_kd_*/*.json text eol=lf
+/reports/tables/android_kd_*/*.csv text eol=lf
+/reports/tables/android_kd_*/*.gz -text

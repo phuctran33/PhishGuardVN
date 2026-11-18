@@ -1,0 +1,3 @@
+model,p50_ms,p95_ms,requests,unique_urls,warmup
+selected_200_kd,3.40495,5.1237499999999985,750,250,30
+archived_400_kd,5.806900000000001,8.52614,750,250,30

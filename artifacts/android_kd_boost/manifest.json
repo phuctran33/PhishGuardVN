@@ -1,0 +1,58 @@
+{
+  "profile": "lr0.10_200x15",
+  "parameters": {
+    "n_estimators": 200,
+    "num_leaves": 15,
+    "learning_rate": 0.1,
+    "min_child_samples": 20,
+    "reg_lambda": 1,
+    "objective": "cross_entropy",
+    "n_jobs": 1,
+    "deterministic": true,
+    "force_col_wise": true,
+    "verbosity": -1,
+    "subsample": 1,
+    "colsample_bytree": 1
+  },
+  "sample_seed": 42,
+  "kd_alpha": 0.5,
+  "models": {
+    "hard_only": "hard_only.json",
+    "kd_mixed": "kd_mixed.json"
+  },
+  "shared_assets": [
+    "artifacts/student_lightgbm/features.json",
+    "artifacts/student_lightgbm/psl_icann_tldextract_5.4.0.txt",
+    "artifacts/student_lightgbm/brand_reference_v1.csv"
+  ],
+  "thresholds": {
+    "lr0.05_200x15_hard_only": 0.5484902058185045,
+    "lr0.05_200x15_kd_mixed": 0.5731682120868467,
+    "lr0.05_300x15_hard_only": 0.58231181445207,
+    "lr0.05_300x15_kd_mixed": 0.5937742321773853,
+    "lr0.10_200x15_hard_only": 0.6054060264142265,
+    "lr0.10_200x15_kd_mixed": 0.6138319444287572
+  },
+  "sha256": {
+    "artifacts/student_lightgbm/features.json": "aac9a276288b0d29ada3b2ffd27bad3d7a3d186bc85fca63ce09865b796d81f6",
+    "artifacts/student_lightgbm/psl_icann_tldextract_5.4.0.txt": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f",
+    "artifacts/student_lightgbm/brand_reference_v1.csv": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+    "artifacts/android_kd_boost/hard_only.json": "56b37f36c938ed00bfdfb347de0cf499761af1c172cb0103024fc70ab9dfafb3",
+    "artifacts/android_kd_boost/kd_mixed.json": "48dd644025dee69541f31dcb3977eb343a9df86c066dcacca5f4e5388a4627eb",
+    "configs/week7_lightgbm_student.json": "41a2802a30e7467bae6bad375d125f5b591d9122feecccfd418ca2ba6ad07998",
+    "artifacts/student_lightgbm/cv_targets/manifest.json": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+    "artifacts/student_week7/teacher_targets.csv.gz": "00d5edeb1123867ea251d9b18e124efa92803cf49a352b2cad38d0056efc6f0a",
+    "reports/tables/android_kd_boost/train_lock.json": "032bdf93decb58ed08e41ff800a103b3bbb869d9280674147d7b84590252a908",
+    "scripts/experiment_android_boost.py": "24f5fac46dfab27b77d896fb12e0c4c1162930c7e067e06d96034038f3e6f918",
+    "artifacts/student_lightgbm/python_reference.json": "ec620d5d5d8468e805ff3a1bbdfaf87653bbfd0d5995a5a151e4a4918edaa02b",
+    "artifacts/android_kd_boost/python_reference.json": "e65575e807e1a3c22fc6f67c14054c9ae0b76188843647db281bd03701abedf2"
+  },
+  "seed": 42,
+  "num_train": 13078,
+  "num_validation": 1585,
+  "benchmark": "Windows Python 3.11, one thread, portable JSON raw URL -> score, warm single URL requests, excludes load",
+  "android_verified": false,
+  "teacher_retrained": false,
+  "external_evaluated": false,
+  "official_test_evaluated": false
+}

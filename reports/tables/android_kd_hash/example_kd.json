@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://example.org/Đăng-Nhập?q=😀",
+    "score": 0.05749353595751149,
+    "positive": false
+  },
+  {
+    "url": "https://例子.com/Aa?x=%2F",
+    "score": 0.1767506292935624,
+    "positive": false
+  },
+  {
+    "url": "HTTP://[2001:db8::1]:80/X",
+    "score": 0.11176748960452589,
+    "positive": false
+  },
+  {
+    "url": "http://EXAMPLE.org:80/X#fragment",
+    "score": 0.028210675148261796,
+    "positive": false
+  }
+]
