@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
+import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -183,6 +185,97 @@ void main() {
     await t.pump();
   }
 
+  testWidgets('deleting a URL after a broken QR keeps the input focused', (
+    t,
+  ) async {
+    t.view.physicalSize = const Size(1440, 1100);
+    t.view.devicePixelRatio = 1;
+    addTearDown(t.view.resetPhysicalSize);
+    addTearDown(t.view.resetDevicePixelRatio);
+    final input = find.byKey(const Key('url-input'));
+    final qrError = find.byKey(const Key('qr-error'));
+    final editable = find.descendant(
+      of: input,
+      matching: find.byType(EditableText),
+    );
+    final broken = fixture('broken.png');
+    await start(t, (request) async {
+      return jsonResponse(
+        request.url.path == '/inspect'
+            ? inspectionFixture()
+            : predictionFixture(),
+      );
+    }, picker: () async => broken);
+    const original = 'example.com';
+    await t.enterText(input, original);
+    await tap(t, 'check-button');
+    await t.pumpAndSettle();
+    await tap(t, 'inspect-button');
+    await t.pumpAndSettle();
+    await tap(t, 'qr-upload');
+    await t.runAsync(
+      () async => Future<void>.delayed(const Duration(milliseconds: 200)),
+    );
+    await t.pumpAndSettle();
+    await tap(t, 'url-input');
+    final field = t.widget<EditableText>(editable);
+    final focus = field.focusNode;
+    final selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: original.length,
+    );
+    expect(focus.hasFocus, isTrue);
+
+    // Drive the existing input connection, as a browser would for select-all.
+    t.testTextInput.updateEditingValue(
+      TextEditingValue(text: original, selection: selection),
+    );
+    await t.pump();
+    expect(field.controller.selection, selection);
+    expect(qrError, findsOneWidget);
+    expect(find.byKey(const Key('prediction-result')), findsOneWidget);
+    expect(find.byKey(const Key('inspection-result')), findsOneWidget);
+
+    List<int> siblingOrder() => t
+        .getSemantics(editable)
+        .parent!
+        .parent!
+        .debugListChildrenInOrder(DebugSemanticsDumpOrder.traversalOrder)
+        .map((node) => node.id)
+        .toList();
+    final before = siblingOrder();
+
+    await t.sendKeyEvent(LogicalKeyboardKey.backspace);
+    await t.pumpAndSettle();
+    expect(field.controller.text, isEmpty);
+    expect(focus.hasFocus, isTrue, reason: 'Backspace must preserve focus');
+    expect(t.widget<EditableText>(editable).focusNode, same(focus));
+    expect(qrError, findsNothing);
+    expect(find.byKey(const Key('prediction-result')), findsNothing);
+    expect(find.byKey(const Key('inspection-result')), findsNothing);
+
+    // Flutter Web reorders the accessibility DOM when surviving siblings
+    // change traversal order. Moving the focused input's ancestor blurs it.
+    final after = siblingOrder();
+    expect(
+      after.where(before.contains),
+      orderedEquals(before.where(after.contains)),
+      reason: 'QR removal must not reorder surviving input siblings',
+    );
+
+    // Do not use WidgetTester.enterText here, since that focuses the field.
+    const replacement = 'example.org';
+    t.testTextInput.updateEditingValue(
+      TextEditingValue(
+        text: replacement,
+        selection: TextSelection.collapsed(offset: replacement.length),
+      ),
+    );
+    await t.pump();
+    expect(field.controller.text, replacement);
+    expect(focus.hasFocus, isTrue);
+  });
+
   testWidgets('QR real fixture waits for confirmation before POST', (t) async {
     var posts = 0;
     await start(t, (r) async {
@@ -212,9 +305,16 @@ void main() {
       },
       picker: () async {
         count++;
-        return fixture(count == 1 ? 'broken.png' : 'qr_url.png');
+        return switch (count) {
+          1 => fixture('broken.png'),
+          2 => fixture('qr_url.png'),
+          _ => null,
+        };
       },
     );
+    final input = find.byKey(const Key('url-input'));
+    final controller = t.widget<TextFormField>(input).controller!;
+    await t.enterText(input, 'example.org');
     await tap(t, 'qr-upload');
     await t.runAsync(
       () async => Future<void>.delayed(const Duration(milliseconds: 200)),
@@ -230,6 +330,13 @@ void main() {
     await t.ensureVisible(find.text('Hủy'));
     await t.tap(find.text('Hủy'));
     await t.pump();
+    expect(find.byKey(const Key('qr-preview')), findsNothing);
+    expect(find.byKey(const Key('qr-error')), findsNothing);
+    await tap(t, 'qr-upload');
+    await t.pumpAndSettle();
+    expect(find.byKey(const Key('qr-preview')), findsNothing);
+    expect(find.byKey(const Key('qr-error')), findsNothing);
+    expect(controller.text, 'example.org');
     expect(posts, 0);
   });
   testWidgets(

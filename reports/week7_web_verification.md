@@ -124,3 +124,38 @@ fixtures trong apps/web/test/fixtures và tests/test_url_inspection.py; lệnh/t
 results/smoke records ở trên. Khiêm tiếp tục security, clean clone, Windows/device
 và independent regression/PR review. Phúc/Hy tiếp tục Student/Android #28/#29;
 không là blocker của Web Teacher hiện tại. Issue #30 giữ mở để review, không tự đóng.
+
+## Regression focus URL sau lỗi QR, 18/11/2026
+
+Khiêm QA độc lập trên Windows tại `701b8f5`. API và Flutter tests đạt, browser
+thật đạt 19/20 ca. Ca lỗi mất focus sau khi chọn ảnh QR hỏng, quay lại ô URL,
+nhấn Ctrl+A rồi Backspace. [Review của Khiêm](https://github.com/phuctran33/PhishGuardVN/pull/32#pullrequestreview-5939167301).
+
+Hưng tái hiện trên release cũ bằng Chrome 157.0.8103.80 headless, macOS arm64.
+Ở desktop 1440 px, nhập `example.com`, chọn `broken.png`, click ô URL, giữ
+Shift và nhấn mũi tên trái để chọn hết text, rồi nhấn Backspace. Cả ca chỉ có
+lỗi QR và ca có thêm `/predict` và `/inspect` đều xóa text, nhưng phím tiếp
+theo rơi vào `BODY`. `MutationObserver` ghi nhận Chrome phát `blur` và Flutter
+Web gỡ rồi chèn lại cùng DOM `<form>`. Khi lỗi QR biến mất, form dời lên qua
+phần giới thiệu trong thứ tự accessibility chung. `FocusNode` ở tầng Flutter
+vẫn tồn tại, nên widget test kiểm cả thứ tự các node accessibility còn lại.
+
+Bản sửa đặt vùng nhập liệu trong một `Semantics` container riêng để nội dung
+giới thiệu và form giữ thứ tự độc lập. `_inputChanged()` tăng revision khi text
+thực sự đổi và chỉ gọi `setState()` nếu có feedback cần dọn. Các notification
+chỉ đổi selection/caret giữ kết quả và revision hiện tại.
+
+| Kiểm tra cục bộ của Hưng | Kết quả |
+| --- | --- |
+| Regression widget trên `701b8f5` | **FAIL như kỳ vọng** tại assertion thứ tự accessibility |
+| `flutter analyze` | **PASS**, không có issue |
+| `flutter test` | **48 PASS**, gồm regression, QR hợp lệ/cancel và stale responses |
+| `flutter build web --release` | **PASS** |
+| Build release cho browser với `--no-web-resources-cdn --dart-define=API_BASE_URL=http://127.0.0.1:18032` | **PASS** |
+| Chrome macOS, bàn phím thật qua Playwright | **4/4 PASS**. QR hỏng desktop, QR hỏng kèm prediction và inspection desktop, ca tương tự ở 375 px, và QR hợp lệ đang preview ở desktop |
+
+Trong cả bốn ca browser, ô URL vẫn là cùng DOM input sau Backspace, không có
+`blur` hay tháo gắn form. Gõ tiếp `example.org` vào được ngay. Lỗi/preview QR
+biến mất khi text đổi. Các ca có kết quả thực dùng API và Teacher cục bộ, xác
+nhận prediction và inspection biến mất sau khi xóa. Bản sửa chờ Khiêm kiểm tra
+lại tổ hợp Ctrl+A → Backspace trên Chrome Windows.

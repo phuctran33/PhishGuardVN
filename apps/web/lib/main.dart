@@ -132,6 +132,14 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
     if (_url.text == _inputText) return;
     _inputText = _url.text;
     _revision++;
+    if (_prediction == null &&
+        _failure == null &&
+        _inspection == null &&
+        _inspectionFailure == null &&
+        _qrCandidate == null &&
+        _qrFailure == null) {
+      return;
+    }
     setState(() {
       _prediction = null;
       _failure = null;
@@ -279,6 +287,14 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                     LayoutBuilder(
                       builder: (context, constraints) {
                         final desktop = constraints.maxWidth >= 860;
+                        // Keep the card's accessibility order independent of
+                        // the hero. Reordering the web semantics DOM can move
+                        // the focused input's form and blur the native editor.
+                        final card = Semantics(
+                          container: true,
+                          explicitChildNodes: true,
+                          child: _card(),
+                        );
                         return Padding(
                           padding: EdgeInsets.symmetric(
                             vertical: desktop ? 72 : 32,
@@ -289,7 +305,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                                   children: [
                                     Expanded(flex: 9, child: _hero(true)),
                                     const SizedBox(width: 56),
-                                    Expanded(flex: 11, child: _card()),
+                                    Expanded(flex: 11, child: card),
                                   ],
                                 )
                               : Column(
@@ -298,7 +314,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                                   children: [
                                     _hero(false),
                                     const SizedBox(height: 28),
-                                    _card(),
+                                    card,
                                   ],
                                 ),
                         );
