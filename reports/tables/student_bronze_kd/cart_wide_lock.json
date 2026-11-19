@@ -1,0 +1,79 @@
+{
+  "screen_seed": 42,
+  "confirmation_seeds": [
+    49,
+    50,
+    51
+  ],
+  "recipe_settings": {
+    "alpha": 0.9,
+    "extra_weight": 0.5,
+    "extra_rows": 2048
+  },
+  "menu_by_mode": 28,
+  "criteria": "Highest mean fold AP; tie lower depth, larger minimum weight, then mode alphabetical",
+  "primary": "Best D from 28 vs best A from 28",
+  "secondary": "Best among B/C/D vs tuned A",
+  "winners": {
+    "A": {
+      "depth": 16,
+      "leaf": 0.002,
+      "mode": "A"
+    },
+    "B": {
+      "depth": 16,
+      "leaf": 0.002,
+      "mode": "B"
+    },
+    "C": {
+      "depth": 12,
+      "leaf": 0.0005,
+      "mode": "C"
+    },
+    "D": {
+      "depth": 16,
+      "leaf": 0.0005,
+      "mode": "D"
+    }
+  },
+  "best_kd": {
+    "depth": 16,
+    "leaf": 0.0005,
+    "mode": "D"
+  },
+  "confirm_configs": [
+    {
+      "depth": 16,
+      "leaf": 0.002,
+      "mode": "A"
+    },
+    {
+      "depth": 16,
+      "leaf": 0.0005,
+      "mode": "A"
+    },
+    {
+      "depth": 16,
+      "leaf": 0.0005,
+      "mode": "B"
+    },
+    {
+      "depth": 16,
+      "leaf": 0.0005,
+      "mode": "C"
+    },
+    {
+      "depth": 16,
+      "leaf": 0.0005,
+      "mode": "D"
+    }
+  ],
+  "signature": "de698492a74f602bc2994f279e81e4d80a4f12fcb8813d603d2dc080edf8c0fa",
+  "folds": [
+    0,
+    1,
+    2
+  ],
+  "registered_minimum_delta": 0.005,
+  "scope": "Reused Train domain folds, post-primary capacity search. No other splits used."
+}

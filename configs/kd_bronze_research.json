@@ -1,0 +1,81 @@
+{
+  "study": "student-bronze-kd-v1",
+  "score": "mean-fold average precision",
+  "folds": [
+    0,
+    1,
+    2
+  ],
+  "screen_seed": 42,
+  "confirm_seeds": [
+    43,
+    44,
+    45
+  ],
+  "final_seeds": [
+    46,
+    47,
+    48
+  ],
+  "screen": {
+    "alpha": 0.9,
+    "extra_weight": 0.25,
+    "extra_rows": 2048
+  },
+  "sweep": [
+    {
+      "alpha": 0.5,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "alpha": 1,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "alpha": 0.9,
+      "extra_weight": 0.1,
+      "extra_rows": 2048
+    },
+    {
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    }
+  ],
+  "shortlist_size": 4,
+  "tfidf": {
+    "analyzer": "char",
+    "ngram_range": [
+      3,
+      5
+    ],
+    "max_features": 4096,
+    "min_df": 2,
+    "sublinear_tf": true,
+    "lowercase": false,
+    "norm": "l2"
+  },
+  "byte_limit": 128,
+  "hard_teacher_threshold": 0.5,
+  "bootstrap_replicates": 1000,
+  "bootstrap_seed": 890,
+  "minimum_reportable_delta": 0.005,
+  "notes": [
+    "Every architecture uses a matching hard control and a separate hard control chosen by mean AP among both capacities.",
+    "Each sweep varies one axis from the registered D anchor. C and D always share the same data and weights within a recipe.",
+    "The confirmation precedes choosing a single finalist. Final seeds reuse development domain folds.",
+    "Offline CPU reference excludes initialization; Android measurements reported only if available."
+  ]
+}

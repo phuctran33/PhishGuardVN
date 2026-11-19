@@ -1,0 +1,70 @@
+{
+  "candidate": "tfidf_lr_large_B_0.9_0_0",
+  "fold": 0,
+  "seed": 42,
+  "data_zip_sha256": "1f962f648b843a3f87655a4364f3dccaa9a958b2939fa593f58e681aff7ba344",
+  "data_zip_bytes": 83491,
+  "terms": 4096,
+  "parity_rows": 4359,
+  "native_max_error": 4.440892098500626e-16,
+  "archived_oof_max_error": 4.440892098500626e-16,
+  "p50_ms": 0.04795,
+  "p95_ms": 0.09832999999999992,
+  "runtime": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.7",
+  "sample_size": 250,
+  "sample_ids_sha256": "2717634b86fa90481e0b0d73e104d45d95a44ee5498ab8067b8db613aa5f39fa",
+  "warmup": 12,
+  "threads": 1,
+  "timing_scope": "warm Python raw URL to score excluding ZIP load; no Android runtime",
+  "score_only": true,
+  "android_verified": false,
+  "synthetic_cases": [
+    {
+      "url": "https://example.org/",
+      "canonical": "example.org/",
+      "expected_score": 0.02459214204707586
+    },
+    {
+      "url": "https://EXAMPLE.org:443/Report?Ref=%2F#here",
+      "canonical": "example.org/Report?Ref=%2F",
+      "expected_score": 0.01494819456760263
+    },
+    {
+      "url": "https://user:pass@example.org:8443/A?x=A",
+      "canonical": "example.org:8443/A?x=A",
+      "expected_score": 0.02459214204707586
+    },
+    {
+      "url": "https://bücher.de/Việt?x=🙂",
+      "canonical": "xn--bcher-kva.de/Việt?x=🙂",
+      "expected_score": 0.01311744565468886
+    },
+    {
+      "url": "http://127.0.0.1:8080/a",
+      "canonical": "127.0.0.1:8080/a",
+      "expected_score": 0.06856884804957881
+    },
+    {
+      "url": "https://example.org/aa  aa?q=ZZZZ",
+      "canonical": "example.org/aa aa?q=ZZZZ",
+      "expected_score": 0.02459214204707586
+    },
+    {
+      "url": "",
+      "expected": "reject"
+    },
+    {
+      "url": "http://",
+      "expected": "reject"
+    },
+    {
+      "url": "https://example.org:65536",
+      "expected": "reject"
+    },
+    {
+      "url": "http://[broken",
+      "expected": "reject"
+    }
+  ]
+}

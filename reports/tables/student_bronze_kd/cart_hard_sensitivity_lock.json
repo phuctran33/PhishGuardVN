@@ -1,0 +1,17 @@
+{
+  "name": "cart_hard_depth16_leaf0.002",
+  "max_depth": 16,
+  "min_weight_fraction_leaf": 0.002,
+  "selection_seeds": [
+    42
+  ],
+  "evaluation_seeds": [
+    46,
+    47,
+    48
+  ],
+  "selection": "max mean fold AP on 28 hard CART profiles; tie: lower depth, larger min leaf weight",
+  "primary_cart_kd": "cart_large_D_0.9_0.5_2048",
+  "candidate_ap_screen": 0.683309598518531,
+  "scope": "post-primary sensitivity on reused development folds"
+}

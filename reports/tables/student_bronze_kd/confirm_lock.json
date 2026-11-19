@@ -1,0 +1,220 @@
+{
+  "benchmark_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "seeds": [
+    43,
+    44,
+    45
+  ],
+  "recipes": [
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "C",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "small",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "C",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "lightgbm",
+      "profile": "small",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "C",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "small",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "C",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "small",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    }
+  ],
+  "selection": "Best Train KD recipe within each swept family, including screening anchors",
+  "chosen": [
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    }
+  ],
+  "hard_profiles": {
+    "tfidf_lr": "large",
+    "factorization_machine": "small",
+    "sparse_mlp": "small",
+    "multinomial_nb": "small",
+    "byte_cnn": "large",
+    "catboost": "large",
+    "xgboost": "large",
+    "lightgbm": "large",
+    "histgb": "large",
+    "rf": "large",
+    "extratrees": "large",
+    "cart": "large",
+    "rbf_random_features": "large"
+  }
+}

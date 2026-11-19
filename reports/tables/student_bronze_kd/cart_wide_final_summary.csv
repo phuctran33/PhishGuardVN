@@ -1,0 +1,6 @@
+candidate,mode,depth,leaf,ap,fits
+cart_wide_D_depth16_leaf0.0005,D,16,0.0005,0.6924251337495169,9
+cart_wide_A_depth16_leaf0.002,A,16,0.002,0.6834279883799643,9
+cart_wide_C_depth16_leaf0.0005,C,16,0.0005,0.6666967706613343,9
+cart_wide_B_depth16_leaf0.0005,B,16,0.0005,0.664836116710856,9
+cart_wide_A_depth16_leaf0.0005,A,16,0.0005,0.6218675046356269,9

@@ -1,0 +1,16 @@
+{
+  "candidate": "sparse_mlp_large_D_0.9_0.25_8192",
+  "seed": 49,
+  "fold": 0,
+  "files_sha256": {
+    "mlp_float32.npz": "8e044c854df71a200377b9e6bd353c516085a287b6401cc05035d16178edd855",
+    "mlp_int8.npz": "099b119d3c78d83289837aea26d999f94967472f8b9c1ad8f7c09a4460f58794"
+  },
+  "required_psl": {
+    "psl_icann_tldextract_5.4.0.txt": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f"
+  },
+  "android_verified": false,
+  "threshold_scope": "Score-only prototype; embedded 0.5 is a serialization field and not a selected operating point.",
+  "compression": "Int8 first layer, per hidden unit scale; Python reference dequantizes arrays into float32.",
+  "comparison": "Same trained weights and TF-IDF; no retuning. Held folds reused in development."
+}

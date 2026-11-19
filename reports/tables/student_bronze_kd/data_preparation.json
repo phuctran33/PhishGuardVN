@@ -1,0 +1,62 @@
+{
+  "inputs": {
+    "data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+    "reports/tables/stacking/train_ids.csv.gz": "f1661eddef65fe7e86ffce75f5a0ce3ffa2cf7f42860346fdac5e9f5a8d6f29c",
+    "configs/teacher_v2_candidate_lock.json": "e393942a6001f4fab55967c9d34bd09c92e37bff5b1dc134caf57d272de5652b",
+    "artifacts/student_lightgbm/cv_targets/manifest.json": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+    "scripts/kd_bronze_data.py": "2c79348af1ae935dc7a0e89c240f88e3aa22baa2acb67a9e7e67e720852e59cb"
+  },
+  "bronze_train_raw": 23829,
+  "valid_domain": 23829,
+  "distinct_after_core_dedup": 23829,
+  "folds": {
+    "0": {
+      "teacher": "archived",
+      "teacher_archived_sha256": "0105248c8b6fb98bdde802aaf5c9689a9f6cec3379061465cb20d28ee67dfc68",
+      "historical_max_abs_score_difference": 0.0,
+      "teacher_params": {
+        "C": 0.1,
+        "scale": true
+      },
+      "core_fitting": 8719,
+      "held": 4359,
+      "bronze_eligible": 23581,
+      "bronze_held_domain_removed": 248,
+      "bronze_mean_score": 0.6745737113208539,
+      "bronze_predicted_positive": 16385,
+      "cache_sha256": "4848ca7061762d7d65ca4d5ea4dd5eeab48b52052119b09cc359434430181dae"
+    },
+    "1": {
+      "teacher": "archived",
+      "teacher_archived_sha256": "cceb4befb84eaf9207e9ac74acc27214b7ec4a189dfcd8d79a2533e86e1c0923",
+      "historical_max_abs_score_difference": 0.0,
+      "teacher_params": {
+        "C": 0.1,
+        "scale": true
+      },
+      "core_fitting": 8719,
+      "held": 4359,
+      "bronze_eligible": 23323,
+      "bronze_held_domain_removed": 506,
+      "bronze_mean_score": 0.6594231888910213,
+      "bronze_predicted_positive": 15821,
+      "cache_sha256": "9be8a746f9ed00f0baa2d0b616dbc1e0b6d4b547d36383d734157539725b8086"
+    },
+    "2": {
+      "teacher": "archived",
+      "teacher_archived_sha256": "c500428a9b6f2d446d00c173dbf024dead774b69607cf91feec6ecd9d8f05563",
+      "historical_max_abs_score_difference": 0.0,
+      "teacher_params": {
+        "C": 0.1,
+        "scale": true
+      },
+      "core_fitting": 8718,
+      "held": 4360,
+      "bronze_eligible": 23583,
+      "bronze_held_domain_removed": 246,
+      "bronze_mean_score": 0.6847574254162538,
+      "bronze_predicted_positive": 16565,
+      "cache_sha256": "8f616fa357bef787134a1c4b2e3dbff3daa6c7e766caee26e7d42bd40c76e55b"
+    }
+  }
+}

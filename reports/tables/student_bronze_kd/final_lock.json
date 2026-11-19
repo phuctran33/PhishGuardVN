@@ -1,0 +1,64 @@
+{
+  "benchmark_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "seeds": [
+    46,
+    47,
+    48
+  ],
+  "recipes": [
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "C",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "small",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    }
+  ],
+  "selection": "Most positive confirmation seeds vs preselected tuned hard, then minimum seed delta, mean delta and AP",
+  "chosen": [
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    }
+  ],
+  "hard_profiles": {
+    "cart": "large"
+  }
+}

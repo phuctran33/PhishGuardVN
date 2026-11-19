@@ -1,0 +1,243 @@
+{
+  "git_branch": "research/student-bronze-kd",
+  "base_commit": "142810fb5273944b9cdf376b07d2a9f0a973dd8d",
+  "model_runtime_versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.1.0",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.2.0",
+    "catboost": "1.2.10"
+  },
+  "ran_utc": "2026-11-19T07:17:30.862892+00:00",
+  "benchmark_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "registered_settings": {
+    "study": "student-bronze-kd-v1",
+    "score": "mean-fold average precision",
+    "folds": [
+      0,
+      1,
+      2
+    ],
+    "screen_seed": 42,
+    "confirm_seeds": [
+      43,
+      44,
+      45
+    ],
+    "final_seeds": [
+      46,
+      47,
+      48
+    ],
+    "screen": {
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    "sweep": [
+      {
+        "alpha": 0.5,
+        "extra_weight": 0.25,
+        "extra_rows": 2048
+      },
+      {
+        "alpha": 1,
+        "extra_weight": 0.25,
+        "extra_rows": 2048
+      },
+      {
+        "alpha": 0.9,
+        "extra_weight": 0.1,
+        "extra_rows": 2048
+      },
+      {
+        "alpha": 0.9,
+        "extra_weight": 0.5,
+        "extra_rows": 2048
+      },
+      {
+        "alpha": 0.9,
+        "extra_weight": 0.25,
+        "extra_rows": 512
+      },
+      {
+        "alpha": 0.9,
+        "extra_weight": 0.25,
+        "extra_rows": 8192
+      }
+    ],
+    "shortlist_size": 4,
+    "tfidf": {
+      "analyzer": "char",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "max_features": 4096,
+      "min_df": 2,
+      "sublinear_tf": true,
+      "lowercase": false,
+      "norm": "l2"
+    },
+    "byte_limit": 128,
+    "hard_teacher_threshold": 0.5,
+    "bootstrap_replicates": 1000,
+    "bootstrap_seed": 890,
+    "minimum_reportable_delta": 0.005,
+    "notes": [
+      "Every architecture uses a matching hard control and a separate hard control chosen by mean AP among both capacities.",
+      "Each sweep varies one axis from the registered D anchor. C and D always share the same data and weights within a recipe.",
+      "The confirmation precedes choosing a single finalist. Final seeds reuse development domain folds.",
+      "Offline CPU reference excludes initialization; Android measurements reported only if available."
+    ]
+  },
+  "fold_preparation": {
+    "inputs": {
+      "data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+      "reports/tables/stacking/train_ids.csv.gz": "f1661eddef65fe7e86ffce75f5a0ce3ffa2cf7f42860346fdac5e9f5a8d6f29c",
+      "configs/teacher_v2_candidate_lock.json": "e393942a6001f4fab55967c9d34bd09c92e37bff5b1dc134caf57d272de5652b",
+      "artifacts/student_lightgbm/cv_targets/manifest.json": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+      "scripts/kd_bronze_data.py": "2c79348af1ae935dc7a0e89c240f88e3aa22baa2acb67a9e7e67e720852e59cb"
+    },
+    "bronze_train_raw": 23829,
+    "valid_domain": 23829,
+    "distinct_after_core_dedup": 23829,
+    "folds": {
+      "0": {
+        "teacher": "archived",
+        "teacher_archived_sha256": "0105248c8b6fb98bdde802aaf5c9689a9f6cec3379061465cb20d28ee67dfc68",
+        "historical_max_abs_score_difference": 0.0,
+        "teacher_params": {
+          "C": 0.1,
+          "scale": true
+        },
+        "core_fitting": 8719,
+        "held": 4359,
+        "bronze_eligible": 23581,
+        "bronze_held_domain_removed": 248,
+        "bronze_mean_score": 0.6745737113208539,
+        "bronze_predicted_positive": 16385,
+        "cache_sha256": "4848ca7061762d7d65ca4d5ea4dd5eeab48b52052119b09cc359434430181dae"
+      },
+      "1": {
+        "teacher": "archived",
+        "teacher_archived_sha256": "cceb4befb84eaf9207e9ac74acc27214b7ec4a189dfcd8d79a2533e86e1c0923",
+        "historical_max_abs_score_difference": 0.0,
+        "teacher_params": {
+          "C": 0.1,
+          "scale": true
+        },
+        "core_fitting": 8719,
+        "held": 4359,
+        "bronze_eligible": 23323,
+        "bronze_held_domain_removed": 506,
+        "bronze_mean_score": 0.6594231888910213,
+        "bronze_predicted_positive": 15821,
+        "cache_sha256": "9be8a746f9ed00f0baa2d0b616dbc1e0b6d4b547d36383d734157539725b8086"
+      },
+      "2": {
+        "teacher": "archived",
+        "teacher_archived_sha256": "c500428a9b6f2d446d00c173dbf024dead774b69607cf91feec6ecd9d8f05563",
+        "historical_max_abs_score_difference": 0.0,
+        "teacher_params": {
+          "C": 0.1,
+          "scale": true
+        },
+        "core_fitting": 8718,
+        "held": 4360,
+        "bronze_eligible": 23583,
+        "bronze_held_domain_removed": 246,
+        "bronze_mean_score": 0.6847574254162538,
+        "bronze_predicted_positive": 16565,
+        "cache_sha256": "8f616fa357bef787134a1c4b2e3dbff3daa6c7e766caee26e7d42bd40c76e55b"
+      }
+    }
+  },
+  "output_sha256": {
+    "android_tradeoff.csv": "c66175dc7d3850971cb44ee330f20f57f3d2a218b873eeaa00d0d13fa980c8a6",
+    "cart_hard_sensitivity_final.csv": "434912fe1ad994d0dd75dc30602ca4a1f56299ef70e82b8720ddb2f90ac941f2",
+    "cart_hard_sensitivity_final_oof.csv.gz": "016887660b4c70e162875f49aae0f9ceed56765f5cbc15cd29b25479c00593a5",
+    "cart_hard_sensitivity_lock.json": "6f2f1803bb5eda5dddb79bbfe51d2423161a927758ab07e4a8bd90e650492954",
+    "cart_hard_sensitivity_paired_ap.csv": "d6b5947053703fcf004c2aa2db8bf4e36482dd76bb824f9839f3cbcd1b50bea3",
+    "cart_hard_sensitivity_screen.csv": "fabc827af8f72a7a11698ce87008a6be0ee2381e3440efade5868ecf51b62946",
+    "cart_hard_sensitivity_screen_oof.csv.gz": "e8c92d49238b4a4013ae4dfbc1c5da13283440f2a6cd691ef92f4650bcbbb02e",
+    "cart_hard_sensitivity_screen_runs.csv": "d48678506726880e34c3647acbc2976cdbbb6b4e843a1a5f43a7bb5c3cb5bb9b",
+    "cart_wide_counts.json": "23ddcf6a1b2f3b5db42a0e37cf48bc7927a39a916b3f13faaadf3b8dd31f2f28",
+    "cart_wide_final_fold0.npz": "b88825472d1389481282bd40535e1b8cab7594cf772f54005842ade63e6ee4d1",
+    "cart_wide_final_fold1.npz": "8c9e72d92a83b3c3e4e37e026bd1f5242724c1425cdd076dfd0443c5ae2616d7",
+    "cart_wide_final_fold2.npz": "74cf6c448dd689a4b9ac8ab350e3f72aa18962c7120b2bdaf316f1c2f31417be",
+    "cart_wide_final_oof.csv.gz": "881704b234f50a42d9e164ae7f0b443cbab4acd07b091ee380bcfa2ddbdcbfe5",
+    "cart_wide_final_paired.csv": "491de392745e0b48bf3b5df80ce8c0bd799cd7f6a03d463b1b2f1bbcc2333f2c",
+    "cart_wide_final_runs.csv": "6f3b1efae8e230121c0ff657c068916de000d52028387bc89ea6c8bddb4bf4da",
+    "cart_wide_final_summary.csv": "130bd2c070a4ca4b50cd61b548314cef09424735e8ef74d39216f510ce5ea0f2",
+    "cart_wide_lock.json": "a5345696a92aeb8288bd23a36aaa744d80a36c1f4dbc1bd17f55adc2ed081d80",
+    "cart_wide_screen_fold0.npz": "3968d62d275906df97460b64558f16a1a40f3abe9547fda884de49359efda226",
+    "cart_wide_screen_fold1.npz": "77e89afe32446d8ffed68afdc641fb34e047e9f4d613050edccdfe5453159e54",
+    "cart_wide_screen_fold2.npz": "2637d0053b37ece12f4d0a25b024e60a8001389322d246a9a6c36dae868e5209",
+    "cart_wide_screen_runs.csv": "0302d1c69e391beafaff4dccb43b9b17ee45a6adefe2b2c3ee914790a8bcde98",
+    "cart_wide_screen_summary.csv": "94b1316f55d1e677f7fe73cf5497ec6d350c941ca00a270b60d9bc6ab96d2903",
+    "confirm_chosen_deltas.csv": "d66ef30c1f080be5c4432f73ddede86d3b26fff46abd90c28490367cc0b27161",
+    "confirm_lock.json": "b10770f1b55ba535ddae9c302de373e352a57779d8fb09be1cdd64f542c71c5f",
+    "confirm_nominee_fold_deltas.csv": "d66ef30c1f080be5c4432f73ddede86d3b26fff46abd90c28490367cc0b27161",
+    "confirm_nominee_rank.csv": "2158a3d14aeee98f5b449f9dc1f4bd5f7eac44e192e1cb40dbd5fd23416c5554",
+    "confirm_oof.csv.gz": "93dc7862aad17fdb27701af4d8b641bda787e10882f0d406eac5e2cbffd9990b",
+    "confirm_paired_ap.csv": "65c8460942733ca59015a05e37f26f8693ab176e7fc4cbb28bc0a0d9299e6ae9",
+    "confirm_runs.csv": "6c535d5dbc0adcf9ba660c42ff2b0adf20c4dff03524d374548a19f1533d49d0",
+    "confirm_summary.csv": "464c702de4c9be2f816973bdf745146793deda3daf5a8083924a0745bb80610a",
+    "data_preparation.json": "8f3cd87d0526b062bdef2dcc8ca33b49343fb9574e1309fa5584909acfa6c2cc",
+    "final_chosen_deltas.csv": "34d41690b733e86608f9143207d52d344786b7c235a01effece590804b32a842",
+    "final_lock.json": "9b18b7acaf7a9ed34268313c6db773054c1cdbac463d191aafa23635b5401b39",
+    "final_oof.csv.gz": "891cd8d64255044ce2e9a3c2857246296170dac609485d4a9c31eb03bfc9d058",
+    "final_paired_ap.csv": "9050e99085298e8852541adf211f4b80f50071eafa54c4f7d575abb60e139bb2",
+    "final_runs.csv": "fd83c56876b74c6626d57338de4cd4923d79067c8c508c1894fe7d7138209f92",
+    "final_summary.csv": "2614287b877210e28fd2179fe1c4885b8bf2eef50b57da51080cc729dd3ca46e",
+    "mlp_compression.csv": "b8c521f090795f0843a4f247cefe9e7e51a0f9a80c67516cfaea8084a2cd47ed",
+    "mlp_compression_oof.csv.gz": "367c8e46bbcb2b35d47df21b8df8e13a1a5ef39fc579d8a52a56a87b3f121c2c",
+    "mlp_final_cost.csv": "9669feeddbb0f4fd443ae33a167b56c10f49d6d97ee47c7aadc2491b1554b7fe",
+    "mlp_final_hard_tuning_oof.csv.gz": "46f5d054dd4e87df8fb67d1f651e7d1c4f2375380bfaf9586b10ecf976d0d82e",
+    "mlp_final_hard_tuning_rank.csv": "710692a1d8c1299e4957ab8ae42fe930244cb184ffea63977c5c7d7f87ea547d",
+    "mlp_final_hard_tuning_runs.csv": "5fcaa5bd76b26cb90ce1ac51edb1fbbb5cabc6246ee0d81e01d36f3704b8038b",
+    "mlp_final_lock.json": "cfc0056495a465f3d775123cfac2a522f9634fb5e20b8a7b806d32cca17646fc",
+    "mlp_final_oof.csv.gz": "f37460bb02412f4a261f47aa57baaa7bcc69d5e7ae888a488f3e0a14c1e9cced",
+    "mlp_final_paired_ap.csv": "9c259a9b84336db5e98509b050f5ef168bb57e259b955da797d11108591f1d4c",
+    "mlp_final_runs.csv": "1065f943466f57104f43b460a75707a89def1bd510e051c031a3309897f81d02",
+    "mlp_final_summary.csv": "a117185e5dd91dcb248cfd33ee8ae703d90fc555da8d8dabd0d3f71ab05e75fe",
+    "offline_cpu_cost.csv": "799bcfdffdcceea1e818046f2ff0f6031a4c949d67b59a2ebc5195372c148f99",
+    "screen_oof.csv.gz": "a060df2d75b05b370e81aa4dc9bb0063bd01a199c4437305d379ff1f8905de0c",
+    "screen_runs.csv": "08fe4c2c5adfc3feb9cc5455c54103b22ac8f546d12fff3469cfd91685841c99",
+    "screen_summary.csv": "4ae157ef519d3ab0e5518fe3b43747b99ef7b6a8679f247cc6e53b5f54591527",
+    "sweep_comparison.csv": "2c8ba6303ea3dac129f1e04bfd916289bc7e9673c3aaa8ee13af0b3e97784f44",
+    "sweep_lock.json": "09081d643dba2a9bf6a0ab8a5b22f2a2f7dfa31fb85f808f0175d09b2042f453",
+    "sweep_oof.csv.gz": "a02145618824359b28a236e57b7c476a0031b2f280203b028d671ae21ceb91df",
+    "sweep_runs.csv": "76f7255cd7fc70af7bb92a855982652f1b65fa23aee0dd6238debaf4c788a749",
+    "sweep_summary.csv": "e1fffd36c10aa26dafcc36a7186629cf6be6367e2c92867607a5192e68997dbb",
+    "teacher_bronze_scores.csv.gz": "c4ad38d4c198d7359cbeababb4ef9bf6a18152298f1e96e6a880d98ec0f4985c"
+  },
+  "source_sha256": {
+    "kd_bronze_cart_check.py": "ac8d1aeb3368fb1980e38f535994ead2ea3d199f9cc829d178836b68198a4c58",
+    "kd_bronze_cart_wide.py": "b92b666f58e6112c6c010598911648b285f177438accf7df89e6ae3f2ef26134",
+    "kd_bronze_cost.py": "dd521768a71d0e963f57252c103a06f25dcb6d1b188ddff851676e1a80542b0c",
+    "kd_bronze_data.py": "2c79348af1ae935dc7a0e89c240f88e3aa22baa2acb67a9e7e67e720852e59cb",
+    "kd_bronze_export.py": "eaab7ae5a8d4ead1b8c77fb1a12fabdf6977a10a9fde4fb45f32f5b89b12a82f",
+    "kd_bronze_lr_portable.py": "d88e84fe90542f3889cf6d3b3711942481ba5f191bcdba4882ea4add32008ad7",
+    "kd_bronze_mlp_check.py": "b3e07d4c8e82dab1566e41421dc85011385f7ac4fe8318bdfb03980de82ee4fd",
+    "kd_bronze_mlp_compression.py": "9c3b78c9c5b64eef889026dc3898f500990b49b3cb353f26099db9396d635e6e",
+    "kd_bronze_neural.py": "b11232ba6e205726bb9470d6ef78fedd11df0fc7bae11812568d84e4e500cb43",
+    "kd_bronze_runner.py": "1c7f6acbdf7c26a63165d13d4c95f6594655b5fd8e3b1612688bf717266ea2cd",
+    "kd_bronze_sparse.py": "b6be92ccc885a7c79f06be20bdce450204cb4f9bac80b7966d3caaed5f10915a",
+    "kd_bronze_stages.py": "f3f682e8d59b8ab48a1db74bd4a7db35751ba726227bba1232f6b8d1fc3bdced",
+    "kd_bronze_stats.py": "4c8683f9c02638aa3e91cb5a99a3e2df8e64e797a7dfe8023e3d5006aa22d230",
+    "kd_bronze_trees.py": "075aa2405a8b7b0e20abdea8c707a527f7fef42037d73d215af89ee3b57040ef"
+  },
+  "measurements": {
+    "databytes_limit": 1048576,
+    "desktop_p95_ms_limit": 1.0,
+    "scope": "proxy to compare measured Student settings, not an approved device limit"
+  },
+  "validation_test_external_read": false,
+  "teacher_product_changed": false,
+  "android_verified": false
+}

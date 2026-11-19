@@ -1,0 +1,79 @@
+{
+  "benchmark_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "extension_source_sha256": "b3e07d4c8e82dab1566e41421dc85011385f7ac4fe8318bdfb03980de82ee4fd",
+  "parent_lock_sha256": "b10770f1b55ba535ddae9c302de373e352a57779d8fb09be1cdd64f542c71c5f",
+  "hard_grid_widths": [
+    16,
+    32,
+    64
+  ],
+  "hard_grid_learning_rates": [
+    0.0015,
+    0.003,
+    0.006
+  ],
+  "optimizer_steps": 384,
+  "batch_size": 128,
+  "tuning_seed": 42,
+  "verification_seeds": [
+    49,
+    50,
+    51
+  ],
+  "expanded_hard_winner": "sparse_mlp_hard_w64_lr0.0015",
+  "expanded_hard_width": 64,
+  "expanded_hard_rate": 0.0015,
+  "expanded_hard_selection_ap": 0.8962716393294748,
+  "expanded_hard_selection": "Mean fold AP descending, then width and rate ascending",
+  "kd_recipe": {
+    "family": "sparse_mlp",
+    "profile": "large",
+    "mode": "D",
+    "alpha": 0.9,
+    "extra_weight": 0.25,
+    "extra_rows": 8192
+  },
+  "matched_recipes": [
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "B",
+      "alpha": 0.9,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "C",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "small",
+      "mode": "A",
+      "alpha": 0.0,
+      "extra_weight": 0.0,
+      "extra_rows": 0
+    }
+  ],
+  "scope": "New seed replay on already reused development folds"
+}

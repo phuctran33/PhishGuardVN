@@ -101,3 +101,17 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /reports/tables/android_kd_*/*.json text eol=lf
 /reports/tables/android_kd_*/*.csv text eol=lf
 /reports/tables/android_kd_*/*.gz -text
+
+# Preserve the exact bytes used by the completed Bronze KD benchmark.
+/scripts/kd_bronze_*.py -text !eol whitespace=cr-at-eol
+/scripts/kd_bronze_sparse.py whitespace=cr-at-eol,-blank-at-eof
+/scripts/kd_bronze_stats.py whitespace=cr-at-eol,-blank-at-eof
+/configs/kd_bronze_research.json text eol=lf
+/reports/tables/student_bronze_kd/*.csv text eol=lf
+/reports/tables/student_bronze_kd/*.json text eol=lf
+/reports/tables/student_bronze_kd/*.gz -text
+/reports/tables/student_bronze_kd/*.npz -text
+/artifacts/student_bronze_kd/**/*.json text eol=lf
+/artifacts/student_bronze_kd/**/*.zip -text
+/artifacts/student_bronze_kd/**/*.joblib -text
+/artifacts/student_bronze_kd/**/*.npz -text

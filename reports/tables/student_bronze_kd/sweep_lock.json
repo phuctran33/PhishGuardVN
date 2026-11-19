@@ -1,0 +1,222 @@
+{
+  "benchmark_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "seeds": [
+    42
+  ],
+  "recipes": [
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.5,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.1,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "cart",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 1,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.5,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.1,
+      "extra_rows": 2048
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "lightgbm",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 1,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.5,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.1,
+      "extra_rows": 2048
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "rbf_random_features",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 1,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.5,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.1,
+      "extra_rows": 2048
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 512
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.25,
+      "extra_rows": 8192
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 0.9,
+      "extra_weight": 0.5,
+      "extra_rows": 2048
+    },
+    {
+      "family": "sparse_mlp",
+      "profile": "large",
+      "mode": "D",
+      "alpha": 1,
+      "extra_weight": 0.25,
+      "extra_rows": 2048
+    }
+  ],
+  "selection": "Top four families by best screening KD delta vs tuned A; sweep same winning capacity",
+  "nominees": [
+    "cart_large_C_0.9_0.25_2048",
+    "sparse_mlp_large_D_0.9_0.25_2048",
+    "lightgbm_large_B_0.9_0_0",
+    "rbf_random_features_large_B_0.9_0_0"
+  ],
+  "hard_profiles": {
+    "tfidf_lr": "large",
+    "factorization_machine": "small",
+    "sparse_mlp": "small",
+    "multinomial_nb": "small",
+    "byte_cnn": "large",
+    "catboost": "large",
+    "xgboost": "large",
+    "lightgbm": "large",
+    "histgb": "large",
+    "rf": "large",
+    "extratrees": "large",
+    "cart": "large",
+    "rbf_random_features": "large"
+  }
+}

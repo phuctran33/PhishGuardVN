@@ -1,0 +1,13 @@
+{
+  "screen_fits": 336,
+  "screen_scores": 1464736,
+  "final_fits": 45,
+  "final_scores": 196170,
+  "held_unique_ids": 13078,
+  "threshold": 0.005,
+  "primary_point_clears_delta": true,
+  "primary_interval_excludes_zero": false,
+  "all_final_seed_means_positive": true,
+  "validation_external_test_evaluated": false,
+  "checkpoint_layout": "one compressed matrix of scores per stage/fold, indexed by tasks/ids"
+}
