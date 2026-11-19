@@ -1,0 +1,39 @@
+{
+  "benchmark_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "runner_fingerprint": "db385bb82cfb28487dd1a63fbd96e76e68dec4e8ef386c3e15107dde2212d961",
+  "optimizer_steps": [
+    384,
+    1536
+  ],
+  "cnn": {
+    "embedding_dim": 8,
+    "channels": 24,
+    "kernel_size": 5,
+    "max_bytes": 128
+  },
+  "training": {
+    "batch_size": 128,
+    "learning_rate": 0.003,
+    "optimizer": "Adam",
+    "dropout": 0.0
+  },
+  "bronze_settings": {
+    "alpha": 0.9,
+    "extra_weight": 0.25,
+    "extra_rows": 2048
+  },
+  "hard_selected_steps": 1536,
+  "hard_tuning_seed": 42,
+  "evaluation_seeds": [
+    202,
+    303,
+    404
+  ],
+  "domain_folds": [
+    0,
+    1,
+    2
+  ],
+  "purpose": "Independent optimizer-budget check, not a reproduction of an unspecified CNN recipe.",
+  "scope": "Train-only reused development folds; never Validation, Official Test or external."
+}

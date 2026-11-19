@@ -115,3 +115,14 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /artifacts/student_bronze_kd/**/*.zip -text
 /artifacts/student_bronze_kd/**/*.joblib -text
 /artifacts/student_bronze_kd/**/*.npz -text
+
+# Preserve follow-up research hashes across operating systems.
+/configs/week7_tiny_mlp.json text eol=lf
+/artifacts/student_tiny_mlp/**/*.json text eol=lf
+/artifacts/student_tiny_mlp/**/*.npz -text
+/reports/tables/student_tiny_mlp/**/*.csv text eol=lf
+/reports/tables/student_tiny_mlp/**/*.json text eol=lf
+/reports/tables/student_tiny_mlp/**/*.gz -text
+/reports/tables/student_bronze_kd_cnn_followup/*.csv text eol=lf
+/reports/tables/student_bronze_kd_cnn_followup/*.json text eol=lf
+/reports/tables/student_bronze_kd_cnn_followup/*.gz -text

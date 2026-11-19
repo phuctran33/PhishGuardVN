@@ -135,3 +135,10 @@ Chạy từ thư mục gốc bằng Python 3.11 trong môi trường dự án. T
 Cache nằm ở `data/interim/kd_bronze_research`. Chạy lại stage sẽ kiểm fingerprint của config, mã và tập fitting rồi bỏ qua checkpoint đã hoàn thành. Bảng `*_runs.csv` ghi từng fit. `*_oof.csv.gz` ghi ID, nhãn thật của hàng giữ lại, fold, seed, mode gián tiếp qua tên recipe và điểm thô. [Config](../configs/kd_bronze_research.json) · [Thư mục kết quả](tables/student_bronze_kd/) · [Manifest](tables/student_bronze_kd/research_manifest.json)
 
 Tái sử dụng ba Teacher theo fold, bản đồ folds, nhãn mềm Gold/Silver đã kiểm tra và bộ trích E2 của dự án. **Điểm Teacher trên bronze, các lần fit Student, dự đoán, bootstrap, phép đo CPU và gói research là kết quả chạy mới.** [Dữ liệu đã lọc theo fold](tables/student_bronze_kd/data_preparation.json) · [Điểm Teacher bronze theo ID](tables/student_bronze_kd/teacher_bronze_scores.csv.gz)
+
+## Các lượt thử bổ sung
+
+- **Byte CNN, tăng ngân sách huấn luyện.** Trên cùng ba fold và các seed 202/303/404, cấu hình 1.536 bước đạt AP **0,85506** khi dùng KD và Bronze nhãn mềm, so với **0,84368** của hard-label. Chênh lệch **+0,01139 AP**, khoảng tin cậy 95% **[+0,00364, +0,01763]**, thắng **7/9 cặp fold–seed**. Bảng lưu cả đối chứng 384 bước và bốn cách học. [Cấu hình và bảng kết quả CNN](tables/student_bronze_kd_cnn_followup/) · [Runner CNN](../scripts/kd_bronze_cnn_budget.py)
+- **Tiny MLP 32 nút và chi phí inference.** Thử score KD, mixed-logit, chỉ logit, thu nhỏ từ vựng, nén int8 và kiểm thêm LightGBM 100 cây. Mixed-logit đạt AP **0,91395** so với **0,91225** của Tiny MLP hard-label. Khoảng tin cậy của mức tăng cắt 0. [Báo cáo Tiny MLP](week7_tiny_mlp_tradeoff.md)
+
+Các lượt trên thuộc research và dùng các fold development đã có. Mô hình đã chọn để Hy tích hợp được bàn giao ở PR Student Android. [Bàn giao MLP 64 nút](https://github.com/phuctran33/PhishGuardVN/blob/bc3a3a7054e2f6e6e733595f40f38439784536a1/docs/week7_android_mlp_handoff.md)

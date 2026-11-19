@@ -1,0 +1,17 @@
+{
+  "inputs": {
+    "data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+    "data/splits/url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f",
+    "artifacts/student_lightgbm/cv_targets/manifest.json": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+    "artifacts/student_week7/teacher_targets.csv.gz": "00d5edeb1123867ea251d9b18e124efa92803cf49a352b2cad38d0056efc6f0a",
+    "reports/tables/stacking/train_ids.csv.gz": "f1661eddef65fe7e86ffce75f5a0ce3ffa2cf7f42860346fdac5e9f5a8d6f29c",
+    "configs/teacher_lock.json": "781e1670a96df52b830bc40eb40af046d47db5f0a1b963bd2d42195c740db96c",
+    "models/teacher_v2_candidate.joblib": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "configs/week7_tiny_mlp.json": "8e8c3b29cc88971aeb43a2812398124a81278d8601f2c21bb47f3de3483e09e0"
+  },
+  "runner_sha256": "4e1d2e8ac9ee85f4604aced2a245f0849e1c99f77f8356b1d1ca6ef22597814f",
+  "cv_output_sha256": {
+    "cv_runs.csv": "0c3416c007f8774bb6d5be19b65747bd7d1b0256ee75581c1f86af23bf05f2b8",
+    "cv_predictions.csv.gz": "7374bf5254c607944e7b370662d54a1d9c8fec4a909a628faf5b1f0634e7dcb0"
+  }
+}

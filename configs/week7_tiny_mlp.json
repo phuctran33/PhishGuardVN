@@ -1,0 +1,66 @@
+{
+  "experiment": "independent_tiny_mlp_demo_v1",
+  "scope": "Friend's exact implementation unavailable. New controlled comparison; numbers should not be treated as replication.",
+  "folds": [
+    0,
+    1,
+    2
+  ],
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "export_seed": 42,
+  "text_features": 8192,
+  "compact_features": 1024,
+  "hidden_units": 32,
+  "epochs": 20,
+  "batch_size": 1024,
+  "learning_rate": 0.003,
+  "alpha": 0.5,
+  "fpr_budget": 0.01,
+  "variants": {
+    "full": [
+      "hard",
+      "score_kd",
+      "mixed_logit",
+      "logit_only"
+    ],
+    "compact": [
+      "hard",
+      "mixed_logit"
+    ]
+  },
+  "bootstrap_pairs": [
+    [
+      "full__mixed_logit",
+      "full__hard"
+    ],
+    [
+      "full__mixed_logit",
+      "full__score_kd"
+    ],
+    [
+      "full__logit_only",
+      "full__mixed_logit"
+    ],
+    [
+      "compact__mixed_logit",
+      "compact__hard"
+    ],
+    [
+      "compact__mixed_logit",
+      "full__mixed_logit"
+    ]
+  ],
+  "logit_loss": "0.5*(student_logit-clipped_teacher_logit)^2 / max(var(fitting_teacher_logit),1); mixed uses alpha=0.5. Clip teacher score to [1e-6,1-1e-6] before inverse sigmoid.",
+  "compact_selection": "Train-only chi2 rank of original TF-IDF; refit TF-IDF / L2 on selected vocabulary.",
+  "settings_frozen_before_training": true,
+  "cv_threshold": 0.5,
+  "validation_threshold": "1% benign FPR on fixed export-seed OOF; evaluated as frozen on Validation. Quantized evaluated at same threshold.",
+  "evaluation": "Previous development folds reused, 24 positives in supplementary Validation, no Official Test/external."
+}

@@ -1,0 +1,39 @@
+{
+  "seed": 42,
+  "lightgbm_parameters": {
+    "n_estimators": 100,
+    "num_leaves": 7,
+    "learning_rate": 0.05,
+    "min_child_samples": 20,
+    "reg_lambda": 1,
+    "objective": "cross_entropy",
+    "n_jobs": 1,
+    "deterministic": true,
+    "force_col_wise": true,
+    "verbosity": -1,
+    "subsample": 1,
+    "colsample_bytree": 1
+  },
+  "lightgbm_version": "4.7.0",
+  "alpha": 0.5,
+  "thresholds": {
+    "hard_only": 0.43521545566530206,
+    "kd_mixed": 0.43543179127429454
+  },
+  "teacher_cv_targets_hash": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+  "teacher_release_targets_hash": "00d5edeb1123867ea251d9b18e124efa92803cf49a352b2cad38d0056efc6f0a",
+  "source_plan_hash": "41a2802a30e7467bae6bad375d125f5b591d9122feecccfd418ca2ba6ad07998",
+  "artifact_sha256": {
+    "artifacts/student_tiny_mlp/compact_lightgbm/features.json": "aac9a276288b0d29ada3b2ffd27bad3d7a3d186bc85fca63ce09865b796d81f6",
+    "artifacts/student_lightgbm/brand_reference_v1.csv": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+    "artifacts/student_lightgbm/psl_icann_tldextract_5.4.0.txt": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f",
+    "artifacts/student_tiny_mlp/compact_lightgbm/hard_only.json": "04b739cb97b4fcbf372467df890461ee173eee4fc362b7c2d9f4c2f371fb2298",
+    "artifacts/student_tiny_mlp/compact_lightgbm/kd_mixed.json": "ebc0d165687b33266b4b429f5a362b68c68b0bb815bc38f527e2f725fb414973"
+  },
+  "input_feature_count": 8212,
+  "cv_ids": 13078,
+  "validation_ids": 1585,
+  "teacher_retrained": false,
+  "official_test_evaluated": false,
+  "android_verified": false
+}

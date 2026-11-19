@@ -1,0 +1,9 @@
+{
+  "seed": 42,
+  "fpr_budget": 0.01,
+  "thresholds": {
+    "hard_only": 0.43521545566530206,
+    "kd_mixed": 0.43543179127429454
+  },
+  "fit_scope": "Pooled Train OOF only. Validation excluded."
+}

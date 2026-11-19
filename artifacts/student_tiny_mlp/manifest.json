@@ -1,0 +1,123 @@
+{
+  "plan": {
+    "experiment": "independent_tiny_mlp_demo_v1",
+    "scope": "Friend's exact implementation unavailable. New controlled comparison; numbers should not be treated as replication.",
+    "folds": [
+      0,
+      1,
+      2
+    ],
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "export_seed": 42,
+    "text_features": 8192,
+    "compact_features": 1024,
+    "hidden_units": 32,
+    "epochs": 20,
+    "batch_size": 1024,
+    "learning_rate": 0.003,
+    "alpha": 0.5,
+    "fpr_budget": 0.01,
+    "variants": {
+      "full": [
+        "hard",
+        "score_kd",
+        "mixed_logit",
+        "logit_only"
+      ],
+      "compact": [
+        "hard",
+        "mixed_logit"
+      ]
+    },
+    "bootstrap_pairs": [
+      [
+        "full__mixed_logit",
+        "full__hard"
+      ],
+      [
+        "full__mixed_logit",
+        "full__score_kd"
+      ],
+      [
+        "full__logit_only",
+        "full__mixed_logit"
+      ],
+      [
+        "compact__mixed_logit",
+        "compact__hard"
+      ],
+      [
+        "compact__mixed_logit",
+        "full__mixed_logit"
+      ]
+    ],
+    "logit_loss": "0.5*(student_logit-clipped_teacher_logit)^2 / max(var(fitting_teacher_logit),1); mixed uses alpha=0.5. Clip teacher score to [1e-6,1-1e-6] before inverse sigmoid.",
+    "compact_selection": "Train-only chi2 rank of original TF-IDF; refit TF-IDF / L2 on selected vocabulary.",
+    "settings_frozen_before_training": true,
+    "cv_threshold": 0.5,
+    "validation_threshold": "1% benign FPR on fixed export-seed OOF; evaluated as frozen on Validation. Quantized evaluated at same threshold.",
+    "evaluation": "Previous development folds reused, 24 positives in supplementary Validation, no Official Test/external."
+  },
+  "created_utc": "2026-11-18T07:27:49.831906+00:00",
+  "revision": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+  "source_sha256": {
+    "scripts/verify_tiny_mlp.py": "4e1d2e8ac9ee85f4604aced2a245f0849e1c99f77f8356b1d1ca6ef22597814f",
+    "scripts/tiny_mlp_analysis.py": "b50763ae205d2081aac4bad66295a9a9228cb89033a7a5e1c7e40fe09fbae3db",
+    "scripts/tiny_mlp_export.py": "1cec9cfaafa50effa0a3b92f907145cade71da36e2f85a6c1034f5871b6e4ab5"
+  },
+  "input_sha256": {
+    "data/splits/url_train.csv": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+    "data/splits/url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f",
+    "artifacts/student_lightgbm/cv_targets/manifest.json": "0f399d055d207f371a700c1f15b445bb712f715db27d1932b90016fb3f0377d9",
+    "artifacts/student_week7/teacher_targets.csv.gz": "00d5edeb1123867ea251d9b18e124efa92803cf49a352b2cad38d0056efc6f0a",
+    "reports/tables/stacking/train_ids.csv.gz": "f1661eddef65fe7e86ffce75f5a0ce3ffa2cf7f42860346fdac5e9f5a8d6f29c",
+    "configs/teacher_lock.json": "781e1670a96df52b830bc40eb40af046d47db5f0a1b963bd2d42195c740db96c",
+    "models/teacher_v2_candidate.joblib": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "configs/week7_tiny_mlp.json": "8e8c3b29cc88971aeb43a2812398124a81278d8601f2c21bb47f3de3483e09e0"
+  },
+  "output_sha256": {
+    "cv_predictions.csv.gz": "7374bf5254c607944e7b370662d54a1d9c8fec4a909a628faf5b1f0634e7dcb0",
+    "cv_provenance.json": "c13bff93ac4bd11c9dab92744f671c2619986a6a9b9608a789a5692fffa11b3d",
+    "cv_runs.csv": "0c3416c007f8774bb6d5be19b65747bd7d1b0256ee75581c1f86af23bf05f2b8",
+    "cv_summary.csv": "a04c367c8d34c3bcde2be2e9a9783a60f788b58428da5c6442f9011805ad8547",
+    "paired_bootstrap.csv": "1077f0b7c447682db3bf703dae79f5fcb506e909063013a9878a3ec9752a4843",
+    "selection.json": "de7b94d37bbbe6cc2683438756ab5f54d0faaf028a5a327f4af1cbd417c0f983",
+    "validation_metrics.csv": "9cbc699aba6b6cd78621dceff424eb2a03cf7a42e7cd22db7bdaf964fcef77dc",
+    "validation_predictions.csv.gz": "6da28076c6e0ae2e9961640dea4ca81c33c2d3f6d5e839d07382970fb9fcc6a8"
+  },
+  "artifact_sha256": {
+    "compact__hard__float32.npz": "6d5f78634eb715f8a459796cbe04d7b205165e4e1008dab3611fae657fb6ee7b",
+    "compact__hard__int8.npz": "96a30de52843fc0978d0024739a27e4745ee409e3fc39d2d44926579f9671aa3",
+    "compact__mixed_logit__float32.npz": "a9fd79a4ab566d3c59111eba2256bf21da0648cda3f9a58e0338fc22e370e6f6",
+    "compact__mixed_logit__int8.npz": "a19a64fe0d072b46b48d826350a495d996605829931888d87111180ceb50c697",
+    "full__hard__float32.npz": "2d2ca9e548ba4e821f6d070d2a1a3f39c1baebafe52a99587411a95411254737",
+    "full__hard__int8.npz": "3c3f3a8d54cd3b2f411d6cd5a9576c47ca0467a1ce06716b1f63d68c76588761",
+    "full__logit_only__float32.npz": "746bd58ab387a94bf055cf47e7527f1862e8650dd53de4eef4bb4b084ef3c2c5",
+    "full__logit_only__int8.npz": "c022b32b459e51622c9c6a97ded49ebe39a301742ef817dc4f2fa95f7eac058c",
+    "full__mixed_logit__float32.npz": "a86a209f0a8907040eef765797db5e48cddfa46c1158918eaf4ce2b8a7c2ccf1",
+    "full__mixed_logit__int8.npz": "c353055405d7e615e82bdf6b1376bba2cd3e41b2eb129b56be165c759e71ebca",
+    "full__score_kd__float32.npz": "e511837dd6bbfc646699d6fdee7d06903efc397fa969fcc8d4898081387d5345",
+    "full__score_kd__int8.npz": "dd2690f46cbf817baf119eb54ddbb8affe767f5a04d2db82c49435e6c0a79287"
+  },
+  "train_rows": 13078,
+  "validation_rows": 1585,
+  "validation_positives": 24,
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.7 (tags/v3.11.7:fa7a6f2, Dec  4 2023, 19:24:49) [MSC v.1937 64 bit (AMD64)]",
+  "libraries": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.1",
+    "pandas": "3.1.0"
+  },
+  "teacher_updated": false,
+  "android_verified": false,
+  "official_test_evaluated": false
+}

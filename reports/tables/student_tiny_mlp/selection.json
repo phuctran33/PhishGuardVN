@@ -1,0 +1,21 @@
+{
+  "ranking": [
+    "full__mixed_logit",
+    "full__score_kd",
+    "full__hard",
+    "full__logit_only",
+    "compact__hard",
+    "compact__mixed_logit"
+  ],
+  "primary": "mean Train fold AP across matched seeds",
+  "thresholds": {
+    "compact__hard": 0.663331525,
+    "compact__mixed_logit": 0.717498615,
+    "full__hard": 0.695683115,
+    "full__logit_only": 0.747541515,
+    "full__mixed_logit": 0.6994677,
+    "full__score_kd": 0.67518397
+  },
+  "threshold_source": "Train OOF seed 42",
+  "validation_used_for_selection": false
+}
