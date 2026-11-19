@@ -66,6 +66,9 @@ class _BootState extends State<_Boot> {
             classifier: runtime.classifier,
             info: runtime.extractorInfo,
             teacherInfo: runtime.teacherInfo,
+            studentClassifier: runtime.studentClassifier,
+            studentInfo: runtime.studentInfo,
+            studentLoadError: runtime.studentLoadError,
           );
         },
       );

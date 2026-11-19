@@ -1,6 +1,8 @@
 import 'package:phishguard_features/phishguard_features.dart';
 
 import 'extractor_loader.dart';
+import 'student_loader.dart';
+import 'student_url_classifier.dart';
 import 'teacher_loader.dart';
 import 'teacher_url_classifier.dart';
 import 'url_classifier.dart';
@@ -11,11 +13,17 @@ class AppRuntime {
     required this.extractorInfo,
     required this.teacherInfo,
     required this.classifier,
+    this.studentInfo,
+    this.studentClassifier,
+    this.studentLoadError,
   });
 
   final LoadedExtractor extractorInfo;
   final TeacherRuntimeInfo teacherInfo;
   final UrlClassifier classifier;
+  final StudentRuntimeInfo? studentInfo;
+  final UrlClassifier? studentClassifier;
+  final Object? studentLoadError;
 
   E2Extractor get extractor => extractorInfo.extractor;
 }
@@ -33,11 +41,29 @@ Future<AppRuntime> bootstrapApp() async {
   LoadedExtractor? extractorInfo;
   try {
     extractorInfo = await loadE2Extractor();
-    final teacher = await loadTeacherV2(extractorBrandSha256: extractorInfo.brandSha256);
+    final teacher =
+        await loadTeacherV2(extractorBrandSha256: extractorInfo.brandSha256);
+
+    LoadedStudent? student;
+    Object? studentLoadError;
+
+    try {
+      student = await loadStudentMlpV1();
+    } on Object catch (error) {
+      studentLoadError = error;
+    }
+
     return AppRuntime(
       extractorInfo: extractorInfo,
       teacherInfo: teacher.info,
-      classifier: TeacherUrlClassifier(extractor: extractorInfo.extractor, model: teacher.model),
+      classifier: TeacherUrlClassifier(
+        extractor: extractorInfo.extractor,
+        model: teacher.model,
+      ),
+      studentInfo: student?.info,
+      studentClassifier:
+          student == null ? null : StudentUrlClassifier(student: student),
+      studentLoadError: studentLoadError,
     );
   } on Object catch (error) {
     throw BootstrapFailure(error, extractorInfo: extractorInfo);

@@ -10,6 +10,7 @@ import 'input_validation.dart';
 import 'parity_page.dart';
 import 'teacher_loader.dart';
 import 'url_classifier.dart';
+import 'student_loader.dart';
 
 const sampleUrls = <String>[
   'https://www.vietcombank.com.vn/vi-VN/',
@@ -28,12 +29,18 @@ class HomePage extends StatefulWidget {
     required this.classifier,
     this.info,
     this.teacherInfo,
+    this.studentInfo,
+    this.studentClassifier,
+    this.studentLoadError,
   });
 
   final E2Extractor extractor;
   final UrlClassifier classifier;
   final LoadedExtractor? info;
   final TeacherRuntimeInfo? teacherInfo;
+  final UrlClassifier? studentClassifier;
+  final StudentRuntimeInfo? studentInfo;
+  final Object? studentLoadError;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -42,6 +49,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
   ClassificationOutcome? _outcome;
+  ClassificationOutcome? _studentOutcome;
   FeatureResult? _features;
   String _submitted = '';
 
@@ -58,7 +66,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _submitted = text;
       _outcome = outcome;
-      _features = outcome is InvalidInput ? null : widget.extractor.extract(text);
+      _features =
+          outcome is InvalidInput ? null : widget.extractor.extract(text);
     });
   }
 
@@ -72,8 +81,21 @@ class _HomePageState extends State<HomePage> {
         .convert({'url': _submitted, 'features': r.toMap()});
     await Clipboard.setData(ClipboardData(text: text));
     if (!mounted) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Đã sao chép JSON đặc trưng E2')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Đã sao chép JSON đặc trưng E2')));
+  }
+
+  void _analyzeStudent() {
+    FocusScope.of(context).unfocus();
+
+    final classifier = widget.studentClassifier;
+    if (classifier == null) return;
+
+    final outcome = classifier.classify(_controller.text);
+
+    setState(() {
+      _studentOutcome = outcome;
+    });
   }
 
   @override
@@ -137,6 +159,45 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 12),
               if (outcome != null) ..._buildResult(context, outcome),
               const SizedBox(height: 16),
+              const Divider(),
+              Text(
+                'Student MLP · Chế độ thử nghiệm',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              FilledButton.tonalIcon(
+                key: const Key('student_analyze_button'),
+                onPressed:
+                    widget.studentClassifier == null ? null : _analyzeStudent,
+                icon: const Icon(Icons.science_outlined),
+                label: const Text('Phân tích bằng Student'),
+              ),
+              const SizedBox(height: 8),
+              if (widget.studentClassifier == null)
+                Text(
+                  widget.studentLoadError == null
+                      ? 'Student chưa được nạp.'
+                      : 'Student load lỗi: ${widget.studentLoadError.runtimeType}',
+                ),
+              if (_studentOutcome case Classified c)
+                Card(
+                  key: const Key('result_student'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Kết quả Student MLP'),
+                        Text(c.phishing ? 'Phishing' : 'Benign'),
+                        Text('Score: ${c.score.toStringAsFixed(6)}'),
+                        Text('Threshold: ${c.threshold}'),
+                        Text('Model: ${c.modelVersion}'),
+                        const Text('Score sigmoid chưa hiệu chuẩn.'),
+                      ],
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 16),
               _Footer(info: widget.info, teacher: widget.teacherInfo),
             ],
           ),
@@ -145,7 +206,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Widget> _buildResult(BuildContext context, ClassificationOutcome outcome) {
+  List<Widget> _buildResult(
+      BuildContext context, ClassificationOutcome outcome) {
     switch (outcome) {
       case Classified c:
         return [_classifiedCard(context, c), ..._e2Details(context)];
@@ -198,12 +260,16 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              c.phishing ? 'Có dấu hiệu lừa đảo' : 'Chưa phát hiện dấu hiệu lừa đảo',
-              style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              c.phishing
+                  ? 'Có dấu hiệu lừa đảo'
+                  : 'Chưa phát hiện dấu hiệu lừa đảo',
+              style:
+                  textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             SelectableText('Điểm của mô hình: ${c.score.toStringAsFixed(6)}'),
-            SelectableText('Ngưỡng: ${c.threshold} · quy tắc: ${c.decisionRule}'),
+            SelectableText(
+                'Ngưỡng: ${c.threshold} · quy tắc: ${c.decisionRule}'),
             Text('Mô hình: ${c.modelVersion}'),
             const SizedBox(height: 8),
             Text(
@@ -239,7 +305,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+            Text(title,
+                style: textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold)),
             for (final line in lines) ...[
               const SizedBox(height: 4),
               Text(line),
@@ -272,12 +340,16 @@ class _HomePageState extends State<HomePage> {
                 SelectableText(p.registrableDomain != null
                     ? 'Tên miền đăng ký: ${p.registrableDomain}'
                     : 'Tên miền đăng ký: (không có, URL là địa chỉ IP)'),
-                SelectableText('Subdomain: ${p.subdomain.isEmpty ? '(rỗng)' : p.subdomain}'),
-                if (p.schemeWasAdded) const Text('Đã tự thêm http:// để phân tích.'),
+                SelectableText(
+                    'Subdomain: ${p.subdomain.isEmpty ? '(rỗng)' : p.subdomain}'),
+                if (p.schemeWasAdded)
+                  const Text('Đã tự thêm http:// để phân tích.'),
               ],
             ),
-            ..._featureRows(context, 'Lexical (12 đặc trưng E1)', lexicalFeatureOrder, map, false),
-            ..._featureRows(context, 'Brand (8 đặc trưng E2)', brandFeatureOrder, map, true),
+            ..._featureRows(context, 'Lexical (12 đặc trưng E1)',
+                lexicalFeatureOrder, map, false),
+            ..._featureRows(context, 'Brand (8 đặc trưng E2)',
+                brandFeatureOrder, map, true),
             OutlinedButton.icon(
               key: const Key('copy_json_button'),
               onPressed: () => _copyJson(r),
@@ -313,7 +385,9 @@ class _HomePageState extends State<HomePage> {
             formatFeature(name, map[name]!),
             style: TextStyle(
               fontFamily: 'monospace',
-              fontWeight: highlightNonZero && map[name] != 0 ? FontWeight.bold : FontWeight.normal,
+              fontWeight: highlightNonZero && map[name] != 0
+                  ? FontWeight.bold
+                  : FontWeight.normal,
             ),
           ),
         ),

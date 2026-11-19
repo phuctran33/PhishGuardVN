@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Chép các file nguồn (single source of truth) vào mobile/app/assets/ để Flutter đóng gói.
-# Gồm: PSL, brand reference, file parity E2, và Teacher v2 (hai JSON runtime + manifest).
+# Gồm: PSL, brand reference, file parity E2, Teacher v2 (hai JSON runtime + manifest), và Student MLP (gzip + manifest).
 # KHÔNG chép svm_vocabulary.json và teacher_numeric.npz vì runtime Dart không đọc chúng.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -25,6 +25,34 @@ for f in "$PSL" "$BRAND" "$PARITY" "$TEACHER_SVM" "$TEACHER_MODEL"; do
   cp "$f" "$DST/"
 done
 cp "$TEACHER_MANIFEST" "$DST/teacher_v2_manifest.json"
+
+# Lấy Student artifacts trực tiếp từ PR #35, không checkout/merge.
+STUDENT_REF="refs/remotes/pr/35"
+
+if ! git -C "$ROOT" show-ref --verify --quiet "$STUDENT_REF"; then
+  echo "LỖI: Không tìm thấy ref $STUDENT_REF." >&2
+  echo "Hãy fetch PR #35 trước bằng lệnh:" >&2
+  echo "  git -C \"$ROOT\" fetch origin pull/35/head:refs/remotes/pr/35" >&2
+  exit 1
+fi
+
+if ! git -C "$ROOT" cat-file -e \
+  "$STUDENT_REF:artifacts/student_mlp_android/manifest.json" 2>/dev/null ||
+   ! git -C "$ROOT" cat-file -e \
+  "$STUDENT_REF:artifacts/student_mlp_android/student_mlp.json.gz" 2>/dev/null; then
+  echo "LỖI: Ref $STUDENT_REF không chứa đủ Student artifacts." >&2
+  echo "Cần có manifest.json và student_mlp.json.gz." >&2
+  exit 1
+fi
+
+git -C "$ROOT" show \
+  "$STUDENT_REF:artifacts/student_mlp_android/manifest.json" \
+  > "$DST/student_mlp_manifest.json"
+
+git -C "$ROOT" show \
+  "$STUDENT_REF:artifacts/student_mlp_android/student_mlp.json.gz" \
+  > "$DST/student_mlp.json.gz"
+
 if [ -f "$EXTRA" ]; then cp "$EXTRA" "$DST/"; else echo "(không có mobile_parity_cases_extra.json, bỏ qua)"; fi
 
 echo "Đã chép vào $DST:"
@@ -44,5 +72,37 @@ for name in ("dart_svm_model.json", "dart_teacher_v2_model.json"):
     ok = len(data) == want["size_bytes"] and hashlib.sha256(data).hexdigest() == want["sha256"]
     print(("Teacher OK    " if ok else "Teacher LỆCH  ") + name)
     bad += 0 if ok else 1
+sys.exit(1 if bad else 0)
+PY
+
+# Kiểm kích thước và SHA-256 Student model gzip + PSL theo manifest.
+python3 - "$DST/student_mlp_manifest.json" "$DST" <<'PY'
+import hashlib
+import json
+import pathlib
+import sys
+
+manifest = json.load(open(sys.argv[1], encoding="utf-8"))
+dst = pathlib.Path(sys.argv[2])
+
+files = {
+    "student_mlp.json.gz": manifest["model"],
+    "psl_icann_tldextract_5.4.0.txt": manifest["psl"],
+}
+
+bad = 0
+for name, expected in files.items():
+    data = (dst / name).read_bytes()
+    size_ok = len(data) == expected["bytes"]
+    sha_ok = hashlib.sha256(data).hexdigest() == expected["sha256"]
+    ok = size_ok and sha_ok
+
+    print(("Student OK    " if ok else "Student LỆCH  ") + name)
+    if not size_ok:
+        print(f"  size: {len(data)} != {expected['bytes']}")
+    if not sha_ok:
+        print(f"  sha256: {hashlib.sha256(data).hexdigest()}")
+    bad += 0 if ok else 1
+
 sys.exit(1 if bad else 0)
 PY
