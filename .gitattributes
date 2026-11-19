@@ -101,3 +101,7 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /reports/tables/android_kd_*/*.json text eol=lf
 /reports/tables/android_kd_*/*.csv text eol=lf
 /reports/tables/android_kd_*/*.gz -text
+
+# Preserve reproducible Android Student data-package bytes.
+/artifacts/student_mlp_android/*.json text eol=lf
+/artifacts/student_mlp_android/*.gz -text
