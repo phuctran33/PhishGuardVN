@@ -1,0 +1,582 @@
+{
+  "schema": "android-student-char-tfidf-mlp-int8-v1",
+  "score_absolute_tolerance": 2e-06,
+  "cases": [
+    {
+      "url": "https://example.com/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019162607373528536,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019162607373528536,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.09737194584405531,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.044022484476099154,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.012788263052515477,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.013049468329011467,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.org/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.016349454869103646,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.org/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.016349454869103646,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.org/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.039650753621576475,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.org/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.03135766516837661,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.org/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.01124458357881653,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.org/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.007920996354732795,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://BÜCHER.de/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.009592015376961758,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://BÜCHER.de/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.009592015376961758,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://BÜCHER.de/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.02704158559541032,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://BÜCHER.de/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019937536326491225,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://BÜCHER.de/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.007494763159919613,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://BÜCHER.de/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.004603884286691809,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://xn--bcher-kva.de/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.009592015376961758,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://xn--bcher-kva.de/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.009592015376961758,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://xn--bcher-kva.de/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.02704158559541032,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://xn--bcher-kva.de/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019937536326491225,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://xn--bcher-kva.de/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.007494763159919613,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://xn--bcher-kva.de/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.004603884286691809,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://127.0.0.1/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.17920414326547873,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://127.0.0.1/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.17920414326547873,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://127.0.0.1/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.7637888362042633,
+      "threshold": 0.72961075,
+      "class_id": 1
+    },
+    {
+      "url": "https://127.0.0.1/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.7524214716769916,
+      "threshold": 0.72961075,
+      "class_id": 1
+    },
+    {
+      "url": "https://127.0.0.1/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.03781403815553354,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://127.0.0.1/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.01617065247922263,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://[2001:db8::1]/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.17920414326547873,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://[2001:db8::1]/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.17920414326547873,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://[2001:db8::1]/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.7637888362042633,
+      "threshold": 0.72961075,
+      "class_id": 1
+    },
+    {
+      "url": "https://[2001:db8::1]/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.7524214716769916,
+      "threshold": 0.72961075,
+      "class_id": 1
+    },
+    {
+      "url": "https://[2001:db8::1]/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.03781403815553354,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://[2001:db8::1]/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.01617065247922263,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://user:pass@EXAMPLE.com:443/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019162607373528536,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://user:pass@EXAMPLE.com:443/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019162607373528536,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://user:pass@EXAMPLE.com:443/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.09737194584405531,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://user:pass@EXAMPLE.com:443/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.044022484476099154,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://user:pass@EXAMPLE.com:443/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.012788263052515477,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://user:pass@EXAMPLE.com:443/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.013049468329011467,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.org:8080/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.023957055311849808,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.org:8080/A%2FB?Ref=Q#ignore",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.023957055311849808,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.org:8080/Đăng-nhập?q=🙂",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.07172952299331824,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.org:8080/abc  xyz?a=x%20y",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.047085264548910474,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.org:8080/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.015326856577864116,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.org:8080/login/verify?email=test%40example.com",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.010136459248969991,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "example.com/Case?x=1",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.020343792295464416,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "//example.org/path",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.01943462270993454,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "http://EXAMPLE.com:80/A",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019162607373528536,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com:443/",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.019162607373528536,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://sub.example.com/c?q",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.012461707989623762,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "https://example.com/?q=hello",
+      "status": "classified",
+      "model_version": "student-mlp-kd-int8-v1",
+      "decision_rule": "score >= threshold",
+      "score_kind": "uncalibrated_sigmoid",
+      "score": 0.015895237262450443,
+      "threshold": 0.72961075,
+      "class_id": 0
+    },
+    {
+      "url": "",
+      "status": "rejected"
+    },
+    {
+      "url": "  ",
+      "status": "rejected"
+    },
+    {
+      "url": "https://",
+      "status": "rejected"
+    },
+    {
+      "url": "https://example.org:65536/",
+      "status": "rejected"
+    },
+    {
+      "url": "https://example.org:bad/",
+      "status": "rejected"
+    },
+    {
+      "url": " https://example.org",
+      "status": "rejected"
+    },
+    {
+      "url": "https://[broken",
+      "status": "rejected"
+    },
+    {
+      "url": "https://example.org\n/a",
+      "status": "rejected"
+    },
+    {
+      "url": "invalid_url",
+      "status": "rejected"
+    }
+  ]
+}
