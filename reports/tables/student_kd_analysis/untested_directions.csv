@@ -1,9 +1,0 @@
-direction,not_run,status
-Tỷ lệ học Teacher,"Hiện chỉ alpha=0 (hard baseline) và 0,5; chưa thử alpha khác hoặc alpha=1.",Chưa thử; không tune tiếp trên Validation đã xem.
-Dạng target/loss,"Hard Teacher labels, logit matching, temperature-scaled KD, class-dependent KD.",Chưa thử; không gọi hard_only hiện tại là học hard labels của Teacher.
-Độ tin cậy Teacher,"Calibration, phân tích hoặc giảm trọng số các Teacher targets mâu thuẫn nhãn.","Chưa thử; raw score hiện tại chưa calibrated, chưa chứng minh đây là nguyên nhân làm KD yếu."
-Tạo targets,Teacher targets cross-fit theo domain trong Train.,"Chưa thử; cần thiết kế nghiên cứu riêng, không yêu cầu khôi phục protocol KD cũ và không đổi release Teacher."
-Kiến trúc/đầu vào,"Char-CNN, MLP đọc text/raw bytes, distillation đầu ra trung gian.","Chưa thử các hướng này; hybrid TF-IDF+E2 đã thử với LightGBM, không còn là hướng chưa khảo sát."
-Optimization/imbalance,"MLP train dài hơn/cấu hình khác, class weighting hoặc sampling có kiểm soát.",Chưa thử; fixed-budget 200 epochs không đồng nghĩa đã hội tụ. Không trộn thay đổi này với hiệu ứng KD.
-Dữ liệu/đánh giá,"Nhãn được kiểm chứng thêm, cohort độc lập nhiều positives hơn và domain/source shift.",Chưa có; không dùng Official Test để lựa chọn hoặc cứu candidate.
-Triển khai/nén,Benchmark Android Teacher/Student; quantization hoặc pruning có đo lường.,Chưa làm trong nghiên cứu này; quantization/pruning không phải bằng chứng về KD.

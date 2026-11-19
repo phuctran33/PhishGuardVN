@@ -1,9 +1,0 @@
-label,teacher_correct,student_correct,n
-0,False,False,5
-0,False,True,9
-0,True,False,5
-0,True,True,1542
-1,False,False,6
-1,False,True,3
-1,True,False,5
-1,True,True,10

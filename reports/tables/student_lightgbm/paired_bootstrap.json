@@ -1,9 +1,0 @@
-{
-  "delta_mean_AP": 0.00015428956681184935,
-  "ci_low": -0.0010791087621728728,
-  "ci_high": 0.001340682070310864,
-  "valid": 1000,
-  "undefined": 0,
-  "replicates": 1000,
-  "scope": "conditional paired domain bootstrap, not selection-adjusted"
-}

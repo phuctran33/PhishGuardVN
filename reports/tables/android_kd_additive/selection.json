@@ -1,9 +1,0 @@
-{
-  "cap": 16384,
-  "thresholds": {
-    "hard": 0.554613588847779,
-    "kd": 0.592151468193935
-  },
-  "criterion": "max mean three-fold Train AP for KD; smaller cap on tie",
-  "threshold_source": "pooled Train OOF, FPR target 1%"
-}

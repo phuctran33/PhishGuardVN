@@ -6,6 +6,7 @@ import gzip
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 from tempfile import TemporaryDirectory
 
@@ -17,7 +18,6 @@ from threadpoolctl import threadpool_limits
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from phishguard_vn.student import choose_threshold, metrics, sha256, student_text
 
 ARTIFACT = ROOT / "artifacts/student_mlp_android"
 MODEL_FILE = "student_mlp.json.gz"
@@ -38,6 +38,16 @@ RECIPE = "sparse_mlp_large_D_0.9_0.25_8192"
 
 def json_bytes(value):
     return (json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":"))+"\n").encode("utf8")
+
+
+def sha256(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def student_text(url):
+    from phishguard_vn.stacking import canonical_url, validate_urls
+    validate_urls([url])
+    return re.sub(r"\s\s+", " ", canonical_url(url))
 
 
 def file_record(path):
@@ -135,8 +145,7 @@ def verified_research(research):
     for name, digest in archive["fold_preparation"]["inputs"].items():
         if sha256(research / name) != digest:
             raise ValueError("Changed training input: " + name)
-    for name in ("data/splits/url_train.csv", "configs/teacher_lock.json", "src/phishguard_vn/student.py",
-                 "src/phishguard_vn/stacking.py", "src/phishguard_vn/url_parser.py"):
+    for name in ("data/splits/url_train.csv", "configs/teacher_lock.json", "src/phishguard_vn/stacking.py", "src/phishguard_vn/url_parser.py"):
         if sha256(ROOT / name) != sha256(research / name):
             raise ValueError("Release branch and research checkout disagree: " + name)
     lock = read_json(folder / "mlp_final_lock.json")
@@ -150,6 +159,8 @@ def verified_research(research):
 
 
 def threshold_from_oof(folder, core):
+    from phishguard_vn.student import choose_threshold, metrics
+
     path = folder / "mlp_compression_oof.csv.gz"
     preds = pd.read_csv(path)
     subset = preds[preds.seed.eq(SEED) & preds.encoding.eq("int8")].set_index("id")
@@ -205,7 +216,9 @@ def fixtures(model):
 
 def build_assets(research, output):
     folder, archive = verified_research(research)
-    sys.path.insert(0,str(research / "scripts"))
+    # Training reuses the archived research modules. Prediction only needs the
+    # MLP bundle and canonical URL parser already present in the release branch.
+    sys.path[:0] = [str(research / "scripts"), str(research / "src")]
     from kd_bronze_data import bronze_pool, core_train
     from kd_bronze_neural import PROFILES, TRAINING, fit_neural
     from phishguard_vn.released_teacher import load_released_teacher

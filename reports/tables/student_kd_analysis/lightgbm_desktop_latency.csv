@@ -1,4 +1,0 @@
-model,backend,warmup,requests,p50_ms,p95_ms,scope,android_measured
-Teacher v2,Python released sklearn,50,250,5.273599992506206,7.848579986602998,desktop raw URL to result; same 250 inputs; threads=1,False
-hard_only,Python portable JSON,50,250,4.985799983842298,6.204585017985662,desktop raw URL to result; same 250 inputs; threads=1,False
-kd_mixed,Python portable JSON,50,250,4.974749987013638,6.111999999848194,desktop raw URL to result; same 250 inputs; threads=1,False

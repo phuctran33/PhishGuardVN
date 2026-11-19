@@ -29,6 +29,21 @@ Dữ liệu model và PSL tổng cộng 358.341 byte theo hai file ở định d
 - Python đã so đường raw URL → score với phép tính trực tiếp trên ma trận TF‑IDF/int8 trên **13.078 URL Train**. Sai số lớn nhất dưới `3 × 10⁻¹⁶` và **0 nhãn lệch**. Đây là kiểm tra suy luận Python, còn Android sẽ được đối chiếu khi Hy nối model vào app.
 - Ngưỡng `0.72961075` khóa từ pooled **Train Group OOF int8 seed 49**, ngân sách FPR 1%. Ở OOF để đặt ngưỡng có 1.415 true positive và 110 false positive. Kết quả AP **0,90207** là mean-fold Group CV qua ba seed của nghiên cứu. Full-Train artifact dùng toàn bộ Train và cần được đánh giá riêng khi có tập kiểm tra được phép dùng.
 
+## Kết quả chốt và đối chiếu Teacher–Student
+
+MLP 64 nút với Bronze nhãn mềm đạt **0,90206 mean Group CV AP**, cao hơn bản hard-label đã tuning **0,89461**. Chênh lệch **+0,00745 AP**, khoảng tin cậy bootstrap theo domain **[+0,00418, +0,01103]**, thắng **9/9 cặp fold–seed**. Cùng 8.192 URL Bronze, dùng điểm mềm thay nhãn Teacher cứng tăng **+0,00654 AP**. Sau lượng tử hóa, mean-fold AP qua ba seed là **0,90207**. [Báo cáo và dữ liệu benchmark lưu trên nhánh research](https://github.com/phuctran33/PhishGuardVN/blob/8389b371728d4aab8246c0cf9606eb788a8e0365/reports/student_bronze_kd.md)
+
+Đối chiếu trực tiếp dùng **cùng 13.078 ID, nhãn và ba fold theo domain**, với MLP int8 seed 49 là seed đã chọn cho gói bàn giao. Điểm của mỗi model đến từ dự đoán trên fold giữ lại. Teacher dùng ngưỡng phát hành và Student dùng ngưỡng khóa từ Train OOF. Confusion counts và các metric tại ngưỡng tính trên toàn bộ các dự đoán ngoài fold gộp lại.
+
+| Mô hình | Mean-fold AP | Precision | Recall | F1 | FPR | TP / FP / TN / FN |
+|---|---:|---:|---:|---:|---:|---:|
+| Stacking Teacher v2 | 0,93067 | 93,47% | 74,49% | 0,82909 | 0,98% | 1.545 / 108 / 10.896 / 529 |
+| MLP KD int8, seed 49 | 0,90138 | 92,79% | 68,23% | 0,78633 | 1,00% | 1.415 / 110 / 10.894 / 659 |
+
+Hai mô hình đồng thuận **12.730/13.078 URL (97,34%)**. Trong **348 ca bất đồng**, có **195 phishing chỉ Teacher bắt được** và **65 phishing chỉ Student bắt được**. Trên benign, có **43 cảnh báo nhầm chỉ của Teacher** và **45 chỉ của Student**. Ở ngưỡng đã khóa, Student bắt ít hơn Teacher 130 phishing với số báo nhầm gần nhau. Tập development này đã được dùng trong quá trình nghiên cứu. Số liệu trên mô tả các model theo fold, còn kiểm tra parity trong bundle mô tả đường suy luận Python của bản fit toàn Train. [OOF Student int8](https://github.com/phuctran33/PhishGuardVN/blob/8389b371728d4aab8246c0cf9606eb788a8e0365/reports/tables/student_bronze_kd/mlp_compression_oof.csv.gz) · [OOF Teacher theo fold](https://github.com/phuctran33/PhishGuardVN/tree/8389b371728d4aab8246c0cf9606eb788a8e0365/artifacts/student_lightgbm/cv_targets)
+
+**Go để tích hợp thử MLP KD int8 trên Android.** Web/API dùng Teacher đã phát hành. Khi nghiệm thu Android, đối chiếu Python–Dart, hành vi offline, độ trễ và RAM trên thiết bị. Các lượt Logistic Regression, LightGBM, Additive và Hash có code, notebook và kết quả tại nhánh nghiên cứu. [Lịch sử benchmark tuần 7](https://github.com/phuctran33/PhishGuardVN/blob/8389b371728d4aab8246c0cf9606eb788a8e0365/reports/week7_android_kd_results.md)
+
 ## Chạy tham chiếu
 
 ```powershell
