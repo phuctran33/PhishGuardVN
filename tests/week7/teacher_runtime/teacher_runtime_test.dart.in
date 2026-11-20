@@ -1,0 +1,182 @@
+// Runs the unchanged Hy loader, classifier and UI inside an Android QA build.
+import 'dart:convert';
+import 'dart:io';
+import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:phishguard_android/main.dart' as app;
+import 'package:phishguard_android/src/bootstrap.dart';
+import 'package:phishguard_android/src/extractor_loader.dart';
+import 'package:phishguard_android/src/teacher_contract.dart';
+import 'package:phishguard_android/src/teacher_loader.dart';
+import 'package:phishguard_android/src/teacher_url_classifier.dart';
+import 'package:phishguard_android/src/url_classifier.dart';
+import 'package:phishguard_features/phishguard_features.dart';
+
+class _OverrideBundle extends CachingAssetBundle {
+  _OverrideBundle(this.replacements);
+  final Map<String, Uint8List?> replacements;
+  @override
+  Future<ByteData> load(String key) async {
+    if (!replacements.containsKey(key)) return rootBundle.load(key);
+    final raw = replacements[key];
+    if (raw == null) throw StateError('QA missing asset');
+    return ByteData.sublistView(raw);
+  }
+}
+
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  final report = <String, dynamic>{
+    'schema': 'k73-android-runtime-v1', 'status': 'running',
+    'platform': Platform.operatingSystem,
+    'os_version': Platform.operatingSystemVersion, 'dart': Platform.version,
+    'build_mode': const bool.fromEnvironment('dart.vm.product') ? 'release' : 'profile',
+    'prediction_mocking': false, 'network': 'OS state recorded by host ADB controller',
+  };
+  late Map<String, dynamic> reference;
+  late LoadedExtractor extractor;
+  setUpAll(() async {
+    expect(Platform.isAndroid, isTrue, reason: 'Host tests cannot pass Android acceptance.');
+    reference = jsonDecode(await rootBundle.loadString('assets/qa_python_reference.json')) as Map<String, dynamic>;
+    expect(reference['schema'], 'k73-live-python-reference-v1');
+    extractor = await loadE2Extractor();
+    report['source_revision'] = reference['source_revision'];
+  });
+
+  testWidgets('Android Teacher matches fresh Python and locked metadata offline', (tester) async {
+    await HttpOverrides.runZoned(() async {
+      final loaded = await loadTeacherV2(extractorBrandSha256: extractor.brandSha256);
+      expect(loaded.info.modelVersion, reference['model_version']);
+      expect(loaded.info.threshold, reference['threshold']);
+      expect(loaded.info.decisionRule, reference['decision_rule']);
+      expect(loaded.info.sourceBundleSha256, reference['source_bundle_sha256']);
+      expect(extractor.brandSha256, reference['brand_reference_sha256']);
+      expect(loaded.model.featureOrder, reference['feature_order']);
+      expect(e2FeatureOrder, reference['feature_order']);
+      final assetHashes = <String, String>{};
+      for (final entry in {
+        teacherManifestAsset: reference['asset_manifest_sha256'],
+        teacherSvmAsset: reference['assets']['dart_svm_model.json']['sha256'],
+        teacherModelAsset: reference['assets']['dart_teacher_v2_model.json']['sha256'],
+      }.entries) {
+        final bytes = await rootBundle.load(entry.key);
+        final digest = sha256.convert(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes)).toString();
+        expect(digest, entry.value);
+        assetHashes[entry.key] = digest;
+      }
+      final classifier = TeacherUrlClassifier(extractor: extractor.extractor, model: loaded.model);
+      final results = <Map<String, dynamic>>[];
+      var matched = 0, rejected = 0;
+      var maxDelta = 0.0;
+      for (final raw in reference['cases'] as List) {
+        final item = raw as Map<String, dynamic>;
+        final outcome = classifier.classify(item['url'] as String);
+        if (item['status'] == 'rejected') {
+          expect(outcome is Classified || outcome is InferenceFailure, isFalse, reason: item['name']);
+          rejected++;
+          results.add({'name': item['name'], 'status': 'rejected', 'outcome': outcome.runtimeType.toString()});
+        } else {
+          expect(outcome, isA<Classified>(), reason: item['name']);
+          final c = outcome as Classified;
+          final delta = (c.score - (item['score'] as num).toDouble()).abs();
+          if (delta > maxDelta) maxDelta = delta;
+          expect(delta, lessThanOrEqualTo(1e-6), reason: item['name']);
+          expect(c.phishing ? 1 : 0, item['class_id'], reason: item['name']);
+          expect(c.threshold, reference['threshold']);
+          expect(c.decisionRule, reference['decision_rule']);
+          expect(c.modelVersion, reference['model_version']);
+          matched++;
+          results.add({'name': item['name'], 'score': c.score, 'python_score': item['score'], 'absolute_delta': delta, 'class_id': c.phishing ? 1 : 0});
+        }
+      }
+      expect(matched, 47);
+      expect(rejected, 9);
+      report['parity'] = {'classified_matched': matched, 'rejected_matched': rejected,
+        'max_absolute_delta': maxDelta, 'absolute_tolerance': 1e-6, 'cases': results};
+      report['contract'] = {'model_version': loaded.info.modelVersion, 'threshold': loaded.info.threshold,
+        'decision_rule': loaded.info.decisionRule, 'source_bundle_sha256': loaded.info.sourceBundleSha256,
+        'feature_order': loaded.model.featureOrder, 'assets_sha256': assetHashes};
+      report['http_guard'] = true;
+    }, createHttpClient: (_) => throw StateError('Network forbidden by Teacher QA'));
+  });
+
+  testWidgets('Android loader rejects missing corrupt assets and wrong threshold; UI retries', (tester) async {
+    final manifest = jsonDecode(await rootBundle.loadString(teacherManifestAsset)) as Map<String, dynamic>;
+    manifest['threshold'] = 0.5;
+    final modelData = await rootBundle.load(teacherModelAsset);
+    final corrupt = Uint8List.fromList(modelData.buffer.asUint8List(modelData.offsetInBytes, modelData.lengthInBytes));
+    corrupt[corrupt.length - 1] ^= 1;
+    final cases = [
+      ('missing_model', _OverrideBundle({teacherModelAsset: null}), TeacherLoadFailure.missingAsset),
+      ('corrupt_model', _OverrideBundle({teacherModelAsset: corrupt}), TeacherLoadFailure.hashMismatch),
+      ('wrong_threshold', _OverrideBundle({teacherManifestAsset: Uint8List.fromList(utf8.encode(jsonEncode(manifest)))}), TeacherLoadFailure.contractMismatch),
+    ];
+    final outcomes = <String>[];
+    TeacherLoadException? missing;
+    for (final item in cases) {
+      TeacherLoadException? caught;
+      try {
+        await loadTeacherV2(extractorBrandSha256: extractor.brandSha256, bundle: item.$2);
+      } on TeacherLoadException catch (error) {
+        caught = error;
+      }
+      expect(caught?.kind, item.$3, reason: item.$1);
+      if (item.$1 == 'missing_model') missing = caught;
+      outcomes.add(item.$1);
+    }
+    var boots = 0;
+    await tester.pumpWidget(app.PhishGuardApp(bootstrap: () async {
+      if (++boots == 1) throw BootstrapFailure(missing!, extractorInfo: extractor);
+      return bootstrapApp();
+    }));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('boot_error')), findsOneWidget);
+    expect(find.byKey(const Key('result_teacher')), findsNothing);
+    await tester.tap(find.byKey(const Key('retry_button')));
+    await tester.pumpAndSettle();
+    expect(boots, 2);
+    expect(find.byKey(const Key('url_field')), findsOneWidget);
+    report['loader_errors'] = outcomes;
+    report['boot_error_and_retry'] = 'passed';
+  });
+
+  testWidgets('Hy Teacher UI renders both real labels and rejects invalid port on Android', (tester) async {
+    tester.testTextInput.register();
+    addTearDown(tester.testTextInput.unregister);
+    await tester.pumpWidget(const app.PhishGuardApp());
+    await tester.pumpAndSettle();
+    final cases = [
+      ('example.com', 'Chưa phát hiện dấu hiệu lừa đảo'),
+      ('https://vietcombank.com.vn.example.com/login', 'Có dấu hiệu lừa đảo'),
+      ('http://example.com:99999/', ''),
+    ];
+    for (final item in cases) {
+      final input = find.byKey(const Key('url_field'));
+      await tester.ensureVisible(input);
+      await tester.enterText(input, item.$1);
+      await tester.pumpAndSettle();
+      expect(tester.widget<TextField>(input).controller!.text, item.$1);
+      FocusManager.instance.primaryFocus?.unfocus();
+      final button = find.byKey(const Key('analyze_button'));
+      await tester.ensureVisible(button);
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+      if (item.$2.isEmpty) {
+        expect(find.byKey(const Key('result_invalid')), findsOneWidget);
+        expect(find.byKey(const Key('result_teacher')), findsNothing);
+        expect(find.byKey(const Key('result_error')), findsNothing);
+      } else {
+        expect(find.text(item.$2), findsOneWidget);
+        expect(find.byKey(const Key('result_teacher')), findsOneWidget);
+      }
+    }
+    report['ui_cases'] = ['real_benign', 'real_phishing', 'invalid_port'];
+    report['keyboard_scope'] = 'Flutter test keyboard transport; release ADB smoke uses native input separately';
+    report['application_tests_passed'] = 3;
+    report['status'] = 'passed';
+    binding.reportData = report;
+  });
+}

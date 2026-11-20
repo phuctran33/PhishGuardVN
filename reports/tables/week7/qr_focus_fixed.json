@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "handoff_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+  "platform": "win32",
+  "node": "v26.13.0",
+  "real_teacher": true,
+  "prediction_mocking": false,
+  "checks": [
+    {
+      "name": "typing after QR error retains focus and replacement text",
+      "status": "passed"
+    }
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "model": "teacher-stacking-v2",
+    "feature_set": "canonical-reference-v1",
+    "protocol": "full_train_group_oof_fpr_target_0.01",
+    "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "model_error": null
+  },
+  "browser": "158.0.8127.18",
+  "last_input_edit": {
+    "value": "https://example.com/replacement",
+    "trace": [
+      {
+        "stage": "focused",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra",
+        "inputs": [
+          {
+            "value": "example.com",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      },
+      {
+        "stage": "cleared",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra\nhttps://example.com",
+        "inputs": [
+          {
+            "value": "",
+            "label": "URL cần kiểm tra\nhttps://example.com"
+          }
+        ]
+      },
+      {
+        "stage": "inserted",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra",
+        "inputs": [
+          {
+            "value": "https://example.com/replacement",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      }
+    ]
+  }
+}

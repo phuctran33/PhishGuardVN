@@ -1,0 +1,76 @@
+{
+  "schema": "k73-android-controller-v1",
+  "status": "passed",
+  "phase": "release",
+  "device": "emulator-5554",
+  "android_release": "17",
+  "android_api": "37",
+  "abi": "x86_64",
+  "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A2/16418371:user/release-keys",
+  "network_before": {
+    "airplane_mode_on": "0",
+    "wifi_on": "1",
+    "mobile_data": "1"
+  },
+  "prediction_mocking": false,
+  "apk": {
+    "relative_path": "mobile/app/build/app/outputs/flutter-apk/app-release.apk",
+    "sha256": "86b27917e9ad06b1a31ba6726b55d84484242a17da9ffaa733ac78187692c08a",
+    "size_bytes": 19130745,
+    "application_id": "com.phishguardvn.phishguard_android",
+    "source": "unmodified Hy release app, not QA integration entrypoint"
+  },
+  "network_during": {
+    "airplane_mode_on": "1",
+    "wifi_on": "0",
+    "mobile_data": "0",
+    "ipv4_default_route": "",
+    "ipv6_default_route": ""
+  },
+  "cold_starts": [
+    {
+      "pid": "14379",
+      "am_start": "Starting: Intent { cmp=com.phishguardvn.phishguard_android/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.phishguardvn.phishguard_android/.MainActivity\nTotalTime: 1214\nWaitTime: 1220\nComplete",
+      "host_observed_launch_to_ui_ms": 3726.0848000005353
+    },
+    {
+      "pid": "14449",
+      "am_start": "Starting: Intent { cmp=com.phishguardvn.phishguard_android/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.phishguardvn.phishguard_android/.MainActivity\nTotalTime: 1485\nWaitTime: 1503\nComplete",
+      "host_observed_launch_to_ui_ms": 4355.281600001035
+    },
+    {
+      "pid": "14517",
+      "am_start": "Starting: Intent { cmp=com.phishguardvn.phishguard_android/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.phishguardvn.phishguard_android/.MainActivity\nTotalTime: 1435\nWaitTime: 1489\nComplete",
+      "host_observed_launch_to_ui_ms": 4039.9333000095794
+    }
+  ],
+  "native_ui": {
+    "url": "https://www.vietcombank.com.vn/vi-VN/",
+    "label": "benign",
+    "visible_text": [
+      "PhishGuard VN · Teacher v2",
+      "Kiểm tra parity E2 trên thiết bị",
+      "https://www.vietcombank.com.vn/vi-VN/",
+      "https://www.vietcombank.com.vn/vi-VN/",
+      "https://vietcombank.com.vn.xacminh-id.xyz/",
+      "https://vietcombnak.com/",
+      "https://vietc0mbank.top/",
+      "http://bücher.de/Path",
+      "http://[2001:db8::1]/login",
+      "https://example.com:99999/",
+      "Phân tích URL",
+      "Chưa phát hiện dấu hiệu lừa đảo\nMô hình: teacher-stacking-v2\nĐiểm này chưa được hiệu chuẩn; không được hiểu là phần trăm an toàn hay phần trăm lừa đảo.\nChưa phát hiện dấu hiệu không có nghĩa là website chắc chắn an toàn.\nPhân tích chỉ dùng mô hình có sẵn trong ứng dụng; URL không bị gửi đi và website không được truy cập.",
+      "Điểm của mô hình: 0.455156",
+      "Ngưỡng: 0.6945740700635259 · quy tắc: score >= threshold",
+      "Collapsed",
+      "Chi tiết đặc trưng E2 (20), Collapsed",
+      "Schema e2-brand-v1 · 45 brand · ref 6d434533e479… · 6871 quy tắc PSL\nTeacher teacher-stacking-v2 · nạp 221 ms (đọc 71, băm 37, parse 44, dựng 68) · 2547394 byte JSON\nChỉ phân tích chuỗi URL, không truy cập website."
+    ]
+  },
+  "timing_limit": "Host ADB/UI polling overhead included; process cold starts retain filesystem/shader caches.",
+  "network_restored": {
+    "airplane_mode_on": "0",
+    "wifi_on": "1",
+    "mobile_data": "1"
+  }
+}

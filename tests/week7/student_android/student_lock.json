@@ -1,0 +1,34 @@
+{
+  "schema": "qa-student-android-lock-v1",
+  "student_revision": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+  "files": {
+    "manifest.json": {
+      "sha256": "09c8e23a95af862debe423adfde237a375a0dd0958f333f49a6502067981bc9c",
+      "size_bytes": 9918
+    },
+    "features.json": {
+      "sha256": "aac9a276288b0d29ada3b2ffd27bad3d7a3d186bc85fca63ce09865b796d81f6",
+      "size_bytes": 205134
+    },
+    "kd_mixed.json": {
+      "sha256": "85487dbddceb9bd56468e7afcbc7faa63db23154b83df9989bd4c041ef26069c",
+      "size_bytes": 958216
+    },
+    "hard_only.json": {
+      "sha256": "99ee3fd7a267c60220e85c6b2f699581111a3c0d3b57faf7cc39f430ca5076b4",
+      "size_bytes": 957766
+    },
+    "brand_reference_v1.csv": {
+      "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+      "size_bytes": 11032
+    },
+    "psl_icann_tldextract_5.4.0.txt": {
+      "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f",
+      "size_bytes": 75007
+    },
+    "python_reference.json": {
+      "sha256": "ec620d5d5d8468e805ff3a1bbdfaf87653bbfd0d5995a5a151e4a4918edaa02b",
+      "size_bytes": 131367
+    }
+  }
+}

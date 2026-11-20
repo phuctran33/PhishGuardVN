@@ -1,0 +1,7 @@
+import 'package:integration_test/integration_test.dart';
+import '../test/student_mlp_tests.dart';
+
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  runStudentMlpQa(onReport: (data) => binding.reportData = data);
+}

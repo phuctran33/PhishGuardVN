@@ -1,0 +1,213 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:phishguard_android/main.dart' as app;
+import 'package:phishguard_android/src/bootstrap.dart';
+import 'package:phishguard_android/src/student_contract.dart';
+import 'package:phishguard_android/src/student_loader.dart';
+import 'package:phishguard_android/src/student_mlp_v1.dart';
+import 'package:phishguard_android/src/student_url_classifier.dart';
+import 'package:phishguard_android/src/url_classifier.dart';
+
+class OverrideAssets extends CachingAssetBundle {
+  OverrideAssets(this.overrides);
+  final Map<String, Uint8List?> overrides;
+  @override
+  Future<ByteData> load(String key) async {
+    if (!overrides.containsKey(key)) return rootBundle.load(key);
+    final value = overrides[key];
+    if (value == null) throw FlutterError('QA missing asset $key');
+    return ByteData.sublistView(value);
+  }
+}
+
+void runStudentMlpQa({void Function(Map<String, dynamic>)? onReport}) {
+  late LoadedStudent student;
+  late Map<String, dynamic> reference;
+  final results = <Map<String, dynamic>>[];
+  final checks = <String>[];
+  final report = <String, dynamic>{'schema': 'k74-hy-student-mlp-qa-v1', 'platform': Platform.operatingSystem,
+    'status': 'running', 'prediction_mocking': false, 'cases': results, 'checks': checks};
+
+  setUpAll(() async {
+    reference = jsonDecode(await rootBundle.loadString('assets/qa_mlp_reference.json')) as Map<String, dynamic>;
+    final watch = Stopwatch()..start();
+    student = await loadStudentMlpV1();
+    watch.stop();
+    report.addAll({'android_source_revision': reference['android_source_revision'],
+      'student_source_revision': reference['student_source_revision'], 'loader_ms': watch.elapsedMicroseconds / 1000,
+      'model_version': student.info.modelVersion, 'threshold': student.info.threshold,
+      'score_absolute_tolerance': reference['score_absolute_tolerance'], 'assets': reference['assets']});
+  });
+  tearDownAll(() {
+    final valid = results.where((x) => x['expected_status'] == 'classified').toList();
+    report['classified_matched'] = valid.where((x) => x['matched'] == true).length;
+    report['rejected_matched'] = results.where((x) => x['expected_status'] == 'rejected' && x['matched'] == true).length;
+    report['max_score_delta'] = valid.fold<double>(0, (v, x) => math.max(v, (x['score_delta'] as num?)?.toDouble() ?? 0));
+    report['status'] = report['classified_matched'] == 54 && report['rejected_matched'] == 9 && checks.length == 16 ? 'passed' : 'failed';
+    onReport?.call(report);
+    print('QA_MLP_REPORT=${jsonEncode(report)}');
+  });
+
+  // Each supplied input is a separate test; native and host execute the same assertions.
+  for (var i = 0; i < 63; i++) {
+    test('Phuc reference ${i + 1}/63 through Hy classifier', () {
+      final expected = (reference['cases'] as List)[i] as Map<String, dynamic>;
+      final outcome = StudentUrlClassifier(student: student).classify(expected['url'] as String);
+      final item = <String, dynamic>{'url': expected['url'], 'expected_status': expected['status'], 'matched': false,
+        'actual_outcome': outcome.runtimeType.toString()};
+      results.add(item);
+      if (expected['status'] == 'rejected') {
+        item['matched'] = outcome is InvalidInput || outcome is Unclassifiable;
+        expect(item['matched'], true, reason: 'Rejected input must never get a benign fallback');
+      } else {
+        expect(outcome, isA<Classified>(), reason: expected['url'] as String);
+        final actual = outcome as Classified;
+        final delta = (actual.score - (expected['score'] as num).toDouble()).abs();
+        item.addAll({'score_python': expected['score'], 'score_dart': actual.score, 'score_delta': delta,
+          'class_python': expected['class_id'], 'class_dart': actual.phishing ? 1 : 0,
+          'canonical_dart': student.canonicalizer.studentText(expected['url'] as String)});
+        expect(item['canonical_dart'], expected['canonical_text']);
+        expect(delta, lessThanOrEqualTo(2e-6));
+        expect(actual.phishing ? 1 : 0, expected['class_id']);
+        expect(actual.threshold, expected['threshold']);
+        expect(actual.modelVersion, expected['model_version']);
+        expect(actual.decisionRule, expected['decision_rule']);
+        item['matched'] = true;
+      }
+    });
+  }
+
+  test('metadata version threshold and assets match Phuc manifest', () {
+    expect(student.info.modelVersion, 'student-mlp-kd-int8-v1');
+    expect(student.info.threshold, 0.72961075);
+    expect(student.info.modelSha256, reference['assets']['student_mlp.json.gz']['sha256']);
+    expect(student.info.pslSha256, reference['assets'][studentPslAsset.split('/').last]['sha256']);
+    expect(student.info.modelBytes, 283334);
+    expect(student.info.pslBytes, 75007);
+    checks.add('metadata_and_assets');
+  });
+
+  test('actual model decision uses inclusive >= at synthetic exact boundary', () async {
+    final bytes = await rootBundle.load(studentModelAsset);
+    final payload = jsonDecode(utf8.decode(gzip.decode(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes)))) as Map<String, dynamic>;
+    final score = student.model.scoreCanonicalText('example.com/');
+    for (final offset in [-1e-12, 0.0, 1e-12]) {
+      final copy = Map<String, dynamic>.from(payload)..['threshold'] = score + offset;
+      final prediction = StudentMlpV1.fromJson(copy).predictCanonicalText('example.com/');
+      expect(prediction['class_id'], offset <= 0 ? 1 : 0);
+    }
+    checks.add('synthetic_exact_threshold');
+  });
+
+  test('zero vocabulary vector still uses both bias layers', () {
+    expect(student.model.scoreCanonicalText(''), closeTo((reference['zero_vector_score'] as num).toDouble(), 1e-12));
+    checks.add('zero_vector_bias');
+  });
+
+  final errorCases = <String, StudentLoadFailure>{
+    'missing_model': StudentLoadFailure.missingAsset, 'missing_manifest': StudentLoadFailure.missingAsset,
+    'missing_psl': StudentLoadFailure.missingAsset, 'corrupt_model': StudentLoadFailure.hashMismatch,
+    'corrupt_psl': StudentLoadFailure.hashMismatch, 'invalid_json': StudentLoadFailure.invalidJson,
+    'wrong_version': StudentLoadFailure.contractMismatch, 'wrong_threshold': StudentLoadFailure.contractMismatch,
+    'wrong_rule': StudentLoadFailure.contractMismatch,
+  };
+  for (final entry in errorCases.entries) {
+    test('Student loader rejects ${entry.key}', () async {
+      final overrides = <String, Uint8List?>{};
+      if (entry.key.startsWith('missing_')) {
+        overrides[entry.key == 'missing_model' ? studentModelAsset : entry.key == 'missing_psl' ? studentPslAsset : studentManifestAsset] = null;
+      } else if (entry.key.startsWith('corrupt_')) {
+        final key = entry.key == 'corrupt_model' ? studentModelAsset : studentPslAsset;
+        final data = await rootBundle.load(key);
+        final bytes = Uint8List.fromList(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+        bytes[100] ^= 1;
+        overrides[key] = bytes;
+      } else if (entry.key == 'invalid_json') {
+        overrides[studentManifestAsset] = Uint8List.fromList(utf8.encode('{bad'));
+      } else {
+        final m = jsonDecode(await rootBundle.loadString(studentManifestAsset)) as Map<String, dynamic>;
+        m[entry.key == 'wrong_version' ? 'model_version' : entry.key == 'wrong_threshold' ? 'threshold' : 'decision_rule'] = entry.key == 'wrong_threshold' ? 0.5 : 'wrong';
+        overrides[studentManifestAsset] = Uint8List.fromList(utf8.encode(jsonEncode(m)));
+      }
+      await expectLater(loadStudentMlpV1(bundle: OverrideAssets(overrides)), throwsA(isA<StudentLoadException>().having((e) => e.kind, 'kind', entry.value)));
+      checks.add(entry.key);
+    });
+  }
+
+  test('real bootstrap preserves Teacher default and loads experimental Student', () async {
+    final runtime = await bootstrapApp();
+    expect(runtime.classifier.runtimeType.toString(), 'TeacherUrlClassifier');
+    expect(runtime.studentClassifier, isA<StudentUrlClassifier>());
+    expect(runtime.studentInfo?.modelVersion, studentModelVersion);
+    expect(runtime.studentLoadError, isNull);
+    checks.add('teacher_default_student_optional');
+  });
+
+  test('profile inference latency with real 54 inputs', () {
+    final urls = (reference['cases'] as List).where((x) => x['status'] == 'classified').map((x) => x['url'] as String).toList();
+    final classifier = StudentUrlClassifier(student: student);
+    for (final url in urls.take(5)) { expect(classifier.classify(url), isA<Classified>()); }
+    final times = <double>[];
+    for (var round = 0; round < 5; round++) {
+      for (final url in urls) {
+        final watch = Stopwatch()..start();
+        final result = classifier.classify(url);
+        watch.stop();
+        expect(result, isA<Classified>());
+        times.add(watch.elapsedMicroseconds / 1000);
+      }
+    }
+    times.sort();
+    report['performance'] = {'scope': 'in-process validation/canonicalization/TF-IDF/MLP, excludes UI', 'samples': times.length,
+      'warm_up': 5, 'p50_ms': times[(times.length * .50).ceil() - 1], 'p95_ms': times[(times.length * .95).ceil() - 1],
+      'mean_ms': times.reduce((a, b) => a + b) / times.length};
+    checks.add('inference_latency');
+  });
+
+  Future<void> enterAndAnalyze(WidgetTester tester, String url) async {
+    final input = find.byKey(const Key('url_field'));
+    await tester.ensureVisible(input);
+    await tester.enterText(input, url);
+    await tester.pumpAndSettle();
+    FocusManager.instance.primaryFocus?.unfocus();
+    final button = find.byKey(const Key('student_analyze_button'));
+    await tester.ensureVisible(button);
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('Student app displays real benign and phishing results', (tester) async {
+    tester.testTextInput.register(); addTearDown(tester.testTextInput.unregister);
+    // Real asset IO must finish outside the host widget test's fake clock.
+    final runtime = await tester.runAsync(bootstrapApp);
+    await tester.pumpWidget(app.PhishGuardApp(bootstrap: () async => runtime!));
+    await tester.pumpAndSettle();
+    for (final classId in [0, 1]) {
+      final item = (reference['cases'] as List).firstWhere((x) => x['status'] == 'classified' && x['class_id'] == classId);
+      await enterAndAnalyze(tester, item['url'] as String);
+      final result = find.byKey(const Key('result_student'));
+      expect(result, findsOneWidget);
+      expect(find.descendant(of: result, matching: find.text(classId == 1 ? 'Phishing' : 'Benign')), findsOneWidget);
+      expect(find.descendant(of: result, matching: find.text('Model: student-mlp-kd-int8-v1')), findsOneWidget);
+    }
+    checks.add('ui_two_labels');
+  });
+
+  testWidgets('Student app renders a visible rejection for invalid URL', (tester) async {
+    tester.testTextInput.register(); addTearDown(tester.testTextInput.unregister);
+    final runtime = await tester.runAsync(bootstrapApp);
+    await tester.pumpWidget(app.PhishGuardApp(bootstrap: () async => runtime!));
+    await tester.pumpAndSettle();
+    await enterAndAnalyze(tester, 'http://example.com:99999/');
+    expect(find.byKey(const Key('result_student')), findsNothing);
+    // Match a user-visible rejection, allowing the implementation to choose its wording/key.
+    final messages = tester.widgetList<Text>(find.byType(Text)).map((w) => w.data ?? '').join('\n');
+    expect(messages, matches(RegExp(r'không hợp lệ|không thể phân loại|invalid|từ chối', caseSensitive: false)),
+      reason: 'Clicking Student for an invalid URL must display an error, not silently remove the result');
+    checks.add('ui_rejected_error');
+  });
+}

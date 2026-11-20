@@ -1,0 +1,172 @@
+{
+  "scope": "QA checkout after local uncommitted main integration",
+  "checked_on": "2026-11-18",
+  "source": {
+    "branch": "test/week7-web-student-qa",
+    "head_before_merge": "3bfd45ac2b5c78b0b251584478c607cfe31018a3",
+    "origin_main": "19eaaa3f3ddbd4d6e1ffaef01a6c31ce89b02fcf",
+    "merge_head": "19eaaa3f3ddbd4d6e1ffaef01a6c31ce89b02fcf",
+    "merge_committed": false,
+    "main_pushed": false,
+    "unresolved_conflicts": [],
+    "behind_ahead_before_commit": [
+      18,
+      1
+    ],
+    "note": "Working files include main; Git ancestry remains behind until user commits the merge and pushes their QA branch."
+  },
+  "python": {
+    "runtime": "CPython 3.11.14",
+    "venv_kind": "existing QA 3.11 environment with research extras",
+    "pip_check": "passed",
+    "passed": 624,
+    "failed": 0,
+    "skipped": 2,
+    "skip_reasons": [
+      "got empty parameter set for (url, rule, brand_id, key)",
+      "Run notebook 03 and notebook 02 to generate local real-data handoffs."
+    ],
+    "deselected": 1,
+    "junit_sha256": "0040564162c9c53686f8290bae6fe636eb2d50e9b9e76980433e32c2b2fe300e",
+    "local_dot_venv": "Python 3.13.7; not used for frozen Teacher acceptance"
+  },
+  "web_main": {
+    "analyze": "passed",
+    "tests": {
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "0b0990099db6c2b926f92a7e10243da12d29dad19a6054232d70143dcd8331a6"
+    },
+    "scope": "Week-6 Web from main, not Hung Week-7 QR/inspect source"
+  },
+  "dart_package": {
+    "tests": {
+      "passed": 294,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "b1a43e0a62a897a23eef6abbe2ca58edf41db6af256359b4e9cae5a70d9b474a"
+    },
+    "analyzer": {
+      "errors": 0,
+      "warnings": 1,
+      "info": 8,
+      "exit_code": 2,
+      "scope": "Inherited main package; source left unchanged"
+    }
+  },
+  "flutter_app_main": {
+    "analyze": "passed",
+    "tests": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "c15735af036db5566a19c811bab05a745af97767c20d660c30122d1a8f5cc31c"
+    },
+    "scope": "Baseline extractor app from main, not new Hy Teacher UI"
+  },
+  "backend": {
+    "health": {
+      "status": "ok",
+      "model_ready": true,
+      "model": "teacher-stacking-v2",
+      "feature_set": "canonical-reference-v1",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+      "model_error": null
+    },
+    "valid_status": 200,
+    "valid_prediction": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.0288165553314368,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    },
+    "invalid_status": 422,
+    "invalid_error": {
+      "error": {
+        "code": "INVALID_URL",
+        "message": "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.",
+        "reason": "invalid_port"
+      }
+    },
+    "python": "CPython 3.11.14"
+  },
+  "fixes": [
+    {
+      "kind": "checkout_line_endings",
+      "file": "src/phishguard_vn/resources/brand_reference_v1.csv",
+      "old_raw_sha256": "247c6b5d9c39b51c3b851fca17babf91f5298d7ce813842031d27f4feac0e7bd",
+      "restored_raw_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+      "method": "Exact origin/main Git blob; confirmed content only differed by CRLF. No data/reference changes."
+    },
+    {
+      "kind": "ci_source_selection",
+      "file": ".github/workflows/week7-web.yml",
+      "method": "Use QA checkout as Week-7 source only if week7_test.dart and url_inspection.py both exist; Week-6 Web from main uses reviewed Week-7 pinned SHA."
+    }
+  ],
+  "editor": {
+    "local_settings": ".vscode/settings.json (ignored, not committed)",
+    "python_default": "existing Python 3.11 QA interpreter",
+    "flutter_sdk": "installed Flutter SDK",
+    "problems_ui_cleared_verified": false,
+    "note": "CLI diagnostics verified; VS Code may require interpreter selection and analysis-server restart."
+  },
+  "published_qa_ci": {
+    "revision": "3bfd45ac2b5c78b0b251584478c607cfe31018a3",
+    "passed": 6,
+    "total": 6,
+    "checks": [
+      {
+        "name": "Student Python / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677428"
+      },
+      {
+        "name": "Flutter Web / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677396"
+      },
+      {
+        "name": "Flutter Web / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677386"
+      },
+      {
+        "name": "Student Python / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238299149/job/134579677077"
+      },
+      {
+        "name": "Python 3.11 / windows-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238298906/job/134579676801"
+      },
+      {
+        "name": "Python 3.11 / ubuntu-latest",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/phuctran33/PhishGuardVN/actions/runs/44238298906/job/134579676395"
+      }
+    ],
+    "current_uncommitted_changes_tested_by_actions": false
+  },
+  "completion_after_recorded_test": {
+    "qa_commit": "d929767a72bbadd59a35d1dc4a9140df9972ac15",
+    "behind_ahead_vs_fetched_main": [
+      0,
+      2
+    ],
+    "note": "User completed the previously recorded pending merge; subsequent Hy QA edits are uncommitted."
+  }
+}

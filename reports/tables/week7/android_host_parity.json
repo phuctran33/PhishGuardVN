@@ -1,0 +1,378 @@
+{
+  "schema": "k73-host-parity-v1",
+  "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+  "status": "passed",
+  "runtime": "Flutter test host; not Android device",
+  "classified_matched": 47,
+  "rejected_matched": 9,
+  "absolute_tolerance": 0.000001,
+  "max_absolute_delta": 8.881784197001252e-16,
+  "failures": [],
+  "cases": [
+    {
+      "name": "vcb_home",
+      "score": 0.45515599733242773,
+      "class_id": 0,
+      "python_score": 0.4551559973324278,
+      "absolute_delta": 5.551115123125783e-17
+    },
+    {
+      "name": "bidv_login_page",
+      "score": 0.6090793989069907,
+      "class_id": 0,
+      "python_score": 0.6090793989069898,
+      "absolute_delta": 8.881784197001252e-16
+    },
+    {
+      "name": "momo_home",
+      "score": 0.07094838046193148,
+      "class_id": 0,
+      "python_score": 0.07094838046193147,
+      "absolute_delta": 1.3877787807814457e-17
+    },
+    {
+      "name": "shopee_home",
+      "score": 0.26173821012539294,
+      "class_id": 0,
+      "python_score": 0.261738210125393,
+      "absolute_delta": 5.551115123125783e-17
+    },
+    {
+      "name": "tcb_two_domains",
+      "score": 0.5656736017787443,
+      "class_id": 0,
+      "python_score": 0.5656736017787443,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "gov_portal_official",
+      "score": 0.13080365657523363,
+      "class_id": 0,
+      "python_score": 0.1308036565752336,
+      "absolute_delta": 2.7755575615628914e-17
+    },
+    {
+      "name": "vcb_login_top",
+      "score": 0.9945825143586277,
+      "class_id": 1,
+      "python_score": 0.9945825143586277,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "shopee_gift",
+      "score": 0.9957925409049642,
+      "class_id": 1,
+      "python_score": 0.9957925409049642,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "momo_short_token",
+      "score": 0.990468210933336,
+      "class_id": 1,
+      "python_score": 0.990468210933336,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "short_alias_exact_token",
+      "score": 0.956932687857468,
+      "class_id": 1,
+      "python_score": 0.956932687857468,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "short_alias_not_token",
+      "score": 0.8583100234609957,
+      "class_id": 1,
+      "python_score": 0.8583100234609959,
+      "absolute_delta": 2.220446049250313e-16
+    },
+    {
+      "name": "concatenated_brand",
+      "score": 0.9986861208910012,
+      "class_id": 1,
+      "python_score": 0.9986861208910012,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "classic_trick",
+      "score": 0.9906248036137009,
+      "class_id": 1,
+      "python_score": 0.9906248036137009,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "bank_login_subdomain",
+      "score": 0.9686623896343823,
+      "class_id": 1,
+      "python_score": 0.9686623896343823,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "free_hosting_style",
+      "score": 0.9998758960803193,
+      "class_id": 1,
+      "python_score": 0.9998758960803193,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "path_only",
+      "score": 0.9953849086402897,
+      "class_id": 1,
+      "python_score": 0.9953849086402897,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "query_only",
+      "score": 0.65103722764017,
+      "class_id": 0,
+      "python_score": 0.65103722764017,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "transposition",
+      "score": 0.8804921399479159,
+      "class_id": 1,
+      "python_score": 0.8804921399479159,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "extra_letter",
+      "score": 0.9986865624942437,
+      "class_id": 1,
+      "python_score": 0.9986865624942437,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "other_brand_name_not_typo",
+      "score": 0.9994235761047636,
+      "class_id": 1,
+      "python_score": 0.9994235761047636,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "short_token_ignored",
+      "score": 0.9924947436603845,
+      "class_id": 1,
+      "python_score": 0.9924947436603845,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "zero_for_o",
+      "score": 0.9986089491641578,
+      "class_id": 1,
+      "python_score": 0.9986089491641575,
+      "absolute_delta": 2.220446049250313e-16
+    },
+    {
+      "name": "one_for_i",
+      "score": 0.9738422235767544,
+      "class_id": 1,
+      "python_score": 0.9738422235767544,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "rn_for_m",
+      "score": 0.9149883214048949,
+      "class_id": 1,
+      "python_score": 0.9149883214048949,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "punycode_host",
+      "score": 0.01601810314548817,
+      "class_id": 0,
+      "python_score": 0.01601810314548817,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "unicode_host",
+      "score": 0.023035994349379793,
+      "class_id": 0,
+      "python_score": 0.02303599434937979,
+      "absolute_delta": 3.469446951953614e-18
+    },
+    {
+      "name": "vietnamese_diacritics_path",
+      "score": 0.8784783044996349,
+      "class_id": 1,
+      "python_score": 0.8784783044996349,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "ipv4_with_brand_path",
+      "score": 0.9928015139269706,
+      "class_id": 1,
+      "python_score": 0.9928015139269706,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "ipv6_literal",
+      "score": 0.7439174170853257,
+      "class_id": 1,
+      "python_score": 0.7439174170853257,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "uppercase_scheme_host",
+      "score": 0.8258030266320635,
+      "class_id": 1,
+      "python_score": 0.8258030266320633,
+      "absolute_delta": 2.220446049250313e-16
+    },
+    {
+      "name": "trailing_dot",
+      "score": 0.005299937189917396,
+      "class_id": 0,
+      "python_score": 0.005299937189917396,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "scheme_relative",
+      "score": 0.21822680957242996,
+      "class_id": 0,
+      "python_score": 0.21822680957243007,
+      "absolute_delta": 1.1102230246251565e-16
+    },
+    {
+      "name": "missing_scheme",
+      "score": 0.9945825143586277,
+      "class_id": 1,
+      "python_score": 0.9945825143586277,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "port_and_userinfo",
+      "score": 0.8328624318156985,
+      "class_id": 1,
+      "python_score": 0.8328624318156985,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "path_params",
+      "score": 0.4704287434095894,
+      "class_id": 0,
+      "python_score": 0.47042874340958934,
+      "absolute_delta": 5.551115123125783e-17
+    },
+    {
+      "name": "percent_encoded_path",
+      "score": 0.9871679998371489,
+      "class_id": 1,
+      "python_score": 0.9871679998371489,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "multi_level_suffix",
+      "score": 0.00220123651852011,
+      "class_id": 0,
+      "python_score": 0.00220123651852011,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "underscore_host",
+      "score": 0.5425259784484343,
+      "class_id": 0,
+      "python_score": 0.5425259784484343,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "many_keywords",
+      "score": 0.52936165609556,
+      "class_id": 0,
+      "python_score": 0.5293616560955601,
+      "absolute_delta": 1.1102230246251565e-16
+    },
+    {
+      "name": "vietnamese_keywords",
+      "score": 0.8556843764599125,
+      "class_id": 1,
+      "python_score": 0.8556843764599128,
+      "absolute_delta": 3.3306690738754696e-16
+    },
+    {
+      "name": "very_long_url",
+      "score": 0.26231116020597967,
+      "class_id": 0,
+      "python_score": 0.26231116020597967,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "qa_probe_0",
+      "score": 0.6098543367072835,
+      "class_id": 0,
+      "python_score": 0.6098543367072836,
+      "absolute_delta": 1.1102230246251565e-16
+    },
+    {
+      "name": "qa_probe_1",
+      "score": 0.2915644219101093,
+      "class_id": 0,
+      "python_score": 0.2915644219101093,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "qa_probe_2",
+      "score": 0.3480287217465756,
+      "class_id": 0,
+      "python_score": 0.34802872174657556,
+      "absolute_delta": 5.551115123125783e-17
+    },
+    {
+      "name": "qa_probe_3",
+      "score": 0.251791848180662,
+      "class_id": 0,
+      "python_score": 0.251791848180662,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "qa_probe_4",
+      "score": 0.6470118265370538,
+      "class_id": 0,
+      "python_score": 0.6470118265370538,
+      "absolute_delta": 0.0
+    },
+    {
+      "name": "qa_probe_5",
+      "score": 0.34691112623766657,
+      "class_id": 0,
+      "python_score": 0.3469111262376665,
+      "absolute_delta": 5.551115123125783e-17
+    },
+    {
+      "name": "qa_probe_6",
+      "status": "InvalidInput"
+    },
+    {
+      "name": "qa_probe_7",
+      "status": "InvalidInput"
+    },
+    {
+      "name": "qa_probe_8",
+      "status": "InvalidInput"
+    },
+    {
+      "name": "qa_probe_9",
+      "status": "InvalidInput"
+    },
+    {
+      "name": "qa_probe_10",
+      "status": "Unclassifiable"
+    },
+    {
+      "name": "qa_probe_11",
+      "status": "Unclassifiable"
+    },
+    {
+      "name": "qa_probe_12",
+      "status": "Unclassifiable"
+    },
+    {
+      "name": "qa_probe_13",
+      "status": "InvalidInput"
+    },
+    {
+      "name": "qa_probe_14",
+      "status": "InvalidInput"
+    }
+  ]
+}

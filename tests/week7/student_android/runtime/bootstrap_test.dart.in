@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:student_android_qa/asset_loader.dart';
+import 'package:student_android_qa/parity.dart';
+import 'package:student_android_runtime_qa/main.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  test('packaged asset paths load Student and live Python fixtures', () async {
+    final model = await loadBundledStudent();
+    final reference = await bundledStudentReference();
+    final result = verifyStudentParity(model, reference);
+    expect(result['classified'], 55);
+    expect(result['rejected'], 9);
+  });
+  testWidgets('QA app shows experimental model and rejects invalid port',
+      (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: StudentQaPage()));
+    await tester.runAsync(() async {
+      for (var i = 0;
+          i < 100 && find.textContaining('Sẵn sàng:').evaluate().isEmpty;
+          i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        await tester.pump();
+      }
+    });
+    expect(find.textContaining('Sẵn sàng:'), findsOneWidget);
+    expect(find.textContaining('Teacher v2 vẫn là engine mặc định'),
+        findsOneWidget);
+    await tester.enterText(
+        find.byType(TextField), 'https://example.com:99999/');
+    await tester.tap(find.text('Predict Student'));
+    await tester.pump();
+    expect(find.textContaining('Không tạo prediction:'), findsOneWidget);
+  });
+}

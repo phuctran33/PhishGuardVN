@@ -1,0 +1,6 @@
+{
+  "name": "phishguard-week7-web-qa",
+  "private": true,
+  "scripts": {"smoke": "node web_smoke.cjs"},
+  "devDependencies": {"playwright": "1.65.0"}
+}

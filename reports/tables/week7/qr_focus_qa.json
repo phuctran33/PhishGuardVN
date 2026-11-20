@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "handoff_revision": "701b8f5ee2b003573d991dbdee7e33c16ff2c088",
+  "platform": "win32",
+  "node": "v26.13.0",
+  "real_teacher": true,
+  "prediction_mocking": false,
+  "checks": [
+    {
+      "name": "typing after QR error retains focus and replacement text",
+      "status": "failed",
+      "error": "Flutter input must settle before submitting\n+ actual - expected\n\n+ ''\n- 'https://example.com/replacement'\n",
+      "input_trace": {
+        "value": "https://example.com/replacement",
+        "trace": [
+          {
+            "stage": "focused",
+            "active_tag": "INPUT",
+            "active_label": "URL cần kiểm tra",
+            "inputs": [
+              {
+                "value": "example.com",
+                "label": "URL cần kiểm tra"
+              }
+            ]
+          },
+          {
+            "stage": "cleared",
+            "active_tag": "BODY",
+            "active_label": null,
+            "inputs": [
+              {
+                "value": "",
+                "label": "URL cần kiểm tra"
+              }
+            ]
+          },
+          {
+            "stage": "inserted",
+            "active_tag": "BODY",
+            "active_label": null,
+            "inputs": [
+              {
+                "value": "",
+                "label": "URL cần kiểm tra"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "model": "teacher-stacking-v2",
+    "feature_set": "canonical-reference-v1",
+    "protocol": "full_train_group_oof_fpr_target_0.01",
+    "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "model_error": null
+  },
+  "browser": "157.0.8103.79",
+  "last_input_edit": {
+    "value": "https://example.com/replacement",
+    "trace": [
+      {
+        "stage": "focused",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra",
+        "inputs": [
+          {
+            "value": "example.com",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      },
+      {
+        "stage": "cleared",
+        "active_tag": "BODY",
+        "active_label": null,
+        "inputs": [
+          {
+            "value": "",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      },
+      {
+        "stage": "inserted",
+        "active_tag": "BODY",
+        "active_label": null,
+        "inputs": [
+          {
+            "value": "",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      }
+    ]
+  }
+}

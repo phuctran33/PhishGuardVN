@@ -1,0 +1,191 @@
+// K7.3 test source: android_reference.py copies this into Hy's ignored .dart_tool.
+// Compile/analyze it in the target Flutter package, using live Python reference.
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:phishguard_android/src/teacher_contract.dart';
+import 'package:phishguard_android/src/teacher_loader.dart';
+import 'package:phishguard_android/src/teacher_url_classifier.dart';
+import 'package:phishguard_android/src/url_classifier.dart';
+import 'package:phishguard_features/io.dart';
+import 'package:phishguard_features/phishguard_features.dart';
+
+class _Files extends CachingAssetBundle {
+  _Files(this.files);
+  final Map<String, Uint8List> files;
+
+  @override
+  Future<ByteData> load(String key) async {
+    final bytes = files[key];
+    if (bytes == null) throw StateError('Missing asset: $key');
+    return ByteData.sublistView(bytes);
+  }
+}
+
+void main() {
+  const referencePath = String.fromEnvironment('QA_ANDROID_REFERENCE');
+  const outputPath = String.fromEnvironment('QA_ANDROID_OUTPUT');
+  final root = Directory('../..').absolute;
+  late Map<String, dynamic> reference;
+  late E2Extractor extractor;
+  late Map<String, Uint8List> bytes;
+
+  setUpAll(() {
+    expect(
+      referencePath,
+      isNotEmpty,
+      reason: 'Tạo reference bằng android_reference.py và truyền QA_ANDROID_REFERENCE.',
+    );
+    reference = jsonDecode(
+      File(referencePath).readAsStringSync(),
+    ) as Map<String, dynamic>;
+    expect(reference['schema'], 'k73-live-python-reference-v1');
+    extractor = loadExtractorFromRepo(root.path);
+    final folder = '${root.path}/artifacts/teacher_v2_android';
+    bytes = {
+      teacherManifestAsset: File('$folder/manifest.json').readAsBytesSync(),
+      teacherSvmAsset: File('$folder/dart_svm_model.json').readAsBytesSync(),
+      teacherModelAsset: File('$folder/dart_teacher_v2_model.json')
+          .readAsBytesSync(),
+    };
+  });
+
+  Future<LoadedTeacher> load([Map<String, Uint8List>? files]) => loadTeacherV2(
+    extractorBrandSha256: teacherBrandReferenceSha256,
+    bundle: _Files(files ?? bytes),
+  );
+
+  test(
+    'runtime metadata and feature order match live Python release',
+    () async {
+      final loaded = await load();
+      expect(loaded.info.modelVersion, reference['model_version']);
+      expect(loaded.info.threshold, reference['threshold']);
+      expect(loaded.info.decisionRule, reference['decision_rule']);
+      expect(loaded.info.sourceBundleSha256, reference['source_bundle_sha256']);
+      expect(teacherBrandReferenceSha256, reference['brand_reference_sha256']);
+      expect(e2FeatureOrder, reference['feature_order']);
+      expect(loaded.model.featureOrder, reference['feature_order']);
+      expect(loaded.model.histTreeCount, 300);
+    },
+  );
+
+  test('real app classifier matches freshly executed Python on shared inputs', () async {
+    final loaded = await load();
+    final classifier = TeacherUrlClassifier(
+      extractor: extractor,
+      model: loaded.model,
+    );
+    final cases = (reference['cases'] as List).cast<Map<String, dynamic>>();
+    final results = <Map<String, dynamic>>[];
+    final failures = <String>[];
+    var classified = 0;
+    var rejected = 0;
+    var maxDelta = 0.0;
+    for (final item in cases) {
+      final outcome = classifier.classify(item['url'] as String);
+      final name = item['name'] as String;
+      if (item['status'] == 'rejected') {
+        if (outcome is Classified || outcome is InferenceFailure) {
+          failures.add(
+            '$name: expected input rejection, got ${outcome.runtimeType}',
+          );
+        } else {
+          rejected++;
+        }
+        results.add({'name': name, 'status': outcome.runtimeType.toString()});
+      } else if (outcome is Classified) {
+        final delta = (outcome.score - (item['score'] as num).toDouble()).abs();
+        if (delta > maxDelta) maxDelta = delta;
+        final classId = outcome.phishing ? 1 : 0;
+        if (delta > 1e-6 ||
+            classId != item['class_id'] ||
+            outcome.threshold != reference['threshold'] ||
+            outcome.decisionRule != reference['decision_rule'] ||
+            outcome.modelVersion != reference['model_version']) {
+          failures.add('$name: Python–Dart score/label/metadata mismatch');
+        } else {
+          classified++;
+        }
+        results.add({
+          'name': name,
+          'score': outcome.score,
+          'class_id': classId,
+          'python_score': item['score'],
+          'absolute_delta': delta,
+        });
+      } else {
+        failures.add('$name: expected prediction, got ${outcome.runtimeType}');
+        results.add({'name': name, 'status': outcome.runtimeType.toString()});
+      }
+    }
+    if (outputPath.isNotEmpty) {
+      final file = File(outputPath);
+      file.parent.createSync(recursive: true);
+      file.writeAsStringSync(
+        '${const JsonEncoder.withIndent('  ').convert({'schema': 'k73-host-parity-v1', 'source_revision': reference['source_revision'], 'status': failures.isEmpty ? 'passed' : 'failed', 'runtime': 'Flutter test host; not Android device', 'classified_matched': classified, 'rejected_matched': rejected, 'absolute_tolerance': 1e-6, 'max_absolute_delta': maxDelta, 'failures': failures, 'cases': results})}\n',
+      );
+    }
+    expect(cases.length, greaterThanOrEqualTo(41));
+    expect(failures, isEmpty);
+  });
+
+  test(
+    'real model loading and inference work with HTTP blocked on host',
+    () async {
+      await HttpOverrides.runZoned(
+        () async {
+          final loaded = await load();
+          final classifier = TeacherUrlClassifier(
+            extractor: extractor,
+            model: loaded.model,
+          );
+          expect(classifier.classify('example.com'), isA<Classified>());
+          expect(
+            classifier.classify('http://[2001:db8::1]/login'),
+            isA<Classified>(),
+          );
+        },
+        createHttpClient: (_) =>
+            throw StateError('Network forbidden by K7.3 QA'),
+      );
+    },
+  );
+
+  test('missing real model asset fails loading without fallback', () async {
+    final changed = Map<String, Uint8List>.of(bytes)..remove(teacherModelAsset);
+    await expectLater(
+      load(changed),
+      throwsA(
+        isA<TeacherLoadException>().having(
+          (error) => error.kind,
+          'kind',
+          TeacherLoadFailure.missingAsset,
+        ),
+      ),
+    );
+  });
+
+  test('wrong locked threshold fails before inference', () async {
+    final manifest = jsonDecode(
+      utf8.decode(bytes[teacherManifestAsset]!),
+    ) as Map<String, dynamic>;
+    manifest['threshold'] = 0.5;
+    final changed = Map<String, Uint8List>.of(bytes);
+    changed[teacherManifestAsset] = Uint8List.fromList(
+      utf8.encode(jsonEncode(manifest)),
+    );
+    await expectLater(
+      load(changed),
+      throwsA(
+        isA<TeacherLoadException>().having(
+          (error) => error.kind,
+          'kind',
+          TeacherLoadFailure.contractMismatch,
+        ),
+      ),
+    );
+  });
+}
