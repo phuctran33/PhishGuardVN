@@ -10,7 +10,7 @@ on:
         required: false
         type: string
       student_sha:
-        description: Full Student source commit SHA; blank uses the pinned Phuc handoff
+        description: Full LightGBM regression source SHA; MLP uses its separate pinned handoff
         required: false
         type: string
       android_sha:
@@ -30,6 +30,8 @@ env:
   # Update after receiving and reviewing Hung's next handoff. Never follow a moving branch.
   WEB_HANDOFF_SHA: "5f112fc597339ea213eff3f07c745629cc18d8fc"
   STUDENT_HANDOFF_SHA: "1cad94c88195ebea6e4737bbfc863cbe4b2ff384"
+  STUDENT_MLP_HANDOFF_SHA: "bc3a3a7054e2f6e6e733595f40f38439784536a1"
+  ANDROID_MLP_HANDOFF_SHA: "f817ec96eee8f5301c06bae6c59b0059b9fe3d78"
   ANDROID_HANDOFF_SHA: "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e"
   QA_API_PORT: "18767"
   PYTHONIOENCODING: utf-8
@@ -382,6 +384,30 @@ jobs:
         run: |
           python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_student_lightgbm.py --junitxml=../test-results/student/lightgbm.xml
           python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_student.py tests/test_student_comparison.py --junitxml=../test-results/student/regression.xml
+
+      - name: Check out the MLP int8 handoff separately
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.STUDENT_MLP_HANDOFF_SHA }}
+          path: student-mlp-source
+          persist-credentials: false
+
+      - name: Verify MLP revision and run independent bundle QA
+        env:
+          QA_STUDENT_MLP_ROOT: ${{ github.workspace }}/student-mlp-source
+          QA_STUDENT_MLP_OUTPUT: ${{ github.workspace }}/test-results/student/mlp-python.json
+        run: |
+          set -euo pipefail
+          test "$(git -C student-mlp-source rev-parse HEAD)" = "$STUDENT_MLP_HANDOFF_SHA"
+          printf 'MLP revision: %s\n' "$STUDENT_MLP_HANDOFF_SHA" | tee test-results/student/mlp-source.txt
+          cat test-results/student/mlp-source.txt >> "$GITHUB_STEP_SUMMARY"
+          cp student-mlp-source/artifacts/student_mlp_android/manifest.json test-results/student/mlp-manifest.json
+          python -m pytest -p no:cacheprovider -q -rs --tb=short tests/week7/student_mlp_qa.py --junitxml=test-results/student/mlp-independent.xml
+
+      - name: Run upstream MLP int8 handoff tests
+        working-directory: student-mlp-source
+        run: python -m pytest -p no:cacheprovider -q -rs --tb=short tests/test_android_student_mlp.py --junitxml=../test-results/student/mlp-upstream.xml
+
       - name: Set up Flutter for experimental Student adapter QA
         uses: subosito/flutter-action@v2
         with:
@@ -411,11 +437,17 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import xml.etree.ElementTree as E
-          for name, minimum in [('independent.xml', 43), ('lightgbm.xml', 3), ('regression.xml', 29)]:
+          for name, minimum in [('independent.xml', 43), ('lightgbm.xml', 3), ('regression.xml', 29), ('mlp-independent.xml', 86), ('mlp-upstream.xml', 2)]:
               cases = E.parse(Path('test-results/student') / name).findall('.//testcase')
               assert len(cases) >= minimum, f'{name}: missing tests'
               assert all(c.find(tag) is None for c in cases for tag in ('skipped', 'failure', 'error')), name
           import json
+          mlp = json.loads(Path('test-results/student/mlp-python.json').read_text(encoding='utf-8'))
+          assert mlp['status'] == 'passed' and mlp['source_revision'] == 'bc3a3a7054e2f6e6e733595f40f38439784536a1'
+          assert mlp['model_version'] == 'student-mlp-kd-int8-v1' and mlp['threshold'] == 0.72961075
+          assert mlp['classified_matched'] == 54 and mlp['rejected_matched'] == 9
+          assert mlp['max_fixture_score_delta'] <= mlp['absolute_tolerance'] == 2e-6
+          assert mlp['independent_int8_max_delta'] <= 1e-12
           events = [json.loads(line) for line in Path('test-results/student/dart-tests.json').read_text().splitlines() if line.startswith('{')]
           completed = [event for event in events if event.get('type') == 'testDone' and not event.get('hidden')]
           assert len(completed) >= 44 and all(e.get('result') == 'success' and not e.get('skipped') for e in completed)
@@ -431,6 +463,20 @@ jobs:
               assert mode['status'] == 'passed' and mode['frozen_classified'] == 52 and mode['frozen_rejected'] == 6
               assert mode['classified'] == 55 and mode['rejected'] == 9 and mode['max_score_delta'] <= 1e-6
           PY
+
+      - name: Check out Hy Student MLP implementation separately
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.ANDROID_MLP_HANDOFF_SHA }}
+          path: android-mlp-source
+          persist-credentials: false
+
+      # This includes the rejected-input UI regression. Do not hide its failure.
+      - name: Verify Hy MLP implementation against Phuc reference and UI contract
+        run: |
+          python tests/week7/run_student_mlp_host.py \
+            --android-root=android-mlp-source --student-root=student-mlp-source \
+            --output=test-results/student/mlp-host.json
 
       - name: Upload Student verification evidence even on failure
         if: always()

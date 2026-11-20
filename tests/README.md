@@ -177,7 +177,93 @@ $qaSdk=Join-Path $env:LOCALAPPDATA 'Android/sdk'; & ..\PhishGuardVN-w7-hy-review
 
 Lượt thực tế đạt cả integration và release; mạng được khôi phục sau mỗi lượt. Bằng chứng: [runtime](../reports/tables/week7/teacher_android_runtime.json), [release](../reports/tables/week7/teacher_android_release.json), [ảnh offline](../reports/figures/week7/teacher_android_release_offline.png). Kết quả chỉ xác minh emulator x86_64; không nhận điện thoại vật lý/ARM64, mọi IME hoặc browser Linux đã được kiểm. Teacher app vẫn mặc định; không thêm Student vào sản phẩm Hy.
 
-## K7.4 — Student LightGBM của Phúc
+## K7.4 — Student MLP int8 bàn giao ngày 19/11
+
+PR #35 bàn giao `student-mlp-kd-int8-v1` tại **`bc3a3a7054e2f6e6e733595f40f38439784536a1`**. Đây là bundle mới, không dùng kết quả LightGBM bên dưới để nghiệm thu MLP. Model nén 283.334 bytes; PSL 75.007 bytes; threshold **`0.72961075`**, quy tắc `score >= threshold`, score sigmoid chưa hiệu chuẩn. Contract gốc: `docs/week7_android_mlp_handoff.md` trong checkout bàn giao. Không chạy `--research-root`, không tái tạo/train bundle hoặc chấm dữ liệu dự án.
+
+Nếu chưa có source, từ root QA tạo checkout riêng và chọn đúng revision:
+
+```powershell
+git clone --branch phuc-week7-student https://github.com/phuctran33/PhishGuardVN.git ../PhishGuardVN-w7-student-mlp-review; git -C ../PhishGuardVN-w7-student-mlp-review checkout --detach bc3a3a7054e2f6e6e733595f40f38439784536a1
+```
+
+Cần CPython 3.11. Tạo venv riêng trong checkout MLP và cài dependency đã khóa cùng test extras. LightGBM 4.7.0 chỉ cần nếu chạy thêm 53 stacking fixtures; bản MLP không dùng LightGBM để inference:
+
+```powershell
+py -3.11 -m venv ../PhishGuardVN-w7-student-mlp-review/.venv; & ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe -m pip install -r ../PhishGuardVN-w7-student-mlp-review/requirements-teacher.txt -e '../PhishGuardVN-w7-student-mlp-review[test]' lightgbm==4.7.0; & ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe -m pip check
+```
+
+Chọn Python 3.11 có sẵn trên máy nếu `py -3.11` chưa được đăng ký. Máy QA đã dùng venv riêng `.qa-envs/student-mlp-311` ngoài repo, không cần chép venv đó cho người khác. Trong các lệnh tiếp theo, thay executable Python bằng venv MLP của ông nếu khác.
+
+Từ root QA, chạy **86 tests độc lập** và ghi kết quả từng fixture; đường dẫn temp riêng tránh lỗi quyền thư mục pytest trên Windows:
+
+```powershell
+$qaTemp=Join-Path $env:TEMP ('pgvn-mlp-'+[guid]::NewGuid().ToString('N')); $env:OMP_NUM_THREADS='1'; $env:QA_STUDENT_MLP_ROOT=(Resolve-Path ../PhishGuardVN-w7-student-mlp-review).Path; $env:QA_STUDENT_MLP_OUTPUT=Join-Path (Get-Location).Path 'reports/tables/week7/student_mlp_python.json'; & ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe -m pytest -p no:cacheprovider -q -rs --tb=short "--basetemp=$qaTemp" tests/week7/student_mlp_qa.py
+```
+
+Kiểm script upstream và regression dùng chung — **55 passed** gồm 53 stacking + 2 MLP, không cộng hai test MLP lần nữa khi báo tổng. Các fixtures stacking chỉ fit dữ liệu tổng hợp, không train project data:
+
+```powershell
+$qaTemp=Join-Path $env:TEMP ('pgvn-mlp-upstream-'+[guid]::NewGuid().ToString('N')); Push-Location ../PhishGuardVN-w7-student-mlp-review; & ./.venv/Scripts/python.exe -m pytest -p no:cacheprovider -q -rs --tb=short "--basetemp=$qaTemp" tests/test_stacking.py tests/test_android_student_mlp.py; Pop-Location
+```
+
+CLI inference thật trên bundle đã đóng gói:
+
+```powershell
+Push-Location ../PhishGuardVN-w7-student-mlp-review; & ./.venv/Scripts/python.exe scripts/prepare_android_mlp.py --predict 'https://example.org/Report?Q=%2F'; Pop-Location
+```
+
+QA kiểm 54 URL hợp lệ/9 ca từ chối, SHA-256 của bốn file/PSL, model/version/threshold, signed int8 layout `4096 × 64`, scale từng nút ẩn, Unicode/code point/case/percent escape, zero TF-IDF và biên threshold. Nhánh scalar độc lập đối chiếu 54 score; portable inference chạy khi chặn DNS/socket/Teacher/training và không có model Teacher/dataset trong thư mục thử. Hai phép boundary/zero-vector là test tổng hợp, không phải URL thực nằm đúng biên threshold.
+
+CI bổ sung checkout MLP ghim riêng trong **hai job Student hiện có**, giữ nguyên regression LightGBM; không thêm job và không thay nguồn LightGBM bằng MLP. Gate yêu cầu 86 QA + 2 upstream MLP không fail/skip, đủ 54/9 case và tolerance `2e-6`. Workflow mới phải được người dùng commit/push và kiểm Actions; kết quả CI cũ không nghiệm thu thay đổi này.
+
+**Cập nhật 20/11:** đã nhận implementation MLP `feb5763` và xác minh bản sửa UI của Hy tại **`f817ec9`**; kết quả và lệnh kiểm hiện tại ở bên dưới. Các số 55/9 LightGBM và 47/9 Teacher Android vẫn là lịch sử riêng. Bằng chứng tổng hợp: [`student_mlp_verification.json`](../reports/tables/week7/student_mlp_verification.json).
+
+### Kiểm implementation Flutter/Android MLP của Hy
+
+Source Hy cần ở revision `f817ec96eee8f5301c06bae6c59b0059b9fe3d78`, Phúc ở `bc3a3a7054e2f6e6e733595f40f38439784536a1`. Nếu chưa có checkout Hy, tạo riêng ngoài repo QA:
+
+```powershell
+git clone --no-checkout https://github.com/phuctran33/PhishGuardVN.git ../PhishGuardVN-w7-hy-review; git -C ../PhishGuardVN-w7-hy-review checkout --detach f817ec96eee8f5301c06bae6c59b0059b9fe3d78
+```
+
+Dùng venv Python 3.11 đã cài theo phần MLP ở trên và Flutter trong PATH. Lệnh từ root QA; thay đường dẫn executable bằng venv MLP hiện có nếu khác:
+
+```powershell
+& ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe tests/week7/run_student_mlp_host.py --android-root=../PhishGuardVN-w7-hy-review --student-root=../PhishGuardVN-w7-student-mlp-review --output=reports/tables/week7/student_mlp_dart.json
+```
+
+Runner kiểm revision, tạo `.student_mlp_android_harness` từ source Hy nguyên bytes, lấy reference Python từ Phúc, chạy Flutter tests và lưu JSON kể cả khi fail. Log thô nằm trong thư mục được ignore `tests/week7/.student_mlp_android_harness/qa_logs/`. Không có implementation MLP mới được viết thay Hy.
+
+**Kết quả hiện tại tại `f817ec9`: 79 passed, 0 failed, 0 skipped**; 54/54 hợp lệ + 9/9 rejected khớp, max score delta `5.551115123125783e-17`. Regression `Student app renders a visible rejection for invalid URL` giữ nguyên và nay đạt: nhập `http://example.com:99999/`, bấm Student thì UI hiển thị trạng thái từ chối. QA-W7-MLP-01 đã được xác minh sửa; kết quả 78/1/0 tại `feb5763` được giữ trong lịch sử JSON tổng hợp. Lệnh thành công trả exit code 0.
+
+Sau khi host runner đã chuẩn bị harness, bật Android Emulator rồi kiểm native với mạng tắt. Đổi `$qaAdb` nếu SDK cài ở vị trí khác; `--device` mặc định là `emulator-5554`:
+
+```powershell
+$qaAdb=Join-Path $env:LOCALAPPDATA 'Android/sdk/platform-tools/adb.exe'; & ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe tests/week7/run_student_mlp_android.py --android-root=../PhishGuardVN-w7-hy-review "--adb=$qaAdb" --phase=integration --output=reports/tables/week7/student_mlp_android.json
+```
+
+Native profile chạy cùng 79 ca nghiệp vụ; framework có setup/teardown riêng nên không cộng chúng vào số nghiệp vụ. Kết quả tại `f817ec9` là **79/0/0**, parity 54/9 đạt. Radio và default routes được kiểm khi tắt mạng, trạng thái ban đầu được khôi phục trong `finally`. Chỉ dùng chức năng tự đổi mạng này trên emulator.
+
+Build APK release entrypoint nguyên bản của Hy với các assets chính xác trong thư mục build được ignore, sau đó kiểm ba lần mở lại và suy luận UI offline:
+
+```powershell
+& ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe tests/week7/prepare_student_mlp_runtime.py --android-root=../PhishGuardVN-w7-hy-review --student-root=../PhishGuardVN-w7-student-mlp-review --prepare-release-assets
+```
+
+```powershell
+Push-Location ../PhishGuardVN-w7-hy-review/mobile/app; flutter pub get; flutter build apk --release --no-pub; $qaBuildExit=$LASTEXITCODE; Pop-Location; if ($qaBuildExit -ne 0) { throw 'Build APK không đạt; xem lỗi phía trên.' }
+```
+
+```powershell
+$qaAdb=Join-Path $env:LOCALAPPDATA 'Android/sdk/platform-tools/adb.exe'; & ../PhishGuardVN-w7-student-mlp-review/.venv/Scripts/python.exe tests/week7/run_student_mlp_android.py --android-root=../PhishGuardVN-w7-hy-review "--adb=$qaAdb" --phase=release --output=reports/tables/week7/student_mlp_release.json --screenshot=reports/figures/week7/student_mlp_android_offline.png
+```
+
+Release smoke đạt là bằng chứng khởi động và suy luận offline cho luồng hợp lệ; kết quả regression UI lỗi được kiểm riêng trong bộ 79 tests cũng đã đạt. Số đo profile là in-process, RAM và APK là toàn app; không xem số emulator x86_64 là kết quả điện thoại ARM64.
+
+CI ghim riêng Hy `f817ec9` và Phúc `bc3a3a7`, chạy cả Python QA và đủ 79 host implementation/UI tests trong job Student hiện có. Lượt local đã đạt; tiếp theo người dùng tự commit/push và kiểm Actions cho đúng commit mới. Kết quả 14/14 của `68e7a6b` vẫn là bằng chứng đợt trước, không thay cho Actions của thay đổi này.
+
+## K7.4 — Student LightGBM của Phúc — lịch sử trước MLP
 
 Source đã kiểm: `1cad94c88195ebea6e4737bbfc863cbe4b2ff384`, branch `phuc-week7-student`, ở checkout riêng `PhishGuardVN-w7-student-review`. Không chép đè Student/Teacher vào repo QA hoặc checkout Web. Kết quả: **43 test QA độc lập**, **3 test LightGBM upstream** và **29 test Student cũ** đạt trong ba lần chạy riêng; không fail/skip. Xem [báo cáo](../reports/week7_qa.md#k74--kiểm-student-lightgbm-ngày-18112026) và [JSON bằng chứng](../reports/tables/week7/student_verification.json).
 

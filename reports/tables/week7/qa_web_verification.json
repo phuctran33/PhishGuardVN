@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "date": "2026-11-18",
+  "date": "2026-11-20",
   "timezone": "Asia/Ho_Chi_Minh",
   "scope": [
     "K7.1 Web QR",
@@ -8,7 +8,7 @@
     "K7.5 available Web/API/Dart/widget regression and CI configuration"
   ],
   "handoff_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
-  "overall_status": "web_verified_ci_pending_android_pending",
+  "overall_status": "executed_local_scope_verified_new_ci_and_final_signoff_pending",
   "environment": {
     "os": "Windows-11-10.0.26200-SP0",
     "architecture": "AMD64",
@@ -165,9 +165,9 @@
     "covers_new_local_qa_workflow": false
   },
   "not_executed_in_this_round": [
-    "Điện thoại Android vật lý/ARM64 và mọi native IME",
-    "Browser smoke trên Linux chưa nghiệm thu",
-    "Actions cho cấu hình browser Windows và phần QA hiện tại trước user commit/push"
+    "Điện thoại Android vật lý/ARM64 và native IME đầy đủ",
+    "Browser smoke Linux nằm ngoài phạm vi nghiệm thu browser Windows",
+    "Actions cho thay đổi MLP QA chưa commit/push"
   ],
   "reproduce": "tests/README.md#qa-web-tuần-7--bàn-giao-của-hưng",
   "web_ci_preparation": {
@@ -486,7 +486,7 @@
       "android_scope": "Adapter QA riêng trên emulator, không tích hợp Student vào UI sản phẩm Hy; xem student_android_verification.json"
     },
     "ci": {
-      "status": "Local verification passed; current browser scope Windows only; new Actions pending user commit/push",
+      "status": "Local workflow validation and MLP host 79/79 passed; new Actions pending user commit/push",
       "source_selection": "pinned Web/Student revisions, recorded separately from QA workflow revision"
     },
     "hy_new_handoff": {
@@ -495,11 +495,22 @@
       "evidence": "android_verification.json"
     },
     "whole_issue_31": {
-      "status": "awaiting_current_head_ci_and_user_signoff",
+      "status": "local_scope_verified_pending_new_ci_and_acceptance",
       "remaining": [
-        "Actions thành công trên commit QA mới sau đổi phạm vi browser",
-        "Người dùng kiểm lại và bàn giao/sign-off báo cáo Issue #31"
+        "Người dùng commit/push và xác nhận Actions của phần QA MLP mới",
+        "Bàn giao/sign-off cuối Issue #31"
       ]
+    },
+    "phuc_student_mlp": {
+      "revision": "bc3a3a7054e2f6e6e733595f40f38439784536a1",
+      "status": "python_bundle_dart_android_parity_verified",
+      "evidence": "student_mlp_verification.json"
+    },
+    "hy_student_mlp": {
+      "revision": "f817ec96eee8f5301c06bae6c59b0059b9fe3d78",
+      "status": "verified_host_and_android_emulator",
+      "evidence": "student_mlp_verification.json",
+      "open_findings": []
     }
   },
   "published_qa_ci": {
@@ -562,5 +573,7 @@
     "teacher_android_runtime.json",
     "teacher_android_release.json",
     "android_verification.json"
-  ]
+  ],
+  "student_mlp_evidence": "student_mlp_verification.json",
+  "student_mlp_status": "verified_host_and_android_emulator"
 }
