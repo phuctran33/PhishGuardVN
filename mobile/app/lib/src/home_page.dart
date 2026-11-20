@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
   ClassificationOutcome? _outcome;
   ClassificationOutcome? _studentOutcome;
+  String? _studentError;
   FeatureResult? _features;
   String _submitted = '';
 
@@ -91,11 +92,24 @@ class _HomePageState extends State<HomePage> {
     final classifier = widget.studentClassifier;
     if (classifier == null) return;
 
-    final outcome = classifier.classify(_controller.text);
+    try {
+      final outcome = classifier.classify(_controller.text);
 
-    setState(() {
-      _studentOutcome = outcome;
-    });
+      setState(() {
+        _studentOutcome = outcome;
+        _studentError = null;
+      });
+    } on FormatException {
+      setState(() {
+        _studentOutcome = null;
+        _studentError = 'URL không hợp lệ. Vui lòng kiểm tra lại địa chỉ.';
+      });
+    } catch (e) {
+      setState(() {
+        _studentOutcome = null;
+        _studentError = 'Student không thể phân tích URL này.';
+      });
+    }
   }
 
   @override
@@ -179,24 +193,43 @@ class _HomePageState extends State<HomePage> {
                       ? 'Student chưa được nạp.'
                       : 'Student load lỗi: ${widget.studentLoadError.runtimeType}',
                 ),
-              if (_studentOutcome case Classified c)
+              if (_studentError != null)
                 Card(
-                  key: const Key('result_student'),
+                  key: const Key('student_error'),
+                  color: Theme.of(context).colorScheme.errorContainer,
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Column(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Kết quả Student MLP'),
-                        Text(c.phishing ? 'Phishing' : 'Benign'),
-                        Text('Score: ${c.score.toStringAsFixed(6)}'),
-                        Text('Threshold: ${c.threshold}'),
-                        Text('Model: ${c.modelVersion}'),
-                        const Text('Score sigmoid chưa hiệu chuẩn.'),
+                        Icon(
+                          Icons.error_outline,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            _studentError!,
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onErrorContainer,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
+              if (_studentError != null)
+                _messageCard(
+                  context,
+                  cardKey: const Key('student_error'),
+                  title: 'Lỗi khi chạy Student',
+                  lines: [_studentError!],
+                ),
+              if (_studentOutcome case final outcome?)
+                _buildStudentResult(context, outcome),
               const SizedBox(height: 16),
               _Footer(info: widget.info, teacher: widget.teacherInfo),
             ],
@@ -245,6 +278,60 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ];
+    }
+  }
+
+  Widget _buildStudentResult(
+      BuildContext context, ClassificationOutcome outcome) {
+    switch (outcome) {
+      case Classified c:
+        return Card(
+          key: const Key('result_student'),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Kết quả Student MLP'),
+                Text(c.phishing ? 'Phishing' : 'Benign'),
+                Text('Score: ${c.score.toStringAsFixed(6)}'),
+                Text('Threshold: ${c.threshold}'),
+                Text('Model: ${c.modelVersion}'),
+                const Text('Score sigmoid chưa hiệu chuẩn.'),
+              ],
+            ),
+          ),
+        );
+
+      case Unclassifiable u:
+        return _messageCard(
+          context,
+          cardKey: const Key('result_student_invalid'),
+          title: 'Student không phân loại được',
+          lines: [
+            describeError(u.reasonCode),
+            'Mã lỗi: ${u.reasonCode}',
+          ],
+        );
+
+      case InvalidInput i:
+        return _messageCard(
+          context,
+          cardKey: const Key('result_student_invalid'),
+          title: 'Đầu vào Student không hợp lệ',
+          lines: [describeInputIssue(i.issue)],
+        );
+
+      case InferenceFailure f:
+        return _messageCard(
+          context,
+          cardKey: const Key('result_student_error'),
+          title: 'Lỗi khi chạy Student',
+          lines: [
+            'Mô hình gặp lỗi bất thường (${f.errorType}).',
+            'Không có kết quả phân loại.',
+          ],
+        );
     }
   }
 
