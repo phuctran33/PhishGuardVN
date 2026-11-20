@@ -12,3 +12,5 @@ export 'src/svm.dart'
 export 'src/teacher_v2.dart'
     show TeacherV2OfflineModel, TeacherV2Prediction, teacherV2FeatureOrder;
 export 'src/url_parser.dart' show ParsedUrl, UrlParser;
+export 'src/idna.dart' show hostToAscii;
+export 'src/ip.dart' show parseIp;
