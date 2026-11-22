@@ -26,32 +26,47 @@ for f in "$PSL" "$BRAND" "$PARITY" "$TEACHER_SVM" "$TEACHER_MODEL"; do
 done
 cp "$TEACHER_MANIFEST" "$DST/teacher_v2_manifest.json"
 
-# Lấy Student artifacts trực tiếp từ PR #35, không checkout/merge.
+# Student MLP artifacts:
+# Ưu tiên artifacts đã có trong repo (sau khi PR #35 merge).
+# Nếu chưa có, fallback sang PR #35 remote ref, không checkout/merge.
+STUDENT_DIR="$ROOT/artifacts/student_mlp_android"
+STUDENT_MANIFEST="$STUDENT_DIR/manifest.json"
+STUDENT_MODEL="$STUDENT_DIR/student_mlp.json.gz"
 STUDENT_REF="refs/remotes/pr/35"
 
-if ! git -C "$ROOT" show-ref --verify --quiet "$STUDENT_REF"; then
-  echo "LỖI: Không tìm thấy ref $STUDENT_REF." >&2
-  echo "Hãy fetch PR #35 trước bằng lệnh:" >&2
-  echo "  git -C \"$ROOT\" fetch origin pull/35/head:refs/remotes/pr/35" >&2
-  exit 1
+if [ -f "$STUDENT_MANIFEST" ] && [ -f "$STUDENT_MODEL" ]; then
+  echo "Student source: repo artifacts"
+
+  cp "$STUDENT_MANIFEST" "$DST/student_mlp_manifest.json"
+  cp "$STUDENT_MODEL" "$DST/student_mlp.json.gz"
+
+else
+  echo "Student artifacts chưa đầy đủ trong repo; thử fallback PR #35..."
+
+  if ! git -C "$ROOT" show-ref --verify --quiet "$STUDENT_REF"; then
+    echo "LỖI: Không có Student artifacts trong repo và không tìm thấy ref $STUDENT_REF." >&2
+    echo "Sau khi PR #35 merge, hãy pull main để lấy artifacts." >&2
+    echo "Nếu cần fallback PR #35, fetch ref bằng lệnh:" >&2
+    echo "  git -C \"$ROOT\" fetch origin pull/35/head:refs/remotes/pr/35" >&2
+    exit 1
+  fi
+
+  if ! git -C "$ROOT" cat-file -e \
+    "$STUDENT_REF:artifacts/student_mlp_android/manifest.json" 2>/dev/null ||
+     ! git -C "$ROOT" cat-file -e \
+    "$STUDENT_REF:artifacts/student_mlp_android/student_mlp.json.gz" 2>/dev/null; then
+    echo "LỖI: Ref $STUDENT_REF không chứa đủ Student artifacts." >&2
+    exit 1
+  fi
+
+  git -C "$ROOT" show \
+    "$STUDENT_REF:artifacts/student_mlp_android/manifest.json" \
+    > "$DST/student_mlp_manifest.json"
+
+  git -C "$ROOT" show \
+    "$STUDENT_REF:artifacts/student_mlp_android/student_mlp.json.gz" \
+    > "$DST/student_mlp.json.gz"
 fi
-
-if ! git -C "$ROOT" cat-file -e \
-  "$STUDENT_REF:artifacts/student_mlp_android/manifest.json" 2>/dev/null ||
-   ! git -C "$ROOT" cat-file -e \
-  "$STUDENT_REF:artifacts/student_mlp_android/student_mlp.json.gz" 2>/dev/null; then
-  echo "LỖI: Ref $STUDENT_REF không chứa đủ Student artifacts." >&2
-  echo "Cần có manifest.json và student_mlp.json.gz." >&2
-  exit 1
-fi
-
-git -C "$ROOT" show \
-  "$STUDENT_REF:artifacts/student_mlp_android/manifest.json" \
-  > "$DST/student_mlp_manifest.json"
-
-git -C "$ROOT" show \
-  "$STUDENT_REF:artifacts/student_mlp_android/student_mlp.json.gz" \
-  > "$DST/student_mlp.json.gz"
 
 if [ -f "$EXTRA" ]; then cp "$EXTRA" "$DST/"; else echo "(không có mobile_parity_cases_extra.json, bỏ qua)"; fi
 
