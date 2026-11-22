@@ -1,9 +1,11 @@
 import 'dart:ui' show ImageFilter;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import 'api_client.dart';
+import 'qr_image.dart';
 
 // Semantic tokens: design-system/phishguardvn/MASTER.md.
 const navy = Color(0xFF081321);
@@ -30,8 +32,9 @@ void main() => runApp(
 );
 
 class PhishGuardApp extends StatelessWidget {
-  const PhishGuardApp({super.key, required this.api});
+  const PhishGuardApp({super.key, required this.api, this.imagePicker});
   final PredictionApi api;
+  final Future<Uint8List?> Function()? imagePicker;
   @override
   Widget build(BuildContext context) => MaterialApp(
     title: 'PhishGuard VN — Kiểm tra URL',
@@ -76,13 +79,14 @@ class PhishGuardApp extends StatelessWidget {
         contentPadding: const EdgeInsets.all(18),
       ),
     ),
-    home: UrlCheckPage(api: api),
+    home: UrlCheckPage(api: api, imagePicker: imagePicker),
   );
 }
 
 class UrlCheckPage extends StatefulWidget {
-  const UrlCheckPage({super.key, required this.api});
+  const UrlCheckPage({super.key, required this.api, this.imagePicker});
   final PredictionApi api;
+  final Future<Uint8List?> Function()? imagePicker;
   @override
   State<UrlCheckPage> createState() => _UrlCheckPageState();
 }
@@ -97,20 +101,106 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
   bool _busy = false;
   bool? _ready;
   bool _healthChecked = false;
+  int _revision = 0;
+  String _inputText = '';
+  Inspection? _inspection;
+  ApiFailure? _inspectionFailure;
+  bool _inspecting = false;
+  bool _qrBusy = false;
+  String? _qrCandidate, _qrFailure;
 
   @override
   void initState() {
     super.initState();
     _semantics = SemanticsBinding.instance.ensureSemantics();
+    _url.addListener(_inputChanged);
     _health();
   }
 
   @override
   void dispose() {
     _semantics.dispose();
+    _url.removeListener(_inputChanged);
     _url.dispose();
     widget.api.close();
     super.dispose();
+  }
+
+  void _inputChanged() {
+    // Controller notifications also include selection/focus changes. Those do
+    // not invalidate a response for the same URL.
+    if (_url.text == _inputText) return;
+    _inputText = _url.text;
+    _revision++;
+    if (_prediction == null &&
+        _failure == null &&
+        _inspection == null &&
+        _inspectionFailure == null &&
+        _qrCandidate == null &&
+        _qrFailure == null) {
+      return;
+    }
+    setState(() {
+      _prediction = null;
+      _failure = null;
+      _inspection = null;
+      _inspectionFailure = null;
+      _qrCandidate = null;
+      _qrFailure = null;
+    });
+  }
+
+  Future<void> _pickQr() async {
+    if (_qrBusy || _busy) return;
+    final revision = _revision;
+    setState(() {
+      _qrBusy = true;
+      _qrFailure = null;
+      _qrCandidate = null;
+    });
+    try {
+      final bytes = await (widget.imagePicker ?? chooseQrImage)();
+      if (bytes == null) return;
+      final candidate = await compute(decodeQrImage, bytes);
+      if (mounted && revision == _revision) {
+        setState(() => _qrCandidate = candidate);
+      }
+    } on QrFailure catch (e) {
+      if (mounted && revision == _revision) {
+        setState(() => _qrFailure = e.message);
+      }
+    } catch (_) {
+      if (mounted && revision == _revision) {
+        setState(
+          () => _qrFailure = 'Không thể chọn hoặc đọc ảnh. Hãy chọn ảnh khác.',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _qrBusy = false);
+    }
+  }
+
+  Future<void> _inspect() async {
+    if (_inspecting || !_form.currentState!.validate()) return;
+    final revision = _revision;
+    final url = _url.text.trim();
+    setState(() {
+      _inspecting = true;
+      _inspection = null;
+      _inspectionFailure = null;
+    });
+    try {
+      final result = await widget.api.inspect(url);
+      if (mounted && revision == _revision) {
+        setState(() => _inspection = result);
+      }
+    } on ApiFailure catch (e) {
+      if (mounted && revision == _revision) {
+        setState(() => _inspectionFailure = e);
+      }
+    } finally {
+      if (mounted) setState(() => _inspecting = false);
+    }
   }
 
   Future<void> _health() async {
@@ -130,6 +220,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
 
   Future<void> _submit() async {
     if (_busy || !_form.currentState!.validate()) return;
+    final revision = _revision;
     setState(() {
       _busy = true;
       _prediction = null;
@@ -137,7 +228,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
     });
     try {
       final result = await widget.api.predict(_url.text.trim());
-      if (mounted) {
+      if (mounted && revision == _revision) {
         setState(() {
           _prediction = result;
           _ready = true;
@@ -145,7 +236,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
         });
       }
     } on ApiFailure catch (e) {
-      if (mounted) setState(() => _failure = e);
+      if (mounted && revision == _revision) setState(() => _failure = e);
       _health();
     } finally {
       if (mounted) {
@@ -153,6 +244,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final feedbackContext = _feedback.currentContext;
           if (mounted &&
+              revision == _revision &&
               feedbackContext != null &&
               MediaQuery.sizeOf(context).width < 860) {
             Scrollable.ensureVisible(
@@ -195,6 +287,14 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                     LayoutBuilder(
                       builder: (context, constraints) {
                         final desktop = constraints.maxWidth >= 860;
+                        // Keep the card's accessibility order independent of
+                        // the hero. Reordering the web semantics DOM can move
+                        // the focused input's form and blur the native editor.
+                        final card = Semantics(
+                          container: true,
+                          explicitChildNodes: true,
+                          child: _card(),
+                        );
                         return Padding(
                           padding: EdgeInsets.symmetric(
                             vertical: desktop ? 72 : 32,
@@ -205,7 +305,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                                   children: [
                                     Expanded(flex: 9, child: _hero(true)),
                                     const SizedBox(width: 56),
-                                    Expanded(flex: 11, child: _card()),
+                                    Expanded(flex: 11, child: card),
                                   ],
                                 )
                               : Column(
@@ -214,7 +314,7 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                                   children: [
                                     _hero(false),
                                     const SizedBox(height: 28),
-                                    _card(),
+                                    card,
                                   ],
                                 ),
                         );
@@ -421,12 +521,87 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
               style: TextStyle(color: muted, fontSize: 16, height: 1.5),
             ),
             const SizedBox(height: 24),
+            OutlinedButton.icon(
+              key: const Key('qr-upload'),
+              onPressed: _qrBusy || _busy ? null : _pickQr,
+              icon: const Icon(Icons.qr_code_rounded),
+              label: Text(_qrBusy ? 'Đang đọc ảnh QR…' : 'Chọn ảnh QR'),
+              style: OutlinedButton.styleFrom(minimumSize: const Size(48, 48)),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'PNG/JPEG/WebP · tối đa 8 MB, 4 triệu pixel. Một mã QR/ảnh; chưa hỗ trợ nhiều mã. Ảnh được đọc tại máy, không upload lên máy chủ.',
+              style: TextStyle(color: muted, fontSize: 12, height: 1.5),
+            ),
+            if (_qrFailure != null)
+              Semantics(
+                liveRegion: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _qrFailure!,
+                      key: const Key('qr-error'),
+                      style: const TextStyle(color: danger, height: 1.5),
+                    ),
+                    TextButton(
+                      onPressed: _pickQr,
+                      child: const Text('Chọn ảnh khác'),
+                    ),
+                  ],
+                ),
+              ),
+            if (_qrCandidate != null)
+              Semantics(
+                liveRegion: true,
+                child: Container(
+                  key: const Key('qr-preview'),
+                  margin: const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: benignSurface,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'URL đọc từ QR — chưa gửi phân tích',
+                        style: TextStyle(
+                          color: teal,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _qrCandidate!,
+                        style: const TextStyle(color: ink, height: 1.5),
+                      ),
+                      TextButton(
+                        key: const Key('qr-confirm'),
+                        onPressed: _busy
+                            ? null
+                            : () {
+                                final candidate = _qrCandidate!;
+                                _url.text = candidate;
+                                _submit();
+                              },
+                        child: const Text('Xác nhận và phân tích'),
+                      ),
+                      TextButton(
+                        onPressed: () => setState(() => _qrCandidate = null),
+                        child: const Text('Hủy'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            const SizedBox(height: 24),
             Form(
               key: _form,
               child: TextFormField(
                 key: const Key('url-input'),
                 controller: _url,
-                readOnly: _busy,
                 keyboardType: TextInputType.url,
                 autocorrect: false,
                 enableSuggestions: false,
@@ -444,16 +619,20 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                   if (text.runes.length > 4096) return 'URL tối đa 4096 ký tự.';
                   return null;
                 },
-                onChanged: (_) {
-                  if (_prediction != null || _failure != null) {
-                    setState(() {
-                      _prediction = null;
-                      _failure = null;
-                    });
-                  }
-                },
                 onFieldSubmitted: (_) => _submit(),
               ),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              key: const Key('inspect-button'),
+              onPressed: _inspecting ? null : _inspect,
+              icon: const Icon(Icons.travel_explore_rounded),
+              label: Text(
+                _inspecting
+                    ? 'Đang kiểm tra quy tắc…'
+                    : 'Brand Detector & URL X-Ray',
+              ),
+              style: OutlinedButton.styleFrom(minimumSize: const Size(48, 48)),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -487,11 +666,14 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                     ),
                     const SizedBox(width: 10),
                   ],
-                  Text(
-                    _busy ? 'Đang phân tích…' : 'Kiểm tra URL',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                  Flexible(
+                    child: Text(
+                      _busy ? 'Đang phân tích…' : 'Kiểm tra URL',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   if (!_busy) ...[
@@ -520,6 +702,28 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                     : _error(_failure!),
               ),
             ],
+            if (_inspection != null) ...[
+              const SizedBox(height: 24),
+              _inspectionView(_inspection!),
+            ],
+            if (_inspectionFailure != null)
+              Semantics(
+                liveRegion: true,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
+                      _inspectionFailure!.message,
+                      key: const Key('inspect-error'),
+                      style: const TextStyle(color: danger),
+                    ),
+                    TextButton(
+                      onPressed: _inspect,
+                      child: const Text('Thử lại quy tắc'),
+                    ),
+                  ],
+                ),
+              ),
             const SizedBox(height: 24),
             const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,6 +743,102 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
       ),
     ),
   );
+
+  Widget _inspectionView(Inspection i) {
+    const ruleNames = {
+      'brand_in_domain': 'Thương hiệu trong domain',
+      'brand_in_subdomain': 'Thương hiệu trong subdomain',
+      'brand_in_path': 'Thương hiệu trong path/query',
+      'brand_domain_mismatch': 'Tên thương hiệu khác domain tham chiếu',
+      'brand_typo_score': 'Chuỗi gần giống thương hiệu',
+      'homoglyph_brand_hit': 'Ký tự có thể gây nhầm lẫn',
+      'susp_token': 'Từ khóa theo quy tắc',
+    };
+    return Semantics(
+      liveRegion: true,
+      child: Container(
+        key: const Key('inspection-result'),
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: navy,
+          border: Border.all(color: line),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'URL X-RAY',
+              style: TextStyle(
+                color: teal,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.2,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Domain đăng ký thực tế: ${i.domain ?? 'Không có (IP hoặc hostname không có domain đăng ký)'}',
+              style: const TextStyle(
+                color: ink,
+                fontWeight: FontWeight.bold,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Hostname: ${i.hostname}\nSubdomain: ${i.subdomain.isEmpty ? '—' : i.subdomain}\nPath: ${i.path.isEmpty ? '/' : i.path}',
+              style: const TextStyle(color: muted, height: 1.6),
+            ),
+            if (i.isIp)
+              const Text(
+                'Địa chỉ IP; không có danh tính thương hiệu được xác minh.',
+                style: TextStyle(color: warning, height: 1.5),
+              ),
+            if (i.features['idna_flag'] == 1)
+              const Text(
+                'IDNA/Punycode hiện diện. Đây là tín hiệu định dạng, không phải kết luận độc hại.',
+                style: TextStyle(color: warning, height: 1.5),
+              ),
+            const Divider(color: line, height: 32),
+            const Text(
+              'BRAND DETECTOR · QUY TẮC',
+              style: TextStyle(color: teal, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              i.officialBrands.isEmpty
+                  ? 'Không khớp domain chính thức trong reference.'
+                  : 'Khớp domain tham chiếu: ${i.officialBrands.join(', ')}. Không chứng nhận an toàn hoặc quyền sở hữu hiện tại.',
+              style: const TextStyle(color: muted, height: 1.5),
+            ),
+            if (i.matches.isEmpty)
+              const Text(
+                'Không có tín hiệu phù hợp trong 45 thương hiệu; không có nghĩa là URL an toàn.',
+                style: TextStyle(color: muted, height: 1.5),
+              ),
+            for (final m in i.matches)
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  '${ruleNames[m['rule']] ?? m['rule']} · ${m['brand_name'] == '' ? m['key'] : m['brand_name']}\nChuỗi đối chiếu: ${m['text']}${m['distance'] == null ? '' : '\nKhoảng cách chỉnh sửa: ${m['distance']}'}',
+                  style: const TextStyle(color: ink, height: 1.5),
+                ),
+              ),
+            const SizedBox(height: 16),
+            const Text(
+              'Quy tắc chuỗi URL, không phải dự đoán hay giải thích nội tại ML. Mismatch/typo không chứng minh phishing. Evidence được chuẩn hóa; vùng path bao gồm query. Không truy cập trang đích.',
+              style: TextStyle(color: warning, fontSize: 12, height: 1.6),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Reference 45 thương hiệu · SHA256 ${i.referenceSha}',
+              style: const TextStyle(color: muted, fontSize: 11, height: 1.5),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _result(Prediction p) {
     final flagged = p.label == 'phishing';

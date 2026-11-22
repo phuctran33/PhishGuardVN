@@ -62,3 +62,9 @@ Không train/retrain/tune, đổi threshold/model bytes/lock/promotion, sửa ra
 [API contract v1](../docs/api_contract.md), [backend CPython 3.11 và release lock](../docs/backend.md), [Flutter setup/build/smoke](../apps/web/README.md). API `http://127.0.0.1:8000`, Web `http://127.0.0.1:3000`, CORS đúng hai localhost origins. Checkout Git có artifact/lock chính thức, không phụ thuộc cache riêng của Hưng; không dùng máy thiếu artifact để nhận integration pass.
 
 DoD #15 và luồng #19 đã có bằng chứng local Web → API → Teacher thật; chờ review PR, không tự merge/đóng issue. Không còn blocker thiếu Teacher #16 cho luồng Web. Khiêm #17 vẫn phụ trách QA/security/latency/clean-clone và final smoke trước nghiệm thu 15/11; không đánh dấu thay Khiêm. Không mở rộng KD/Student/Android/deployment.
+
+## Tiếp nối Week 7
+
+PR #22/#23 đã merge vào main; quan hệ stacked/pending review ở trên là lịch sử
+lượt Week 6. QR ảnh có xác nhận, Brand Detector/URL X-Ray và screenshots mới xem
+[Week 7 verification](week7_web_verification.md). Không đổi tên ảnh E1/Week 6.

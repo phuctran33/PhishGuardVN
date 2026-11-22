@@ -294,3 +294,11 @@ Run `python scripts/predict_stacking_candidate.py --examples` in the recorded ru
 Flutter Web (#19): [cài/chạy và smoke test](apps/web/README.md). Chạy Web ở port 3000,
 trỏ `API_BASE_URL` tới backend port 8000 và cấu hình CORS theo hướng dẫn.
 Web gọi Teacher stacking thật qua API, không tự tính lại features hoặc mở URL đích.
+
+### Week 7 — Web inspection / reporting
+
+[Issue #30](https://github.com/phuctran33/PhishGuardVN/issues/30) tiếp tục Web tuần 6:
+QR ảnh có xác nhận trước prediction, Brand Detector/URL X-Ray offline qua `/inspect`.
+Xem [Web demo](apps/web/README.md#week-7--qr-ảnh-brand-detector-và-url-x-ray-30),
+[verification](reports/week7_web_verification.md) và
+[Teacher/Student analysis](reports/week7_modeling_evaluation.md).

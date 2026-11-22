@@ -65,3 +65,38 @@ Các bước smoke tối thiểu (API + Web thực):
 6. Tùy chọn bỏ cấu hình model/restart: UI báo máy chủ chưa sẵn sàng, không sinh label giả.
 
 Hưng bàn giao Web/config/ảnh demo ở PR riêng; Khiêm vẫn phụ trách QA/security/CI đầy đủ, clean clone và final E2E smoke hậu kiểm trước nghiệm thu 15/11. Trạng thái tích hợp Teacher và các giới hạn kiểm chứng được ghi theo lượt chạy thực tế trong báo cáo; không nhận fixtures unit là demo Teacher. Không có video được nhận là đã quay; có screenshot thật và các bước ở trên để tự quay lại.
+
+## Week 7 — QR ảnh, Brand Detector và URL X-Ray (#30)
+
+Tiếp tục giao diện và design system trên; không thêm dashboard. QR dùng
+[file_selector](https://pub.dev/packages/file_selector) 1.1.0 để chọn ảnh,
+[image](https://pub.dev/packages/image) 4.13.1 đọc pixel và
+[zxing2](https://pub.dev/packages/zxing2) 0.2.4 giải QR thực bằng Dart.
+PNG/JPEG/WebP, tối đa 8 MiB và 4 × 1024² pixel; hỗ trợ **một QR/ảnh**,
+chưa hỗ trợ nhiều QR/camera. Ảnh được decode local, không gửi lên backend.
+QR phải chứa URL web; xác nhận người dùng mới gửi URL đến `/predict`.
+Không nhấn/open website đích. File picker cancel không gửi request.
+
+Bốn luồng demo (backend Teacher và Web release chạy theo hướng dẫn trên):
+
+1. Nhập `example.com` → **Kiểm tra URL**: nhãn/score/model/threshold từ API.
+2. **Chọn ảnh QR** → chọn `test/fixtures/qr_url.png` → xem URL đầy đủ →
+   **Xác nhận và phân tích**: chỉ lúc này mới POST. Dùng `broken.png`, `no_qr.png`,
+   `qr_text.png` và `qr_bad_scheme.png` để kiểm tra lỗi và chọn ảnh khác.
+3. Nhập `https://vietcombank.com.vn/` → **Brand Detector & URL X-Ray**:
+   xem đối chiếu reference; thử `https://vietcombank.com.vn.example.com/login`
+   để thấy thương hiệu trong subdomain và domain đăng ký thực tế.
+4. Cùng panel X-Ray: thử `https://bücher.de/Path`, `http://127.0.0.1/login`,
+   `https://example.com/vietcombank?login=1`; heuristic tách rõ khỏi dự đoán ML.
+
+Đổi input sẽ hủy hiển thị kết quả cũ và bỏ response đã lỗi thời (HTTP có thể
+vẫn hoàn tất); request cùng loại không gửi trùng trong khi chờ. Giữ input khi
+lỗi; có retry cho prediction, inspection và ảnh QR. Timeout API 10 giây.
+Dừng backend thật rồi thử lại; restart backend/retry phải phục hồi không reload.
+Reference inspection độc lập model: model unavailable vẫn có thể kiểm quy tắc.
+
+Kiểm thử: `flutter analyze`, `flutter test`,
+`flutter build web --release --dart-define=API_BASE_URL=http://127.0.0.1:8000`.
+Ảnh fixture được tạo bằng Python qrcode/Pillow, đi qua decoder thật trong tests;
+HTTP fixtures chỉ dành unit/widget tests. Bằng chứng mới và bàn giao QA #31:
+[week7_web_verification.md](../../reports/week7_web_verification.md).
