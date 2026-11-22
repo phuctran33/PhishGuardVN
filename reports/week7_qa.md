@@ -1,6 +1,10 @@
 # QA tuần 7 — Khiêm
 
-**Cập nhật 20/11/2026 — đã kiểm bản sửa MLP của Hy tại `f817ec9`:** Python–Dart và Python–Android emulator khớp **54/54 URL hợp lệ + 9/9 rejected**, max score delta **`5.551115123125783e-17`** (giới hạn `2e-6`). Bộ QA giữ nguyên đạt **79 passed, 0 failed, 0 skipped** trên cả host và Android; QA-W7-MLP-01 đã sửa và xác minh. Loader/version/hash/threshold, APK release, ba lần mở lại app khi tắt mạng và suy luận Student thật đã kiểm. Phạm vi kiểm tại máy đã đạt; còn người dùng commit/push, xác nhận Actions cho commit mới và sign-off Issue #31. Xem [kết quả implementation MLP](#k74--implementation-mlp-của-hy-ngày-20112026).
+**Cập nhật 22/11/2026 — kiểm lại HEAD Hy `680a8bd`:** bộ QA giữ nguyên đạt **79/79** trên host và Android emulator; khớp **54 URL hợp lệ + 9 rejected**, max score delta `5.551115123125783e-17`. Bản tích hợp sạch từ main `4d13bee` + diff PR #33 đã sync assets từ repo **không cần ref PR #35**, từ chối model sai SHA-256, analyze sạch, **54 Flutter tests + 294 Dart tests** đạt và build APK release thành công. Ba lần mở lại APK release khi tắt mạng đạt, đã khôi phục mạng. Teacher vẫn mặc định; Student experimental. Xem [bằng chứng HEAD mới](tables/week7/hy_head_recheck.json).
+
+CI QA **14/14 tại `18e076e` đã đạt**; PR #33 **6/6 tại `680a8bd` đã đạt**. Đây là kết quả của hai revision đã xác minh, không thay cho CI của thay đổi pin/report chưa commit hiện tại. Sau khi người dùng push, cần kiểm Actions trên đúng commit QA mới. Các mục 18–20/11 bên dưới là lịch sử của từng lượt kiểm, không phải blocker hiện tại.
+
+**Lịch sử 20/11/2026 — đã kiểm bản sửa MLP của Hy tại `f817ec9`:** Python–Dart và Python–Android emulator khớp **54/54 URL hợp lệ + 9/9 rejected**, max score delta **`5.551115123125783e-17`** (giới hạn `2e-6`). Bộ QA giữ nguyên đạt **79 passed, 0 failed, 0 skipped** trên cả host và Android; QA-W7-MLP-01 đã sửa và xác minh. Loader/version/hash/threshold, APK release, ba lần mở lại app khi tắt mạng và suy luận Student thật đã kiểm. Phạm vi kiểm tại máy đã đạt; còn người dùng commit/push, xác nhận Actions cho commit mới và sign-off Issue #31. Xem [kết quả implementation MLP](#k74--implementation-mlp-của-hy-ngày-20112026).
 
 **Lịch sử 19/11/2026 — nhận bundle/Python:** đã nhận PR #35, commit `bc3a3a7`, model **`student-mlp-kd-int8-v1`**. Phần bundle/Python đạt 86 QA độc lập và 55 stacking/MLP fixtures; đủ 54 URL hợp lệ/9 ca từ chối, score delta lớn nhất `2.7755575615628914e-17`. Đây là phiên bản mới, không lấy kết quả Android LightGBM thay cho MLP. Lượt 19/11 chỉ xác minh bundle/Python; phần Dart/Android/offline đã được bổ sung trong lượt 20/11 ở dưới. Teacher/Web đã kiểm trước đó vẫn giữ nguyên. Xem [lượt kiểm MLP mới](#k74--student-mlp-int8-bàn-giao-ngày-19112026).
 
@@ -13,9 +17,9 @@
 | K7.1 — QR Web của Hưng | Đạt trên `5f112fc`: decoder/validation/error/timeout tests, xác nhận trước predict và browser Teacher thật. 48 Flutter tests và 20 browser checks bao gồm các luồng liên quan. Timeout có kiểm soát ở unit tests; mất kết nối/restart kiểm bằng process backend thật. |
 | K7.2 — Brand Detector / X-Ray của Hưng | Đạt trên cùng revision: 73 API/inspection/Teacher tests và 25 QA tests, cùng full regression. Alias/false-positive dùng lại `test_short_alias_requires_whole_token`, official-domain và reference tests trong `test_brand_features.py`; giữ nguyên reference/E2. Không suy ra đây là đánh giá accuracy trên dữ liệu mới. |
 | K7.4 — LightGBM của Phúc (lịch sử) | Đạt trên `1cad94c`: 43 QA + 3 LightGBM + 29 Student tests cũ, chạy riêng; đủ hash/version/config/threshold/edge cases/native–JSON parity. Giữ kết quả đúng phiên bản cũ, không thay cho MLP mới. |
-| K7.4 — MLP int8 của Phúc và implementation Hy | `bc3a3a7` + `f817ec9`: Python QA 86 đạt; Dart và Android 54/9 parity đạt. Mỗi môi trường 79/79 QA đạt; QA-W7-MLP-01 đã xác minh sửa. Release/offline/cold start và số đo emulator đã có bằng chứng. |
+| K7.4 — MLP int8 của Phúc và implementation Hy | Bundle `bc3a3a7`; kiểm lại Hy `680a8bd` đạt 79/79 trên host và Android, parity 54/9 đạt. Python QA 86 thuộc lượt bundle đã xác minh trước đó. QA-W7-MLP-01 không tái hiện; release/offline/cold start đạt. Xem `hy_head_recheck.json`; không đổi lịch sử tại `f817ec9`. |
 | K7.3 — Teacher Android của Hy | Đạt trong phạm vi emulator tại `94abdbf`: 47/9 parity khớp Python, metadata/assets, missing/corrupt model/sai threshold, UI hai nhãn thật/port lỗi/retry. APK release nguyên bản đóng/mở 3 lần khi offline và phân loại URL mẫu đạt. Không sửa mã sản phẩm Hy. |
-| K7.5 — Web/API/Dart/widget regression và cấu hình CI | Web E2E trên Windows, regression và Android Teacher offline đã có bằng chứng thực. Browser Ubuntu còn lỗi chưa xử lý và nằm ngoài phạm vi browser hiện tại; các host jobs vẫn giữ Ubuntu/Windows. Cấu hình CI mới chờ người dùng commit/push và kiểm Actions. |
+| K7.5 — Web/API/Dart/widget regression và cấu hình CI | Web E2E Windows, regression và Android offline đã có bằng chứng. QA `18e076e` đạt 14/14 CI; host jobs giữ Ubuntu/Windows, browser chỉ nghiệm thu Windows. Lượt pin Hy `680a8bd` đạt local; CI của thay đổi pin mới còn chờ người dùng push. |
 | Nghiệm thu cuối | K7.1/K7.2, K7.3 emulator và K7.4 MLP có bằng chứng trong phạm vi đã kiểm. Còn Actions của thay đổi QA mới sau người dùng commit/push và sign-off Issue #31. Điện thoại vật lý nằm ngoài phạm vi emulator đã thống nhất. |
 
 Phần Hưng/Phúc nêu trên sẵn sàng để người dùng tự commit test, workflow và bằng chứng QA. Không cần chờ Hy để bàn giao phần đã đạt. Source hai bạn được kiểm ở checkout riêng và giữ sạch; không chép model/code sản phẩm vào repo QA. Việc approve PR Hưng và commit/push QA do người dùng thực hiện; báo cáo không tự nhận review đã được gửi chỉ từ ảnh màn hình soạn review.
@@ -297,3 +301,22 @@ Ba lần mở release là khởi động nguội theo process; vẫn có filesys
 CI giữ bốn job hiện có; checkout Hy ghim **`f817ec9`** và chạy đủ 79 host tests trong job Student Ubuntu/Windows. Actionlint, 26 Bash steps và 14 tình huống chọn source được kiểm tại máy; host gate đạt với bản sửa. **Chưa có Actions mới cho các thay đổi chưa commit/push**. Kết quả 14/14 cũ thuộc `68e7a6b`, không nghiệm thu thay đổi này; người dùng cần push và xác nhận checks trên đúng commit QA mới.
 
 Bằng chứng: [`student_mlp_dart.json`](tables/week7/student_mlp_dart.json), [`student_mlp_android.json`](tables/week7/student_mlp_android.json), [`student_mlp_android_results.json`](tables/week7/student_mlp_android_results.json), [`student_mlp_release.json`](tables/week7/student_mlp_release.json), [ảnh release offline](figures/week7/student_mlp_android_offline.png). Các lệnh để người khác chạy lại nằm ở mục implementation MLP trong [`tests/README.md`](../tests/README.md).
+
+
+## Kiểm lại HEAD Hy `680a8bd` ngày 22/11/2026
+
+PR #33 chỉ đổi `mobile/tool/sync_assets.sh` và hai tài liệu so với `f817ec9`; mã inference/UI/config Android giữ nguyên. Kiểm lại đúng source **`680a8bd8806db337d8a8c039c0c3c5705b26c061`**, Student **`bc3a3a7054e2f6e6e733595f40f38439784536a1`**. Bản clean integration là checkout main **`4d13bee8738e387a68376b8d78dfff91916172aa`** rồi áp diff PR #33 lên working tree; không tạo merge commit. Clone mới không tái dùng output build/assets, có tái dùng cache SDK/Gradle/Pub. Đối chiếu 51 file sản phẩm/config khớp source Hy, bỏ khác biệt CRLF/LF ở file text.
+
+| Kiểm tra thực tế | Kết quả |
+| --- | --- |
+| Asset sync khi không có ref `refs/remotes/pr/35` | Lấy Student từ artifacts đã có trong repo; Teacher, Student và PSL đạt size/SHA-256 |
+| Model hỏng / thiếu artifacts và không có ref fallback | Model hỏng bị từ chối; thiếu artifacts trả lỗi rõ và gợi ý fetch. Phục hồi model rồi sync lại đạt |
+| Flutter analyze / tests / Dart package tests trên clean candidate | Sạch; **54/0/0** Flutter, **294/0/0** Dart |
+| Host QA implementation Hy tại HEAD mới | **79/0/0**; 54 hợp lệ + 9 rejected; max delta **`5.551115123125783e-17`** |
+| Android emulator QA tại HEAD mới | **79/0/0** nghiệp vụ; parity 54/9 đạt; loader/UI lỗi và Teacher default/Student optional đạt. Hai sự kiện setup/teardown không cộng vào 79 |
+| APK release từ clean candidate | Build thành công, **50.136.027 bytes**, hash trong JSON; không nhận là APK riêng Student |
+| Offline release | Ba lần force-stop/mở lại, Teacher/Student inference thật đạt; airplane bật, Wi-Fi/data tắt, không default route IPv4/IPv6; trạng thái mạng ban đầu được khôi phục |
+
+Hai ghi chú không chặn chức năng: handoff của Hy dòng 5 ghi Khiêm là người triển khai, cần tách Hy triển khai/Khiêm QA; Git Bash Windows thiếu `shasum` nên dòng in hash brand trống, nhưng hash Teacher/Student/PSL bằng Python vẫn được kiểm bắt buộc. QA đối chiếu brand bằng Python khớp hash frozen `6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6`.
+
+Kết quả đủ để đề xuất approve PR #33 trong phạm vi Windows/Android emulator đã kiểm; không tự gửi review hoặc đóng Issue #29/#31. Vẫn chưa nghiệm thu điện thoại vật lý/ARM64. Bằng chứng mới: [`hy_head_recheck.json`](tables/week7/hy_head_recheck.json). Các JSON/screenshot tại `f817ec9` được giữ nguyên để truy nguyên; không gán lại revision cho kết quả cũ. CI pin Hy đã chuyển sang `680a8bd`; Actions cho thay đổi này cần người dùng push và xác nhận sau đó.

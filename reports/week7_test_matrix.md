@@ -54,6 +54,8 @@ Snapshot host Hy `a4d7b0e`; lượt Android mới tại `94abdbf` (mã app khôn
 
 ## K7.4 — Student
 
+**Kiểm lại 22/11 — Hy `680a8bd`:** ST-01–ST-04 giữ nguyên và đạt 79/79 trên cả host/Android emulator, 54/9 parity, max delta `5.551115123125783e-17`. Clean main `4d13bee` + PR #33 không có ref PR #35: sync/hash, analyze, Flutter 54 tests, Dart 294 tests và release APK/offline đạt. CI QA `18e076e` đã đạt 14/14; thay đổi pin mới vẫn phải kiểm CI sau push. Xem [`hy_head_recheck.json`](tables/week7/hy_head_recheck.json).
+
 **Cập nhật 20/11 — implementation Hy `f817ec9` + bundle Phúc `bc3a3a7`:** ST-01–ST-04 đã kiểm trong phạm vi handoff trên host và Android emulator. Python–Dart và Python–Android khớp **54/54 hợp lệ + 9/9 rejected**, max delta `5.551115123125783e-17` (atol `2e-6`). Host và Android mỗi môi trường **79 passed, 0 failed, 0 skipped**; QA-W7-MLP-01 đã sửa và xác minh bằng regression giữ nguyên. APK release nguyên bản cold start/offline đạt. Còn Actions cho thay đổi QA mới sau người dùng commit/push và sign-off cuối issue. Xem [`student_mlp_verification.json`](tables/week7/student_mlp_verification.json). LightGBM bên dưới là lịch sử, không thay cho MLP.
 
 | ID | Ca kiểm thử | Điều cần xác nhận |
