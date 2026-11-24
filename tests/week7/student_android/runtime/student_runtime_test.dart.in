@@ -1,0 +1,187 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:student_android_qa/asset_loader.dart';
+import 'package:student_android_qa/student_adapter.dart';
+import 'package:student_android_qa/parity.dart';
+import 'package:student_android_runtime_qa/main.dart' as qa_app;
+
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  testWidgets('Student parity and inference latency on Android runtime',
+      (tester) async {
+    // Không cho test desktop/web tạo báo cáo giả Android.
+    expect(Platform.isAndroid, isTrue,
+        reason: 'Run this test on Android emulator/device');
+    final reference = await bundledStudentReference();
+    final results = <Map<String, dynamic>>[];
+    final loadTimes = <double>[];
+    LoadedStudent? selected;
+    for (final mode in ['kd_mixed', 'hard_only']) {
+      final watch = Stopwatch()..start();
+      final loaded = await loadBundledStudent(mode: mode);
+      final elapsed = watch.elapsedMicroseconds / 1000;
+      final report = verifyStudentParity(loaded, reference);
+      results.add({...report, 'model_loading_ms': elapsed});
+      if (mode == 'kd_mixed') {
+        selected = loaded;
+        loadTimes.add(elapsed);
+      }
+    }
+    final student = selected!;
+    final urls = (reference['cases'] as List)
+        .where((c) => c['status'] == 'classified')
+        .map((c) => c['url'] as String)
+        .toList();
+    // Parity đạt trước khi đo; 5 warm-up + 10 vòng cùng 55 input.
+    for (var i = 0; i < 5; i++) {
+      student.model.predict(urls[i], student.extractor);
+    }
+    final timings = <double>[];
+    for (var repeat = 0; repeat < 10; repeat++) {
+      for (final url in urls) {
+        final watch = Stopwatch()..start();
+        student.model.predict(url, student.extractor);
+        timings.add(watch.elapsedMicroseconds / 1000);
+      }
+    }
+    timings.sort();
+    double quantile(double q) =>
+        timings[math.max(0, (q * timings.length).ceil() - 1)];
+    binding.reportData = {
+      'schema': 'qa-student-android-runtime-v1',
+      'status': 'passed',
+      'student_revision': reference['student_revision'],
+      'platform': Platform.operatingSystem,
+      'os_version': Platform.operatingSystemVersion,
+      'dart': Platform.version,
+      'build_mode': const bool.fromEnvironment('dart.vm.product')
+          ? 'release'
+          : const bool.fromEnvironment('dart.vm.profile')
+              ? 'profile'
+              : 'debug',
+      'modes': results,
+      'performance': {
+        'scope': 'in-process Android inference, includes vectorization',
+        'samples': timings.length,
+        'warm_up': 5,
+        'inputs_per_round': urls.length,
+        'p50_ms': quantile(0.50),
+        'p95_ms': quantile(0.95),
+        'mean_ms': timings.reduce((a, b) => a + b) / timings.length,
+        'loader_ms_first_kd': loadTimes.first
+      },
+      'cold_start_ms': null,
+      'ram': null,
+      'apk_size_bytes': null,
+      'os_network_state':
+          'Verified separately by ADB controller, not by Dart test',
+      'limitations': [
+        'Cold-start/RAM/APK cần đo riêng bằng adb; tắt mạng OS cần smoke riêng. Không nhận test này là bằng chứng điện thoại thật.'
+      ],
+    };
+  });
+  testWidgets('Student loading errors remain errors on Android',
+      (tester) async {
+    expect(Platform.isAndroid, isTrue);
+    const prefix = 'packages/student_android_qa/assets/';
+    final lock =
+        jsonDecode(await rootBundle.loadString('${prefix}student_lock.json'))
+            as Map<String, dynamic>;
+    final assets = <String, Uint8List>{};
+    for (final name in [
+      'manifest.json',
+      'features.json',
+      'kd_mixed.json',
+      'brand_reference_v1.csv',
+      'psl_icann_tldextract_5.4.0.txt'
+    ]) {
+      final data = await rootBundle.load('$prefix$name');
+      assets[name] =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    }
+    Future<LoadedStudent> load(Map<String, Uint8List> files) =>
+        loadStudent((name) async {
+          if (!files.containsKey(name)) throw StateError('missing_asset:$name');
+          return files[name]!;
+        }, lock);
+    final missing = Map<String, Uint8List>.from(assets)
+      ..remove('kd_mixed.json');
+    await expectLater(load(missing), throwsA(isA<StudentLoadException>()));
+    final corrupt = Uint8List.fromList(assets['kd_mixed.json']!);
+    corrupt[0] ^= 1;
+    await expectLater(
+        load({...assets, 'kd_mixed.json': corrupt}),
+        throwsA(isA<StudentLoadException>()
+            .having((e) => e.reason, 'reason', contains('sha256_mismatch'))));
+    final features = jsonDecode(utf8.decode(assets['features.json']!))
+        as Map<String, dynamic>;
+    final model = jsonDecode(utf8.decode(assets['kd_mixed.json']!))
+        as Map<String, dynamic>;
+    model['threshold'] = 0.5;
+    expect(() => StudentModel.fromJson(features, model), throwsFormatException);
+    binding.reportData!['android_loading_error_cases'] = [
+      'missing_model',
+      'same_size_hash_mismatch',
+      'wrong_threshold'
+    ];
+  });
+  testWidgets(
+      'Student experimental UI predicts both labels and rejects invalid URL on Android',
+      (tester) async {
+    expect(Platform.isAndroid, isTrue);
+    // integration_test keeps the native IME enabled. Flutter's TestTextInput
+    // warns that injecting into a real IME can restore stale editing values.
+    // Stub only the keyboard transport; assets/model/UI remain real Android.
+    tester.testTextInput.register();
+    addTearDown(tester.testTextInput.unregister);
+    await tester.pumpWidget(const MaterialApp(home: qa_app.StudentQaPage()));
+    await tester.runAsync(() async {
+      for (var i = 0;
+          i < 100 && find.textContaining('Sẵn sàng:').evaluate().isEmpty;
+          i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 30));
+        await tester.pump();
+      }
+    });
+    expect(find.textContaining('Sẵn sàng:'), findsOneWidget);
+    for (final item in {
+      'example.com': 'benign',
+      'https://vietc0mbank.top/': 'phishing'
+    }.entries) {
+      await tester.enterText(find.byType(TextField), item.key);
+      await tester.pumpAndSettle();
+      final editor = find.descendant(
+          of: find.byType(TextField), matching: find.byType(EditableText));
+      expect(tester.widget<EditableText>(editor).controller.text, item.key);
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Predict Student'));
+      await tester.tap(find.text('Predict Student'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('"label": "${item.value}"'), findsOneWidget,
+          reason:
+              tester.widget<SelectableText>(find.byType(SelectableText)).data);
+    }
+    await tester.enterText(
+        find.byType(TextField), 'https://example.com:99999/');
+    await tester.pumpAndSettle();
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Predict Student'));
+    await tester.tap(find.text('Predict Student'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Không tạo prediction:'), findsOneWidget);
+    binding.reportData!['android_ui_cases'] = [
+      'benign',
+      'phishing',
+      'invalid_port_rejected'
+    ];
+    binding.reportData!['android_ui_input'] =
+        'Flutter TestTextInput keyboard transport; not a physical/native IME test';
+  });
+}

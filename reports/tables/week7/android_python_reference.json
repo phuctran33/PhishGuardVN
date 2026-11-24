@@ -1,0 +1,552 @@
+{
+  "schema": "k73-live-python-reference-v1",
+  "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+  "runtime": {
+    "python": "3.11.14",
+    "packages": {
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.1",
+      "joblib": "1.6.0",
+      "tldextract": "5.4.0",
+      "idna": "3.20"
+    }
+  },
+  "model_version": "teacher-stacking-v2",
+  "threshold": 0.6945740700635259,
+  "decision_rule": "score >= threshold",
+  "feature_order": [
+    "url_len",
+    "dom_len",
+    "is_ip",
+    "subdom_cnt",
+    "letter_cnt",
+    "digit_cnt",
+    "dot_cnt",
+    "dash_cnt",
+    "under_cnt",
+    "slash_cnt",
+    "entropy",
+    "path_len",
+    "brand_in_domain",
+    "brand_in_subdomain",
+    "brand_in_path",
+    "brand_domain_mismatch",
+    "brand_typo_score",
+    "susp_token_cnt",
+    "idna_flag",
+    "homoglyph_brand_hit"
+  ],
+  "source_bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "brand_reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+  "asset_manifest_sha256": "629c2efe2bd2cbf806d583cc025870b06c8840c9f1ffa671b23ba58b4ab07752",
+  "assets": {
+    "svm_vocabulary.json": {
+      "size_bytes": 475210,
+      "sha256": "c0325c9452e40bc1fec2a2aa5fe6f5b4737e48cfd5622ebf639c5e5fb39a6e2c"
+    },
+    "teacher_numeric.npz": {
+      "size_bytes": 563412,
+      "sha256": "1c372797cf5284452ec347f38d18484c13ea5aa159728abb221009c538c38dd2"
+    },
+    "dart_svm_model.json": {
+      "size_bytes": 1781836,
+      "sha256": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62"
+    },
+    "dart_teacher_v2_model.json": {
+      "size_bytes": 765558,
+      "sha256": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1"
+    }
+  },
+  "frozen_fixture_sha256": "a2e1e34cb40dc328258909f3f04ff5607530dc271e8bed7c1cfeeaac452198e8",
+  "python_network_guard": true,
+  "project_training": false,
+  "cases": [
+    {
+      "name": "vcb_home",
+      "url": "https://www.vietcombank.com.vn/vi-VN/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.4551559973324278,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "bidv_login_page",
+      "url": "https://bidv.com.vn/ibank/login",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.6090793989069898,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "momo_home",
+      "url": "https://momo.vn/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.07094838046193147,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "shopee_home",
+      "url": "https://shopee.vn/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.261738210125393,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "tcb_two_domains",
+      "url": "https://techcombank.com/personal",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.5656736017787443,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "gov_portal_official",
+      "url": "https://dichvucong.gov.vn/p/home/dvc-trang-chu.html",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.1308036565752336,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "vcb_login_top",
+      "url": "https://vietcombank-login.top/verify",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9945825143586277,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "shopee_gift",
+      "url": "http://shopee-quatang.example.com/nhanqua",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9957925409049642,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "momo_short_token",
+      "url": "https://momo-vn.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.990468210933336,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "short_alias_exact_token",
+      "url": "https://acb-online.com/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.956932687857468,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "short_alias_not_token",
+      "url": "https://acbdoc.com/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.8583100234609959,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "concatenated_brand",
+      "url": "https://techcombankonline.xyz/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9986861208910012,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "classic_trick",
+      "url": "https://vietcombank.com.vn.xacminh-id.xyz/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9906248036137009,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "bank_login_subdomain",
+      "url": "https://login.bidv.secure-pay.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9686623896343823,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "free_hosting_style",
+      "url": "https://vietcombank-ibank.weebly.com/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9998758960803193,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "path_only",
+      "url": "https://evil-site.top/vietcombank/login",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9953849086402897,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "query_only",
+      "url": "https://evil-site.top/?redirect=bidv.com.vn",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.65103722764017,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "transposition",
+      "url": "https://vietcombnak.com/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.8804921399479159,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "extra_letter",
+      "url": "https://vietcombanks.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9986865624942437,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "other_brand_name_not_typo",
+      "url": "https://tpbank-online.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9994235761047636,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "short_token_ignored",
+      "url": "https://vcbx.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9924947436603845,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "zero_for_o",
+      "url": "https://vietc0mbank.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9986089491641575,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "one_for_i",
+      "url": "https://b1dv-vn.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9738422235767544,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "rn_for_m",
+      "url": "https://momornomo.top/",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9149883214048949,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "punycode_host",
+      "url": "http://xn--bcher-kva.de/Path",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.01601810314548817,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "unicode_host",
+      "url": "http://bücher.de/Path",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.02303599434937979,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "vietnamese_diacritics_path",
+      "url": "https://example.com/dang-nhap/Đăng%20Nhập",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.8784783044996349,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "ipv4_with_brand_path",
+      "url": "http://192.168.1.1/vietcombank",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9928015139269706,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "ipv6_literal",
+      "url": "http://[2001:db8::1]/login",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.7439174170853257,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "uppercase_scheme_host",
+      "url": "HTTPS://WWW.Example.COM/Path?Q=A",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.8258030266320633,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "trailing_dot",
+      "url": "http://EXAMPLE.com./",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.005299937189917396,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "scheme_relative",
+      "url": "//example.com/Path",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.21822680957243007,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "missing_scheme",
+      "url": "vietcombank-login.top/verify",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9945825143586277,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "port_and_userinfo",
+      "url": "http://paypal.com@evil-site.top:8080/login",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.8328624318156985,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "path_params",
+      "url": "https://example.com/a;b?x=1",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.47042874340958934,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "percent_encoded_path",
+      "url": "https://example.com/%76ietcombank",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.9871679998371489,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "multi_level_suffix",
+      "url": "https://a.b.c.example.co.uk/x",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.00220123651852011,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "underscore_host",
+      "url": "http://my_site.example.com/a",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.5425259784484343,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "many_keywords",
+      "url": "https://secure-login-verify.example.com/account/update",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.5293616560955601,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "vietnamese_keywords",
+      "url": "https://uudai-khuyenmai.example.com/xacminh/nhanqua",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.8556843764599128,
+      "class_id": 1,
+      "label": "phishing"
+    },
+    {
+      "name": "very_long_url",
+      "url": "https://example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/vietcombank?x=1111111111111111111111111111111111111111",
+      "scope": "frozen",
+      "status": "classified",
+      "score": 0.26231116020597967,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_0",
+      "url": "HTTPS://EXAMPLE.COM/Login?Q=%2F",
+      "scope": "qa_synthetic",
+      "status": "classified",
+      "score": 0.6098543367072836,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_1",
+      "url": "//example.com/path?Q=A",
+      "scope": "qa_synthetic",
+      "status": "classified",
+      "score": 0.2915644219101093,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_2",
+      "url": "https://user:password@example.com:8443/login#fragment",
+      "scope": "qa_synthetic",
+      "status": "classified",
+      "score": 0.34802872174657556,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_3",
+      "url": "https://bücher.de/Đăng-nhập?q=%2F",
+      "scope": "qa_synthetic",
+      "status": "classified",
+      "score": 0.251791848180662,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_4",
+      "url": "http://[2001:db8::1]:8080/login",
+      "scope": "qa_synthetic",
+      "status": "classified",
+      "score": 0.6470118265370538,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_5",
+      "url": "https://example.com/a b?Q=A",
+      "scope": "qa_synthetic",
+      "status": "classified",
+      "score": 0.3469111262376665,
+      "class_id": 0,
+      "label": "benign"
+    },
+    {
+      "name": "qa_probe_6",
+      "url": "",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_7",
+      "url": "   ",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_8",
+      "url": " example.com",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_9",
+      "url": "example.com ",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_10",
+      "url": "https://example.com:99999",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_11",
+      "url": "http://bad host.com",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_12",
+      "url": "https://",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_13",
+      "url": "https://example.com/a\u0000b",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    },
+    {
+      "name": "qa_probe_14",
+      "url": "https://example.com/a\tb",
+      "scope": "qa_synthetic",
+      "status": "rejected",
+      "exception": "ValueError"
+    }
+  ]
+}

@@ -1,0 +1,327 @@
+{
+  "task": "K7.3",
+  "checked_on": "2026-11-18",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "host_and_android_emulator_passed",
+  "source": {
+    "revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+    "branch": "feat/w7-android-teacher-integration",
+    "working_tree_clean": false,
+    "initial_host_revision": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+    "tracked_source_unchanged": true,
+    "untracked_build_cache": [
+      "mobile/app/android/.kotlin/"
+    ]
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "architecture": "AMD64",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "python": {
+      "python": "3.11.14",
+      "packages": {
+        "numpy": "2.4.6",
+        "scipy": "1.17.1",
+        "scikit-learn": "1.9.1",
+        "joblib": "1.6.0",
+        "tldextract": "5.4.0",
+        "idna": "3.20"
+      }
+    },
+    "runtime_scope": "Windows host và Android emulator 17/API37/x86_64; không phải điện thoại vật lý",
+    "discovered_devices": [
+      {
+        "name": "Windows",
+        "target_platform": "windows-x64"
+      },
+      {
+        "name": "Chrome",
+        "target_platform": "web-javascript"
+      },
+      {
+        "name": "Edge",
+        "target_platform": "web-javascript"
+      }
+    ],
+    "android": {
+      "android_release": "17",
+      "android_api": "37",
+      "abi": "x86_64",
+      "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A2/16418371:user/release-keys",
+      "device": "emulator-5554"
+    }
+  },
+  "checks": {
+    "flutter_analyze": "passed",
+    "upstream_flutter": {
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "18607c78e1a8d8b8596f33b8525d8a759b91c9215e413ae7b971f3f1241e41cd"
+    },
+    "dart_package": {
+      "passed": 294,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "e649d54dab904c794c49a5ca83c16d9830da1ab5b53836abdf6796f584c097b6"
+    },
+    "independent_host_qa": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "report_sha256": "48c1c3f854c8bcb97ced6d532d25a2b712f1a5221016f657faaf123f7adc33f2",
+      "fresh_rerun": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474"
+      }
+    },
+    "fresh_python_dart": {
+      "status": "passed",
+      "classified_matched": 47,
+      "rejected_matched": 9,
+      "absolute_tolerance": 1e-06,
+      "max_absolute_delta": 8.881784197001252e-16,
+      "reference": "android_python_reference.json",
+      "dart_output": "android_host_parity.json",
+      "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474"
+    },
+    "loading_errors": "Upstream: missing/corrupt/schema/hash/runtime-contract/model-init; independent QA: missing model and wrong threshold",
+    "network": "Python DNS/socket guard, scoped Dart HTTP guard, Android OS airplane on/Wi-Fi+data off/no IPv4 or IPv6 default route; restoration verified",
+    "android_runtime": {
+      "status": "passed",
+      "application_tests_passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "setup_teardown_excluded": true,
+      "parity": {
+        "classified_matched": 47,
+        "rejected_matched": 9,
+        "max_absolute_delta": 8.881784197001252e-16,
+        "absolute_tolerance": 1e-06
+      },
+      "loader_errors": [
+        "missing_model",
+        "corrupt_model",
+        "wrong_threshold"
+      ],
+      "ui_cases": [
+        "real_benign",
+        "real_phishing",
+        "invalid_port"
+      ],
+      "evidence": "teacher_android_runtime.json"
+    },
+    "android_release": {
+      "status": "passed",
+      "cold_starts_passed": 3,
+      "application_id": "com.phishguardvn.phishguard_android",
+      "apk": {
+        "relative_path": "mobile/app/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "86b27917e9ad06b1a31ba6726b55d84484242a17da9ffaa733ac78187692c08a",
+        "size_bytes": 19130745,
+        "application_id": "com.phishguardvn.phishguard_android",
+        "source": "unmodified Hy release app, not QA integration entrypoint"
+      },
+      "evidence": "teacher_android_release.json",
+      "screenshot": "../../figures/week7/teacher_android_release_offline.png"
+    }
+  },
+  "contract": {
+    "model_version": "teacher-stacking-v2",
+    "threshold": 0.6945740700635259,
+    "decision_rule": "score >= threshold",
+    "members_order": [
+      "svm",
+      "hist"
+    ],
+    "class_mapping": {
+      "benign": 0,
+      "phishing": 1
+    },
+    "feature_order": [
+      "url_len",
+      "dom_len",
+      "is_ip",
+      "subdom_cnt",
+      "letter_cnt",
+      "digit_cnt",
+      "dot_cnt",
+      "dash_cnt",
+      "under_cnt",
+      "slash_cnt",
+      "entropy",
+      "path_len",
+      "brand_in_domain",
+      "brand_in_subdomain",
+      "brand_in_path",
+      "brand_domain_mismatch",
+      "brand_typo_score",
+      "susp_token_cnt",
+      "idna_flag",
+      "homoglyph_brand_hit"
+    ],
+    "source_bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "brand_reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6"
+  },
+  "assets": {
+    "svm_vocabulary.json": {
+      "size_bytes": 475210,
+      "sha256": "c0325c9452e40bc1fec2a2aa5fe6f5b4737e48cfd5622ebf639c5e5fb39a6e2c"
+    },
+    "teacher_numeric.npz": {
+      "size_bytes": 563412,
+      "sha256": "1c372797cf5284452ec347f38d18484c13ea5aa159728abb221009c538c38dd2"
+    },
+    "dart_svm_model.json": {
+      "size_bytes": 1781836,
+      "sha256": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62"
+    },
+    "dart_teacher_v2_model.json": {
+      "size_bytes": 765558,
+      "sha256": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1"
+    }
+  },
+  "qa_sources_sha256": {
+    "tests/week7/android_reference.py": "49af5d75c3dbb5326fe40a2e604b6340be9c3672f2daeef92244eae6036fc075",
+    "tests/week7/android_teacher_qa_test.dart.in": "8b92bf6b12d25d49f374748bab83671b17b506a774513b693faa37476eb156a5",
+    "tests/week7/prepare_teacher_runtime.py": "a6a3a023087555f41646951eb99af2bd143b1010d3a9f6fead7b61d9c923e8d6",
+    "tests/week7/run_teacher_android.py": "044581be0e844bed84d3783ef43fa7535d944df81e5ec670d2dd5eba4d37a8d1",
+    "tests/week7/teacher_runtime/teacher_runtime_test.dart.in": "8b971ad82342df289288ed6a930a25ae2ef58484ae24721a64f34d786a6da009",
+    "tests/week7/teacher_runtime/teacher_driver.dart.in": "80f89642a2a69c88f7c51850af998ac7393fd107cac7f1a969e643b42ef687f8"
+  },
+  "executed_source_lf_sha256": {
+    "mobile/app/lib/src/teacher_contract.dart": "317a1c69dae800bc0f7d1d4640734c98731deefacf348823340051a414066b48",
+    "mobile/app/lib/src/teacher_loader.dart": "87ff3d76b88207b420aec01f98941de4c066947bc089ee905c1c4e05d4b473ce",
+    "mobile/app/lib/src/teacher_url_classifier.dart": "623578a2457ea785f8b5a7a21d06c8c7e823ef51a5a2bf26f394de6e8b08aefe",
+    "mobile/packages/phishguard_features/lib/src/teacher_v2.dart": "355c25c122056e9de768565c5b19960b0dcc44e9b0826416cd15c534a96f5931"
+  },
+  "ci": {
+    "workflow": ".github/workflows/week7-web.yml",
+    "workflow_sha256": "cc25a66c24570904b238e49e120917d0e32d5b28d6082b56c0e473cca4ec8ed9",
+    "android_source_pin": "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e",
+    "configured_runner_os": [
+      "ubuntu-latest",
+      "windows-latest"
+    ],
+    "actual_actions_status": "pending_user_commit_push_for_current_scope",
+    "actionlint": "passed",
+    "bash_syntax_steps": 23,
+    "source_selection_cases": [
+      {
+        "case": "fallback",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "explicit-sha",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "uppercase-sha",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "moving-branch-rejected",
+        "status": "passed",
+        "exit_code": 1
+      },
+      {
+        "case": "week6-web-from-main-uses-reviewed-week7-pin",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "web-present-uses-own-commit",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-fallback",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-explicit",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-uppercase",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "student-moving-branch-rejected",
+        "status": "passed",
+        "exit_code": 1
+      },
+      {
+        "case": "android-fallback",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "android-explicit",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "android-uppercase",
+        "status": "passed",
+        "exit_code": 0
+      },
+      {
+        "case": "android-moving-branch-rejected",
+        "status": "passed",
+        "exit_code": 1
+      }
+    ],
+    "powershell_syntax_steps": 8,
+    "combined_report_gate": "passed with actual outputs",
+    "browser_runner_os": [
+      "windows-latest"
+    ]
+  },
+  "findings": [],
+  "not_executed": [
+    {
+      "check": "Điện thoại Android vật lý/ARM64 và mọi native IME",
+      "status": "not_run",
+      "reason": "Nghiệm thu hiện tại dùng emulator x86_64; UI integration kiểm soát keyboard transport, release dùng native touch URL mẫu."
+    }
+  ],
+  "supplier_evidence": {
+    "path": "reports/week7_android_teacher_integration.md",
+    "status": "Hy reports emulator smoke; not independently reproduced by Khiem on this machine"
+  },
+  "limitations": [
+    "Không training, đổi threshold, đánh giá Official Test/external hoặc promote Student.",
+    "Không sửa tracked source Hy, Teacher models/locks, frozen E2/reference.",
+    "Android runtime được kiểm trên emulator, không suy ra physical device/ARM64.",
+    "Không tự commit/push/review/merge; Actions mới còn chờ head người dùng phát hành."
+  ],
+  "generated_test": {
+    "path": "mobile/app/.dart_tool/week7_teacher_qa_test.dart",
+    "ignored": true,
+    "source_template": "tests/week7/android_teacher_qa_test.dart.in",
+    "raw_sha256": "8b92bf6b12d25d49f374748bab83671b17b506a774513b693faa37476eb156a5",
+    "analyzer": "passed, zero issues"
+  },
+  "device_blocker_confirmed_by_user": false,
+  "student_followup_evidence": "student_android_verification.json",
+  "sdk_followup": {
+    "sdk_ready": true,
+    "emulator": "Android 17/API37 x86_64",
+    "student_emulator_evidence": "student_android_verification.json",
+    "teacher_runtime_status": "passed_separately_on_android_emulator"
+  },
+  "qa_controller_notes": [
+    "Lượt release controller đầu chưa đọc content-desc của Flutter Chip; sửa helper rồi chạy lại đạt, không phải lỗi app Hy.",
+    "Đợi chuyển trạng thái Wi-Fi hoàn tất rồi kiểm phục hồi mạng bằng đúng giá trị trước test."
+  ]
+}

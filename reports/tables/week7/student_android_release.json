@@ -1,0 +1,56 @@
+{
+  "schema": "qa-student-android-release-measurement-v1",
+  "status": "passed",
+  "device": "emulator-5554",
+  "android_release": "17",
+  "api": "37",
+  "abi": "x86_64",
+  "emulator": true,
+  "build_mode": "release",
+  "apk_bytes": 18498267,
+  "apk_sha256": "e43640d38a45c589e08d494ea4404f904480ffff50e138439fee13424f78bf4e",
+  "package": "vn.phishguard.qa.student_android_runtime_qa",
+  "offline_state": {
+    "airplane_mode_on": "1",
+    "wifi_on": "0",
+    "mobile_data": "0"
+  },
+  "routes": [],
+  "process_cold_start_samples": [
+    {
+      "pid": "10867",
+      "model_version": "lightgbm-student-kd_mixed",
+      "loader_ms": 1065.424,
+      "launch_to_ready_host_observed_ms": 2174.336099997163,
+      "activity_total_ms": 1680
+    },
+    {
+      "pid": "10923",
+      "model_version": "lightgbm-student-kd_mixed",
+      "loader_ms": 916.944,
+      "launch_to_ready_host_observed_ms": 1915.3697000001557,
+      "activity_total_ms": 1675
+    },
+    {
+      "pid": "10973",
+      "model_version": "lightgbm-student-kd_mixed",
+      "loader_ms": 822.176,
+      "launch_to_ready_host_observed_ms": 1799.7712999931537,
+      "activity_total_ms": 1559
+    }
+  ],
+  "total_pss_after_native_prediction_kb": 87208,
+  "native_ui": {
+    "input": "example.com",
+    "expected_label": "benign",
+    "status": "passed",
+    "interaction": "ADB native touch; no keyboard input"
+  },
+  "limitations": [
+    "3 lần force-stop; filesystem/shader cache không xóa.",
+    "Launch-to-ready đo tại host gồm overhead ADB/polling; không phải timing Android thuần.",
+    "Activity TotalTime và loader time là hai chỉ số riêng.",
+    "RAM là snapshot QA app có thêm hard-only/fixtures trong APK; không phải budget production.",
+    "Chỉ emulator x86_64, chưa phải điện thoại thật."
+  ]
+}

@@ -1,0 +1,440 @@
+{
+  "schema": "k73-android-runtime-v1",
+  "status": "passed",
+  "platform": "android",
+  "os_version": "CE2A.260420.051.A2",
+  "dart": "3.13.7 (stable) (Thu Oct 22 14:28:57 2026 -0700) on \"android_x64\"",
+  "build_mode": "profile",
+  "prediction_mocking": false,
+  "network": "OS state recorded by host ADB controller",
+  "source_revision": "94abdbf9d9fd1be6452284d2a84f26ec937f2474",
+  "parity": {
+    "classified_matched": 47,
+    "rejected_matched": 9,
+    "max_absolute_delta": 8.881784197001252e-16,
+    "absolute_tolerance": 0.000001,
+    "cases": [
+      {
+        "name": "vcb_home",
+        "score": 0.45515599733242773,
+        "python_score": 0.4551559973324278,
+        "absolute_delta": 5.551115123125783e-17,
+        "class_id": 0
+      },
+      {
+        "name": "bidv_login_page",
+        "score": 0.6090793989069907,
+        "python_score": 0.6090793989069898,
+        "absolute_delta": 8.881784197001252e-16,
+        "class_id": 0
+      },
+      {
+        "name": "momo_home",
+        "score": 0.07094838046193148,
+        "python_score": 0.07094838046193147,
+        "absolute_delta": 1.3877787807814457e-17,
+        "class_id": 0
+      },
+      {
+        "name": "shopee_home",
+        "score": 0.26173821012539294,
+        "python_score": 0.261738210125393,
+        "absolute_delta": 5.551115123125783e-17,
+        "class_id": 0
+      },
+      {
+        "name": "tcb_two_domains",
+        "score": 0.5656736017787443,
+        "python_score": 0.5656736017787443,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "gov_portal_official",
+        "score": 0.13080365657523363,
+        "python_score": 0.1308036565752336,
+        "absolute_delta": 2.7755575615628914e-17,
+        "class_id": 0
+      },
+      {
+        "name": "vcb_login_top",
+        "score": 0.9945825143586277,
+        "python_score": 0.9945825143586277,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "shopee_gift",
+        "score": 0.9957925409049642,
+        "python_score": 0.9957925409049642,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "momo_short_token",
+        "score": 0.990468210933336,
+        "python_score": 0.990468210933336,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "short_alias_exact_token",
+        "score": 0.956932687857468,
+        "python_score": 0.956932687857468,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "short_alias_not_token",
+        "score": 0.8583100234609957,
+        "python_score": 0.8583100234609959,
+        "absolute_delta": 2.220446049250313e-16,
+        "class_id": 1
+      },
+      {
+        "name": "concatenated_brand",
+        "score": 0.9986861208910012,
+        "python_score": 0.9986861208910012,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "classic_trick",
+        "score": 0.9906248036137009,
+        "python_score": 0.9906248036137009,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "bank_login_subdomain",
+        "score": 0.9686623896343823,
+        "python_score": 0.9686623896343823,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "free_hosting_style",
+        "score": 0.9998758960803193,
+        "python_score": 0.9998758960803193,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "path_only",
+        "score": 0.9953849086402897,
+        "python_score": 0.9953849086402897,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "query_only",
+        "score": 0.65103722764017,
+        "python_score": 0.65103722764017,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "transposition",
+        "score": 0.8804921399479159,
+        "python_score": 0.8804921399479159,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "extra_letter",
+        "score": 0.9986865624942437,
+        "python_score": 0.9986865624942437,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "other_brand_name_not_typo",
+        "score": 0.9994235761047636,
+        "python_score": 0.9994235761047636,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "short_token_ignored",
+        "score": 0.9924947436603845,
+        "python_score": 0.9924947436603845,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "zero_for_o",
+        "score": 0.9986089491641578,
+        "python_score": 0.9986089491641575,
+        "absolute_delta": 2.220446049250313e-16,
+        "class_id": 1
+      },
+      {
+        "name": "one_for_i",
+        "score": 0.9738422235767544,
+        "python_score": 0.9738422235767544,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "rn_for_m",
+        "score": 0.9149883214048949,
+        "python_score": 0.9149883214048949,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "punycode_host",
+        "score": 0.01601810314548817,
+        "python_score": 0.01601810314548817,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "unicode_host",
+        "score": 0.023035994349379793,
+        "python_score": 0.02303599434937979,
+        "absolute_delta": 3.469446951953614e-18,
+        "class_id": 0
+      },
+      {
+        "name": "vietnamese_diacritics_path",
+        "score": 0.8784783044996349,
+        "python_score": 0.8784783044996349,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "ipv4_with_brand_path",
+        "score": 0.9928015139269706,
+        "python_score": 0.9928015139269706,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "ipv6_literal",
+        "score": 0.7439174170853257,
+        "python_score": 0.7439174170853257,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "uppercase_scheme_host",
+        "score": 0.8258030266320635,
+        "python_score": 0.8258030266320633,
+        "absolute_delta": 2.220446049250313e-16,
+        "class_id": 1
+      },
+      {
+        "name": "trailing_dot",
+        "score": 0.005299937189917396,
+        "python_score": 0.005299937189917396,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "scheme_relative",
+        "score": 0.21822680957242996,
+        "python_score": 0.21822680957243007,
+        "absolute_delta": 1.1102230246251565e-16,
+        "class_id": 0
+      },
+      {
+        "name": "missing_scheme",
+        "score": 0.9945825143586277,
+        "python_score": 0.9945825143586277,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "port_and_userinfo",
+        "score": 0.8328624318156985,
+        "python_score": 0.8328624318156985,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "path_params",
+        "score": 0.4704287434095894,
+        "python_score": 0.47042874340958934,
+        "absolute_delta": 5.551115123125783e-17,
+        "class_id": 0
+      },
+      {
+        "name": "percent_encoded_path",
+        "score": 0.9871679998371489,
+        "python_score": 0.9871679998371489,
+        "absolute_delta": 0.0,
+        "class_id": 1
+      },
+      {
+        "name": "multi_level_suffix",
+        "score": 0.00220123651852011,
+        "python_score": 0.00220123651852011,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "underscore_host",
+        "score": 0.5425259784484343,
+        "python_score": 0.5425259784484343,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "many_keywords",
+        "score": 0.52936165609556,
+        "python_score": 0.5293616560955601,
+        "absolute_delta": 1.1102230246251565e-16,
+        "class_id": 0
+      },
+      {
+        "name": "vietnamese_keywords",
+        "score": 0.8556843764599125,
+        "python_score": 0.8556843764599128,
+        "absolute_delta": 3.3306690738754696e-16,
+        "class_id": 1
+      },
+      {
+        "name": "very_long_url",
+        "score": 0.26231116020597967,
+        "python_score": 0.26231116020597967,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_0",
+        "score": 0.6098543367072835,
+        "python_score": 0.6098543367072836,
+        "absolute_delta": 1.1102230246251565e-16,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_1",
+        "score": 0.2915644219101093,
+        "python_score": 0.2915644219101093,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_2",
+        "score": 0.3480287217465756,
+        "python_score": 0.34802872174657556,
+        "absolute_delta": 5.551115123125783e-17,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_3",
+        "score": 0.251791848180662,
+        "python_score": 0.251791848180662,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_4",
+        "score": 0.6470118265370538,
+        "python_score": 0.6470118265370538,
+        "absolute_delta": 0.0,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_5",
+        "score": 0.34691112623766657,
+        "python_score": 0.3469111262376665,
+        "absolute_delta": 5.551115123125783e-17,
+        "class_id": 0
+      },
+      {
+        "name": "qa_probe_6",
+        "status": "rejected",
+        "outcome": "InvalidInput"
+      },
+      {
+        "name": "qa_probe_7",
+        "status": "rejected",
+        "outcome": "InvalidInput"
+      },
+      {
+        "name": "qa_probe_8",
+        "status": "rejected",
+        "outcome": "InvalidInput"
+      },
+      {
+        "name": "qa_probe_9",
+        "status": "rejected",
+        "outcome": "InvalidInput"
+      },
+      {
+        "name": "qa_probe_10",
+        "status": "rejected",
+        "outcome": "Unclassifiable"
+      },
+      {
+        "name": "qa_probe_11",
+        "status": "rejected",
+        "outcome": "Unclassifiable"
+      },
+      {
+        "name": "qa_probe_12",
+        "status": "rejected",
+        "outcome": "Unclassifiable"
+      },
+      {
+        "name": "qa_probe_13",
+        "status": "rejected",
+        "outcome": "InvalidInput"
+      },
+      {
+        "name": "qa_probe_14",
+        "status": "rejected",
+        "outcome": "InvalidInput"
+      }
+    ]
+  },
+  "contract": {
+    "model_version": "teacher-stacking-v2",
+    "threshold": 0.6945740700635259,
+    "decision_rule": "score >= threshold",
+    "source_bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "feature_order": [
+      "url_len",
+      "dom_len",
+      "is_ip",
+      "subdom_cnt",
+      "letter_cnt",
+      "digit_cnt",
+      "dot_cnt",
+      "dash_cnt",
+      "under_cnt",
+      "slash_cnt",
+      "entropy",
+      "path_len",
+      "brand_in_domain",
+      "brand_in_subdomain",
+      "brand_in_path",
+      "brand_domain_mismatch",
+      "brand_typo_score",
+      "susp_token_cnt",
+      "idna_flag",
+      "homoglyph_brand_hit"
+    ],
+    "assets_sha256": {
+      "assets/teacher_v2_manifest.json": "629c2efe2bd2cbf806d583cc025870b06c8840c9f1ffa671b23ba58b4ab07752",
+      "assets/dart_svm_model.json": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62",
+      "assets/dart_teacher_v2_model.json": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1"
+    }
+  },
+  "http_guard": true,
+  "loader_errors": [
+    "missing_model",
+    "corrupt_model",
+    "wrong_threshold"
+  ],
+  "boot_error_and_retry": "passed",
+  "ui_cases": [
+    "real_benign",
+    "real_phishing",
+    "invalid_port"
+  ],
+  "keyboard_scope": "Flutter test keyboard transport; release ADB smoke uses native input separately",
+  "application_tests_passed": 3
+}

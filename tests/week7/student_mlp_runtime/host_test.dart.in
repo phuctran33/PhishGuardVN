@@ -1,0 +1,7 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'student_mlp_tests.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  runStudentMlpQa();
+}

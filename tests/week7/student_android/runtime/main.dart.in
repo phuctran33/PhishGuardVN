@@ -1,0 +1,98 @@
+// App QA riêng; không thay app/engine Teacher của Hy.
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:student_android_qa/asset_loader.dart';
+import 'package:student_android_qa/student_adapter.dart';
+import 'package:student_android_qa/parity.dart';
+
+void main() => runApp(const MaterialApp(home: StudentQaPage()));
+
+class StudentQaPage extends StatefulWidget {
+  const StudentQaPage({super.key});
+  @override
+  State<StudentQaPage> createState() => _StudentQaPageState();
+}
+
+class _StudentQaPageState extends State<StudentQaPage> {
+  final input = TextEditingController(text: 'example.com');
+  LoadedStudent? loaded;
+  String result = 'Đang nạp Student KD thử nghiệm…';
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    final watch = Stopwatch()..start();
+    try {
+      final model = await loadBundledStudent();
+      if (!mounted) return;
+      setState(() {
+        loaded = model;
+        result =
+            'Sẵn sàng: ${model.model.version}\nThreshold ${model.model.threshold}';
+      });
+      // Đây là loader readiness, không phải thời gian cold-start toàn Android.
+      debugPrint('QA_STUDENT_READY ${jsonEncode({
+            'load_ms': watch.elapsedMicroseconds / 1000,
+            'model_version': model.model.version
+          })}');
+    } catch (error) {
+      if (mounted) setState(() => result = 'Lỗi nạp model: $error');
+    }
+  }
+
+  void predict() {
+    try {
+      final prediction = loaded!.model.predict(input.text, loaded!.extractor);
+      setState(() =>
+          result = const JsonEncoder.withIndent('  ').convert(prediction));
+    } catch (error) {
+      setState(() => result = 'Không tạo prediction: $error');
+    }
+  }
+
+  Future<void> parity() async {
+    try {
+      final reference = await bundledStudentReference();
+      final report = verifyStudentParity(loaded!, reference);
+      setState(() => result =
+          'Parity: ${report['classified']} classified, ${report['rejected']} rejected; max delta ${report['max_score_delta']}');
+    } catch (error) {
+      if (mounted) setState(() => result = 'Parity FAIL: $error');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Student KD — QA thử nghiệm')),
+        body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                    'App QA riêng. Teacher v2 vẫn là engine mặc định của sản phẩm. Score chưa calibrated, không phải % an toàn.'),
+                TextField(
+                    controller: input,
+                    decoration: const InputDecoration(
+                        labelText: 'URL tổng hợp để kiểm thử')),
+                Wrap(spacing: 8, children: [
+                  FilledButton(
+                      onPressed: loaded == null ? null : predict,
+                      child: const Text('Predict Student')),
+                  OutlinedButton(
+                      onPressed: loaded == null ? null : parity,
+                      child: const Text('Kiểm parity')),
+                ]),
+                SelectableText(result),
+              ],
+            )),
+      );
+  @override
+  void dispose() {
+    input.dispose();
+    super.dispose();
+  }
+}

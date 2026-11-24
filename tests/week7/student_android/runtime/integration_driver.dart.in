@@ -1,0 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:integration_test/integration_test_driver.dart';
+
+Future<void> main() async {
+  final output = Platform.environment['QA_STUDENT_ANDROID_OUTPUT'];
+  if (output == null || output.isEmpty) {
+    throw StateError('Set QA_STUDENT_ANDROID_OUTPUT');
+  }
+  await integrationDriver(responseDataCallback: (data) async {
+    if (data == null ||
+        data['status'] != 'passed' ||
+        data['platform'] != 'android') {
+      throw StateError('Missing actual Android parity result');
+    }
+    final file = File(output);
+    file.parent.createSync(recursive: true);
+    file.writeAsStringSync(
+        '${const JsonEncoder.withIndent('  ').convert(data)}\n');
+  });
+}

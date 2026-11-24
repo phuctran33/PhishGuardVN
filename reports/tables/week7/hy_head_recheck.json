@@ -1,0 +1,1000 @@
+{
+  "schema": "week7-hy-head-recheck-v1",
+  "checked_on": "2026-11-22",
+  "status": "passed_with_nonblocking_notes",
+  "hy_source_revision": "680a8bd8806db337d8a8c039c0c3c5705b26c061",
+  "student_source_revision": "bc3a3a7054e2f6e6e733595f40f38439784536a1",
+  "previous_verified_hy_revision": "f817ec96eee8f5301c06bae6c59b0059b9fe3d78",
+  "product_code_diff_since_previous_revision": false,
+  "environment": {
+    "host": "Windows 11 x86_64",
+    "python": "CPython 3.11.14",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "device": "emulator-5554",
+    "android_release": "17",
+    "android_api": "37",
+    "abi": "x86_64",
+    "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A2/16418371:user/release-keys"
+  },
+  "clean_integration": {
+    "base_main_revision": "4d13bee8738e387a68376b8d78dfff91916172aa",
+    "applied_pr33_revision": "680a8bd8806db337d8a8c039c0c3c5705b26c061",
+    "method": "Fresh local clone of fetched Git objects, checkout main, apply PR33 diff; no merge or commit. No reused build output or copied app assets. SDK, Gradle and Pub caches reused.",
+    "pr35_ref_present": false,
+    "product_source_files_matched": 51,
+    "asset_sync_checks": [
+      {
+        "name": "asset-sync-clean-no-pr35",
+        "exit_code": 0,
+        "expected_success": true,
+        "repo_source": true
+      },
+      {
+        "name": "asset-sync-reject-corrupt-model",
+        "exit_code": 1,
+        "expected_success": false,
+        "repo_source": true
+      },
+      {
+        "name": "asset-sync-restored",
+        "exit_code": 0,
+        "expected_success": true,
+        "repo_source": true
+      }
+    ],
+    "missing_artifacts_without_fallback_ref": {
+      "exit_code": 1,
+      "result": "explicit_error_with_fetch_hint"
+    },
+    "flutter_and_dart_build_steps": [
+      {
+        "step": "pub",
+        "exit_code": 0
+      },
+      {
+        "step": "analyze",
+        "exit_code": 0
+      },
+      {
+        "step": "flutter-test",
+        "exit_code": 0,
+        "tests": {
+          "passed": 54,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "step": "dart-pub",
+        "exit_code": 0
+      },
+      {
+        "step": "dart-test",
+        "exit_code": 0,
+        "tests": {
+          "passed": 294,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "step": "apk-release",
+        "exit_code": 0
+      }
+    ],
+    "apk": {
+      "relative_path": "mobile/app/build/app/outputs/flutter-apk/app-release.apk",
+      "size_bytes": 50136027,
+      "sha256": "1c57cea9c26c2351c378d211063eb9f65759347548faeb1c41c4e3c0991f9102",
+      "application_id": "com.phishguardvn.phishguard_android",
+      "source": "unmodified Hy app release entrypoint"
+    },
+    "packaged_student_assets": {
+      "student_mlp.json.gz": {
+        "bytes": 283334,
+        "sha256": "8d118ac5346543bdfa29b7970b48ae206305d5fe8992e0c4754aa070cc032341"
+      },
+      "psl_icann_tldextract_5.4.0.txt": {
+        "bytes": 75007,
+        "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f"
+      }
+    }
+  },
+  "host_qa": {
+    "status": "passed",
+    "tests": {
+      "passed": 79,
+      "failed": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    "model_version": "student-mlp-kd-int8-v1",
+    "threshold": 0.72961075,
+    "score_absolute_tolerance": 2e-06,
+    "classified_matched": 54,
+    "rejected_matched": 9,
+    "max_score_delta": 5.551115123125783e-17,
+    "checks": [
+      "metadata_and_assets",
+      "synthetic_exact_threshold",
+      "zero_vector_bias",
+      "missing_model",
+      "missing_manifest",
+      "missing_psl",
+      "corrupt_model",
+      "corrupt_psl",
+      "invalid_json",
+      "wrong_version",
+      "wrong_threshold",
+      "wrong_rule",
+      "teacher_default_student_optional",
+      "inference_latency",
+      "ui_two_labels",
+      "ui_rejected_error"
+    ]
+  },
+  "android_qa": {
+    "status": "passed",
+    "business_tests": {
+      "passed": 79,
+      "failed": 0,
+      "skipped": 0
+    },
+    "framework_setup_teardown_events": 2,
+    "model_version": "student-mlp-kd-int8-v1",
+    "threshold": 0.72961075,
+    "score_absolute_tolerance": 2e-06,
+    "classified_matched": 54,
+    "rejected_matched": 9,
+    "max_score_delta": 5.551115123125783e-17,
+    "checks": [
+      "metadata_and_assets",
+      "synthetic_exact_threshold",
+      "zero_vector_bias",
+      "missing_model",
+      "missing_manifest",
+      "missing_psl",
+      "corrupt_model",
+      "corrupt_psl",
+      "invalid_json",
+      "wrong_version",
+      "wrong_threshold",
+      "wrong_rule",
+      "teacher_default_student_optional",
+      "inference_latency",
+      "ui_two_labels",
+      "ui_rejected_error"
+    ],
+    "assets": {
+      "brand_reference_v1.csv": {
+        "bytes": 11032,
+        "sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6"
+      },
+      "psl_icann_tldextract_5.4.0.txt": {
+        "bytes": 75007,
+        "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f"
+      },
+      "mobile_parity_cases.json": {
+        "bytes": 51201,
+        "sha256": "19109f2c594f4de9193937c249fb86c781f9519246947f543d4f24df575152e1"
+      },
+      "mobile_parity_cases_extra.json": {
+        "bytes": 96012,
+        "sha256": "ede44a2239617dcabf4b7c324b4aa4b3187c44db9e01643ca91f14c93b1ec5a5"
+      },
+      "teacher_v2_manifest.json": {
+        "bytes": 6203,
+        "sha256": "629c2efe2bd2cbf806d583cc025870b06c8840c9f1ffa671b23ba58b4ab07752"
+      },
+      "dart_svm_model.json": {
+        "bytes": 1781836,
+        "sha256": "85c0ab85a94f89e667d7320dfc25d4e91278b458ce735ba24217ec6b5f137b62"
+      },
+      "dart_teacher_v2_model.json": {
+        "bytes": 765558,
+        "sha256": "1c1253261c51a2920e3de902b7a28b2efdc48f87daa652eb517a3e09c05dc9c1"
+      },
+      "student_mlp.json.gz": {
+        "bytes": 283334,
+        "sha256": "8d118ac5346543bdfa29b7970b48ae206305d5fe8992e0c4754aa070cc032341"
+      },
+      "student_mlp_manifest.json": {
+        "bytes": 2100,
+        "sha256": "96044c0e024dabba64071c134d053fb1ff3fbceeb043bbb485be2bd347009277"
+      }
+    },
+    "cases": [
+      {
+        "url": "https://example.com/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019162607373528536,
+        "score_dart": 0.01916260737352853,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/"
+      },
+      {
+        "url": "https://example.com/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019162607373528536,
+        "score_dart": 0.01916260737352853,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://example.com/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.09737194584405531,
+        "score_dart": 0.09737194584405531,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://example.com/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.044022484476099154,
+        "score_dart": 0.044022484476099195,
+        "score_delta": 4.163336342344337e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://example.com/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.012788263052515477,
+        "score_dart": 0.012788263052515465,
+        "score_delta": 1.214306433183765e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://example.com/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.013049468329011467,
+        "score_dart": 0.013049468329011502,
+        "score_delta": 3.469446951953614e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://sub.example.org/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.016349454869103646,
+        "score_dart": 0.016349454869103632,
+        "score_delta": 1.3877787807814457e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.org/"
+      },
+      {
+        "url": "https://sub.example.org/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.016349454869103646,
+        "score_dart": 0.016349454869103632,
+        "score_delta": 1.3877787807814457e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.org/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://sub.example.org/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.039650753621576475,
+        "score_dart": 0.039650753621576496,
+        "score_delta": 2.0816681711721685e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.org/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://sub.example.org/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.03135766516837661,
+        "score_dart": 0.031357665168376625,
+        "score_delta": 1.3877787807814457e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.org/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://sub.example.org/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.01124458357881653,
+        "score_dart": 0.011244583578816532,
+        "score_delta": 1.734723475976807e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.org/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://sub.example.org/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.007920996354732795,
+        "score_dart": 0.007920996354732788,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.org/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://BÜCHER.de/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.009592015376961758,
+        "score_dart": 0.009592015376961758,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/"
+      },
+      {
+        "url": "https://BÜCHER.de/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.009592015376961758,
+        "score_dart": 0.009592015376961758,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://BÜCHER.de/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.02704158559541032,
+        "score_dart": 0.02704158559541032,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://BÜCHER.de/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019937536326491225,
+        "score_dart": 0.019937536326491218,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://BÜCHER.de/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.007494763159919613,
+        "score_dart": 0.007494763159919613,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://BÜCHER.de/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.004603884286691809,
+        "score_dart": 0.0046038842866918004,
+        "score_delta": 8.673617379884035e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://xn--bcher-kva.de/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.009592015376961758,
+        "score_dart": 0.009592015376961758,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/"
+      },
+      {
+        "url": "https://xn--bcher-kva.de/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.009592015376961758,
+        "score_dart": 0.009592015376961758,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://xn--bcher-kva.de/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.02704158559541032,
+        "score_dart": 0.02704158559541032,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://xn--bcher-kva.de/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019937536326491225,
+        "score_dart": 0.019937536326491218,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://xn--bcher-kva.de/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.007494763159919613,
+        "score_dart": 0.007494763159919613,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://xn--bcher-kva.de/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.004603884286691809,
+        "score_dart": 0.0046038842866918004,
+        "score_delta": 8.673617379884035e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "xn--bcher-kva.de/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://127.0.0.1/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.17920414326547873,
+        "score_dart": 0.17920414326547868,
+        "score_delta": 5.551115123125783e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "127.0.0.1/"
+      },
+      {
+        "url": "https://127.0.0.1/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.17920414326547873,
+        "score_dart": 0.17920414326547868,
+        "score_delta": 5.551115123125783e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "127.0.0.1/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://127.0.0.1/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.7637888362042633,
+        "score_dart": 0.7637888362042633,
+        "score_delta": 0.0,
+        "class_python": 1,
+        "class_dart": 1,
+        "canonical_dart": "127.0.0.1/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://127.0.0.1/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.7524214716769916,
+        "score_dart": 0.7524214716769916,
+        "score_delta": 0.0,
+        "class_python": 1,
+        "class_dart": 1,
+        "canonical_dart": "127.0.0.1/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://127.0.0.1/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.03781403815553354,
+        "score_dart": 0.03781403815553356,
+        "score_delta": 2.0816681711721685e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "127.0.0.1/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://127.0.0.1/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.01617065247922263,
+        "score_dart": 0.016170652479222627,
+        "score_delta": 3.469446951953614e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "127.0.0.1/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://[2001:db8::1]/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.17920414326547873,
+        "score_dart": 0.17920414326547868,
+        "score_delta": 5.551115123125783e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "[2001:db8::1]/"
+      },
+      {
+        "url": "https://[2001:db8::1]/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.17920414326547873,
+        "score_dart": 0.17920414326547868,
+        "score_delta": 5.551115123125783e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "[2001:db8::1]/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://[2001:db8::1]/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.7637888362042633,
+        "score_dart": 0.7637888362042633,
+        "score_delta": 0.0,
+        "class_python": 1,
+        "class_dart": 1,
+        "canonical_dart": "[2001:db8::1]/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://[2001:db8::1]/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.7524214716769916,
+        "score_dart": 0.7524214716769916,
+        "score_delta": 0.0,
+        "class_python": 1,
+        "class_dart": 1,
+        "canonical_dart": "[2001:db8::1]/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://[2001:db8::1]/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.03781403815553354,
+        "score_dart": 0.03781403815553356,
+        "score_delta": 2.0816681711721685e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "[2001:db8::1]/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://[2001:db8::1]/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.01617065247922263,
+        "score_dart": 0.016170652479222627,
+        "score_delta": 3.469446951953614e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "[2001:db8::1]/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://user:pass@EXAMPLE.com:443/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019162607373528536,
+        "score_dart": 0.01916260737352853,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/"
+      },
+      {
+        "url": "https://user:pass@EXAMPLE.com:443/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019162607373528536,
+        "score_dart": 0.01916260737352853,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://user:pass@EXAMPLE.com:443/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.09737194584405531,
+        "score_dart": 0.09737194584405531,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://user:pass@EXAMPLE.com:443/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.044022484476099154,
+        "score_dart": 0.044022484476099195,
+        "score_delta": 4.163336342344337e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://user:pass@EXAMPLE.com:443/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.012788263052515477,
+        "score_dart": 0.012788263052515465,
+        "score_delta": 1.214306433183765e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://user:pass@EXAMPLE.com:443/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.013049468329011467,
+        "score_dart": 0.013049468329011502,
+        "score_delta": 3.469446951953614e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "https://example.org:8080/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.023957055311849808,
+        "score_dart": 0.02395705531184983,
+        "score_delta": 2.0816681711721685e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org:8080/"
+      },
+      {
+        "url": "https://example.org:8080/A%2FB?Ref=Q#ignore",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.023957055311849808,
+        "score_dart": 0.02395705531184983,
+        "score_delta": 2.0816681711721685e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org:8080/A%2FB?Ref=Q"
+      },
+      {
+        "url": "https://example.org:8080/Đăng-nhập?q=🙂",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.07172952299331824,
+        "score_dart": 0.07172952299331821,
+        "score_delta": 2.7755575615628914e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org:8080/Đăng-nhập?q=🙂"
+      },
+      {
+        "url": "https://example.org:8080/abc  xyz?a=x%20y",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.047085264548910474,
+        "score_dart": 0.04708526454891045,
+        "score_delta": 2.7755575615628914e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org:8080/abc xyz?a=x%20y"
+      },
+      {
+        "url": "https://example.org:8080/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.015326856577864116,
+        "score_dart": 0.015326856577864133,
+        "score_delta": 1.734723475976807e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org:8080/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a?redirect=%2F"
+      },
+      {
+        "url": "https://example.org:8080/login/verify?email=test%40example.com",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.010136459248969991,
+        "score_dart": 0.010136459248969991,
+        "score_delta": 0.0,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org:8080/login/verify?email=test%40example.com"
+      },
+      {
+        "url": "example.com/Case?x=1",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.020343792295464416,
+        "score_dart": 0.020343792295464406,
+        "score_delta": 1.0408340855860843e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/Case?x=1"
+      },
+      {
+        "url": "//example.org/path",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.01943462270993454,
+        "score_dart": 0.01943462270993457,
+        "score_delta": 3.122502256758253e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.org/path"
+      },
+      {
+        "url": "http://EXAMPLE.com:80/A",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019162607373528536,
+        "score_dart": 0.01916260737352853,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/A"
+      },
+      {
+        "url": "https://example.com:443/",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.019162607373528536,
+        "score_dart": 0.01916260737352853,
+        "score_delta": 6.938893903907228e-18,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/"
+      },
+      {
+        "url": "https://sub.example.com/c?q",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.012461707989623762,
+        "score_dart": 0.012461707989623752,
+        "score_delta": 1.0408340855860843e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "sub.example.com/c?q"
+      },
+      {
+        "url": "https://example.com/?q=hello",
+        "expected_status": "classified",
+        "matched": true,
+        "actual_outcome": "Classified",
+        "score_python": 0.015895237262450443,
+        "score_dart": 0.015895237262450415,
+        "score_delta": 2.7755575615628914e-17,
+        "class_python": 0,
+        "class_dart": 0,
+        "canonical_dart": "example.com/?q=hello"
+      },
+      {
+        "url": "",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "InvalidInput"
+      },
+      {
+        "url": "  ",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "InvalidInput"
+      },
+      {
+        "url": "https://",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "Unclassifiable"
+      },
+      {
+        "url": "https://example.org:65536/",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "Unclassifiable"
+      },
+      {
+        "url": "https://example.org:bad/",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "Unclassifiable"
+      },
+      {
+        "url": " https://example.org",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "InvalidInput"
+      },
+      {
+        "url": "https://[broken",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "Unclassifiable"
+      },
+      {
+        "url": "https://example.org\n/a",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "InvalidInput"
+      },
+      {
+        "url": "invalid_url",
+        "expected_status": "rejected",
+        "matched": true,
+        "actual_outcome": "Unclassifiable"
+      }
+    ],
+    "network_before": {
+      "airplane_mode_on": "0",
+      "wifi_on": "1",
+      "mobile_data": "1"
+    },
+    "network_during": {
+      "airplane_mode_on": "1",
+      "wifi_on": "0",
+      "mobile_data": "0",
+      "ipv4_default_route": "",
+      "ipv6_default_route": ""
+    },
+    "network_restored": {
+      "airplane_mode_on": "0",
+      "wifi_on": "1",
+      "mobile_data": "1"
+    }
+  },
+  "release_offline": {
+    "status": "passed",
+    "cold_starts": [
+      {
+        "pid": "6731",
+        "am_start": "Starting: Intent { cmp=com.phishguardvn.phishguard_android/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.phishguardvn.phishguard_android/.MainActivity\nTotalTime: 1524\nWaitTime: 1526\nComplete",
+        "host_observed_launch_to_ui_ms": 6229.705699952319
+      },
+      {
+        "pid": "6797",
+        "am_start": "Starting: Intent { cmp=com.phishguardvn.phishguard_android/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.phishguardvn.phishguard_android/.MainActivity\nTotalTime: 1986\nWaitTime: 1988\nComplete",
+        "host_observed_launch_to_ui_ms": 4869.948100007605
+      },
+      {
+        "pid": "6863",
+        "am_start": "Starting: Intent { cmp=com.phishguardvn.phishguard_android/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.phishguardvn.phishguard_android/.MainActivity\nTotalTime: 1866\nWaitTime: 1922\nComplete",
+        "host_observed_launch_to_ui_ms": 4659.342499973718
+      }
+    ],
+    "network_before": {
+      "airplane_mode_on": "0",
+      "wifi_on": "1",
+      "mobile_data": "1"
+    },
+    "network_during": {
+      "airplane_mode_on": "1",
+      "wifi_on": "0",
+      "mobile_data": "0",
+      "ipv4_default_route": "",
+      "ipv6_default_route": ""
+    },
+    "network_restored": {
+      "airplane_mode_on": "0",
+      "wifi_on": "1",
+      "mobile_data": "1"
+    }
+  },
+  "teacher_default": true,
+  "student_experimental": true,
+  "prediction_mocking": false,
+  "ci": {
+    "upstream_pr33_head": "680a8bd8806db337d8a8c039c0c3c5705b26c061",
+    "upstream_checks": {
+      "success": 6,
+      "total": 6
+    },
+    "previous_qa_commit": "18e076efb4aa839ec4fc35133be3bea2df5677c7",
+    "previous_qa_checks": {
+      "success": 14,
+      "total": 14
+    },
+    "pending_current_qa_changes": true
+  },
+  "nonblocking_notes": [
+    {
+      "file": "docs/week7_student_android_handover.md",
+      "line": 5,
+      "note": "Hy triển khai, Khiêm kiểm thử; dòng ghi người triển khai trong handoff chưa đúng phân công."
+    },
+    {
+      "file": "mobile/tool/sync_assets.sh",
+      "line": 75,
+      "note": "Git Bash Windows không có shasum nên dòng in hash brand trống. Python vẫn kiểm bắt buộc Teacher/Student/PSL; QA đối chiếu brand riêng đạt.",
+      "brand_reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6"
+    }
+  ],
+  "scope_limits": [
+    "Android emulator x86_64; chưa nghiệm thu điện thoại vật lý/ARM64.",
+    "Build từ candidate main + PR33; không nhận đây là commit merge đã xuất bản.",
+    "CI của thay đổi pin/report mới phải được xác nhận sau khi người dùng push."
+  ]
+}

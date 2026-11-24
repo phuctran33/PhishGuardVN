@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "handoff_revision": "5f112fc597339ea213eff3f07c745629cc18d8fc",
+  "platform": "win32",
+  "node": "v26.13.0",
+  "real_teacher": true,
+  "prediction_mocking": false,
+  "checks": [
+    {
+      "name": "URL → real Teacher; score above .5 uses locked threshold",
+      "status": "passed",
+      "response": {
+        "label": "benign",
+        "model": "teacher-stacking-v2",
+        "score": 0.5760558654872864,
+        "score_kind": "probability",
+        "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+        "decision_rule": "score >= threshold",
+        "protocol": "full_train_group_oof_fpr_target_0.01",
+        "threshold": 0.6945740700635259
+      }
+    },
+    {
+      "name": "selection and focus preserve rendered prediction",
+      "status": "passed"
+    },
+    {
+      "name": "X-Ray identifies true domain and keeps ML result separate",
+      "status": "passed",
+      "reference_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6"
+    },
+    {
+      "name": "real Teacher phishing response alongside rule evidence",
+      "status": "passed",
+      "response": {
+        "label": "phishing",
+        "model": "teacher-stacking-v2",
+        "score": 0.9103574640800315,
+        "score_kind": "probability",
+        "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+        "decision_rule": "score >= threshold",
+        "protocol": "full_train_group_oof_fpr_target_0.01",
+        "threshold": 0.6945740700635259
+      }
+    },
+    {
+      "name": "official reference domain",
+      "status": "passed"
+    },
+    {
+      "name": "QR PNG preview, cancel without POST, retry and confirm real Teacher",
+      "status": "passed"
+    },
+    {
+      "name": "actual QR jpg decode before confirmation",
+      "status": "passed"
+    },
+    {
+      "name": "actual QR webp decode before confirmation",
+      "status": "passed"
+    },
+    {
+      "name": "reject QR fixture broken.png without POST",
+      "status": "passed"
+    },
+    {
+      "name": "reject QR fixture no_qr.png without POST",
+      "status": "passed"
+    },
+    {
+      "name": "reject QR fixture qr_text.png without POST",
+      "status": "passed"
+    },
+    {
+      "name": "reject QR fixture qr_bad_scheme.png without POST",
+      "status": "passed"
+    },
+    {
+      "name": "reject QR fixture oversized_dimensions.png without POST",
+      "status": "passed"
+    },
+    {
+      "name": "typing after QR error retains focus and replacement text",
+      "status": "passed"
+    },
+    {
+      "name": "backend rejects invalid port through UI",
+      "status": "passed"
+    },
+    {
+      "name": "X-Ray responsive 768px",
+      "status": "passed"
+    },
+    {
+      "name": "X-Ray responsive 375px",
+      "status": "passed"
+    },
+    {
+      "name": "X-Ray responsive 320px",
+      "status": "passed"
+    },
+    {
+      "name": "backend process stopped; error; restart; retry same page",
+      "status": "passed"
+    },
+    {
+      "name": "degraded backend keeps inspection usable; Teacher returns503",
+      "status": "passed"
+    }
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "model": "teacher-stacking-v2",
+    "feature_set": "canonical-reference-v1",
+    "protocol": "full_train_group_oof_fpr_target_0.01",
+    "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "model_error": null
+  },
+  "browser": "158.0.8127.18",
+  "last_input_edit": {
+    "value": "example.com",
+    "trace": [
+      {
+        "stage": "focused",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra",
+        "inputs": [
+          {
+            "value": "example.com",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      },
+      {
+        "stage": "cleared",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra\nhttps://example.com",
+        "inputs": [
+          {
+            "value": "",
+            "label": "URL cần kiểm tra\nhttps://example.com"
+          }
+        ]
+      },
+      {
+        "stage": "inserted",
+        "active_tag": "INPUT",
+        "active_label": "URL cần kiểm tra",
+        "inputs": [
+          {
+            "value": "example.com",
+            "label": "URL cần kiểm tra"
+          }
+        ]
+      }
+    ]
+  },
+  "post_endpoints": [
+    "/predict",
+    "/inspect"
+  ]
+}

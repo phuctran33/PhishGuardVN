@@ -1,0 +1,390 @@
+{
+  "task": "K7.4/K7.5 — MLP int8 mới",
+  "checked_on": "2026-11-20",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "verified_host_and_android_emulator",
+  "source": {
+    "revision": "bc3a3a7054e2f6e6e733595f40f38439784536a1",
+    "branch": "phuc-week7-student",
+    "pull_request": 35,
+    "tracked_source_unchanged": true
+  },
+  "model": {
+    "version": "student-mlp-kd-int8-v1",
+    "threshold": 0.72961075,
+    "decision_rule": "score >= threshold",
+    "score_kind": "uncalibrated_sigmoid",
+    "compressed_model": {
+      "bytes": 283334,
+      "sha256": "8d118ac5346543bdfa29b7970b48ae206305d5fe8992e0c4754aa070cc032341"
+    },
+    "psl": {
+      "bytes": 75007,
+      "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f"
+    },
+    "model_plus_psl_bytes": 358341,
+    "layout": "4096 × 64, row_major_term_then_hidden, signed int8, per-hidden-unit scales",
+    "android_verified_in_upstream_manifest": false
+  },
+  "environment": {
+    "os": "Windows 11 x64",
+    "runtime_scope": "Python bundle/reference verification, not Dart/Android MLP",
+    "python": {
+      "python": "3.11.14",
+      "packages": {
+        "numpy": "2.4.6",
+        "scipy": "1.17.1",
+        "scikit-learn": "1.9.1",
+        "pandas": "3.1.0",
+        "lightgbm": "4.7.0",
+        "pytest": "9.2.0"
+      }
+    },
+    "android": {
+      "device": "emulator-5554",
+      "android_release": "17",
+      "android_api": "37",
+      "abi": "x86_64",
+      "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A2/16418371:user/release-keys"
+    }
+  },
+  "checks": {
+    "independent_python": {
+      "passed": 86,
+      "failed": 0,
+      "skipped": 0
+    },
+    "same_tests_in_lightgbm_ci_environment": {
+      "passed": 86,
+      "failed": 0,
+      "skipped": 0
+    },
+    "upstream_mlp": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "stacking_and_mlp_regression": {
+      "passed": 55,
+      "failed": 0,
+      "skipped": 0,
+      "includes_stacking": 53,
+      "includes_mlp": 2
+    },
+    "shared_reference": {
+      "classified_matched": 54,
+      "rejected_matched": 9,
+      "absolute_tolerance": 2e-06,
+      "max_fixture_score_delta": 2.7755575615628914e-17,
+      "independent_int8_max_delta": 2.7755575615628914e-17
+    },
+    "pinned_files_sha256": {
+      "manifest.json": "96044c0e024dabba64071c134d053fb1ff3fbceeb043bbb485be2bd347009277",
+      "student_mlp.json.gz": "8d118ac5346543bdfa29b7970b48ae206305d5fe8992e0c4754aa070cc032341",
+      "python_reference.json": "7ace7a342969ec0dcbef1334c27e84917962ec034181c76ad162f6c2a181c8f1",
+      "verification.json": "a8c4e543bbf001c5e3c8db42fa6c8f37a57fd240765038888046ddd50bf80d37"
+    },
+    "portable_without_teacher_dataset_network_training": "passed",
+    "synthetic_edges": "zero TF-IDF/bias evaluation, threshold nextafter/equal, asset/parser/metadata mutation",
+    "reference_details": "student_mlp_python.json",
+    "real_cli": {
+      "status": "passed",
+      "inputs": 3,
+      "scope": "URL thường, Unicode/IDNA và IPv6; không website access"
+    },
+    "independent_python_20_nov": {
+      "passed": 86,
+      "failed": 0,
+      "skipped": 0
+    },
+    "hy_flutter_analyze": {
+      "status": "passed",
+      "result": "No issues found"
+    },
+    "hy_flutter_tests": {
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0
+    },
+    "hy_dart_package_regression": {
+      "passed": 294,
+      "failed": 0,
+      "skipped": 0
+    },
+    "hy_dart_implementation": {
+      "status": "passed",
+      "tests": {
+        "passed": 79,
+        "failed": 0,
+        "skipped": 0,
+        "failures": []
+      },
+      "classified_matched": 54,
+      "rejected_matched": 9,
+      "max_score_delta": 5.551115123125783e-17,
+      "evidence": "student_mlp_dart.json"
+    },
+    "hy_android_implementation": {
+      "status": "passed",
+      "business_tests": {
+        "passed": 79,
+        "failed": 0,
+        "skipped": 0,
+        "framework_setup_teardown_excluded": true
+      },
+      "classified_matched": 54,
+      "rejected_matched": 9,
+      "max_score_delta": 5.551115123125783e-17,
+      "tolerance": 2e-06,
+      "loader_ms": 27.819,
+      "performance": {
+        "scope": "in-process validation/canonicalization/TF-IDF/MLP, excludes UI",
+        "samples": 270,
+        "warm_up": 5,
+        "p50_ms": 0.035,
+        "p95_ms": 0.111,
+        "mean_ms": 0.06415555555555554
+      },
+      "evidence": [
+        "student_mlp_android.json",
+        "student_mlp_android_results.json"
+      ]
+    },
+    "release_offline_smoke": {
+      "status": "passed",
+      "process_cold_starts": 3,
+      "apk": {
+        "relative_path": "mobile/app/build/app/outputs/flutter-apk/app-release.apk",
+        "size_bytes": 50136027,
+        "sha256": "b2704ed3aba384d222d42ce8a09bdc79b3a8224a79eb442e6f4ef6ddbf05ace7",
+        "application_id": "com.phishguardvn.phishguard_android",
+        "source": "unmodified Hy app release entrypoint"
+      },
+      "packaged_assets": {
+        "student_mlp.json.gz": {
+          "bytes": 283334,
+          "sha256": "8d118ac5346543bdfa29b7970b48ae206305d5fe8992e0c4754aa070cc032341"
+        },
+        "psl_icann_tldextract_5.4.0.txt": {
+          "bytes": 75007,
+          "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f"
+        }
+      },
+      "total_pss_kb": 100516,
+      "scope": "Whole universal app including Teacher and Student; not Student-only memory. Emulator process cold starts retain filesystem/shader caches.",
+      "evidence": "student_mlp_release.json",
+      "screenshot": "reports/figures/week7/student_mlp_android_offline.png",
+      "invalid_input_ui_checked_separately": "passed on host and native emulator"
+    }
+  },
+  "findings": [
+    {
+      "id": "QA-W7-MLP-01",
+      "status": "resolved_verified",
+      "severity": "P2",
+      "owner": "Hy",
+      "pull_request": 33,
+      "revision": "feb57636d8bcb79d0630acbff75921272f10f6d7",
+      "component": "mobile/app/lib/src/home_page.dart:88,182",
+      "title": "Student UI không hiện thông báo khi URL bị từ chối",
+      "reproduction": [
+        "Mở app mới",
+        "Nhập http://example.com:99999/",
+        "Bấm Phân tích bằng Student"
+      ],
+      "expected": "Hiển thị trạng thái từ chối URL hoặc thông báo lỗi rõ ràng.",
+      "actual": "StudentUrlClassifier trả Unclassifiable đúng nhưng UI chỉ render Classified, không có thông báo lỗi.",
+      "reproduced_on": [
+        "Flutter host Windows",
+        "Android 17/API37/x86_64 emulator profile"
+      ],
+      "test": "Student app renders a visible rejection for invalid URL",
+      "evidence": [
+        "student_mlp_dart.json",
+        "student_mlp_android_results.json"
+      ],
+      "fix_revision": "f817ec96eee8f5301c06bae6c59b0059b9fe3d78",
+      "verified_on": [
+        "Flutter host Windows: unchanged regression passed",
+        "Android 17/API37/x86_64: unchanged regression passed"
+      ],
+      "resolution": "UI Student hiện trạng thái từ chối URL sai; luồng hợp lệ vẫn trả kết quả."
+    }
+  ],
+  "qa_environment_corrections": [
+    "Thêm LightGBM 4.7.0 chỉ cho fixture stacking cũ; MLP inference không dùng LightGBM.",
+    "Sửa phép chặn Teacher trong test portable sang module phishguard_vn.teacher; không sửa code Phúc."
+  ],
+  "pending": [
+    {
+      "task": "Người dùng tự kiểm lại nếu cần, commit/push phần QA và kiểm Actions cho commit mới",
+      "reason": "Các kiểm tra trong phạm vi emulator đã đạt tại máy; chưa có Actions cho thay đổi chưa push."
+    },
+    {
+      "task": "Cập nhật nghiệm thu/báo cáo cuối lên Issue #31",
+      "reason": "Bàn giao/sign-off do người dùng thực hiện; không tự gửi comment/approve/đóng issue."
+    }
+  ],
+  "ci": {
+    "workflow": ".github/workflows/week7-web.yml",
+    "mlp_source_pin": "bc3a3a7054e2f6e6e733595f40f38439784536a1",
+    "job_count_changed": false,
+    "runner_os": [
+      "ubuntu-latest",
+      "windows-latest"
+    ],
+    "actual_current_change_status": "local_passed_pending_user_commit_push",
+    "prior_14_of_14_applies_only_to": "68e7a6bf17b6b6fced529211f2a3485f69f5c1ae",
+    "local_validation": {
+      "actionlint": "passed",
+      "bash_syntax_steps": 26,
+      "source_selection_cases": 14,
+      "combined_gate": {
+        "status": "passed",
+        "cases": [
+          {
+            "case": "all_actual_reports",
+            "status": "passed"
+          },
+          {
+            "case": "reject_max_fixture_score_delta",
+            "status": "passed"
+          },
+          {
+            "case": "reject_rejected_matched",
+            "status": "passed"
+          },
+          {
+            "case": "reject_source_revision",
+            "status": "passed"
+          },
+          {
+            "case": "reject_mlp_skip",
+            "status": "passed"
+          }
+        ]
+      }
+    },
+    "android_mlp_source_pin": "f817ec96eee8f5301c06bae6c59b0059b9fe3d78",
+    "host_gate": {
+      "expected_business_tests": 79,
+      "runs_on": [
+        "ubuntu-latest",
+        "windows-latest"
+      ],
+      "known_failure": null,
+      "suppressed": false,
+      "resolved_finding": "QA-W7-MLP-01",
+      "local_result": {
+        "passed": 79,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "scope_limits": [
+    "Không train/rebuild bundle hoặc chạy lại Train 13.078 URL/Official Test/external evaluation.",
+    "Không sửa Teacher/Student models, locks, E2/reference hoặc source sản phẩm của Phúc/Hy.",
+    "Không dùng LightGBM hoặc Teacher Android đã pass thay cho MLP mới.",
+    "Không sửa android_verified=false hoặc promote Student; không tự commit/push/review/merge."
+  ],
+  "supplier_evidence": {
+    "path": "artifacts/student_mlp_android/verification.json",
+    "full_train_rows": 13078,
+    "max_score_error": 2.220446049250313e-16,
+    "decision_differences": 0,
+    "independently_rerun_by_qa": false
+  },
+  "qa_source_sha256": {
+    "tests/week7/student_mlp_qa.py": "acab51965698df332bf64c16841963fddd1f7f92e0f49fef5ed42651c37044f6",
+    "tests/week7/prepare_student_mlp_runtime.py": "4b7e291ce37383cb0909458fb576eb38ca176f469c41691b5383f053d746af92",
+    "tests/week7/run_student_mlp_host.py": "a483a7c2f9f883b1ae87f49f4fc38252d0e378b5d2b29821c15d4c83674d497b",
+    "tests/week7/run_student_mlp_android.py": "d17048501af9e7b6749780ce79623a54d75af58647b9c88e41a88789ec261025",
+    ".github/workflows/week7-web.yml": "5bb0e6987745c075533e3911f6b2e62a673bcf4707cb391afbb1f83ba9484151",
+    "tests/week7/student_mlp_runtime/driver.dart.in": "560085e14d2fd1bee1de15c918b59fec528e3d2e21b3ce18d9b2d538d1efe39f",
+    "tests/week7/student_mlp_runtime/host_test.dart.in": "273e7dc8a8417dd4d407af4a3a68b1fbc13801db8472afe405e7550b358f11cc",
+    "tests/week7/student_mlp_runtime/runtime_test.dart.in": "677f6f75fd69f5c2807693a7f8ce38d36e135b022e4e50b84e84069593fa0dfd",
+    "tests/week7/student_mlp_runtime/student_mlp_tests.dart.in": "e0f2f27c41297c4e4436f38b34c49c38942ea555d1625ec73da125566b6f6b8e"
+  },
+  "android_source": {
+    "revision": "f817ec96eee8f5301c06bae6c59b0059b9fe3d78",
+    "branch": "feat/w7-android-teacher-integration",
+    "pull_request": 33,
+    "tracked_source_unchanged": true,
+    "adapter_implementation": "Hy, copied 36 tracked files without changes; QA entrypoints only"
+  },
+  "history_before_ui_fix": {
+    "revision": "feb57636d8bcb79d0630acbff75921272f10f6d7",
+    "status": "parity_offline_passed_student_ui_rejection_failed",
+    "dart": {
+      "status": "failed",
+      "tests": {
+        "passed": 78,
+        "failed": 1,
+        "skipped": 0,
+        "failures": [
+          "Student app renders a visible rejection for invalid URL"
+        ]
+      },
+      "classified_matched": 54,
+      "rejected_matched": 9,
+      "max_score_delta": 5.551115123125783e-17,
+      "evidence": "student_mlp_dart.json"
+    },
+    "android": {
+      "status": "failed",
+      "business_tests": {
+        "passed": 78,
+        "failed": 1,
+        "skipped": 0,
+        "framework_setup_teardown_excluded": true
+      },
+      "classified_matched": 54,
+      "rejected_matched": 9,
+      "max_score_delta": 5.551115123125783e-17,
+      "tolerance": 2e-06,
+      "loader_ms": 44.643,
+      "performance": {
+        "scope": "in-process validation/canonicalization/TF-IDF/MLP, excludes UI",
+        "samples": 270,
+        "warm_up": 5,
+        "p50_ms": 0.071,
+        "p95_ms": 0.166,
+        "mean_ms": 0.10344074074074078
+      },
+      "evidence": [
+        "student_mlp_android.json",
+        "student_mlp_android_results.json"
+      ]
+    },
+    "findings": [
+      {
+        "id": "QA-W7-MLP-01",
+        "status": "open",
+        "severity": "P2",
+        "owner": "Hy",
+        "pull_request": 33,
+        "revision": "feb57636d8bcb79d0630acbff75921272f10f6d7",
+        "component": "mobile/app/lib/src/home_page.dart:88,182",
+        "title": "Student UI không hiện thông báo khi URL bị từ chối",
+        "reproduction": [
+          "Mở app mới",
+          "Nhập http://example.com:99999/",
+          "Bấm Phân tích bằng Student"
+        ],
+        "expected": "Hiển thị trạng thái từ chối URL hoặc thông báo lỗi rõ ràng.",
+        "actual": "StudentUrlClassifier trả Unclassifiable đúng nhưng UI chỉ render Classified, không có thông báo lỗi.",
+        "reproduced_on": [
+          "Flutter host Windows",
+          "Android 17/API37/x86_64 emulator profile"
+        ],
+        "test": "Student app renders a visible rejection for invalid URL",
+        "evidence": [
+          "student_mlp_dart.json",
+          "student_mlp_android_results.json"
+        ]
+      }
+    ],
+    "fix_revision_to_verify": "f817ec96eee8f5301c06bae6c59b0059b9fe3d78"
+  }
+}
