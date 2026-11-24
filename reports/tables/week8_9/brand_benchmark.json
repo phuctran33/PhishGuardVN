@@ -1,0 +1,445 @@
+{
+  "baseline": {
+    "exact_brand_set_cases": 46,
+    "fully_correct_cases": 46,
+    "wrong_brand_cases": 1,
+    "brand_pairs": {
+      "tp": 19,
+      "fp": 1,
+      "fn": 57
+    },
+    "precision": 0.95,
+    "recall": 0.25,
+    "f1": 0.3958333333333333,
+    "benign_negative_cases": 22,
+    "benign_negative_wrong_brands": 1,
+    "benign_fpr": 0.045454545454545456,
+    "groups": {
+      "abbreviation": {
+        "cases": 4,
+        "brand_set_correct": 3,
+        "all_fields_correct": 3,
+        "wrong_brand_cases": 0
+      },
+      "ambiguous_names": {
+        "cases": 15,
+        "brand_set_correct": 15,
+        "all_fields_correct": 15,
+        "wrong_brand_cases": 0
+      },
+      "coverage_limits": {
+        "cases": 5,
+        "brand_set_correct": 0,
+        "all_fields_correct": 0,
+        "wrong_brand_cases": 0
+      },
+      "invalid": {
+        "cases": 4,
+        "brand_set_correct": 4,
+        "all_fields_correct": 4,
+        "wrong_brand_cases": 0
+      },
+      "ip": {
+        "cases": 2,
+        "brand_set_correct": 2,
+        "all_fields_correct": 2,
+        "wrong_brand_cases": 0
+      },
+      "multiple_brands": {
+        "cases": 5,
+        "brand_set_correct": 0,
+        "all_fields_correct": 0,
+        "wrong_brand_cases": 0
+      },
+      "official_subdomain": {
+        "cases": 4,
+        "brand_set_correct": 1,
+        "all_fields_correct": 1,
+        "wrong_brand_cases": 0
+      },
+      "official_v1": {
+        "cases": 8,
+        "brand_set_correct": 8,
+        "all_fields_correct": 8,
+        "wrong_brand_cases": 0
+      },
+      "official_v2": {
+        "cases": 19,
+        "brand_set_correct": 0,
+        "all_fields_correct": 0,
+        "wrong_brand_cases": 0
+      },
+      "province_portal": {
+        "cases": 3,
+        "brand_set_correct": 0,
+        "all_fields_correct": 0,
+        "wrong_brand_cases": 0
+      },
+      "related_brands": {
+        "cases": 6,
+        "brand_set_correct": 0,
+        "all_fields_correct": 0,
+        "wrong_brand_cases": 0
+      },
+      "shared_or_cross_zone": {
+        "cases": 5,
+        "brand_set_correct": 3,
+        "all_fields_correct": 3,
+        "wrong_brand_cases": 0
+      },
+      "synthetic_mismatch": {
+        "cases": 8,
+        "brand_set_correct": 2,
+        "all_fields_correct": 2,
+        "wrong_brand_cases": 0
+      },
+      "unicode": {
+        "cases": 7,
+        "brand_set_correct": 2,
+        "all_fields_correct": 2,
+        "wrong_brand_cases": 0
+      },
+      "unrelated": {
+        "cases": 7,
+        "brand_set_correct": 6,
+        "all_fields_correct": 6,
+        "wrong_brand_cases": 1
+      }
+    },
+    "latency_ms": {
+      "p50": 0.105625,
+      "p95": 0.16167705,
+      "samples": 1960
+    }
+  },
+  "extended": {
+    "exact_brand_set_cases": 96,
+    "fully_correct_cases": 96,
+    "wrong_brand_cases": 1,
+    "brand_pairs": {
+      "tp": 71,
+      "fp": 1,
+      "fn": 5
+    },
+    "precision": 0.9861111111111112,
+    "recall": 0.9342105263157895,
+    "f1": 0.9594594594594594,
+    "benign_negative_cases": 22,
+    "benign_negative_wrong_brands": 1,
+    "benign_fpr": 0.045454545454545456,
+    "groups": {
+      "abbreviation": {
+        "cases": 4,
+        "brand_set_correct": 4,
+        "all_fields_correct": 4,
+        "wrong_brand_cases": 0
+      },
+      "ambiguous_names": {
+        "cases": 15,
+        "brand_set_correct": 15,
+        "all_fields_correct": 15,
+        "wrong_brand_cases": 0
+      },
+      "coverage_limits": {
+        "cases": 5,
+        "brand_set_correct": 0,
+        "all_fields_correct": 0,
+        "wrong_brand_cases": 0
+      },
+      "invalid": {
+        "cases": 4,
+        "brand_set_correct": 4,
+        "all_fields_correct": 4,
+        "wrong_brand_cases": 0
+      },
+      "ip": {
+        "cases": 2,
+        "brand_set_correct": 2,
+        "all_fields_correct": 2,
+        "wrong_brand_cases": 0
+      },
+      "multiple_brands": {
+        "cases": 5,
+        "brand_set_correct": 5,
+        "all_fields_correct": 5,
+        "wrong_brand_cases": 0
+      },
+      "official_subdomain": {
+        "cases": 4,
+        "brand_set_correct": 4,
+        "all_fields_correct": 4,
+        "wrong_brand_cases": 0
+      },
+      "official_v1": {
+        "cases": 8,
+        "brand_set_correct": 8,
+        "all_fields_correct": 8,
+        "wrong_brand_cases": 0
+      },
+      "official_v2": {
+        "cases": 19,
+        "brand_set_correct": 19,
+        "all_fields_correct": 19,
+        "wrong_brand_cases": 0
+      },
+      "province_portal": {
+        "cases": 3,
+        "brand_set_correct": 3,
+        "all_fields_correct": 3,
+        "wrong_brand_cases": 0
+      },
+      "related_brands": {
+        "cases": 6,
+        "brand_set_correct": 6,
+        "all_fields_correct": 6,
+        "wrong_brand_cases": 0
+      },
+      "shared_or_cross_zone": {
+        "cases": 5,
+        "brand_set_correct": 5,
+        "all_fields_correct": 5,
+        "wrong_brand_cases": 0
+      },
+      "synthetic_mismatch": {
+        "cases": 8,
+        "brand_set_correct": 8,
+        "all_fields_correct": 8,
+        "wrong_brand_cases": 0
+      },
+      "unicode": {
+        "cases": 7,
+        "brand_set_correct": 7,
+        "all_fields_correct": 7,
+        "wrong_brand_cases": 0
+      },
+      "unrelated": {
+        "cases": 7,
+        "brand_set_correct": 6,
+        "all_fields_correct": 6,
+        "wrong_brand_cases": 1
+      }
+    },
+    "latency_ms": {
+      "p50": 0.123709,
+      "p95": 0.20080769999999998,
+      "samples": 1960
+    }
+  },
+  "scope": "fixed offline brand-recognition and domain-status fixture",
+  "fixture_sha256": "dc0088467ca5d1935f1cb87f4912fea48c0b6121cd837c3ad24cf3834fdac238",
+  "catalog_sha256": "84629d25f71d19a7292a1b9dcf3270ee834c9b8664bd9a3a725209b388fb6265",
+  "sizes": {
+    "baseline": {
+      "brands": 45,
+      "domains": 55,
+      "aliases": 58,
+      "categories": {
+        "bank": 26,
+        "delivery": 5,
+        "ecommerce": 3,
+        "ewallet": 3,
+        "gov": 4,
+        "telecom": 4
+      },
+      "regions": {
+        "VN": 45
+      },
+      "vietnam_scope": {
+        "vietnamese": 42,
+        "international_operating_in_vietnam": 3,
+        "international_popular_in_vietnam": 0
+      }
+    },
+    "additions": {
+      "brands": 1931,
+      "domains": 1933,
+      "aliases": 189,
+      "categories": {
+        "automotive": 9,
+        "aviation": 45,
+        "bank": 12,
+        "construction": 1,
+        "consumer_goods": 9,
+        "cosmetics": 1,
+        "delivery": 328,
+        "education": 28,
+        "employment": 6,
+        "entertainment": 5,
+        "fashion": 6,
+        "financial_services": 23,
+        "food": 11,
+        "gov": 20,
+        "gov_local": 34,
+        "healthcare": 998,
+        "hospitality": 3,
+        "insurance": 11,
+        "investment": 1,
+        "media": 11,
+        "payments": 9,
+        "pharmacy": 3,
+        "real_estate": 8,
+        "retail": 13,
+        "securities": 12,
+        "social": 3,
+        "software": 293,
+        "technology": 10,
+        "telecom": 3,
+        "transport": 4,
+        "travel": 4,
+        "utility": 7
+      },
+      "regions": {
+        "CN": 3,
+        "DE": 1,
+        "GB": 1,
+        "HK": 1,
+        "ID": 1,
+        "IT": 1,
+        "International": 40,
+        "JP": 4,
+        "KR": 3,
+        "SG": 4,
+        "TH": 2,
+        "TW": 1,
+        "US": 13,
+        "VN": 1856
+      },
+      "vietnam_scope": {
+        "vietnamese": 1822,
+        "international_operating_in_vietnam": 104,
+        "international_popular_in_vietnam": 5
+      }
+    },
+    "combined": {
+      "brands": 1976,
+      "domains": 1988,
+      "aliases": 247,
+      "categories": {
+        "automotive": 9,
+        "aviation": 45,
+        "bank": 38,
+        "construction": 1,
+        "consumer_goods": 9,
+        "cosmetics": 1,
+        "delivery": 333,
+        "ecommerce": 3,
+        "education": 28,
+        "employment": 6,
+        "entertainment": 5,
+        "ewallet": 3,
+        "fashion": 6,
+        "financial_services": 23,
+        "food": 11,
+        "gov": 24,
+        "gov_local": 34,
+        "healthcare": 998,
+        "hospitality": 3,
+        "insurance": 11,
+        "investment": 1,
+        "media": 11,
+        "payments": 9,
+        "pharmacy": 3,
+        "real_estate": 8,
+        "retail": 13,
+        "securities": 12,
+        "social": 3,
+        "software": 293,
+        "technology": 10,
+        "telecom": 7,
+        "transport": 4,
+        "travel": 4,
+        "utility": 7
+      },
+      "regions": {
+        "CN": 3,
+        "DE": 1,
+        "GB": 1,
+        "HK": 1,
+        "ID": 1,
+        "IT": 1,
+        "International": 40,
+        "JP": 4,
+        "KR": 3,
+        "SG": 4,
+        "TH": 2,
+        "TW": 1,
+        "US": 13,
+        "VN": 1901
+      },
+      "vietnam_scope": {
+        "vietnamese": 1864,
+        "international_operating_in_vietnam": 107,
+        "international_popular_in_vietnam": 5
+      }
+    }
+  },
+  "fixture_cases": 102,
+  "fixture_valid_cases": 98,
+  "new_fully_correct_ids": [
+    "E09",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E25",
+    "E26",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E60",
+    "E63",
+    "E65",
+    "E66",
+    "E75",
+    "E76",
+    "E86",
+    "E88",
+    "E89",
+    "E90",
+    "E91",
+    "E92",
+    "E93",
+    "E95",
+    "E97",
+    "E98"
+  ],
+  "regression_ids": [],
+  "both_fully_missed_ids": [
+    "E81",
+    "E82",
+    "E83",
+    "E84",
+    "E85"
+  ],
+  "new_wrong_brand_case_ids": [],
+  "load_ms": {
+    "baseline": 0.574083,
+    "extended_total": 146.777291
+  },
+  "python": "3.11.17",
+  "machine": "Darwin arm64"
+}

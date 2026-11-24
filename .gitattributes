@@ -72,3 +72,9 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 # Preserve reproducible Android Student data-package bytes.
 /artifacts/student_mlp_android/*.json text eol=lf
 /artifacts/student_mlp_android/*.gz -text
+
+# Inspection catalog manifest has stable checkout bytes.
+/src/phishguard_vn/resources/brand_catalog_v2.manifest.json text eol=lf
+/tests/fixtures/brand_catalog_eval.csv text eol=lf
+/reports/tables/week8_9/*.csv text eol=lf
+/reports/tables/week8_9/*.json text eol=lf

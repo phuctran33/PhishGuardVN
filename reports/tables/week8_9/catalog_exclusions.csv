@@ -1,0 +1,383 @@
+batch,canonical_name,hostname,verification_status,reason,source_url
+priority_initial,VietQR,vietqr.net,pending,first_party_identity_not_confirmed,https://vietqr.net/
+priority_initial,ShopBack,www.shopback.vn,pending,first_party_identity_not_confirmed,https://www.shopback.vn/
+priority_initial,Sendo,www.sendo.vn,pending,first_party_identity_not_confirmed,https://www.sendo.vn/
+priority_initial,Thế Giới Di Động,www.thegioididong.com,pending,first_party_identity_not_confirmed,https://www.thegioididong.com/
+priority_initial,Điện Máy Xanh,www.dienmayxanh.com,pending,first_party_identity_not_confirmed,https://www.dienmayxanh.com/
+priority_initial,Bách Hóa Xanh,www.bachhoaxanh.com,pending,first_party_identity_not_confirmed,https://www.bachhoaxanh.com/
+priority_initial,FPT Shop,fptshop.com.vn,pending,first_party_identity_not_confirmed,https://fptshop.com.vn/
+priority_initial,Co.opmart,coopmart.vn,pending,first_party_identity_not_confirmed,https://coopmart.vn/
+priority_initial,SPT,spt.vn,pending,first_party_identity_not_confirmed,https://spt.vn/
+priority_initial,CMC Telecom,cmctelecom.vn,pending,first_party_identity_not_confirmed,https://cmctelecom.vn/
+priority_initial,Bkav,www.bkav.com.vn,pending,first_party_identity_not_confirmed,https://www.bkav.com.vn/
+priority_initial,VNDIRECT,www.vndirect.com.vn,pending,first_party_identity_not_confirmed,https://www.vndirect.com.vn/
+priority_initial,Ho Chi Minh City Securities Corporation,www.hsc.com.vn,pending,first_party_identity_not_confirmed,https://www.hsc.com.vn/
+priority_initial,Dragon Capital,www.dragoncapital.com.vn,pending,first_party_identity_not_confirmed,https://www.dragoncapital.com.vn/
+priority_initial,Manulife Việt Nam,www.manulife.com.vn,pending,first_party_identity_not_confirmed,https://www.manulife.com.vn/vi.html
+priority_initial,Dai-ichi Life Việt Nam,dai-ichi-life.com.vn,pending,first_party_identity_not_confirmed,https://dai-ichi-life.com.vn/
+priority_initial,Vietjet Air,www.vietjetair.com,pending,first_party_identity_not_confirmed,https://www.vietjetair.com/vi
+priority_initial,Bamboo Airways,www.bambooairways.com,pending,first_party_identity_not_confirmed,https://www.bambooairways.com/vn/vi/
+priority_initial,Pacific Airlines,www.pacificairlines.com.vn,pending,first_party_identity_not_confirmed,https://www.pacificairlines.com.vn/
+priority_initial,Airports Corporation of Vietnam,www.vietnamairport.vn,pending,first_party_identity_not_confirmed,https://www.vietnamairport.vn/
+priority_initial,Xanh SM,www.xanhsm.com,pending,first_party_identity_not_confirmed,https://www.xanhsm.com/
+priority_initial,Be Group,be.com.vn,pending,first_party_identity_not_confirmed,https://be.com.vn/
+priority_initial,Vinpearl,vinpearl.com,pending,first_party_identity_not_confirmed,https://vinpearl.com/vi
+priority_initial,Microsoft,www.microsoft.com,pending,first_party_identity_not_confirmed,https://www.microsoft.com/vi-vn/
+priority_initial,VieON,vieon.vn,pending,first_party_identity_not_confirmed,https://vieon.vn/
+priority_initial,VietnamPlus,www.vietnamplus.vn,pending,first_party_identity_not_confirmed,https://www.vietnamplus.vn/
+priority_initial,Báo Nhân Dân,nhandan.vn,pending,first_party_identity_not_confirmed,https://nhandan.vn/
+priority_initial,Bệnh viện Từ Dũ,tudu.com.vn,pending,first_party_identity_not_confirmed,https://tudu.com.vn/
+priority_initial,Bệnh viện Chợ Rẫy,choray.vn,pending,first_party_identity_not_confirmed,https://choray.vn/
+priority_initial,Đại học Quốc gia Hà Nội,vnu.edu.vn,pending,first_party_identity_not_confirmed,https://vnu.edu.vn/
+priority_initial,Trường Đại học Ngoại thương,ftu.edu.vn,pending,first_party_identity_not_confirmed,https://ftu.edu.vn/
+priority_initial,Trường Đại học Cần Thơ,www.ctu.edu.vn,pending,first_party_identity_not_confirmed,https://www.ctu.edu.vn/
+priority_initial,Fulbright University Vietnam,fulbright.edu.vn,pending,first_party_identity_not_confirmed,https://fulbright.edu.vn/vi/
+priority_initial,TopCV,www.topcv.vn,pending,first_party_identity_not_confirmed,https://www.topcv.vn/
+priority_initial,CareerViet,careerviet.vn,pending,first_party_identity_not_confirmed,https://careerviet.vn/
+priority_initial,Bộ Tư pháp Việt Nam,moj.gov.vn,pending,first_party_identity_not_confirmed,https://moj.gov.vn/
+priority_initial,Bộ Y tế,moh.gov.vn,pending,first_party_identity_not_confirmed,https://moh.gov.vn/
+priority_initial,Bộ Xây dựng,moc.gov.vn,pending,first_party_identity_not_confirmed,https://moc.gov.vn/
+priority_initial,Bộ Công Thương,moit.gov.vn,pending,first_party_identity_not_confirmed,https://moit.gov.vn/
+priority_initial,Cổng Thông tin điện tử Hà Nội,hanoi.gov.vn,pending,first_party_identity_not_confirmed,https://hanoi.gov.vn/
+priority_initial,Vinhomes,vinhomes.vn,pending,first_party_identity_not_confirmed,https://vinhomes.vn/vi
+priority_initial,Tập đoàn Đất Xanh,www.datxanh.vn,pending,first_party_identity_not_confirmed,https://www.datxanh.vn/
+priority_initial,Batdongsan.com.vn,batdongsan.com.vn,pending,first_party_identity_not_confirmed,https://batdongsan.com.vn/
+priority_initial,Shinhan Bank Việt Nam,shinhan.com.vn,pending,first_party_identity_not_confirmed,https://shinhan.com.vn/
+priority_initial,UOB Việt Nam,www.uob.com.vn,pending,first_party_identity_not_confirmed,https://www.uob.com.vn/
+priority_vn_more,Cục Hàng không Việt Nam,caav.gov.vn,pending,first_party_identity_not_confirmed,https://caav.gov.vn/
+priority_vn_more,Tổng công ty Đường sắt Việt Nam,www.vr.com.vn,pending,first_party_identity_not_confirmed,https://www.vr.com.vn/
+priority_vn_more,Tổng công ty Quản lý bay Việt Nam,vatm.vn,pending,first_party_identity_not_confirmed,https://vatm.vn/
+priority_vn_more,Tổng công ty Cảng hàng không Việt Nam,www.vietnamairport.vn,pending,first_party_identity_not_confirmed,https://www.vietnamairport.vn/
+priority_vn_more,Cảng hàng không quốc tế Nội Bài,noibaiairport.vn,pending,first_party_identity_not_confirmed,https://noibaiairport.vn/vi/flights/airlines
+priority_vn_more,NetNam,www.netnam.vn,pending,first_party_identity_not_confirmed,https://www.netnam.vn/
+priority_vn_more,Truyền hình cáp SCTV,sctv.com.vn,pending,first_party_identity_not_confirmed,https://sctv.com.vn/
+priority_vn_more,Viettel Store,viettelstore.vn,pending,first_party_identity_not_confirmed,https://viettelstore.vn/
+priority_vn_more,VNPT Money,vnptmoney.vn,pending,first_party_identity_not_confirmed,https://vnptmoney.vn/
+priority_vn_more,Tạp chí Tri thức Znews,znews.vn,pending,first_party_identity_not_confirmed,https://znews.vn/
+priority_vn_more,Báo Pháp Luật TP.HCM,plo.vn,pending,first_party_identity_not_confirmed,https://plo.vn/
+priority_vn_more,Báo Sài Gòn Giải Phóng,www.sggp.org.vn,pending,first_party_identity_not_confirmed,https://www.sggp.org.vn/
+priority_vn_more,VietnamPlus,www.vietnamplus.vn,pending,first_party_identity_not_confirmed,https://www.vietnamplus.vn/
+priority_vn_more,Đài Truyền hình Thành phố Hồ Chí Minh,www.htv.com.vn,pending,first_party_identity_not_confirmed,https://www.htv.com.vn/
+priority_vn_more,Tổng công ty Điện lực miền Trung,cpc.vn,pending,first_party_identity_not_confirmed,https://cpc.vn/
+priority_vn_more,Cấp nước Chợ Lớn,capnuoccholon.com.vn,pending,first_party_identity_not_confirmed,https://capnuoccholon.com.vn/
+priority_vn_more,Tập đoàn Xăng dầu Việt Nam,www.petrolimex.com.vn,pending,first_party_identity_not_confirmed,https://www.petrolimex.com.vn/
+priority_vn_more,Tổng công ty Dầu Việt Nam,www.pvoil.com.vn,pending,first_party_identity_not_confirmed,https://www.pvoil.com.vn/
+priority_vn_more,Công ty Cổ phần Đầu tư và Thương mại TNG,tng.vn,pending,first_party_identity_not_confirmed,https://tng.vn/
+priority_vn_more,Tổng công ty May Việt Tiến,www.viettien.com.vn,pending,first_party_identity_not_confirmed,https://www.viettien.com.vn/
+priority_vn_more,UNIQLO Việt Nam,www.uniqlo.com,pending,first_party_identity_not_confirmed,https://www.uniqlo.com/vn/vi/
+priority_vn_more,Tổng công ty Thương mại Hà Nội Hapro,haprogroup.vn,pending,first_party_identity_not_confirmed,https://haprogroup.vn/
+priority_vn_more,LOTTE Mart Việt Nam,lottemart.vn,pending,first_party_identity_not_confirmed,https://lottemart.vn/
+priority_vn_more,GO! Việt Nam,go-vietnam.vn,pending,first_party_identity_not_confirmed,https://go-vietnam.vn/
+priority_vn_more,LOTTE Cinema Việt Nam,www.lottecinemavn.com,pending,first_party_identity_not_confirmed,https://www.lottecinemavn.com/
+priority_vn_more,CGV Việt Nam,www.cgv.vn,pending,first_party_identity_not_confirmed,https://www.cgv.vn/
+priority_vn_more,Galaxy Cinema,www.galaxycine.vn,pending,first_party_identity_not_confirmed,https://www.galaxycine.vn/
+priority_vn_more,VieON,vieon.vn,pending,first_party_identity_not_confirmed,https://vieon.vn/
+priority_vn_more,Cục Du lịch Quốc gia Việt Nam,vietnamtourism.gov.vn,pending,first_party_identity_not_confirmed,https://vietnamtourism.gov.vn/
+priority_vn_more,Vietourist,vietourist.com,pending,first_party_identity_not_confirmed,https://vietourist.com/
+priority_vn_more,Viettel Logistics,viettel-logistics.vn,pending,first_party_identity_not_confirmed,https://viettel-logistics.vn/
+priority_vn_more,Acecook Việt Nam,acecookvietnam.vn,pending,first_party_identity_not_confirmed,https://acecookvietnam.vn/
+priority_vn_more,Orion Việt Nam,orion.vn,pending,first_party_identity_not_confirmed,https://orion.vn/
+priority_vn_more,McDonald's Việt Nam,mcdonalds.vn,pending,first_party_identity_not_confirmed,https://mcdonalds.vn/
+priority_vn_more,Unilever Việt Nam,www.unilever.com.vn,pending,first_party_identity_not_confirmed,https://www.unilever.com.vn/
+priority_vn_more,L’Oréal Việt Nam,www.loreal.com,pending,first_party_identity_not_confirmed,https://www.loreal.com/vi-vn/vietnam/
+priority_vn_more,Guardian Việt Nam,www.guardian.com.vn,pending,first_party_identity_not_confirmed,https://www.guardian.com.vn/
+priority_vn_more,Watsons Việt Nam,www.watsons.vn,pending,first_party_identity_not_confirmed,https://www.watsons.vn/
+priority_vn_more,LG Việt Nam,www.lg.com,pending,first_party_identity_not_confirmed,https://www.lg.com/vn/
+priority_vn_more,Sony Việt Nam,www.sony.com.vn,pending,first_party_identity_not_confirmed,https://www.sony.com.vn/
+priority_vn_more,Panasonic Việt Nam,www.panasonic.com,pending,first_party_identity_not_confirmed,https://www.panasonic.com/vn/
+priority_vn_more,Hyundai Thành Công,hyundai.thanhcong.vn,pending,first_party_identity_not_confirmed,https://hyundai.thanhcong.vn/
+priority_vn_more,Mazda Việt Nam,www.mazdamotors.vn,pending,first_party_identity_not_confirmed,https://www.mazdamotors.vn/
+priority_vn_more,Mercedes-Benz Việt Nam,www.mercedes-benz.com.vn,pending,first_party_identity_not_confirmed,https://www.mercedes-benz.com.vn/
+priority_vn_more,Ford Việt Nam,www.ford.com.vn,pending,first_party_identity_not_confirmed,https://www.ford.com.vn/
+priority_vn_more,TopCV,www.topcv.vn,pending,first_party_identity_not_confirmed,https://www.topcv.vn/gioi-thieu
+priority_vn_more,JobStreet Việt Nam,www.jobstreet.vn,pending,first_party_identity_not_confirmed,https://www.jobstreet.vn/
+priority_vn_more,Tìm Việc Nhanh,timviecnhanh.com,pending,first_party_identity_not_confirmed,https://timviecnhanh.com/
+priority_vn_more,Bảo hiểm BIDV,bic.vn,pending,first_party_identity_not_confirmed,https://bic.vn/
+priority_vn_more,Liberty Insurance Việt Nam,www.libertyinsurance.com.vn,pending,first_party_identity_not_confirmed,https://www.libertyinsurance.com.vn/
+priority_vn_more,MB Ageas Life,www.mbageas.life,pending,first_party_identity_not_confirmed,https://www.mbageas.life/
+priority_vn_more,Chứng khoán VPS,www.vps.com.vn,pending,first_party_identity_not_confirmed,https://www.vps.com.vn/
+priority_vn_more,Chứng khoán Sài Gòn - Hà Nội,www.shs.com.vn,pending,first_party_identity_not_confirmed,https://www.shs.com.vn/
+priority_vn_more,Trường Đại học Công nghệ - ĐHQGHN,uet.vnu.edu.vn,pending,first_party_identity_not_confirmed,https://uet.vnu.edu.vn/
+priority_vn_more,Trường Đại học Kinh tế - Luật,www.uel.edu.vn,pending,first_party_identity_not_confirmed,https://www.uel.edu.vn/
+priority_vn_more,Trường Đại học Đà Lạt,dlu.edu.vn,pending,first_party_identity_not_confirmed,https://dlu.edu.vn/
+priority_vn_more,Trường Đại học Giao thông vận tải,www.utc.edu.vn,pending,first_party_identity_not_confirmed,https://www.utc.edu.vn/
+priority_vn_more,Đại học Fulbright Việt Nam,fulbright.edu.vn,pending,first_party_identity_not_confirmed,https://fulbright.edu.vn/vi/
+govern,Văn phòng Chính phủ,vpcp.chinhphu.vn,pending,host_unresolved_shared_or_subdomain,https://chinhphu.vn/thong-tin-bo-nganh?gmist=3660
+vbma,BNP Paribas Vietnam,vietnam.bnpparibas.com,pending,host_unresolved_shared_or_subdomain,https://vbma.org.vn/en/membership/associate
+noibai,AirAsia,www.airasia.com,pending,multiple_distinct_entities_share_root,https://noibaiairport.vn/vi/flights/airlines
+noibai,Juneyao Airlines,global.juneyaoair.com,pending,host_unresolved_shared_or_subdomain,https://noibaiairport.vn/vi/flights/airlines
+noibai,Philippines AirAsia,www.airasia.com,pending,multiple_distinct_entities_share_root,https://noibaiairport.vn/vi/flights/airlines
+noibai,Shenzhen Airlines,global.shenzhenair.com,pending,host_unresolved_shared_or_subdomain,https://noibaiairport.vn/vi/flights/airlines
+noibai,Sichuan Airlines,global.sichuanair.com,pending,host_unresolved_shared_or_subdomain,https://noibaiairport.vn/vi/flights/airlines
+noibai,Singapore Airlines,www.singaporeair.com,pending,host_unresolved_shared_or_subdomain,https://noibaiairport.vn/vi/flights/airlines
+noibai,Spring Airlines,en.ch.com,pending,host_unresolved_shared_or_subdomain,https://noibaiairport.vn/vi/flights/airlines
+noibai,Thai AirAsia,www.airasia.com,pending,multiple_distinct_entities_share_root,https://noibaiairport.vn/vi/flights/airlines
+vinasa,Công ty TNHH Phần mềm FPT,www.fpt-software.com,pending,related_legacy_root_needs_current_confirmation,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Công ty TNHH Giải pháp Ký số E-SEAL,www.nexdata.vn,pending,multiple_distinct_entities_share_root,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Công ty Cổ phần Công nghệ NEXDATA,www.nexdata.vn,pending,multiple_distinct_entities_share_root,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Công ty TNHH STEP IT Academy Việt Nam,vn.itstep.org,pending,host_unresolved_shared_or_subdomain,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Công ty TNHH FPT Digital,digital.fpt.com.vn,pending,host_unresolved_shared_or_subdomain,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Viện Nghiên cứu Giải pháp Chuyển đổi số,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Công ty Cổ phần Điện tử và Tự động Hóa Intech,iea.intechgroup.vn,pending,host_unresolved_shared_or_subdomain,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vinasa,Công ty TNHH Giải pháp Toàn Cầu IIJ Việt Nam,vn.iij.com,pending,host_unresolved_shared_or_subdomain,https://www.vinasa.org.vn/vinasa/4/3074/4281/hoi-vien-ha-noi/
+vla,CÔNG TY TNHH JDL VN,eng.jdlvk.com,pending,host_unresolved_shared_or_subdomain,https://vla.com.vn/danh-ba-hoi-vien/page/2/#member-id-12918
+vla,CÔNG TY TNHH HGJ LOGISTICS TECHNOLOGY VIETNAM,global.hgj.com,pending,host_unresolved_shared_or_subdomain,https://vla.com.vn/danh-ba-hoi-vien/page/7/#member-id-11206
+vla,CÔNG TY TNHH DUCKBILL DIGITAL SUPPLY CHAIN MANAGEMENT HỒ CHÍ MINH,en.duckbillscm.com,pending,host_unresolved_shared_or_subdomain,https://vla.com.vn/danh-ba-hoi-vien/page/7/#member-id-11000
+vla,CÔNG TY TNHH CÔNG TY ĐẠI LÝ VẬN TẢI QUỐC TẾ PHÍA BẮC,vosa.com.vn,pending,multiple_distinct_entities_share_root,https://vla.com.vn/danh-ba-hoi-vien/page/11/#member-id-8808
+vla,CTY TNHH RHENUS AIR & OCEAN VIỆT NAM,www.rhenus.com,pending,multiple_distinct_entities_share_root,https://vla.com.vn/danh-ba-hoi-vien/page/23/#member-id-1886
+vla,CTY CP ĐẠI LÝ HÀNG HẢI VIỆT NAM (VOSA),www.vosa.com.vn,pending,multiple_distinct_entities_share_root,https://vla.com.vn/danh-ba-hoi-vien/page/27/#member-id-1518
+vla,CTY TNHH GIAO NHẬN RHENUS VIỆT NAM,www.rhenus.com,pending,multiple_distinct_entities_share_root,https://vla.com.vn/danh-ba-hoi-vien/page/30/#member-id-1226
+moh,Bệnh viện đa khoa TP. Vinh – tỉnh Nghệ An,benhvienthanhphovinh.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/
+moh,Bệnh viện đa khoa thành phố Vinh cơ sở 2,benhvienthanhphovinh.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=3
+moh,Bệnh viện đa khoa Xuyên Á chi nhánh tỉnh Vĩnh Long,bvxuyena.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=6
+moh,Bệnh viện đa khoa Xuyên Á chi nhánh TP. Hồ Chí Minh,bvxuyena.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=6
+moh,Bệnh viện Hữu nghị Lạc Việt – tỉnh Vĩnh Phúc,benhvienlacviet.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=7
+moh,Bệnh viện tai mũi họng Miền Trung,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=8
+moh,Bệnh viện Đại học Y Dược trực thuộc Đại học Quốc gia Hà Nội,benhviendhyd.vnu.edu.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=11
+moh,Bệnh viện đa khoa Hợp Lực - tỉnh Thanh Hóa,th.hopluchospital.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=15
+moh,Bệnh viện đa khoa Quốc tế Hợp Lực - tỉnh Thanh Hóa,ns.hopluchospital.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=16
+moh,Bệnh viện Quốc tế Thái Nguyên - cơ sở TP. Thái Nguyên,tnh.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=17
+moh,Bệnh viện Phổi Bắc Ninh,syt.bacninh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=17
+moh,Bệnh viện Phổi Thái Nguyên,benhvienlaovabenhphoi.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=17
+moh,Trung tâm y tế huyện Phú Tân - tỉnh An Giang,phutan.bvdkphutanag.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=18
+moh,Bệnh viện Mắt Sài Gòn - Vinh,www.matsaigon.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=19
+moh,Trung tâm y tế huyện Đồng Hỷ - tỉnh Thái Nguyên,ttytdonghy.vnptthainguyen.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=19
+moh,Bệnh viện Gang Thép - tỉnh Thái Nguyên,bvgt.soyte.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=19
+moh,Trung tâm y tế thị xã Bình Minh - tỉnh Vĩnh Long,ttytbinhminh.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=19
+moh,Bệnh viện TNH Phổ Yên - tỉnh Thái Nguyên,tnh.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=20
+moh,Bệnh viện đa khoa huyện Thọ Xuân - tỉnh Thanh Hóa,bvthoxuan.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=20
+moh,Bệnh viện đa khoa huyện Thiệu Hóa - tỉnh Thanh Hóa,bvthieuhoa.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=20
+moh,Trung tâm y tế huyện Mang thít - tỉnh Vĩnh Long,ttyt-mangthit.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=21
+moh,Bệnh viện Tâm thần tỉnh Vĩnh Long,bvtamthan.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=22
+moh,Bệnh viện đa khoa khu vực Ngọc Lặc - tỉnh Thanh Hóa,bvngoclac.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=22
+moh,Bệnh viện đa khoa huyện Yên Định - tỉnh Thanh Hóa,bvyendinh.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=22
+moh,Bệnh viện đa khoa khu vực kết hợp quân dân y Vĩnh Long,bvqdy.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=22
+moh,Bệnh viện Chuyên khoa Mắt Vĩnh Long,bvckmat.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=23
+moh,Trung tâm y tế huyện Long Hồ,ttyt-longho.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=23
+moh,Bệnh viện đa khoa khu vực Hòa Phú,bvhoaphu.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=23
+moh,Bệnh viện TNH Việt Yên,tnh.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=23
+moh,Trung tâm y tế thành phố Vĩnh Long,ttyttpvl.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=24
+moh,Bệnh viện đa khoa Thành phố Vinh cơ sở 3,benhvienthanhphovinh.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=24
+moh,Trung tâm y tế Nguyễn Văn Thủ - huyện Vũng Liêm - tỉnh Vĩnh Long,ttytnguyenvanthu.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=24
+moh,Bệnh viện Mắt Thái Nguyên,bvmat.soyte.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=25
+moh,Trung tâm y tế huyện Trà Ôn,ttyttraon.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=26
+moh,Trung tâm y tế Bình Tân - tỉnh Vĩnh Long,ttytbinhtan.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=26
+moh,Bệnh viện đa khoa Anh Quất cơ sở 1,benhvienanhquat.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=28
+moh,Bệnh viện đa khoa Anh Quất cơ sở 2,benhvienanhquat.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=28
+moh,"Bệnh viện Trường Đại học Y Dược - Trường Đại học Y - Dược, Đại học Thái Nguyên",benhvien.tump.edu.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=29
+moh,Bệnh viện đa khoa Hoàng Việt,benhvienhoangviet.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=30
+moh,Trung tâm y tế Bạch Thông,ttytbachthong.backan.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=31
+moh,Bệnh viện đa khoa Mỹ Đức - Công ty CPBVĐK Mỹ Đức,myduchospital.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=32
+moh,Bệnh viện Mỹ Đức Phú Nhuận - Công ty CPBV Mỹ Đức Phú Nhuận,myduchospital.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=32
+moh,Bệnh viện đa khoa Hoằng Hóa - tỉnh Thanh Hóa,bvhoanghoa.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=32
+moh,Bệnh viện đa khoa khu vực Bố Trạch - tỉnh Quảng Trị,bvdakhoabotrach.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=32
+moh,Bệnh viện ngoại khoa 115 Nghệ An - Công ty cổ phần Bệnh viện 115,benhvien115.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=33
+moh,Bệnh viện đa khoa 115 - Công ty CP Bệnh viện 115,benhvien115.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=34
+moh,Trung tâm y tế Chợ Đồn - tỉnh Thái Nguyên,ttytchodon.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=34
+moh,Bệnh viện Giao thông Vĩnh phúc - cơ sở 1,benhviengiaothongvantai.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=35
+moh,Bệnh viện Giao thông Vĩnh Phúc - cơ sở 2,benhviengiaothongvantai.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=35
+moh,Trung tâm y tế Chợ Mới - tỉnh Thái Nguyên,ttytchomoi.backan.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=35
+moh,Trung tâm Y tế Pác Nặm - tỉnh Thái Nguyên,ttytpacnam.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=35
+moh,Phòng khám Đa khoa khu vực Sơn Trạch trực thuộc Bệnh viện Đa khoa khu vực Bố Trạch,bvdakhoabotrach.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=36
+moh,Trung tâm y tế Na Rì - tỉnh Thái Nguyên,ttytnari.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=36
+moh,Bệnh viện Đa khoa y dược cổ truyền - Phục hồi chức năng tỉnh Cao Bằng,bvyhct.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=37
+moh,Bệnh viện Công an tỉnh Cà Mau,congan.camau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=37
+moh,Bệnh viện Quân y 13,yte.viettel.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=38
+moh,Trung tâm y tế khu vực Mỹ Tho - tỉnh Đồng Tháp,ttyttpmt.soytetiengiang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=38
+moh,Bệnh viện Hà Quảng - tỉnh Cao Bằng,bvdkhaquang.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=38
+moh,Trung tâm y tế Thạch An - tỉnh Cao Bằng,ttytthachan.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=39
+moh,Bệnh viện Nhi tỉnh Gia Lai,benhviennhi.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=39
+moh,Bệnh viện Da liễu TP. Huế,bvdlieu.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=39
+moh,Bệnh viện Công an tỉnh Nghệ An,congan.nghean.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=39
+moh,Trung tâm y tế Bắc Kạn - tỉnh Thái Nguyên,ttytbackan.thainguyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=41
+moh,Bệnh viện đa khoa Như Xuân - tỉnh Thanh Hóa,bvnhuxuan.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=43
+moh,Trung tâm Y tế Hương Sơn - Cơ sở 2 - tỉnh Hà Tĩnh,benhvienhuongson.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=43
+moh,Bệnh viện TNCK mắt quốc tế DND Hải Dương,haiduong.matquocte.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=43
+moh,Trung tâm y tế Hương Sơn - tỉnh Hà Tĩnh,benhvienhuongson.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=44
+moh,Bệnh viện Quân y 91 - Quân khu 1,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=45
+moh,Bệnh viện Quân y 5 - Quân đoàn 12,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=45
+moh,Bệnh viện Mắt Sài Gòn - Sông Hàn,www.matsaigon.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=46
+moh,Trung tâm y tế Sông Hinh - tỉnh Đắk Lắk,ttytsonghinh.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=46
+moh,Bệnh viện đa khoa Thị xã Kỳ Anh - tỉnh Hà Tĩnh,bvdkkyanh.hatinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=47
+moh,Trung tâm y tế Ea Kar - tỉnh Đắk Lắk,yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=47
+moh,Bệnh viện đa khoa Tân Định - TP. Hồ Chí Minh,cs1.bvq1.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=47
+moh,Bệnh viện đa khoa Phú Nhuận - TP. Hồ Chí Minh,bvquanphunhuan.medinet.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=48
+moh,Bệnh viện đa khoa Hồng Ngọc Phúc Trường Minh,hongngochospital.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=49
+moh,Bệnh viện Da liễu tỉnh Đắk Lắk,bvdalieu.soyte.phuyen.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=51
+moh,Trung tâm y tế Nguyên Bình - tỉnh Cao Bằng,ttytnguyenbinh.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=53
+moh,Bệnh viện đa khoa khu vực 333 - tỉnh Đắk Lắk,bvdkkv333.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=57
+moh,Trung tâm Y tế Ea H’Leo - tỉnh Đắk Lắk,yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=57
+moh,Bệnh viện đa khoa Vĩnh Long,bvdktinh.vinhlong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=58
+moh,Bệnh viện Trường Đại học Trà Vinh,tvuhospital.tvu.edu.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=58
+moh,Trung tâm y tế Đồ Sơn - TP. Hải Phòng,ttytdoson.smeg6.vnptweb.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=58
+moh,Bệnh viện đa khoa Phương Nam - TP. Hồ Chí Minh,phuongchau.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=59
+moh,Bệnh viện đa khoa Bình Phú - TP. Hồ Chí Minh,bvquan6.medinet.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=62
+moh,Bệnh viện đa khoa Bình Thạnh - TP. Hồ Chí MInh,bvbinhthanh.medinet.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=62
+moh,Bệnh viện Hữu nghị Lạc Việt Phúc Yên - tỉnh Phú Thọ,benhvienlacviet.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=63
+moh,BỆNH VIỆN QUỐC TẾ CTCH SÀI GÒN,www.saigonitohospital.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=63
+moh,BỆNH VIỆN SÀI GÒN ITO PHÚ NHUẬN,www.saigonitohospital.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=63
+moh,Trung tâm y tế khu vực Cẩm Lệ - TP. Đà Nẵng,trungtamytecamle.danang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=65
+moh,Trung tâm Y tế Krông Pắc - tỉnh Đắk Lắk,ttytkrongpak.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=67
+moh,Bệnh viện đa khoa Chánh Hưng - TP. Hồ Chí Minh,bvquan8.medinet.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=67
+moh,Bệnh viện Phục hồi chức năng tỉnh Đắk Lắk,benhvienphcn.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=68
+moh,Bệnh viện Bến Sắn - TP. Hồ Chí Minh,khudieutriphong.medinet.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=69
+moh,Trung tâm Y tế Cẩm Xuyên - tỉnh Hà Tĩnh,ttytcamxuyen.hatinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=71
+moh,Bệnh viện Lao và bệnh Phổi tỉnh Quảng Ngãi,bvlaovabenhphoi.quangngai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=72
+moh,Bệnh viện Công an TP. Hồ Chí Minh,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=72
+moh,Trung tâm y tế Buôn Đôn - tỉnh Đắk Lắk,ttytbuondon.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=73
+moh,Trung tâm Y tế Krông Búk - tỉnh Đắk Lắk,yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=73
+moh,Trung tâm Y tế Tân Uyên - tỉnh Lai Châu,soyte.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=74
+moh,Bệnh viện Phổi Phạm Hữu Chí - TP. Hồ Chí Minh,benhvienphoiphamhuuchi.soyte.baria-vungtau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=74
+moh,Bệnh viện Than - Khoáng sản - Tập đoàn Công nghiệp Than - Khoáng sản Việt Nam,suckhoe.vinacomin.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=75
+moh,Bệnh viện đa khoa tỉnh Quảng Ngãi,bvdk.quangngai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=76
+moh,Trung tâm y tế Mường Ảng - tỉnh Điện Biên,ttytma.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=76
+moh,Bệnh viện đa khoa huyện Cẩm Thủy,bvcamthuy.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=77
+moh,Trung tâm y tế Krông Bông - tỉnh Đắk Lắk,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=77
+moh,Bệnh viện Phục hồi chức năng Hà Tĩnh,bvphcn.hatinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=78
+moh,Trung tâm y tế Gò Quao - tỉnh An Giang,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=78
+moh,Trung tâm Y tế Cư M’gar - tỉnh Đăk Lăk.,ttytcumgar.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=78
+moh,Bệnh viện 7/5 - Công an tỉnh Điện Biên,congan.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=79
+moh,Trung tâm Y tế Mường Tè - tỉnh Lai Châu,soyte.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=81
+moh,Bệnh viện Mắt Thanh Hóa,bvmat.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=81
+moh,Bệnh viện Đa khoa khu vực Gò Công - tỉnh Đồng Tháp,bvdkgocong.soytetiengiang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=81
+moh,Bệnh viện đa khoa tỉnh Điện Biên,bvdk.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=82
+moh,Bệnh viện Phổi tỉnh Điện Biên,http,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=82
+moh,Trung tâm Y tế Điện Biên Phủ - tỉnh Điện Biên,ttytdbp.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=82
+moh,Bệnh viện Mắt Đắk Lắk - tỉnh Đắk Lắk,yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=83
+moh,Bệnh viện Phục hồi chức năng Thành phố Huế,bvphcn.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=83
+moh,Trung tâm y tế khu vực Triệu Phong - Cơ sở 1,trieuphong-hospital.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=83
+moh,Trung tâm Y tế khu vực Triệu Phong - Cơ sở 2,trieuphong-hospital.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=84
+moh,Trung tâm y tế Phong Thổ tỉnh Lai Châu,soyte.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=84
+moh,Trung tâm y tế khu vực Đakrông - tỉnh Quảng Trị (cơ sở 1),ttytdakrong.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=84
+moh,Bệnh viện đa khoa Nông Cống - tỉnh Thanh Hóa,bvnongcong.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=85
+moh,Trung tâm y tế khu vực Đakrông - tỉnh Quảng Trị (cơ sở 2),ttytdakrong.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=86
+moh,Bệnh viện đa khoa khu vực Tháp Mười,bvtm.dongthap.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=86
+moh,Bệnh viện Phổi Hà Tĩnh,benhvienphoi.hatinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=86
+moh,Bệnh viện Phổi TP. Huế,bvphoi.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=87
+moh,Bệnh viện Phổi tỉnh Lai Châu,soyte.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=88
+moh,Trung tâm y tế Sìn Hồ - tỉnh Lai Châu,soyte.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=88
+moh,Bệnh viện Da liễu Khánh Hòa,benhviendalieu.khanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=88
+moh,Trung tâm y tế Tam Đường - tỉnh Lai Châu,ttyt.tamduong.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=88
+moh,Bệnh viện đa khoa Ngô Quyền - TP. Hải Phòng,bvdkngoquyen.smeg6.vnptweb.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=89
+moh,Bệnh viện Phục hồi chức năng tỉnh Sơn La,bvphcn.sonla.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=89
+moh,Bệnh viện đa khoa Đông Sơn - tỉnh Thanh Hóa,bvdongson.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=89
+moh,Trung tâm y tế khu vực Thới Bình - tỉnh Cà Mau,benhviendakhoahuyenthoibinh.jimdofree.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=90
+moh,Bệnh viện đa khoa tỉnh Sơn La (02 cơ sở),,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=90
+moh,Bệnh viện Y học cổ truyền Phú Yên - tỉnh Đắk Lắk,bvyhctpy.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=90
+moh,Bệnh viện đa khoa Buôn Ma Thuột - tỉnh Đắk Lắk,www.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=91
+moh,Trung tâm y tế Vĩnh Thạnh - tỉnh Gia Lai,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=91
+moh,Trung tâm Y tế Lai Châu - tỉnh Lai Châu,ttyt.thanhpho.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=91
+moh,Trung tâm Y tế Cư Kuin - tỉnh Đắk Lắk,ttytcukuin.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=91
+moh,Trung tâm y tế Chư Prông - tỉnh Gia Lai,ttytchuprong.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=92
+moh,Bệnh viện đa khoa khu vực Ninh Hòa - tỉnh Khánh Hòa,benhvienninhhoa.khanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=92
+moh,Bệnh viện Nội tiết tỉnh Sơn La,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=92
+moh,Bệnh viện Y dược cổ truyền An Khang - Công ty TNHH PKĐK Như Thanh Khánh Hoàng,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=93
+moh,Bệnh viện Công an TP. Hà Nội,congan.hanoi.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=94
+moh,Bệnh viện số 1 - Công an tỉnh Ninh Bình,congan.ninhbinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=94
+moh,Bệnh viện số 2 - Công an tỉnh Ninh Bình,congan.ninhbinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=94
+moh,Trung tâm y tế Điện Biên Đông - tỉnh Điện Biên,ttytdbd.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=94
+moh,Trung tâm y tế Krông Năng - tỉnh Đắk Lắk,ttytkrongnang.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=95
+moh,Trung tâm y tế Lắk - tỉnh Đắk Lắk,ttytlak.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=95
+moh,Bệnh viện Tâm thần tỉnh Điện Biên,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=96
+moh,Trung tâm Y tế An Khê - tỉnh Gia Lai,ttytankhe.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=96
+moh,"Trung tâm y tế Mang Yang, Tỉnh Gia Lai",ttytmangyang.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=96
+moh,Trung tâm Y tế Chư Păh - tỉnh Gia Lai,ttytchupah.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=96
+moh,Bệnh viện Y học cổ truyền và phục hồi chức năng Ninh Thuận,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=97
+moh,Trung tâm Y tế Đak Đoa - tỉnh Gia Lai,ttytdakdoa.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=97
+moh,Trung tâm y tế Phú Thiện - tỉnh Gia Lai,ttytphuthien.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=97
+moh,Bệnh viện Đa khoa khu vực Cam Ranh - tỉnh Khánh Hòa,benhviencamranh.khanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=98
+moh,Trung tâm y tế Cam Lâm - tỉnh Khánh Hòa,ytecamlam.syt.khanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=98
+moh,Trung tâm y tế Vụ Bản - tỉnh Ninh Bình,trungtamytevuban.ninhbinh.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=100
+moh,Bệnh viện đa khoa Xuyên Á - Tây Ninh,bvxuyena.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=100
+moh,Trung tâm y tế khu vực Đam Rông - tỉnh Lâm Đồng,ttytdamrong.lamdong.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=101
+moh,Bệnh viện Tĩnh Túc - tỉnh Cao Bằng,bvtinhtuc.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=101
+moh,Trung tâm Y tế Kông Chro - tỉnh Gia Lai,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=101
+moh,Bệnh viện Thuận Mỹ TDM - Tập đoàn y khoa Hoàn Mỹ,thuanmy.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=102
+moh,Trung tâm Y tế Đak Pơ - tỉnh Gia Lai,ttytdakpo.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=102
+moh,Trung tâm y tế IA PA - tỉnh Gia Lai,ttytiapa.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=102
+moh,Trung tâm Y tế Ia GRai - tỉnh Gia Lai,ttytiagrai.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=102
+moh,Trung tâm Y tế Chư Pưh - tỉnh Gia Lai,ttytchupuh.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=102
+moh,Bệnh viện Thuận Mỹ ITO Đồng Nai - Tập đoàn Y Khoa Hoàn Mỹ,thuanmy.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=103
+moh,Trung tâm y tế Ayun Pa - tỉnh Gia Lai,ttytayunpa.gialai.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=103
+moh,Trung tâm y tế khu vực Chợ Gạo - tỉnh Đồng Tháp,ttytchogao.soytetiengiang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=103
+moh,"Trung tâm Y tế Nậm Nhùn, tỉnh Lai Châu",soyte.laichau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=103
+moh,Bệnh viện Y học cổ truyền và Phục hồi chức năng Khánh Hòa,bvyhct-phcn.khanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=104
+moh,Trung tâm y tế Hà Tiên - tỉnh An Giang,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=105
+moh,Bệnh viện đa khoa Hòa Bình - Công ty CP Bệnh viện đa khoa Hòa Bình,bvdkhoabinh.com,pending,same_entity_other_root_needs_review,https://benhandientu.moh.gov.vn/?page=105
+moh,Bệnh viện đa khoa An Việt - tỉnh Thanh Hóa,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=106
+moh,Bệnh viện đa khoa Hồng Ngọc - Công ty TNHH Bệnh viện Hồng Ngọc,hongngochospital.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=106
+moh,Bệnh viện đa khoa cao su Chư Prông - Chi nhánh Công ty TNHH MTV Cao su Chư Prông,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=106
+moh,Bệnh viện đa khoa tỉnh Cao Bằng,benhvientinh.caobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=107
+moh,Bệnh viện Y học cổ truyền Thành phố Huế,bvyhct.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=107
+moh,Trung tâm Y tế khu vực Tuy Đức - tỉnh Lâm Đồng,yte.viettel.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=108
+moh,Trung tâm y tế khu vực Thuận Nam - tỉnh Khánh Hòa,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=108
+moh,Bệnh Viện Quốc tế Phương Châu Sóc Trăng,phuongchau.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=109
+moh,Bệnh viện Mắt Huế,bvmat.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=110
+moh,Bệnh viện Quảng Uyên - tỉnh Cao Bằng,bvquanguyen.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=110
+moh,Bệnh viện Răng Hàm Mặt Huế - TP. Huế,bvrhm.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=110
+moh,Trung tâm y tế Phú Vang - TP. Huế,bvpvang.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=110
+moh,Trung tâm y tế Hương Trà - TP. Huế,bvhtra.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế Phong Điền - TP. Huế,bvpdien.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế Quảng Điền - TP. Huế,bvqdien.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế A Lưới - TP. Huế,bvaluoi.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Bệnh viện Tâm thần TP. Huế,bvtthan.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế Phú Xuân - TP Huế,bvpxuan.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế Hương Thủy -TP. Huế,bvhthuy.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế Phú lộc - TP. Huế,bvploc.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=111
+moh,Trung tâm y tế Thuận Hóa - TP. Huế,bvthoa.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=112
+moh,Bệnh viện đa khoa Nga Sơn - tỉnh Thanh Hóa,bvngason.ytethanhhoa.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=112
+moh,Bệnh viện đa khoa Bình Điền - TP. Huế,bvbdien.hue.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=112
+moh,Bệnh viện Trùng Khánh - tỉnh Cao Bằng,bvtrungkhanh.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=113
+moh,Trung tâm y tế khu vực Nông Sơn - TP. Đà Nẵng,trungtamyte.nongson.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=113
+moh,Bệnh viện Công An tỉnh Tuyên Quang,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=113
+moh,Bệnh viện đa khoa Gia Định - TP. Hồ Chí Minh,,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=113
+moh,Bệnh viện Phổi tỉnh Đắk Lắk,yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=115
+moh,Trung tâm Y tế Dương Kinh - TP. Hải Phòng,ttytduongkinh.smeg6.vnptweb.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=115
+moh,Trung tâm y tế Ea Súp - tỉnh Đắk Lắk,ttyteasup.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=115
+moh,Bệnh viện Tâm thần - Tỉnh Đắk Lắk,bvtt.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=115
+moh,Trung tâm y tế Nghĩa Hưng - tỉnh Ninh Bình (cơ sở xã Nghĩa Hưng),ttytenghiahungnd.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=117
+moh,Trung tâm y tế Nghĩa Hưng - tỉnh Ninh Bình (cơ sở xã Quỹ Nhất),ttytenghiahungnd.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=117
+moh,Bệnh viện Mắt Hải Hưng - Công ty Cổ phần Bệnh viện Mắt Hải Hưng,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=117
+moh,Trung tâm y tế Hòa An tỉnh Cao Bằng,ttythoaan.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=118
+moh,Trung tâm Y tế Cao Bằng - tỉnh Cao Bằng,ttytcaobang.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=118
+moh,Bệnh viện đa khoa Thanh Vũ Medic - tỉnh Cà Mau,benhvienthanhvubaclieu.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=119
+moh,Bệnh viện đa khoa Thanh Vũ Medic Bạc Liêu - tỉnh Cà Mau,benhvienthanhvubaclieu.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=119
+moh,Trung tâm y tế Nam Định (cơ sở 1) - tỉnh Ninh Bình,trungtamytethanhphonamdinh.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=119
+moh,Bệnh viện đa khoa Xuyên Á Đức Hòa - tỉnh Tây Ninh,bvxuyena.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=120
+moh,"Trung tâm y tế Nam Định - cơ sở 2, tỉnh Ninh Bình",trungtamytethanhphonamdinh.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=120
+moh,Trung tâm y tế Bảo Lạc - tỉnh Cao Bằng,ttytbaolac.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=120
+moh,Trung tâm y tế Bảo Lâm - tỉnh Cao Bằng,ttytbaolam.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=121
+moh,Trung tâm y tế Hạ Lang - tỉnh Cao Bằng,ttythalang.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=121
+moh,Trung tâm y tế Quảng Hoà - tỉnh Cao Bằng,ttytquanghoa.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=121
+moh,Trung tâm Y tế Thông Nông - tỉnh Cao Bằng,ttythaquang.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=121
+moh,Trung tâm y tế Trùng Khánh - tỉnh Cao Bằng,ttyttrungkhanh.soytecaobang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=121
+moh,Bệnh viện đa khoa Hà Nội - Cao Bằng,bvdkhncbg.caobang.vnptweb.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=122
+moh,Bệnh viện Đa khoa Phương Châu Sa Đéc,phuongchau.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=122
+moh,Trung tâm y tế Tủa Chùa - tỉnh Điện Biên,ttyttc.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=122
+moh,Trung tâm y tế Nậm Pồ - tỉnh Điện Biên,ttytnp.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=122
+moh,Trung tâm y tế Thanh An - tỉnh Điện Biên,ttythdb.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=123
+moh,Trung tâm y tế Mường Nhé - tỉnh Điện Biên,ttytmn.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=123
+moh,Trung tâm Y tế Tuần Giáo - tỉnh Điện Biên,ttyttg.syt.dienbien.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=123
+moh,Bệnh viện Quốc tế Phương Châu,phuongchau.com,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=123
+moh,Bệnh viện đa khoa Đồng Tháp - tỉnh Đồng Tháp,bvdkdt.dongthap.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=124
+moh,Trung tâm y tế khu vực Gò Công Tây - tỉnh Đồng Tháp,ttytgocongtay.soytetiengiang.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=124
+moh,Bệnh viện số 1 Công an tỉnh Đắk Lắk,congan.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=125
+moh,Bệnh viện Y học cổ truyền Bà Rịa - Vũng Tàu - TP. Hồ Chí Minh,benhvienyhoccotruyen-soyte.baria-vungtau.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=125
+moh,Phòng khám đa hoa Phúc Sơn - Công ty CP y tế Phúc Sơn,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=125
+moh,Trung tâm y tế Krông Ana - tỉnh Đắk Lắk,ttytkrongana.yte.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=125
+moh,Trung tâm y tế khu vực Dương Minh Châu - tỉnh Tây Ninh,ttytduongminhchau.ytetayninh.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Bệnh viện Mắt Thanh An - tỉnh Thanh Hóa,www.facebook.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Bệnh viện số 2 - Công an tỉnh Đắk Lắk,congan.daklak.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Bệnh viện Mắt quốc tế Việt - Nga Hạ Long,halong.matvietnga.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Bệnh viện Mắt Quốc tế Việt - Nga Hải Phòng,haiphong.matvietnga.com,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Bệnh viện Đa khoa Long An - tỉnh Tây Ninh,bvdkla.longan.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Bệnh viện Công an tỉnh Phú Thọ,congan.phutho.gov.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=127
+moh,Phòng khám đa khoa Hoàng Việt,benhvienhoangviet.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=128
+moh,Bệnh viện TNH Lạng Sơn,tnh.com.vn,pending,multiple_distinct_entities_share_root,https://benhandientu.moh.gov.vn/?page=128
+moh,Trung tâm y tế khu vực Tân Phước - tỉnh Đồng Tháp,ttyttanphuoc.vnpttiengiang.vn,pending,host_unresolved_shared_or_subdomain,https://benhandientu.moh.gov.vn/?page=128
+vnba,Ngân hàng Công Thương Trung Quốc (ICBC) - Chi nhánh Hà Nội,hanoi.icbc.com.cn,pending,host_unresolved_shared_or_subdomain,https://vnba.org.vn/vi/vnba/member/ngan-hang-cong-thuong-trung-quoc--icbc--chi-nhanh-ha-noi-243.htm
+vnba,Ngân hàng MUFG - Chi nhánh Hà Nội (MUFG Bank Hà Nội),www.bk.mufg.jp,pending,host_unresolved_shared_or_subdomain,https://vnba.org.vn/vi/vnba/member/ngan-hang-mufg-chi-nhanh-ha-noi--mufg-bank-ha-noi-235.htm
+fiata,DUCKBILL DIGITAL SUPPLY CHAIN MANAGEMENT HO CHI MINH COMPANY LIMITED,en.duckbillscm.com,pending,host_unresolved_shared_or_subdomain,https://fiata.org/directory/vn/
+fiata,"LION TRANS CO., LTD",https,pending,host_unresolved_shared_or_subdomain,https://fiata.org/directory/vn/
+fiata,TRANSIMEX CORPORATION,www.transimex.com.vn,pending,multiple_distinct_entities_share_root,https://fiata.org/directory/vn/
+fiata,TRANSIMEX LOGISTICS CORPORATION,www.transimex.com.vn,pending,multiple_distinct_entities_share_root,https://fiata.org/directory/vn/

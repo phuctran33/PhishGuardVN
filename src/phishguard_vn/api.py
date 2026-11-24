@@ -24,7 +24,8 @@ from threadpoolctl import threadpool_limits
 from phishguard_vn.features import CANDIDATE_FEATURES
 from phishguard_vn.prediction import predict_url
 from phishguard_vn.url_parser import SCHEME_RE, parse_url
-from phishguard_vn.url_inspection import inspect_url
+from phishguard_vn.inspection_catalog import active_catalog
+from phishguard_vn.url_inspection import inspect_with_catalog
 
 MAX_URL_LENGTH = 4096
 
@@ -78,6 +79,14 @@ class BrandMatch(BaseModel):
     text: str
     value: FiniteFloat
     distance: int | None = None
+    zone: Literal["domain", "subdomain", "path", "query"] | None = None
+    official_domains: list[str]
+
+
+class OfficialBrand(BaseModel):
+    brand_id: str
+    brand_name: str
+    official_domains: list[str]
 
 
 class InspectionResponse(BaseModel):
@@ -90,7 +99,10 @@ class InspectionResponse(BaseModel):
     scheme_was_added: bool
     reference_sha256: str
     reference_brands: int
+    catalog_version: str
+    catalog_status: Literal["expanded", "fallback_v1"]
     official_brand_ids: list[str]
+    official_brands: list[OfficialBrand]
     features: dict[str, FiniteFloat]
     matches: list[BrandMatch]
     limitations: list[str]
@@ -291,6 +303,7 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
     @asynccontextmanager
     async def lifespan(app):
         _load(app, bundle_path, bundle_format, model_name, expected_sha256, teacher_root)
+        active_catalog()
         yield
         app.state.bundle = None
         app.state.teacher = None
@@ -350,7 +363,7 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
         if failure is not None:
             return failure
         try:
-            return InspectionResponse.model_validate(inspect_url(url))
+            return InspectionResponse.model_validate(inspect_with_catalog(url))
         except Exception:
             return error(503, "INSPECTION_UNAVAILABLE", "Chưa thể phân tích quy tắc URL. Vui lòng thử lại.", "reference_unavailable")
 
