@@ -100,3 +100,19 @@ Kiểm thử: `flutter analyze`, `flutter test`,
 Ảnh fixture được tạo bằng Python qrcode/Pillow, đi qua decoder thật trong tests;
 HTTP fixtures chỉ dành unit/widget tests. Bằng chứng mới và bàn giao QA #31:
 [week7_web_verification.md](../../reports/week7_web_verification.md).
+
+
+## Tuần 8–9 — danh mục mở rộng và ca tương tự (#38)
+
+- Nhập `https://napas.com.vn/` rồi chọn **Brand Detector & URL X-Ray** để thấy
+  domain đăng ký, tên NAPAS, phiên bản/số thương hiệu và SHA-256 danh mục.
+  `https://napas.com.vn/vietcombank` cho thấy ca có tên thương hiệu khác ở path.
+  Dải trạng thái báo rõ nếu backend đang dùng reference gốc.
+- **Tìm ca phishing tương tự** gọi endpoint riêng khi người dùng chọn. Nếu endpoint
+  chưa có, giao diện báo chưa sẵn sàng và có nút thử lại ngay trên panel.
+  Teacher prediction và kết quả inspection không phụ thuộc tra cứu lịch sử.
+  Contract và fixture #36 đang ở trạng thái đề xuất.
+- Các ca lịch sử khi có response hợp lệ hiển thị dưới dạng chữ, tối đa 5,
+  kèm nguồn ghi nhận, cosine và phần giống. Fixture có nhãn dành cho kiểm thử.
+
+[Bản ghi chạy thật, ảnh và bàn giao Hy/Khiêm](../../reports/week8_9_hung_verification.md) · [API contract](../../docs/api_contract.md)

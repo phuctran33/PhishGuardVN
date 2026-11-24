@@ -62,3 +62,22 @@ Xem [API contract](api_contract.md#post-inspect--week-7-brand-detector--url-x-ra
 Focused tests: `python -m pytest tests/test_url_inspection.py tests/test_api.py tests/test_api_teacher.py -q`.
 Full QA theo `tests/README.md`; không chấm lại external để nghiệm thu Web.
 QR decode nằm hoàn toàn trong Flutter; backend không nhận ảnh hoặc truy cập URL.
+
+
+## Brand Detector và Chrome Extension
+
+FastAPI nạp và đối chiếu checksum danh mục mở rộng đóng gói lúc startup. Xem
+`catalog_status`, `catalog_version` và `reference_brands` trong `/inspect`.
+Nếu CSV hoặc manifest thiếu/sai, endpoint ghi rõ `fallback_v1`. Sau khi thay
+tệp đã xác minh, khởi động lại backend để nạp danh mục. Nếu reference gốc
+cũng lỗi, `/inspect` trả 503. Teacher dùng release lock để kiểm readiness và
+inference theo contract đã đóng băng.
+
+```sh
+python scripts/verify_brand_catalog.py
+python scripts/benchmark_brand_catalog.py
+```
+
+Chrome Extension gọi `/predict` từ trang của extension với quyền theo origin.
+Web vẫn dùng CORS allowlist HTTP(S) của backend. Dùng [hướng dẫn Extension](../apps/extension/README.md)
+và [API contract](api_contract.md) khi cấu hình demo.
