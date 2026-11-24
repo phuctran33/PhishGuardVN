@@ -1,0 +1,65 @@
+{
+  "schema": "android-student-char-tfidf-mlp-int8-v1",
+  "model_version": "student-mlp-kd-int8-v1",
+  "decision_rule": "score >= threshold",
+  "score_kind": "uncalibrated_sigmoid",
+  "threshold": 0.72961075,
+  "classes": {
+    "benign": 0,
+    "phishing": 1
+  },
+  "model": {
+    "bytes": 283334,
+    "sha256": "8d118ac5346543bdfa29b7970b48ae206305d5fe8992e0c4754aa070cc032341"
+  },
+  "psl": {
+    "bytes": 75007,
+    "sha256": "fb8419c17a533dfdd57199da1cef1481974119fe23ce7c478af3d12eb8466c8f"
+  },
+  "teacher": {
+    "model_version": "teacher-stacking-v2",
+    "bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+    "lock_sha256": "781e1670a96df52b830bc40eb40af046d47db5f0a1b963bd2d42195c740db96c"
+  },
+  "research_revision": "8389b371728d4aab8246c0cf9606eb788a8e0365",
+  "research_fingerprint": "e2b3068ec55ceea49772c4233b33405cbbf7aba6831cfd496d89e6b33feb227b",
+  "training": {
+    "recipe": "sparse_mlp_large_D_0.9_0.25_8192",
+    "seed": 49,
+    "core_rows": 13078,
+    "bronze_rows": 8192,
+    "train_source_sha256": "568e788eda4bdf62531adcddd093373ef6a1e97feec1354063ae337325367b61",
+    "core_ids_sha256": "9a472631fa44a43c5ac7c30826985b72b46c39c0a8d98461ac488eb5bf335f65",
+    "bronze_ids_sha256": "4670c299ba7fcb225fb0210923f7ac30f970d073fb796958678088b0d5e4f7ed",
+    "alpha": 0.9,
+    "bronze_weight": 0.25,
+    "training": {
+      "steps": 384,
+      "batch_size": 128,
+      "learning_rate": 0.003,
+      "optimizer": "Adam",
+      "dropout": 0.0
+    },
+    "fit_scope": "full_train"
+  },
+  "operating_point": {
+    "scope": "pooled_train_group_oof_int8",
+    "seed": 49,
+    "rows": 13078,
+    "target_fpr": 0.01,
+    "oof_file_sha256": "367c8e46bbcb2b35d47df21b8df8e13a1a5ef39fc579d8a52a56a87b3f121c2c",
+    "fitted_oof_metrics": {
+      "ap": 0.9015152043541507,
+      "precision": 0.9278688524590164,
+      "recall": 0.6822565091610414,
+      "f1": 0.7863295359822173,
+      "fpr": 0.009996364958197019,
+      "tp": 1415,
+      "fp": 110,
+      "tn": 10894,
+      "fn": 659,
+      "threshold": 0.72961075
+    }
+  },
+  "android_verified": false
+}
