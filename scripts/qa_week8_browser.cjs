@@ -277,7 +277,9 @@ async function extensionSmoke(backend) {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   manifest.background.service_worker = 'smoke-input.mjs';
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
-  fs.writeFileSync(path.join(extension, 'smoke-input.mjs'), `
+  fs.writeFileSync(path.join(extension, 'smoke-input.mjs'),
+    "import './smoke-capture.mjs';\nimport './background.mjs';\n");
+  fs.writeFileSync(path.join(extension, 'smoke-capture.mjs'), `
 const clicked = chrome.contextMenus.onClicked;
 const addListener = clicked.addListener.bind(clicked);
 clicked.addListener = listener => {
@@ -287,7 +289,6 @@ clicked.addListener = listener => {
     menuItemId: 'phishguard-check-link',
   });
 };
-await import('./background.mjs');
 `);
 
   const context = await chromium.launchPersistentContext(path.join(temp, 'profile'), {
