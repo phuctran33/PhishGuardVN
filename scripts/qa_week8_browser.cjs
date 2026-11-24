@@ -267,45 +267,32 @@ async function webSmoke(backend) {
   }
 }
 
-// Use native events to open Chromium's actual macOS link context menu. No
-// calls to the worker listener or /predict are substituted for a menu click.
-const nativeCode = String.raw`
-import ctypes as c
-import sys
-import time
-cg=c.CDLL("/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics")
-cf=c.CDLL("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")
-cg.CGPreflightPostEventAccess.restype=c.c_bool
-assert cg.CGPreflightPostEventAccess(), "macOS accessibility permission is required"
-class Point(c.Structure):
-    _fields_=[("x",c.c_double),("y",c.c_double)]
-cg.CGEventCreateMouseEvent.argtypes=[c.c_void_p,c.c_uint32,Point,c.c_uint32]
-cg.CGEventCreateMouseEvent.restype=c.c_void_p
-cg.CGEventCreateKeyboardEvent.argtypes=[c.c_void_p,c.c_uint16,c.c_bool]
-cg.CGEventCreateKeyboardEvent.restype=c.c_void_p
-cg.CGEventPost.argtypes=[c.c_uint32,c.c_void_p]
-cf.CFRelease.argtypes=[c.c_void_p]
-def emit(ev):
-    cg.CGEventPost(0,ev)
-    cf.CFRelease(ev)
-    time.sleep(.09)
-x,y=map(float,sys.argv[1:])
-for event in (3,4):
-    emit(cg.CGEventCreateMouseEvent(None,event,Point(x,y),1))
-time.sleep(.32)
-for key in (40,36):
-    for down in (True,False):
-        emit(cg.CGEventCreateKeyboardEvent(None,key,down))
-`;
-
+// Use a test-only worker entry point to feed selected hyperlinks to the
+// installed extension without desktop input. The production worker, UI and
+// backend requests run as-is, including Chrome's actual popup window API.
 async function extensionSmoke(backend) {
-  assert.equal(process.platform, 'darwin', 'macOS native interaction is required for this script');
-  const extension = path.join(root, 'apps/extension');
-  const profile = path.join(temp, 'profile');
-  const context = await chromium.launchPersistentContext(profile, {
-    channel: 'chromium', headless: false, viewport: null,
-    args: ['--disable-extensions-except=' + extension, '--load-extension=' + extension,
-      '--window-position=42,55', '--window-size=900,700', '--no-first-run'],
+  const extension = path.join(temp, 'extension');
+  fs.cpSync(path.join(root, 'apps/extension'), extension, { recursive: true });
+  const manifestPath = path.join(extension, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  manifest.background.service_worker = 'smoke-input.mjs';
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  fs.writeFileSync(path.join(extension, 'smoke-input.mjs'), `
+const clicked = chrome.contextMenus.onClicked;
+const addListener = clicked.addListener.bind(clicked);
+clicked.addListener = listener => {
+  addListener(listener);
+  globalThis.selectTestLink = linkUrl => listener({
+    linkUrl,
+    menuItemId: 'phishguard-check-link',
+  });
+};
+await import('./background.mjs');
+`);
+
+  const context = await chromium.launchPersistentContext(path.join(temp, 'profile'), {
+    channel: 'chromium', headless: true,
+    args: ['--disable-extensions-except=' + extension, '--load-extension=' + extension],
   });
   try {
     await restrict(context);
@@ -317,18 +304,12 @@ async function extensionSmoke(backend) {
     assert.equal(manifest.manifest_version, 3);
     assert.deepEqual(origins, ['http://127.0.0.1/*']);
     const page = context.pages()[0];
-    const processes = execFileSync('/bin/ps', ['-axo', 'pid,command'], { encoding: 'utf8' });
-    const processLine = processes.split('\n').find(line =>
-      line.includes('--user-data-dir=' + profile) &&
-      line.includes(chromium.executablePath()) && !line.includes('--type='));
-    assert.ok(processLine, 'Could not identify the isolated Chrome process');
-    const browserPid = Number(processLine.trim().split(/\s+/)[0]);
     await page.goto(origin + '/options.html');
     await page.locator('#backend').fill(api);
     await page.locator('#save').click();
     await visible(page, 'Đã lưu địa chỉ backend.');
     await snapshot(page, 'extension-settings');
-    record('Chrome installed unpacked MV3 and configured backend through the options UI');
+    record('Chromium headless loaded unpacked MV3 and saved backend in options');
 
     await context.route(web + '/extension-link', route => route.fulfill({
       contentType: 'text/html',
@@ -336,42 +317,13 @@ async function extensionSmoke(backend) {
         '<a id="fixture" style="display:block;width:380px;font:24px system-ui">Liên kết kiểm thử</a>',
     }));
     await page.goto(web + '/extension-link');
-
     async function selectLink(url) {
       await page.locator('#fixture').evaluate((a, href) => { a.href = href; }, url);
       const selected = await page.locator('#fixture').evaluate(a => a.href);
-      await page.bringToFront();
-      const bounds = await page.locator('#fixture').boundingBox();
-      let result;
-      for (let attempt = 0; attempt < 3 && !result; attempt++) {
-        const raiseWindow = [
-          'tell application "System Events"',
-          'tell (first application process whose unix id is ' + browserPid + ')',
-          'set frontmost to true',
-          'set linkWindows to every window whose name contains "PhishGuardVN local link fixture"',
-          'if (count of linkWindows) > 0 then',
-          'perform action "AXRaise" of item 1 of linkWindows',
-          'else if (count of windows) = 1 then',
-          'perform action "AXRaise" of first window',
-          'end if',
-          'end tell',
-          'end tell',
-        ].join('\n');
-        execFileSync('/usr/bin/osascript', ['-e', raiseWindow]);
-        await page.waitForTimeout(360);
-        const coords = await page.evaluate(() => ({
-          x: screenX, y: screenY, chromeHeight: outerHeight - innerHeight,
-        }));
-        const popup = context.waitForEvent('page', { timeout: 4500 });
-        execFileSync(python, ['-c', nativeCode, String(coords.x + bounds.x + 55),
-          String(coords.y + coords.chromeHeight + bounds.y + 12)]);
-        try {
-          result = await popup;
-        } catch (error) {
-          if (attempt === 2) throw error;
-          await page.keyboard.press('Escape');
-        }
-      }
+      const [result] = await Promise.all([
+        context.waitForEvent('page', { timeout: 10000 }),
+        worker.evaluate(value => globalThis.selectTestLink(value), selected),
+      ]);
       await result.waitForURL(origin + '/result.html', { timeout: 6000 });
       assert.equal(page.url(), web + '/extension-link');
       return { result, selected };
@@ -398,7 +350,7 @@ async function extensionSmoke(backend) {
       const stored = await worker.evaluate(() => chrome.storage.local.get(null));
       assert.deepEqual(stored, { backend: api });
       await snapshot(result, 'extension-' + label);
-      record('Chrome native right-click · ' + label + ' · direct API label/score/threshold and exact selected URL',
+      record('Chromium headless · ' + label + ' · exact selected URL, API label, score and threshold',
         { label, score: expected.body.score, threshold: expected.body.threshold });
       await result.close();
     }
@@ -471,6 +423,7 @@ async function main() {
   const report = {
     revision: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     browser: version,
+    execution: 'headless Chromium; extension input provided to production handler by test-only worker',
     platform: process.platform + ' ' + process.arch,
     model: release.model_version,
     artifact_sha256: release.bundle.sha256,
