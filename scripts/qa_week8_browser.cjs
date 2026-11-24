@@ -301,7 +301,8 @@ for key in (40,36):
 async function extensionSmoke(backend) {
   assert.equal(process.platform, 'darwin', 'macOS native interaction is required for this script');
   const extension = path.join(root, 'apps/extension');
-  const context = await chromium.launchPersistentContext(path.join(temp, 'profile'), {
+  const profile = path.join(temp, 'profile');
+  const context = await chromium.launchPersistentContext(profile, {
     channel: 'chromium', headless: false, viewport: null,
     args: ['--disable-extensions-except=' + extension, '--load-extension=' + extension,
       '--window-position=42,55', '--window-size=900,700', '--no-first-run'],
@@ -316,6 +317,12 @@ async function extensionSmoke(backend) {
     assert.equal(manifest.manifest_version, 3);
     assert.deepEqual(origins, ['http://127.0.0.1/*']);
     const page = context.pages()[0];
+    const processes = execFileSync('/bin/ps', ['-axo', 'pid,command'], { encoding: 'utf8' });
+    const processLine = processes.split('\n').find(line =>
+      line.includes('--user-data-dir=' + profile) &&
+      line.includes(chromium.executablePath()) && !line.includes('--type='));
+    assert.ok(processLine, 'Could not identify the isolated Chrome process');
+    const browserPid = Number(processLine.trim().split(/\s+/)[0]);
     await page.goto(origin + '/options.html');
     await page.locator('#backend').fill(api);
     await page.locator('#save').click();
@@ -334,16 +341,31 @@ async function extensionSmoke(backend) {
       const selected = await page.locator('#fixture').evaluate(a => a.href);
       await page.bringToFront();
       const bounds = await page.locator('#fixture').boundingBox();
-      const coords = await page.evaluate(() => ({
-        x: screenX, y: screenY, chromeHeight: outerHeight - innerHeight,
-      }));
-      const chromeApp = chromium.executablePath().split('.app/')[0] + '.app';
-      execFileSync('/usr/bin/open', ['-a', chromeApp]);
-      await page.waitForTimeout(300);
-      const popup = context.waitForEvent('page', { timeout: 12000 });
-      execFileSync(python, ['-c', nativeCode, String(coords.x + bounds.x + 55),
-        String(coords.y + coords.chromeHeight + bounds.y + 12)]);
-      const result = await popup;
+      let result;
+      for (let attempt = 0; attempt < 3 && !result; attempt++) {
+        const raiseWindow = [
+          'tell application "System Events"',
+          'tell (first application process whose unix id is ' + browserPid + ')',
+          'set frontmost to true',
+          'perform action "AXRaise" of (first window whose name contains "PhishGuardVN local link fixture")',
+          'end tell',
+          'end tell',
+        ].join('\n');
+        execFileSync('/usr/bin/osascript', ['-e', raiseWindow]);
+        await page.waitForTimeout(360);
+        const coords = await page.evaluate(() => ({
+          x: screenX, y: screenY, chromeHeight: outerHeight - innerHeight,
+        }));
+        const popup = context.waitForEvent('page', { timeout: 4000 });
+        execFileSync(python, ['-c', nativeCode, String(coords.x + bounds.x + 55),
+          String(coords.y + coords.chromeHeight + bounds.y + 12)]);
+        try {
+          result = await popup;
+        } catch (error) {
+          if (attempt === 2) throw error;
+          await page.keyboard.press('Escape');
+        }
+      }
       await result.waitForURL(origin + '/result.html', { timeout: 6000 });
       assert.equal(page.url(), web + '/extension-link');
       await context.unroute(web + '/extension-link');
@@ -398,24 +420,6 @@ async function extensionSmoke(backend) {
     await visible(result, 'Teacher chưa sẵn sàng. Hãy thử lại sau.');
     await stop(backend);
     backend = await startBackend();
-    await result.locator('#retry').click();
-    await result.locator('#label').waitFor({ state: 'visible' });
-    assert.equal(await result.locator('#label').textContent(), 'benign');
-    record('Chrome real backend offline, degraded Teacher 503, restart and retry');
-    await result.close();
-
-    await context.route(api + '/predict', async route => {
-      await new Promise(resolve => setTimeout(resolve, 8500));
-      await route.abort().catch(() => {});
-    });
-    const { result: slow } = await selectLink(good);
-    await visible(slow, 'Máy chủ phản hồi quá chậm. Hãy thử lại.');
-    await context.unroute(api + '/predict');
-    await slow.locator('#retry').click();
-    await slow.locator('#label').waitFor({ state: 'visible' });
-    record('Chrome timeout (delayed transport) and live retry');
-    await slow.close();
-
     for (const [status, message] of [
       [500, 'Máy chủ gặp lỗi khi phân tích. Hãy thử lại.'],
       [200, 'Phản hồi không đúng API contract.'],
@@ -423,13 +427,26 @@ async function extensionSmoke(backend) {
       await context.route(api + '/predict', route => route.fulfill({
         status, body: 'test-only invalid prediction response',
       }));
-      const { result: errorPage } = await selectLink(good);
-      await visible(errorPage, message);
-      assert.equal(await errorPage.locator('#label').isVisible(), false);
+      await result.locator('#retry').click();
+      await visible(result, message);
+      assert.equal(await result.locator('#label').isVisible(), false);
       await context.unroute(api + '/predict');
-      await errorPage.close();
       record('Chrome HTTP fault injection · ' + status);
     }
+
+    await context.route(api + '/predict', async route => {
+      await new Promise(resolve => setTimeout(resolve, 8500));
+      await route.abort().catch(() => {});
+    });
+    await result.locator('#retry').click();
+    await visible(result, 'Máy chủ phản hồi quá chậm. Hãy thử lại.');
+    assert.equal(await result.locator('#label').isVisible(), false);
+    await context.unroute(api + '/predict');
+    record('Chrome timeout (delayed transport)');
+    await result.locator('#retry').click();
+    await result.locator('#label').waitFor({ state: 'visible' });
+    assert.equal(await result.locator('#label').textContent(), 'benign');
+    record('Chrome real backend offline, degraded Teacher 503, restart and retry');
     return backend;
   } finally {
     await context.close();
