@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'similar_cases.dart';
+
 class ApiFailure implements Exception {
   const ApiFailure(this.code, this.message);
   final String code;
@@ -163,6 +165,35 @@ class PredictionApi {
     }
   }
 
+  Future<List<SimilarCase>> similarCases(String url) async {
+    final response = await _request(
+      () => _client.post(
+        _endpoint('/similar-cases'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({'url': url}),
+      ),
+    );
+    if (response.statusCode != 200) {
+      throw ApiFailure(
+        response.statusCode == 422 ? 'INVALID_URL' : 'SIMILAR_UNAVAILABLE',
+        response.statusCode == 422
+            ? 'URL không hợp lệ để tra cứu ca tương tự.'
+            : 'Tra cứu lịch sử chưa sẵn sàng. Vui lòng thử lại.',
+      );
+    }
+    try {
+      return SimilarCase.decode(_decode(response));
+    } on FormatException {
+      throw const ApiFailure(
+        'INVALID_RESPONSE',
+        'Phản hồi ca tương tự chưa đúng API contract.',
+      );
+    }
+  }
+
   Map<String, dynamic> _decode(http.Response response) {
     try {
       final value = jsonDecode(utf8.decode(response.bodyBytes));
@@ -205,12 +236,19 @@ class Inspection {
     this.referenceSha,
     this.officialBrands,
     this.features,
-    this.matches,
-  );
+    this.matches, {
+    required this.referenceBrands,
+    required this.catalogVersion,
+    required this.catalogStatus,
+    required this.officialDetails,
+  });
   final String hostname, subdomain, path, referenceSha;
   final String? domain;
   final bool isIp;
+  final int referenceBrands;
+  final String catalogVersion, catalogStatus;
   final List<String> officialBrands;
+  final List<Map<String, dynamic>> officialDetails;
   final Map<String, num> features;
   final List<Map<String, dynamic>> matches;
   factory Inspection.fromJson(Map<String, dynamic> j) {
@@ -222,7 +260,12 @@ class Inspection {
         j['path'] is! String ||
         j['is_ip'] is! bool ||
         j['reference_sha256'] is! String ||
-        j['reference_brands'] != 45 ||
+        j['reference_brands'] is! int ||
+        (j['reference_brands'] as int) <= 0 ||
+        (j['catalog_version'] != null && j['catalog_version'] is! String) ||
+        (j['catalog_status'] != null &&
+            !{'expanded', 'fallback_v1'}.contains(j['catalog_status'])) ||
+        (j['official_brands'] != null && j['official_brands'] is! List) ||
         j['official_brand_ids'] is! List ||
         j['features'] is! Map ||
         j['matches'] is! List) {
@@ -231,8 +274,20 @@ class Inspection {
     final features = j['features'] as Map;
     final brands = j['official_brand_ids'] as List;
     final matches = j['matches'] as List;
+    final officialDetails = (j['official_brands'] as List?) ?? [];
+    bool validDomains(Object? domains) =>
+        domains is List && domains.every((x) => x is String);
+
     if (!brands.every((x) => x is String) ||
         !features.values.every((v) => v is num && v.isFinite) ||
+        !officialDetails.every(
+          (m) =>
+              m is Map<String, dynamic> &&
+              m['brand_id'] is String &&
+              brands.contains(m['brand_id']) &&
+              m['brand_name'] is String &&
+              validDomains(m['official_domains']),
+        ) ||
         !matches.every(
           (m) =>
               m is Map<String, dynamic> &&
@@ -244,7 +299,11 @@ class Inspection {
                 'text',
               ].every((k) => m[k] is String) &&
               m['value'] is num &&
-              (m['value'] as num).isFinite,
+              (m['value'] as num).isFinite &&
+              (m['official_domains'] == null ||
+                  validDomains(m['official_domains'])) &&
+              (m['zone'] == null ||
+                  {'domain', 'subdomain', 'path', 'query'}.contains(m['zone'])),
         )) {
       throw const FormatException('Invalid inspection evidence');
     }
@@ -258,6 +317,10 @@ class Inspection {
       brands.cast<String>(),
       features.cast<String, num>(),
       matches.cast<Map<String, dynamic>>(),
+      referenceBrands: j['reference_brands'] as int,
+      catalogVersion: (j['catalog_version'] as String?) ?? 'e2-brand-v1',
+      catalogStatus: (j['catalog_status'] as String?) ?? 'legacy',
+      officialDetails: officialDetails.cast<Map<String, dynamic>>(),
     );
   }
 }

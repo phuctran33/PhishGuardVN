@@ -6,6 +6,7 @@ import 'package:flutter/semantics.dart';
 
 import 'api_client.dart';
 import 'qr_image.dart';
+import 'similar_cases.dart';
 
 // Semantic tokens: design-system/phishguardvn/MASTER.md.
 const navy = Color(0xFF081321);
@@ -106,6 +107,9 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
   Inspection? _inspection;
   ApiFailure? _inspectionFailure;
   bool _inspecting = false;
+  List<SimilarCase>? _similarCases;
+  ApiFailure? _similarFailure;
+  int? _similarRequestRevision;
   bool _qrBusy = false;
   String? _qrCandidate, _qrFailure;
 
@@ -136,6 +140,9 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
         _failure == null &&
         _inspection == null &&
         _inspectionFailure == null &&
+        _similarCases == null &&
+        _similarFailure == null &&
+        _similarRequestRevision == null &&
         _qrCandidate == null &&
         _qrFailure == null) {
       return;
@@ -145,6 +152,9 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
       _failure = null;
       _inspection = null;
       _inspectionFailure = null;
+      _similarCases = null;
+      _similarFailure = null;
+      _similarRequestRevision = null;
       _qrCandidate = null;
       _qrFailure = null;
     });
@@ -200,6 +210,33 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
       }
     } finally {
       if (mounted) setState(() => _inspecting = false);
+    }
+  }
+
+  Future<void> _findSimilar() async {
+    if (_similarRequestRevision != null || !_form.currentState!.validate()) {
+      return;
+    }
+    final revision = _revision;
+    final url = _url.text.trim();
+    setState(() {
+      _similarRequestRevision = revision;
+      _similarCases = null;
+      _similarFailure = null;
+    });
+    try {
+      final cases = await widget.api.similarCases(url);
+      if (mounted && revision == _revision) {
+        setState(() => _similarCases = cases);
+      }
+    } on ApiFailure catch (e) {
+      if (mounted && revision == _revision) {
+        setState(() => _similarFailure = e);
+      }
+    } finally {
+      if (mounted && revision == _revision) {
+        setState(() => _similarRequestRevision = null);
+      }
     }
   }
 
@@ -634,6 +671,16 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
               ),
               style: OutlinedButton.styleFrom(minimumSize: const Size(48, 48)),
             ),
+            const SizedBox(height: 8),
+            OutlinedButton(
+              key: const Key('similar-button'),
+              onPressed: _similarRequestRevision != null ? null : _findSimilar,
+              style: OutlinedButton.styleFrom(minimumSize: const Size(48, 48)),
+              child: const Text(
+                'Tìm ca phishing tương tự',
+                textAlign: TextAlign.center,
+              ),
+            ),
             const SizedBox(height: 10),
             const Text(
               'Có thể nhập tên miền không có http:// hoặc https://.',
@@ -724,6 +771,12 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                   ],
                 ),
               ),
+            if (_similarRequestRevision != null ||
+                _similarCases != null ||
+                _similarFailure != null) ...[
+              const SizedBox(height: 24),
+              _similarView(),
+            ],
             const SizedBox(height: 24),
             const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -743,6 +796,88 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
       ),
     ),
   );
+
+  Widget _similarView() {
+    final cases = _similarCases;
+    return Semantics(
+      liveRegion: true,
+      child: Container(
+        key: const Key('similar-result'),
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: navy,
+          border: Border.all(color: line),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Ca phishing tương tự',
+              style: TextStyle(color: teal, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            if (_similarRequestRevision != null)
+              const Text(
+                'Đang tra cứu ca lịch sử…',
+                style: TextStyle(color: muted),
+              )
+            else if (_similarFailure != null) ...[
+              Text(
+                _similarFailure!.message,
+                style: const TextStyle(color: danger),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  key: const Key('similar-retry'),
+                  onPressed: _findSimilar,
+                  child: const Text('Thử lại tra cứu'),
+                ),
+              ),
+            ] else if (cases != null && cases.isEmpty)
+              const Text(
+                'Chưa tìm thấy ca lịch sử đủ tương tự.',
+                style: TextStyle(color: muted),
+              )
+            else if (cases != null) ...[
+              const Text(
+                'Cosine đo độ gần của chuỗi URL. Nhãn của URL đang kiểm tra đến từ Teacher.',
+                style: TextStyle(color: muted, height: 1.5),
+              ),
+              for (final item in cases) ...[
+                const Divider(color: line, height: 24),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      for (final segment in item.segments)
+                        TextSpan(
+                          text: segment.text,
+                          style: segment.highlighted
+                              ? const TextStyle(
+                                  color: teal,
+                                  backgroundColor: benignSurface,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              : null,
+                        ),
+                    ],
+                  ),
+                  key: ValueKey('historical-${item.id}'),
+                  style: const TextStyle(color: ink, height: 1.5),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Nguồn: ${item.source} · Cosine: ${item.similarity}',
+                  style: const TextStyle(color: muted, height: 1.5),
+                ),
+              ],
+            ],
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _inspectionView(Inspection i) {
     const ruleNames = {
@@ -806,32 +941,54 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              i.officialBrands.isEmpty
-                  ? 'Không khớp domain chính thức trong reference.'
-                  : 'Khớp domain tham chiếu: ${i.officialBrands.join(', ')}. Không chứng nhận an toàn hoặc quyền sở hữu hiện tại.',
+              '${i.catalogVersion} · ${i.referenceBrands} thương hiệu',
               style: const TextStyle(color: muted, height: 1.5),
             ),
-            if (i.matches.isEmpty)
+            if (i.catalogStatus == 'expanded')
               const Text(
-                'Không có tín hiệu phù hợp trong 45 thương hiệu; không có nghĩa là URL an toàn.',
+                'Danh mục cho người dùng Việt Nam',
+                style: TextStyle(color: muted, height: 1.5),
+              ),
+            if (i.catalogStatus == 'fallback_v1')
+              const Text(
+                'Danh mục mở rộng chưa khả dụng. Đang dùng reference gốc.',
+                style: TextStyle(color: warning, height: 1.5),
+              ),
+            const SizedBox(height: 8),
+            if (i.officialBrands.isEmpty)
+              const Text(
+                'Không khớp domain chính thức trong danh mục.',
+                style: TextStyle(color: muted, height: 1.5),
+              )
+            else if (i.officialDetails.isEmpty)
+              Text('Khớp domain tham chiếu: ${i.officialBrands.join(', ')}')
+            else
+              for (final brand in i.officialDetails)
+                Text(
+                  'Khớp domain chính thức · ${brand['brand_name']} (${(brand['official_domains'] as List).join(', ')})',
+                  style: const TextStyle(color: ink, height: 1.5),
+                ),
+            if (i.matches.isEmpty && i.officialBrands.isEmpty)
+              const Text(
+                'Chưa nhận diện được tín hiệu thương hiệu.',
                 style: TextStyle(color: muted, height: 1.5),
               ),
             for (final m in i.matches)
               Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(
-                  '${ruleNames[m['rule']] ?? m['rule']} · ${m['brand_name'] == '' ? m['key'] : m['brand_name']}\nChuỗi đối chiếu: ${m['text']}${m['distance'] == null ? '' : '\nKhoảng cách chỉnh sửa: ${m['distance']}'}',
+                  '${m['zone'] == 'query' && m['rule'] == 'brand_in_path' ? 'Thương hiệu trong query' : ruleNames[m['rule']] ?? m['rule']} · ${m['brand_name'] == '' ? m['key'] : m['brand_name']}\nChuỗi đối chiếu: ${m['text']}${m['distance'] == null ? '' : '\nKhoảng cách chỉnh sửa: ${m['distance']}'}${m['rule'] == 'brand_domain_mismatch' && (m['official_domains'] as List?)?.isNotEmpty == true ? '\nDomain tham chiếu: ${(m['official_domains'] as List).join(', ')}' : ''}',
                   style: const TextStyle(color: ink, height: 1.5),
                 ),
               ),
             const SizedBox(height: 16),
             const Text(
-              'Quy tắc chuỗi URL, không phải dự đoán hay giải thích nội tại ML. Mismatch/typo không chứng minh phishing. Evidence được chuẩn hóa; vùng path bao gồm query. Không truy cập trang đích.',
+              'Các tín hiệu quy tắc không phải dự đoán hay giải thích nội tại ML. Tên xuất hiện trong path hoặc query có thể không liên quan đến chủ domain.',
               style: TextStyle(color: warning, fontSize: 12, height: 1.6),
             ),
             const SizedBox(height: 8),
             Text(
-              'Reference 45 thương hiệu · SHA256 ${i.referenceSha}',
+              'SHA-256 danh mục · ${i.referenceSha}',
               style: const TextStyle(color: muted, fontSize: 11, height: 1.5),
             ),
           ],

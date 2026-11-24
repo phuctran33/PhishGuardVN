@@ -1,0 +1,28 @@
+{
+  "status": "ok",
+  "cases": [
+    {
+      "case_id": "fixture-only-001",
+      "display_url": "hxxps://example[.]net/đổi🔒/help?session=[redacted]",
+      "source": "Fixture kiểm thử #36",
+      "cosine_similarity": 0.821,
+      "highlights": [
+        {
+          "start": 22,
+          "end": 26
+        },
+        {
+          "start": 27,
+          "end": 31
+        }
+      ]
+    },
+    {
+      "case_id": "fixture-only-002",
+      "display_url": "hxxp://support[.]example[.]org/help",
+      "source": "Fixture kiểm thử #36",
+      "cosine_similarity": 0.62,
+      "highlights": []
+    }
+  ]
+}
