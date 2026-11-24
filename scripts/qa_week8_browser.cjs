@@ -330,13 +330,14 @@ async function extensionSmoke(backend) {
     await snapshot(page, 'extension-settings');
     record('Chrome installed unpacked MV3 and configured backend through the options UI');
 
+    await context.route(web + '/extension-link', route => route.fulfill({
+      contentType: 'text/html',
+      body: '<title>PhishGuardVN local link fixture</title><body style="margin:60px">' +
+        '<a id="fixture" style="display:block;width:380px;font:24px system-ui">Liên kết kiểm thử</a>',
+    }));
+    await page.goto(web + '/extension-link');
+
     async function selectLink(url) {
-      await context.route(web + '/extension-link', route => route.fulfill({
-        contentType: 'text/html',
-        body: '<title>PhishGuardVN local link fixture</title><body style="margin:60px">' +
-          '<a id="fixture" style="display:block;width:380px;font:24px system-ui">Liên kết kiểm thử</a>',
-      }));
-      await page.goto(web + '/extension-link');
       await page.locator('#fixture').evaluate((a, href) => { a.href = href; }, url);
       const selected = await page.locator('#fixture').evaluate(a => a.href);
       await page.bringToFront();
@@ -347,7 +348,12 @@ async function extensionSmoke(backend) {
           'tell application "System Events"',
           'tell (first application process whose unix id is ' + browserPid + ')',
           'set frontmost to true',
-          'perform action "AXRaise" of (first window whose name contains "PhishGuardVN local link fixture")',
+          'set linkWindows to every window whose name contains "PhishGuardVN local link fixture"',
+          'if (count of linkWindows) > 0 then',
+          'perform action "AXRaise" of item 1 of linkWindows',
+          'else if (count of windows) = 1 then',
+          'perform action "AXRaise" of first window',
+          'end if',
           'end tell',
           'end tell',
         ].join('\n');
@@ -356,7 +362,7 @@ async function extensionSmoke(backend) {
         const coords = await page.evaluate(() => ({
           x: screenX, y: screenY, chromeHeight: outerHeight - innerHeight,
         }));
-        const popup = context.waitForEvent('page', { timeout: 4000 });
+        const popup = context.waitForEvent('page', { timeout: 4500 });
         execFileSync(python, ['-c', nativeCode, String(coords.x + bounds.x + 55),
           String(coords.y + coords.chromeHeight + bounds.y + 12)]);
         try {
@@ -368,7 +374,6 @@ async function extensionSmoke(backend) {
       }
       await result.waitForURL(origin + '/result.html', { timeout: 6000 });
       assert.equal(page.url(), web + '/extension-link');
-      await context.unroute(web + '/extension-link');
       return { result, selected };
     }
 
