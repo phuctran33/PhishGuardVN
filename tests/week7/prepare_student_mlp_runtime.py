@@ -11,7 +11,7 @@ import shutil
 import subprocess
 import sys
 
-HY_REVISION = "680a8bd8806db337d8a8c039c0c3c5705b26c061"
+HY_REVISION = "16c9c24072bc73628eae905256021eb24dfb4aa4"
 STUDENT_REVISION = "bc3a3a7054e2f6e6e733595f40f38439784536a1"
 
 

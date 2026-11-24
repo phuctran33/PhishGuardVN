@@ -68,3 +68,9 @@ Input example.com trả benign, score `0.4949721386878221` (predict_proba chưa 
 Ngoài README và pyproject (thêm optional API/test dependencies), mọi tracked file có sẵn trên base giữ nguyên bytes: raw data, labels, splits/folds, parser/features/prediction.py/reference, notebook outputs, frozen manifests, model metadata và experiment metrics. Model cache SHA256 cũng giữ nguyên. Code backend mới nằm trong `src/phishguard_vn/api.py`, smoke tests trong `tests/test_api.py`.
 
 Hướng dẫn từ máy mới/cấu hình artifact/curl/TestClient: [backend.md](../docs/backend.md). Base URL cho Khiêm: `http://127.0.0.1:8000`; Swagger `/docs`; CORS cấu hình cho `http://localhost:3000,http://127.0.0.1:3000`. Không công khai URL nhạy cảm, không truy cập URL đích hoặc log raw URL. QA/security/CI/latency đầy đủ và clean-clone acceptance vẫn thuộc #17, không đánh dấu thay Khiêm.
+
+## Tiếp nối Week 7
+
+PR #22/#23 đã merge vào main; các số liệu trên giữ nguyên cho lượt Week 6.
+Adapter rule-based `/inspect` và kiểm thử/bằng chứng mới của #30 nằm ở
+[week7_web_verification.md](week7_web_verification.md); không thay Teacher release.

@@ -1,0 +1,111 @@
+{
+  "model_version": "teacher-stacking-v2",
+  "threshold": 0.6945740700635259,
+  "protocol": "full_train_group_oof_fpr_target_0.01",
+  "bundle_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "method": "Read-only saved labeled predictions; no new evaluation, model fit, threshold selection or Official Test access.",
+  "inputs_sha256": {
+    "configs/teacher_lock.json": "781e1670a96df52b830bc40eb40af046d47db5f0a1b963bd2d42195c740db96c",
+    "reports/tables/stacking/candidate/evaluation.json": "9048ef17fcad03daf01cd9ef61e5eaeb22bdd0dac2f3142f1c828d71ef13f1c7",
+    "reports/tables/stacking/candidate/metadata.json": "009959fc5cedacdc0b44d2af11abaa4fe1420679de7d6e963ff26786ef19b52e",
+    "data/splits/url_val.csv": "d9ef64d29df6639af698ef228e5af5ec6f8ae44c8f1a1dd1367f9ba6d073d81f",
+    "reports/tables/stacking/candidate/validation_predictions.csv": "a7670767da17eb27814a59ae27822d9fb47f19428a1eac933da0cbf9749dd065",
+    "reports/tables/stacking/candidate/external_predictions.csv": "8a19a0593a7597ff2c1775b136f6dd5abe2f43b933d8c16478add005389d4c5d",
+    "src/phishguard_vn/resources/brand_reference_v1.csv": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+    "src/phishguard_vn/brand_features.py": "c44f8258afe482394a2030ef10dc29946a12c579f08b29f23083422680b7439b",
+    "src/phishguard_vn/url_parser.py": "626164dcf5bdeedda8357218922db1a00729f35d6ce7a19a1cd3b5f0bd8277a8"
+  },
+  "summaries": {
+    "validation": {
+      "n": 1585,
+      "positive": 24,
+      "negative": 1561,
+      "counts": {
+        "TN": 1547,
+        "TP": 15,
+        "FP": 14,
+        "FN": 9
+      },
+      "error_groups": {
+        "FN:no_reference_signal": 9,
+        "FP:no_reference_signal": 14
+      },
+      "by_source": {
+        "tinnhiem_org": {
+          "TN": 9
+        },
+        "tinnhiem_web": {
+          "TN": 271
+        },
+        "tinnhiemmang": {
+          "TP": 15,
+          "FN": 9
+        },
+        "tranco": {
+          "TN": 922,
+          "FP": 13
+        },
+        "tranco_vn": {
+          "TN": 345,
+          "FP": 1
+        }
+      }
+    },
+    "external": {
+      "n": 99,
+      "positive": 92,
+      "negative": 7,
+      "counts": {
+        "FN": 55,
+        "TP": 37,
+        "TN": 6,
+        "FP": 1
+      },
+      "error_groups": {
+        "FN:brand_in_subdomain": 20,
+        "FN:brand_mismatch": 21,
+        "FN:brand_near_match": 1,
+        "FN:historical_host_only": 55,
+        "FN:no_reference_signal": 32,
+        "FP:brand_near_match": 1,
+        "FP:historical_host_only": 1
+      },
+      "by_source": {
+        "ACB official list of fake websites": {
+          "FN": 22,
+          "TP": 15
+        },
+        "Agribank official warning of spoofed domains": {
+          "TP": 2
+        },
+        "BIDV official consumer fraud warning": {
+          "TP": 4
+        },
+        "Bac Ninh government local public-service scam alert": {
+          "TP": 1
+        },
+        "NCSC warning republished by Dak Lak government": {
+          "FN": 24,
+          "TP": 12
+        },
+        "NCSC weekly scam warnings on Ministry portal": {
+          "FN": 1
+        },
+        "Quang Ngai police publication of NCSC warning": {
+          "FN": 8,
+          "TP": 2
+        },
+        "VNCERT/CC warning on Ministry portal": {
+          "TP": 1
+        },
+        "aeon_official_corporate_profile": {
+          "TN": 1
+        },
+        "vnba_member_directory": {
+          "TN": 5,
+          "FP": 1
+        }
+      }
+    }
+  }
+}

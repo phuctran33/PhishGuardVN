@@ -68,3 +68,7 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /configs/teacher_lock.json text eol=lf
 /requirements-teacher.txt text eol=lf
 /reports/tables/stacking/promotion.json text eol=lf
+
+# Preserve reproducible Android Student data-package bytes.
+/artifacts/student_mlp_android/*.json text eol=lf
+/artifacts/student_mlp_android/*.gz -text

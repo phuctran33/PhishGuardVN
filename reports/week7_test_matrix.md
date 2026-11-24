@@ -89,3 +89,18 @@ Sau khi tiếp nhận Hy `a4d7b0e`, gate app nền 3 tests được thay bằng 
 ## Quy ước ghi bằng chứng
 
 Mỗi lần chạy ghi: mã ca, revision, thiết bị/OS/runtime, lệnh, model/version/hash, kết quả mong đợi, kết quả thực tế và pass/fail/skip. Không ghi raw URL riêng tư, token hay đường dẫn máy cá nhân. Các ảnh QR dùng payload tổng hợp trong bảng K7.1; không dùng QR trỏ tới website thật.
+
+
+## Kiểm lại bản tích hợp `16c9c24` ngày 24/11/2026
+
+Main `16c9c24072bc73628eae905256021eb24dfb4aa4` được merge local vào QA parent `b84d5ea1a81116fae7ada8e54d919126a2e522ff`, chưa tạo merge commit. Các nguồn Web/API/Android và model được kiểm tại `16c9c24`; full suite chạy trên QA working tree sau merge và source đó. Môi trường: Windows 11, CPython 3.11.14, Flutter 3.47.9/Dart 3.13.7; emulator Android 17/API 37/x86_64.
+
+| Phạm vi đã kiểm | Kết quả thực tế |
+| --- | --- |
+| API/Teacher upstream; inspection QA | **73 passed**; inspection riêng **25 passed**, không skip |
+| Full suite trong phạm vi PR | **641 passed, 2 skipped, 1 deselected**. Skip: bộ tham số brand rỗng, thiếu notebook handoff; deselected: external parity |
+| Web/API/Teacher | Analyze sạch; **48 Flutter tests**, **20/20 browser checks** với Teacher thật |
+| Android host và Teacher parity | Analyze sạch; **54 Flutter tests**, **294 Dart tests**, **5 Teacher host tests**; 47 URL hợp lệ + 9 rejected khớp |
+| Student host và emulator offline | **79/79** mỗi môi trường; 54 hợp lệ + 9 rejected, max score delta `5.551115123125783e-17`; đã khôi phục mạng emulator |
+
+Lệnh tái lập và điều kiện môi trường: [hướng dẫn tests](../tests/README.md#kiểm-lại-qa-tuần-7-trên-main-tích-hợp). Log trích, SHA, counts và giới hạn: [JSON kiểm bản tích hợp](tables/week7/qa_integration_16c9c24.json). CI cho merge commit mới chờ người dùng push; không gán kết quả CI của commit cũ cho commit mới. Teacher vẫn mặc định trên bản này; Student mặc định theo bàn giao mới cần được kiểm riêng khi có SHA/APK.

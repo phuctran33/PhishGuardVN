@@ -1,0 +1,142 @@
+[
+  {
+    "url_defanged": "example[.]com",
+    "python_score": 0.02881655533143681,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.02881655533143681,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxps://example[.]com/Login?Q=A",
+    "python_score": 0.5760558654872865,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.5760558654872865,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxps://EXAMPLE[.]COM/Login?Q=A",
+    "python_score": 0.5760558654872865,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.5760558654872865,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxp://example[.]org/",
+    "python_score": 0.03874277845572913,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.03874277845572913,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxps://bücher[.]de/Path",
+    "python_score": 0.023035994349379793,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.023035994349379793,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxp://127[.]0[.]0[.]1/login",
+    "python_score": 0.3089429274344484,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.3089429274344484,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxp://[::1]/",
+    "python_score": 0.07340108920992294,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.07340108920992294,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxps://vietcombank[.]com[.]vn/",
+    "python_score": 0.21049651668510236,
+    "http": {
+      "label": "benign",
+      "model": "teacher-stacking-v2",
+      "score": 0.21049651668510236,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "hxxps://vietcombank[.]com[.]vn[.]example[.]com/login",
+    "python_score": 0.9103574640800315,
+    "http": {
+      "label": "phishing",
+      "model": "teacher-stacking-v2",
+      "score": 0.9103574640800315,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  },
+  {
+    "url_defanged": "9944789[.]com",
+    "python_score": 0.9319661170520045,
+    "http": {
+      "label": "phishing",
+      "model": "teacher-stacking-v2",
+      "score": 0.9319661170520045,
+      "score_kind": "probability",
+      "score_definition": "Uncalibrated meta-LR score, NOT percent safety",
+      "decision_rule": "score >= threshold",
+      "protocol": "full_train_group_oof_fpr_target_0.01",
+      "threshold": 0.6945740700635259
+    }
+  }
+]

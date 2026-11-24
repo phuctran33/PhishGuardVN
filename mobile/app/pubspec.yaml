@@ -1,5 +1,5 @@
 name: phishguard_android
-description: Ứng dụng Android demo extractor E2 v1 (20 đặc trưng URL) của PhishGuardVN.
+description: Ứng dụng Android demo extractor E2 v1 (20 đặc trưng URL) và Teacher v2 offline của PhishGuardVN.
 publish_to: none
 version: 0.1.0+1
 
@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  crypto: ^3.0.3
   phishguard_features:
     path: ../packages/phishguard_features
 

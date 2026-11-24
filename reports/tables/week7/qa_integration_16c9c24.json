@@ -1,0 +1,177 @@
+{
+  "schema": "week7-qa-integrated-regression-v1",
+  "date": "2026-11-24",
+  "integration_main_sha": "16c9c24072bc73628eae905256021eb24dfb4aa4",
+  "qa_parent_sha": "b84d5ea1a81116fae7ada8e54d919126a2e522ff",
+  "qa_worktree": "uncommitted merge candidate; merge commit and new CI not yet created",
+  "environment": {
+    "os": "Windows 11",
+    "python": "CPython 3.11.14",
+    "flutter": "3.47.9",
+    "dart": "3.13.7",
+    "android_release": "17",
+    "android_api": "37",
+    "android_abi": "x86_64",
+    "device": "emulator-5554",
+    "chromium": "158.0.8127.18"
+  },
+  "full_suite": {
+    "passed": 641,
+    "failed": 0,
+    "skipped": 2,
+    "deselected": 1,
+    "warning_count": 3,
+    "scope": "QA working tree after uncommitted merge; existing Week 7 tests only; Teacher from integrated main",
+    "skip_reasons": [
+      "brand regression empty parameter set",
+      "notebook 02/03 local real-data handoffs absent"
+    ],
+    "deselection": "test_real_external_bundle_matches_saved_scores"
+  },
+  "api_upstream": {
+    "passed": 73,
+    "failed": 0,
+    "skipped": 0
+  },
+  "flutter_web": {
+    "analyze": "passed",
+    "tests_passed": 48,
+    "build": "passed"
+  },
+  "web_browser": {
+    "status": "passed",
+    "passed": 20,
+    "failed": 0,
+    "model": "teacher-stacking-v2",
+    "real_teacher": true,
+    "prediction_mocking": false,
+    "page_errors": [],
+    "external_requests": []
+  },
+  "android_host": {
+    "analyze": "passed",
+    "flutter_tests_passed": 54,
+    "dart_package_tests_passed": 294
+  },
+  "teacher_python_dart_host": {
+    "status": "passed",
+    "source_revision": "16c9c24072bc73628eae905256021eb24dfb4aa4",
+    "classified_matched": 47,
+    "rejected_matched": 9,
+    "max_absolute_delta": 8.881784197001252e-16
+  },
+  "student_host": {
+    "status": "passed",
+    "android_source_revision": "16c9c24072bc73628eae905256021eb24dfb4aa4",
+    "student_source_revision": "bc3a3a7054e2f6e6e733595f40f38439784536a1",
+    "tests": {
+      "passed": 79,
+      "failed": 0,
+      "skipped": 0,
+      "failures": []
+    },
+    "classified_matched": 54,
+    "rejected_matched": 9,
+    "max_score_delta": 5.551115123125783e-17
+  },
+  "student_emulator": {
+    "status": "passed",
+    "source_revision": "16c9c24072bc73628eae905256021eb24dfb4aa4",
+    "business_tests_passed": 79,
+    "classified_matched": 54,
+    "rejected_matched": 9,
+    "max_score_delta": 5.551115123125783e-17,
+    "network_before": {
+      "airplane_mode_on": "0",
+      "wifi_on": "1",
+      "mobile_data": "1"
+    },
+    "network_during": {
+      "airplane_mode_on": "1",
+      "wifi_on": "0",
+      "mobile_data": "0",
+      "ipv4_default_route": "",
+      "ipv6_default_route": ""
+    },
+    "network_restored": {
+      "airplane_mode_on": "0",
+      "wifi_on": "1",
+      "mobile_data": "1"
+    },
+    "prediction_mocking": false
+  },
+  "workflow": {
+    "android_source_sha": "16c9c24072bc73628eae905256021eb24dfb4aa4",
+    "mlp_reference_sha": "bc3a3a7054e2f6e6e733595f40f38439784536a1",
+    "lightgbm_historical_sha": "1cad94c88195ebea6e4737bbfc863cbe4b2ff384",
+    "web_selection": "current QA checkout when Web sources exist; otherwise 16c9c24 fallback",
+    "github_actions": "pending commit and push"
+  },
+  "scope_limits": [
+    "Teacher is default and Student experimental in this baseline; Issue #37 changes Student default in a later handoff.",
+    "Teacher parity above is host; Android Student was tested in emulator.",
+    "No final merged QA commit, GitHub Actions or final demo SHA in this run."
+  ],
+  "log_extracts": {
+    "k81-upstream.log": [
+      "73 passed in 7.48s"
+    ],
+    "k81-android-analyze.log": [
+      "No issues found! (ran in 24.0s)"
+    ],
+    "k81-android-test.log": [
+      "00:04 +54: All tests passed!"
+    ],
+    "k81-dart-test.log": [
+      "00:00 +294: All tests passed!"
+    ],
+    "k81-web-analyze.log": [
+      "No issues found! (ran in 17.4s)"
+    ],
+    "k81-web-test.log": [
+      "00:08 +48: All tests passed!"
+    ],
+    "k81-web-build.log": [
+      "√ Built build\\web"
+    ],
+    "k81-teacher-parity.log": [
+      "00:00 +5: All tests passed!"
+    ],
+    "k81-web-browser.log": [
+      "PASS URL → real Teacher; score above .5 uses locked threshold",
+      "PASS selection and focus preserve rendered prediction",
+      "PASS X-Ray identifies true domain and keeps ML result separate",
+      "PASS real Teacher phishing response alongside rule evidence",
+      "PASS official reference domain",
+      "PASS QR PNG preview, cancel without POST, retry and confirm real Teacher",
+      "PASS actual QR jpg decode before confirmation",
+      "PASS actual QR webp decode before confirmation",
+      "PASS reject QR fixture broken.png without POST",
+      "PASS reject QR fixture no_qr.png without POST",
+      "PASS reject QR fixture qr_text.png without POST",
+      "PASS reject QR fixture qr_bad_scheme.png without POST",
+      "PASS reject QR fixture oversized_dimensions.png without POST",
+      "PASS typing after QR error retains focus and replacement text",
+      "PASS backend rejects invalid port through UI",
+      "PASS X-Ray responsive 768px",
+      "PASS X-Ray responsive 375px",
+      "PASS X-Ray responsive 320px",
+      "PASS backend process stopped; error; restart; retry same page",
+      "PASS degraded backend keeps inspection usable; Teacher returns503",
+      "{\"status\":\"passed\",\"passed\":20,\"failed\":0,\"output\":\"<workspace>/"
+    ],
+    "k81-pr34-full.log": [
+      "SKIPPED [1] tests/test_brand_regressions.py: empty parameter set",
+      "SKIPPED [1] tests/test_splits.py: notebook 03 and 02 local handoffs absent",
+      "641 passed, 2 skipped, 1 deselected, 3 warnings in 83.35s"
+    ],
+    "inspection_qa": [
+      "25 passed in 3.65s"
+    ]
+  },
+  "inspection_qa_pr34": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0
+  }
+}

@@ -53,3 +53,12 @@ python -m pytest tests/test_api.py tests/test_api_teacher.py -q -rs
 Windows dùng `curl.exe` hoặc JSON UTF-8 file với `--data-binary @request.json`. URL sai port luôn 422 trước readiness. Client TestClient phải dùng context manager cho lifespan: `with TestClient(create_app(bundle_format="teacher", teacher_root=repo_root)) as client:`. Factory đọc tham số tường minh; `api.app` đọc env lúc import.
 
 Web port 3000/API 8000, CORS allowlist đúng origin, không wildcard/credentials. Không mở URL đích, không raw URL/body log hoặc lộ secrets. [Báo cáo API](../reports/week6_api_verification.md) và [Web](../reports/week6_web_verification.md) có kết quả/revision/hash thật. Fixtures unit chỉ kiểm logic, không tính là demo Teacher. QA/security/latency/clean-clone và final smoke chung vẫn phối hợp Khiêm #17; không nhắn riêng hoặc đánh dấu thay Khiêm.
+
+## Week 7 inspection (#30)
+
+`POST /inspect` chạy parser/brand rules offline với reference 45 brands, độc lập
+readiness Teacher. Không thay `/predict`, `/health`, release lock hoặc runtime.
+Xem [API contract](api_contract.md#post-inspect--week-7-brand-detector--url-x-ray-30).
+Focused tests: `python -m pytest tests/test_url_inspection.py tests/test_api.py tests/test_api_teacher.py -q`.
+Full QA theo `tests/README.md`; không chấm lại external để nghiệm thu Web.
+QR decode nằm hoàn toàn trong Flutter; backend không nhận ảnh hoặc truy cập URL.

@@ -1,0 +1,32 @@
+{
+  "base_revision": "19eaaa3f3ddbd4d6e1ffaef01a6c31ce89b02fcf",
+  "verification_tree": "uncommitted implementation; source hashes identify executed code; published head is tracked by PR, not substituted for runtime base",
+  "platform": "macOS-14.6.1-arm64-arm-64bit",
+  "python": "3.11.17 (main, Oct 21 2026, 17:46:23) [Clang 23.1.3 ]",
+  "flutter": "3.47.9",
+  "dart": "3.13.7",
+  "source_sha256": {
+    "src/phishguard_vn/api.py": "d68f3f803fa9754b36322c03a4a743fec1968d1cb083c68544e5225c3fd5dd12",
+    "src/phishguard_vn/url_inspection.py": "3b47bbc919291ebf1089d308ee0177afa101aa2cde933f46b023b83843093bf5",
+    "apps/web/lib/main.dart": "59fd96d933529edad303a463423beb1dbc5596a81840784e849a65fe55597815",
+    "apps/web/lib/api_client.dart": "d30f9eeacd6b796d4fcfe7fe7fc755fbb30f33a0ac6c22867fca2222e51ff8b4",
+    "apps/web/lib/qr_image.dart": "e2937835657e6c9c749696921b6eb776f1dc1aea34c3ef7da54f91b51b68c705",
+    "apps/web/pubspec.lock": "cb9623eabb7f892519232424e260f5d38fa7584f14defda00a49610ea3d34647",
+    "scripts/analyze_week7_teacher_errors.py": "5a6d5781dea5a7b7205ddd8bdaa987ea1b2c33660a04d0b4cc9002e53af3b015"
+  },
+  "checks": {
+    "focused_python": "73 passed",
+    "full_python": "639 passed, 2 skipped, 1 deselected, 4 warnings",
+    "skips": [
+      "empty brand regression parameter set",
+      "local notebook 02/03 real-data handoffs absent"
+    ],
+    "deselected": "test_real_external_bundle_matches_saved_scores: per tests/README.md, avoid rescoring external",
+    "flutter_analyze": "No issues found",
+    "flutter_test": "47 passed, 0 failed, 0 skipped",
+    "release_web_build": "PASS --no-web-resources-cdn --dart-define=API_BASE_URL=http://127.0.0.1:8001",
+    "real_teacher_python_http_parity": "10/10; atol 1e-12; label/threshold/rule/score semantics exact",
+    "browser_smoke": "18 checks; real release Web/API/Teacher; 0 page errors/0 attempted external requests"
+  },
+  "protected_changes": []
+}

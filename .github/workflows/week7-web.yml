@@ -28,11 +28,12 @@ concurrency:
 env:
   FLUTTER_VERSION: "3.47.9"
   # Update after receiving and reviewing Hung's next handoff. Never follow a moving branch.
-  WEB_HANDOFF_SHA: "5f112fc597339ea213eff3f07c745629cc18d8fc"
+  WEB_HANDOFF_SHA: "16c9c24072bc73628eae905256021eb24dfb4aa4"
+  # Historical research/reference snapshots; not the integrated application under test.
   STUDENT_HANDOFF_SHA: "1cad94c88195ebea6e4737bbfc863cbe4b2ff384"
   STUDENT_MLP_HANDOFF_SHA: "bc3a3a7054e2f6e6e733595f40f38439784536a1"
-  ANDROID_MLP_HANDOFF_SHA: "680a8bd8806db337d8a8c039c0c3c5705b26c061"
-  ANDROID_HANDOFF_SHA: "a4d7b0e8e7d7845368bb3061c8e754c7cbe1224e"
+  ANDROID_MLP_HANDOFF_SHA: "16c9c24072bc73628eae905256021eb24dfb4aa4"
+  ANDROID_HANDOFF_SHA: "16c9c24072bc73628eae905256021eb24dfb4aa4"
   QA_API_PORT: "18767"
   PYTHONIOENCODING: utf-8
   OMP_NUM_THREADS: "1"
@@ -213,16 +214,16 @@ jobs:
           $qaRoot = (Resolve-Path android-source).Path
           $qaAssets = Join-Path $qaRoot 'mobile/app/assets'
           New-Item -ItemType Directory -Force $qaAssets | Out-Null
-          $qaSources = @('src/phishguard_vn/resources/brand_reference_v1.csv', 'mobile/packages/phishguard_features/assets/psl_icann_tldextract_5.4.0.txt', 'docs/mobile_parity_cases.json', 'docs/mobile_parity_cases_extra.json', 'artifacts/teacher_v2_android/dart_svm_model.json', 'artifacts/teacher_v2_android/dart_teacher_v2_model.json', 'artifacts/teacher_v2_android/manifest.json')
+          $qaSources = @('src/phishguard_vn/resources/brand_reference_v1.csv', 'mobile/packages/phishguard_features/assets/psl_icann_tldextract_5.4.0.txt', 'docs/mobile_parity_cases.json', 'docs/mobile_parity_cases_extra.json', 'artifacts/teacher_v2_android/dart_svm_model.json', 'artifacts/teacher_v2_android/dart_teacher_v2_model.json', 'artifacts/teacher_v2_android/manifest.json', 'artifacts/student_mlp_android/student_mlp.json.gz', 'artifacts/student_mlp_android/manifest.json')
           foreach ($qaRelative in $qaSources) {
             $qaOriginal = Join-Path $qaRoot $qaRelative
-            $qaName = if ($qaRelative -eq 'artifacts/teacher_v2_android/manifest.json') { 'teacher_v2_manifest.json' } else { Split-Path $qaOriginal -Leaf }
+            $qaName = if ($qaRelative -eq 'artifacts/teacher_v2_android/manifest.json') { 'teacher_v2_manifest.json' } elseif ($qaRelative -eq 'artifacts/student_mlp_android/manifest.json') { 'student_mlp_manifest.json' } else { Split-Path $qaOriginal -Leaf }
             $qaCopy = Join-Path $qaAssets $qaName
             Copy-Item -LiteralPath $qaOriginal -Destination $qaCopy
             if ((Get-FileHash $qaOriginal).Hash -ne (Get-FileHash $qaCopy).Hash) { throw "Asset copy mismatch: $qaRelative" }
           }
 
-      - name: Analyze and test Hy Teacher app on the host
+      - name: Analyze and test integrated Android app on the host
         working-directory: android-source/mobile/app
         run: |
           flutter pub get --enforce-lockfile

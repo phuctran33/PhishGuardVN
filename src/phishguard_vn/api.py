@@ -24,6 +24,7 @@ from threadpoolctl import threadpool_limits
 from phishguard_vn.features import CANDIDATE_FEATURES
 from phishguard_vn.prediction import predict_url
 from phishguard_vn.url_parser import SCHEME_RE, parse_url
+from phishguard_vn.url_inspection import inspect_url
 
 MAX_URL_LENGTH = 4096
 
@@ -69,6 +70,32 @@ class ErrorDetail(BaseModel):
     reason: str
 
 
+class BrandMatch(BaseModel):
+    rule: str
+    brand_id: str
+    brand_name: str
+    key: str
+    text: str
+    value: FiniteFloat
+    distance: int | None = None
+
+
+class InspectionResponse(BaseModel):
+    scope: Literal["rule_based_url_inspection"]
+    hostname: str
+    registrable_domain: str | None
+    subdomain: str
+    path: str
+    is_ip: bool
+    scheme_was_added: bool
+    reference_sha256: str
+    reference_brands: int
+    official_brand_ids: list[str]
+    features: dict[str, FiniteFloat]
+    matches: list[BrandMatch]
+    limitations: list[str]
+
+
 class ErrorResponse(BaseModel):
     error: ErrorDetail
 
@@ -86,6 +113,23 @@ class HealthResponse(BaseModel):
 def error(status: int, code: str, message: str, reason: str, headers=None):
     return JSONResponse(status_code=status, content={"error": {
         "code": code, "message": message, "reason": reason}}, headers=headers)
+
+
+def _validated_url(value: str):
+    """Shared v1 validation boundary for predict and inspect; never normalizes input."""
+    url = value.strip()
+    reason = None
+    if any(ch.isspace() or ord(ch) < 32 or ord(ch) == 127 for ch in url):
+        reason = "invalid_characters"
+    elif SCHEME_RE.match(url) and url.partition("://")[0].lower() not in {"http", "https"}:
+        reason = "unsupported_scheme"
+    else:
+        parsed = parse_url(url)
+        if not parsed.is_valid:
+            reason = parsed.error_reason or "parse_error"
+            if reason.startswith("parsing_error"):
+                reason = "parse_error"
+    return url, (error(422, "INVALID_URL", "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.", reason) if reason else None)
 
 
 def _adapt_e1_cache(cache: dict) -> dict:
@@ -285,17 +329,9 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
     @app.post("/predict", response_model=PredictionResponse, response_model_exclude_none=True,
               responses={status: {"model": ErrorResponse} for status in (422, 503, 500)})
     def predict(payload: PredictRequest):
-        url = payload.url.strip()
-        if any(ch.isspace() or ord(ch) < 32 or ord(ch) == 127 for ch in url):
-            return error(422, "INVALID_URL", "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.", "invalid_characters")
-        if SCHEME_RE.match(url) and url.partition("://")[0].lower() not in {"http", "https"}:
-            return error(422, "INVALID_URL", "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.", "unsupported_scheme")
-        parsed = parse_url(url)
-        if not parsed.is_valid:
-            reason = parsed.error_reason or "parse_error"
-            if reason.startswith("parsing_error"):
-                reason = "parse_error"
-            return error(422, "INVALID_URL", "URL không hợp lệ hoặc tên miền không được parser hỗ trợ.", reason)
+        url, failure = _validated_url(payload.url)
+        if failure is not None:
+            return failure
         if app.state.bundle is None:
             return error(503, "MODEL_UNAVAILABLE", "Model chưa sẵn sàng. Vui lòng liên hệ người vận hành.", app.state.model_error)
         try:
@@ -306,6 +342,17 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
             return PredictionResponse.model_validate(result)
         except Exception:
             return error(500, "INFERENCE_FAILED", "Không thể thực hiện suy luận.", "prediction_failed")
+
+    @app.post("/inspect", response_model=InspectionResponse, response_model_exclude_none=True,
+              responses={status: {"model": ErrorResponse} for status in (422, 503)})
+    def inspect(payload: PredictRequest):
+        url, failure = _validated_url(payload.url)
+        if failure is not None:
+            return failure
+        try:
+            return InspectionResponse.model_validate(inspect_url(url))
+        except Exception:
+            return error(503, "INSPECTION_UNAVAILABLE", "Chưa thể phân tích quy tắc URL. Vui lòng thử lại.", "reference_unavailable")
 
     # Outermost middleware also attaches CORS headers to sanitized error responses.
     app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False,
