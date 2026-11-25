@@ -364,3 +364,30 @@ ngang với thao tác chạm giả lập trên Chromium.
 [Mobile](figures/week8_9/web-refresh/mobile.webp) ·
 [Kết quả trên mobile](figures/week8_9/web-refresh/mobile-result.webp) ·
 [Cảnh báo phishing](figures/week8_9/web-refresh/phishing-alert.webp)
+
+## Đọc link từ tin nhắn và ảnh chụp ngày 25/11/2026
+
+**Tin nhắn** tô sáng các địa chỉ web ngay trong ô nhập và liệt kê các URL để
+chọn. **Đối chiếu ảnh & QR** đánh dấu vùng chữ và vị trí gần đúng của QR trên
+ảnh. Thẻ so sánh đưa hai hostname lên cùng một khung trên desktop và mobile.
+Người dùng có thể sửa chữ OCR và đưa URL từ mỗi nguồn về ô quét. Nội dung tin
+nhắn và ảnh được xử lý trong trình duyệt. API nhận URL khi người dùng bấm quét.
+
+OCR tiếng Việt và tiếng Anh chạy trong browser worker. Runtime và dữ liệu ngôn
+ngữ khoảng 5,3 MiB, tải từ cùng origin khi đọc ảnh. Khi đọc chữ gặp lỗi, Web
+giữ kết quả QR và mở ô nhập tay. Giao diện so hostname và nhắc kiểm lại dạng
+Unicode/Punycode khi cách viết khác nhau. [Nguồn và hash OCR](../apps/web/web/ocr/README.md)
+
+- Flutter analyze sạch, **65 test đạt**, release build và Wasm dry run đạt.
+- **34/34 ca Chromium headless** trên commit `96640de38c3a4e5335cf84fbe7ac58cee5fabcda`.
+  Ca ảnh minh họa đọc thật `example.org` từ chữ và `example.com` từ QR. Đã
+  kiểm kéo thả, chọn ảnh ở 375 px, đổi URL đọc được, giữ đúng `Login?Q=A` khi
+  chuyển qua Teacher/X-Ray và phạm vi request chỉ gồm hai origin local.
+  [Biên bản browser](tables/week8_9/web_capture_smoke.json)
+- Python **674 passed**, 2 skipped, 1 external replay deselected. Node
+  Extension **10 passed**. Teacher parity **12/12 phản hồi khớp**, sai khác
+  score tối đa 0. Hash sáu tệp OCR khớp trong bản build.
+
+[Đối chiếu trên desktop](figures/week8_9/web-capture/doi-chieu-desktop.webp) ·
+[Đối chiếu trên mobile](figures/week8_9/web-capture/doi-chieu-mobile.webp) ·
+[Tin nhắn có link được tô sáng](figures/week8_9/web-capture/tin-nhan.webp)
