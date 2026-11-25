@@ -335,3 +335,32 @@ tới trang đích hoặc origin khác ngoài demo local.
 **Nghiệm thu #38 còn chờ.** Phần Chrome, Web/Teacher, QR, X-Ray, danh mục và
 benchmark đã có bằng chứng chạy. Phần Similar Cases đã có UI, contract đề xuất
 và regression, chờ #36 để demo ca lịch sử thật. Review và QA độc lập thuộc #39.
+
+## Rà soát Web ngày 25/11/2026
+
+Bản Flutter Web giữ chủ đề navy và teal, với minh họa khiên kính WebP 53 KiB
+được tải ở bố cục hai cột. Ô URL và nút quét đứng trước các công cụ bổ sung.
+Dán URL điền giá trị vào form và chờ thao tác quét. Xóa URL trả focus về ô nhập
+và dọn kết quả trước đó. **Chỉnh URL** giữ nguyên nội dung để sửa sau lỗi 422.
+Kết quả hiển thị cảnh báo và hướng dẫn trước điểm, ngưỡng và tên mô hình.
+
+Đã kiểm lại phản hồi hết hạn khi đổi URL, health đến muộn sau dự đoán thành công,
+QR trùng URL đã nhập và trình duyệt từ chối clipboard. Desktop giữ vị trí form
+khi hiện kết quả. Ở viewport hẹp, kết luận và ngưỡng tự đi vào vùng nhìn sau khi
+quét. Lượt kiểm tra đo được 1440×960, 768×880, 375×720, 320×720 và 844×390
+ngang với thao tác chạm giả lập trên Chromium.
+
+- **Flutter** 58 passed, `flutter analyze` sạch, Web release build đạt. Widget
+  tests bao phủ chữ 200% ở 320 px và chế độ giảm chuyển động.
+- **Chromium headless** 29/29 trên commit `ae2ff835be3ed504cb97b4720e0d81d235ecb377`.
+  Web và Extension dùng FastAPI và Teacher thật cho các ca bình thường. Kiểm
+  clipboard mô phỏng quyền đọc của trình duyệt để giữ nguyên clipboard máy.
+  API tra cứu thật vẫn trả HTTP 404. [Biên bản](tables/week8_9/web_refresh_smoke.json)
+- **Hồi quy** Python 674 passed, 2 skipped, 1 deselected theo cùng phạm vi ở trên.
+  Extension Node 10 passed. Đối chiếu lại Teacher 12/12 HTTP khớp, sai khác score
+  tối đa bằng 0. Catalog verifier và hash artifact đã khóa đều khớp.
+
+[Desktop](figures/week8_9/web-refresh/desktop.webp) ·
+[Mobile](figures/week8_9/web-refresh/mobile.webp) ·
+[Kết quả trên mobile](figures/week8_9/web-refresh/mobile-result.webp) ·
+[Cảnh báo phishing](figures/week8_9/web-refresh/phishing-alert.webp)

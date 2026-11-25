@@ -1,0 +1,137 @@
+{
+  "revision": "ae2ff835be3ed504cb97b4720e0d81d235ecb377",
+  "browser": "Google Chrome for Testing 159.0.8154.6",
+  "execution": "headless Chromium; extension input provided to production handler by test-only worker",
+  "platform": "darwin arm64",
+  "model": "teacher-stacking-v2",
+  "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "threshold": 0.6945740700635259,
+  "checks": [
+    {
+      "check": "Web paste fills URL, Enter submits once and clear removes prior result",
+      "result": "pass",
+      "clipboard": "browser test stub"
+    },
+    {
+      "check": "Web clipboard permission denied leaves direct entry available",
+      "result": "pass",
+      "clipboard": "browser test stub"
+    },
+    {
+      "check": "Web real released Teacher + expanded Brand Detector and X-Ray",
+      "result": "pass"
+    },
+    {
+      "check": "Web #36 missing endpoint, retry preserves Teacher and inspection",
+      "result": "pass",
+      "upstream": "HTTP 404"
+    },
+    {
+      "check": "Web valid phishing response with changed input",
+      "result": "pass"
+    },
+    {
+      "check": "Web QR error · broken.png",
+      "result": "pass"
+    },
+    {
+      "check": "Web QR error · no_qr.png",
+      "result": "pass"
+    },
+    {
+      "check": "Web QR error · qr_text.png",
+      "result": "pass"
+    },
+    {
+      "check": "Web QR error · qr_bad_scheme.png",
+      "result": "pass"
+    },
+    {
+      "check": "Web QR file decodes locally and submits only after confirmation",
+      "result": "pass"
+    },
+    {
+      "check": "Web viewport 768px responds without horizontal overflow",
+      "result": "pass"
+    },
+    {
+      "check": "Web viewport 375px responds without horizontal overflow",
+      "result": "pass"
+    },
+    {
+      "check": "Web viewport 320px responds without horizontal overflow",
+      "result": "pass"
+    },
+    {
+      "check": "Web empty and invalid-port errors",
+      "result": "pass"
+    },
+    {
+      "check": "Web malformed response (HTTP fault injection)",
+      "result": "pass"
+    },
+    {
+      "check": "Web degraded Teacher 503 with inspection available",
+      "result": "pass"
+    },
+    {
+      "check": "Web real shutdown, restart and retry in the same tab",
+      "result": "pass"
+    },
+    {
+      "check": "Web release without JavaScript errors",
+      "result": "pass"
+    },
+    {
+      "check": "Web landscape touch viewport 844×390 uses the real Teacher",
+      "result": "pass"
+    },
+    {
+      "check": "Chromium headless loaded unpacked MV3 and saved backend in options",
+      "result": "pass"
+    },
+    {
+      "check": "Chromium headless · benign · exact selected URL, API label, score and threshold",
+      "result": "pass",
+      "label": "benign",
+      "score": 0.5699907485688647,
+      "threshold": 0.6945740700635259
+    },
+    {
+      "check": "Chromium headless · phishing · exact selected URL, API label, score and threshold",
+      "result": "pass",
+      "label": "phishing",
+      "score": 0.9092677413969025,
+      "threshold": 0.6945740700635259
+    },
+    {
+      "check": "Chrome unsupported scheme does not call backend",
+      "result": "pass"
+    },
+    {
+      "check": "Chrome real API 422",
+      "result": "pass"
+    },
+    {
+      "check": "Chrome HTTP fault injection · 500",
+      "result": "pass"
+    },
+    {
+      "check": "Chrome HTTP fault injection · 200",
+      "result": "pass"
+    },
+    {
+      "check": "Chrome timeout (delayed transport)",
+      "result": "pass"
+    },
+    {
+      "check": "Chrome real backend offline, degraded Teacher 503, restart and retry",
+      "result": "pass"
+    },
+    {
+      "check": "No browser requests to inspected links or external origins",
+      "result": "pass"
+    }
+  ],
+  "live_similar_results": false
+}
