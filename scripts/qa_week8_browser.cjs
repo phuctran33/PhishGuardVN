@@ -311,9 +311,6 @@ async function webSmoke(backend) {
       assert.ok(action && action.y >= 0 && action.height >= 44 && action.y + action.height <= height);
       if (width === 375) await snapshot(page, 'web-mobile-start');
       await enterUrl(page, demoBrand);
-      await button(page, 'Brand Detector & URL X-Ray').click();
-      await visible(page, 'BRAND DETECTOR · QUY TẮC');
-      await scrollToControl(page, button(page, 'Kiểm tra URL'));
       await button(page, 'Kiểm tra URL').click();
       await visible(page, 'Nhãn mô hình: benign');
       const heading = page.getByRole('heading', { name: 'Chưa phát hiện dấu hiệu phishing' });
@@ -323,6 +320,11 @@ async function webSmoke(backend) {
         document.documentElement.scrollWidth > window.innerWidth);
       assert.equal(overflow, false);
       if (width === 375) await snapshot(page, 'web-mobile');
+      const inspect = button(page, 'Brand Detector & URL X-Ray');
+      await scrollToControl(page, inspect);
+      await inspect.click();
+      await visible(page, 'BRAND DETECTOR · QUY TẮC');
+      await visible(page, 'Nhãn mô hình: benign');
       record('Web viewport ' + width + 'px responds without horizontal overflow');
     }
 
