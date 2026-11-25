@@ -1,0 +1,25 @@
+# Only files needed to build and run the demo enter the Docker context.
+*
+!Dockerfile
+!pyproject.toml
+!requirements-teacher.txt
+!src/
+!src/**
+!configs/
+!configs/teacher_lock.json
+!configs/teacher_v2_candidate_lock.json
+!models/
+!models/teacher_v2_candidate.joblib
+!deploy/
+!deploy/demo.py
+!apps/
+!apps/web/
+!apps/web/pubspec.yaml
+!apps/web/pubspec.lock
+!apps/web/lib/
+!apps/web/lib/**
+!apps/web/assets/
+!apps/web/assets/**
+!apps/web/web/
+!apps/web/web/**
+**/__pycache__

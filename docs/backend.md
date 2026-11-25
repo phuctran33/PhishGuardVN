@@ -35,6 +35,21 @@ Thứ tự pip ở trên giữ đúng versions Teacher; không nâng hàng loạ
 
 Xem [release guide của Phúc](teacher_v2_release.md) cho runtime, bundle và nguồn lock. Không đổi tên `teacher_v2_candidate.joblib`; release status thuộc lock/loader chính thức. API giữ nhãn, score và threshold do adapter trả, dùng `score >= threshold`; không gọi default classifier.predict ở ngưỡng .5.
 
+## Demo Web và API cùng origin
+
+Chạy từ thư mục gốc. Docker build Flutter Web với API base tương đối và đóng gói
+Teacher đã phát hành cùng runtime CPython 3.11. API và Web dùng chung một origin.
+
+```sh
+docker build -t phishguardvn-demo .
+docker run --rm -p 127.0.0.1:8000:10000 phishguardvn-demo
+```
+
+Mở `http://127.0.0.1:8000/` để kiểm tra Web. `/ready` trả 204 sau khi Teacher
+load và warm-up thành công, hoặc 503 khi Teacher chưa sẵn sàng. Đối chiếu
+`artifact_sha256` từ `/health` với release lock. Khi đưa lên hosting dùng
+Container preset và trỏ HTTP tới cổng `10000` hoặc giá trị biến `PORT` của hosting.
+
 ## E1/E2 cũ — cấu hình tường minh, không fallback
 
 Numeric E2 v1: `PHISHGUARD_BUNDLE_FORMAT=v2`, `PHISHGUARD_MODEL_BUNDLE=/path/to/trusted-bundle.joblib`, optional `PHISHGUARD_MODEL_NAME`, `PHISHGUARD_MODEL_SHA256`. Giữ guards feature/class/order/version/reference/source hashes và warm-up. Không giả định chỉ đổi đường dẫn numeric là load được stacking.
