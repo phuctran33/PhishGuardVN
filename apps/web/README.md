@@ -104,6 +104,11 @@ HTTP fixtures chỉ dành unit/widget tests. Bằng chứng mới và bàn giao 
 
 ## Tuần 8–9 — danh mục mở rộng và ca tương tự (#38)
 
+- Nhập URL hoặc chọn **Dán URL**, sau đó nhấn **Enter** hoặc **Kiểm tra URL**.
+  Nút **Xóa URL** trả con trỏ về ô nhập và xóa kết quả cũ. Khi trình duyệt
+  chặn quyền đọc bộ nhớ tạm, có thể dán trực tiếp vào ô nhập.
+- **Chọn ảnh QR** hiển thị bản xem trước để xác nhận riêng. **Chỉnh URL**
+  đưa con trỏ về ô nhập khi URL sai. Dùng **Thử lại** khi đã khôi phục kết nối.
 - Nhập `https://napas.com.vn/` rồi chọn **Brand Detector & URL X-Ray** để thấy
   domain đăng ký, tên NAPAS, phiên bản/số thương hiệu và SHA-256 danh mục.
   `https://napas.com.vn/vietcombank` cho thấy ca có tên thương hiệu khác ở path.

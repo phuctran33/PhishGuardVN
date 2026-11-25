@@ -101,10 +101,11 @@ function button(page, name) {
 
 async function enterUrl(page, value) {
   const field = page.getByRole('textbox', { name: /URL cần kiểm tra/ }).first();
+  await scrollToControl(page, field);
   await field.click();
   await page.waitForTimeout(180);
   const editor = page.locator('input:focus, textarea:focus').first();
-  if (!(await editor.inputValue()) && value) {
+  if (!(await editor.inputValue({ timeout: 3500 })) && value) {
     await page.keyboard.insertText(value);
   } else {
     await editor.fill(value);
@@ -135,18 +136,110 @@ async function visible(page, text, present = true) {
   throw new Error('Unexpected accessibility state for ' + text + '\n' + snapshot);
 }
 
+async function inViewport(locator, height) {
+  const deadline = Date.now() + 1800;
+  let box;
+  do {
+    box = await locator.boundingBox({ timeout: 700 });
+    if (box && box.y >= 0 && box.y + box.height <= height) return;
+    await new Promise(resolve => setTimeout(resolve, 60));
+  } while (Date.now() < deadline);
+  assert.fail('App did not reveal its result in the viewport: ' + JSON.stringify(box));
+}
+
+async function scrollToControl(page, control) {
+  const { width, height } = page.viewportSize();
+  const box = await control.boundingBox({ timeout: 3000 });
+  if (box && (box.y < 0 || box.y + box.height > height)) {
+    // Flutter scrolls its own canvas rather than the HTML document.
+    await page.mouse.move(width / 2, height / 2);
+    await page.mouse.wheel(0, box.y - height / 3);
+    await inViewport(control, height);
+  }
+}
+
+async function touchLandscape(browser) {
+  const context = await browser.newContext({
+    viewport: { width: 844, height: 390 },
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+    reducedMotion: 'reduce',
+  });
+  await restrict(context);
+  try {
+    const page = await context.newPage();
+    const desktopArtRequests = [];
+    page.on('request', req => {
+      if (req.url().endsWith('/scan-shield.webp')) desktopArtRequests.push(req.url());
+    });
+    await page.goto(web);
+    await visible(page, 'API sẵn sàng');
+    await enterUrl(page, good);
+    await scrollToControl(page, button(page, 'Kiểm tra URL'));
+    await button(page, 'Kiểm tra URL').tap();
+    await visible(page, 'Nhãn mô hình: benign');
+    const layout = await page.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth]);
+    assert.deepEqual(layout, [844, 844]);
+    assert.deepEqual(desktopArtRequests, []);
+    record('Web landscape touch viewport 844×390 uses the real Teacher');
+  } finally {
+    await context.close();
+  }
+}
+
 async function webSmoke(backend) {
-  const browser = await chromium.launch({ channel: 'chromium' });
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1120 } });
+  const browser = await chromium.launch({ channel: 'chromium', headless: true });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
+  // Exercise the UI's clipboard boundary without reading/writing the host clipboard.
+  await context.addInitScript(value => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        readText: async () => {
+          if (window.qaDenyClipboard) throw new DOMException('Denied for QA', 'NotAllowedError');
+          return value;
+        },
+      },
+    });
+  }, demoBrand);
   const errors = [];
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.name));
   await restrict(context);
   try {
+    const hero = page.waitForResponse(r => r.url().endsWith('/scan-shield.webp') && r.ok());
     await page.goto(web);
     await visible(page, 'API sẵn sàng');
+    await hero;
     await snapshot(page, 'web-input');
+    const initialAction = await button(page, 'Kiểm tra URL').boundingBox();
+
+    const submitted = [];
+    page.on('request', req => {
+      if (req.method() === 'POST' && req.url() === api + '/predict') submitted.push(req.postDataJSON());
+    });
+    await button(page, 'Dán URL').click();
+    await visible(page, demoBrand);
+    assert.deepEqual(submitted, []);
+    await page.keyboard.press('Enter');
+    await visible(page, 'Nhãn mô hình: benign');
+    assert.deepEqual(submitted, [{ url: demoBrand }]);
+    const actionAfterScan = await button(page, 'Kiểm tra URL').boundingBox();
+    assert.ok(initialAction && actionAfterScan && Math.abs(initialAction.y - actionAfterScan.y) <= 1);
+    await button(page, 'Xóa URL').click();
+    await visible(page, 'Nhãn mô hình: benign', false);
+    assert.equal(await page.locator('input:focus, textarea:focus').first().inputValue(), '');
+    record('Web paste fills URL, Enter submits once and clear removes prior result', { clipboard: 'browser test stub' });
+
+    await page.evaluate(() => { window.qaDenyClipboard = true; });
+    await button(page, 'Dán URL').click();
+    await visible(page, 'Hãy dán trực tiếp vào ô URL.');
+    assert.deepEqual(submitted, [{ url: demoBrand }]);
+    record('Web clipboard permission denied leaves direct entry available', { clipboard: 'browser test stub' });
+
     await enterUrl(page, demoBrand);
+    await visible(page, 'Hãy dán trực tiếp vào ô URL.', false);
     await button(page, 'Kiểm tra URL').click();
     const prediction = await post('/predict', demoBrand);
     await visible(page, 'Nhãn mô hình: benign');
@@ -209,12 +302,23 @@ async function webSmoke(backend) {
     record('Web QR file decodes locally and submits only after confirmation');
 
     for (const width of [768, 375, 320]) {
-      await page.setViewportSize({ width, height: 880 });
+      const height = width === 768 ? 880 : 720;
+      await page.setViewportSize({ width, height });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.reload();
+      await visible(page, 'API sẵn sàng');
+      const action = await button(page, 'Kiểm tra URL').boundingBox();
+      assert.ok(action && action.y >= 0 && action.height >= 44 && action.y + action.height <= height);
+      if (width === 375) await snapshot(page, 'web-mobile-start');
       await enterUrl(page, demoBrand);
       await button(page, 'Brand Detector & URL X-Ray').click();
       await visible(page, 'BRAND DETECTOR · QUY TẮC');
+      await scrollToControl(page, button(page, 'Kiểm tra URL'));
       await button(page, 'Kiểm tra URL').click();
       await visible(page, 'Nhãn mô hình: benign');
+      const heading = page.getByRole('heading', { name: 'Chưa phát hiện dấu hiệu phishing' });
+      await inViewport(heading, height);
+      await inViewport(page.getByText(/Quy tắc backend: score ≥/).first(), height);
       const overflow = await page.evaluate(() =>
         document.documentElement.scrollWidth > window.innerWidth);
       assert.equal(overflow, false);
@@ -232,6 +336,8 @@ async function webSmoke(backend) {
     await enterUrl(page, 'https://example.com:bad/path');
     await button(page, 'Kiểm tra URL').click();
     await visible(page, /URL không hợp lệ/);
+    await button(page, 'Chỉnh URL').click();
+    assert.equal(await page.locator('input:focus, textarea:focus').first().inputValue({ timeout: 3500 }), 'https://example.com:bad/path');
     record('Web empty and invalid-port errors');
 
     await page.route(api + '/predict', async route => {
@@ -261,6 +367,7 @@ async function webSmoke(backend) {
     record('Web real shutdown, restart and retry in the same tab');
     assert.deepEqual(errors, []);
     record('Web release without JavaScript errors');
+    await touchLandscape(browser);
     return backend;
   } finally {
     await browser.close();
