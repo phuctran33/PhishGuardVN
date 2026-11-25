@@ -40,6 +40,9 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  bool urlFocused(WidgetTester tester) =>
+      tester.widget<EditableText>(find.byType(EditableText)).focusNode.hasFocus;
+
   testWidgets('empty URL is validated locally without POST', (tester) async {
     var requests = 0;
     await start(tester, (_) async {
@@ -49,6 +52,100 @@ void main() {
     await check(tester);
     expect(find.text('Vui lòng nhập một URL.'), findsOneWidget);
     expect(requests, 0);
+    final input = find.byKey(const Key('url-input'));
+    expect(urlFocused(tester), isTrue);
+    await tester.enterText(input, 'example.com');
+    await tester.pumpAndSettle();
+    expect(find.text('Vui lòng nhập một URL.'), findsNothing);
+    expect(requests, 0);
+  });
+
+  testWidgets('paste fills the field, Enter scans and clear drops the result', (
+    tester,
+  ) async {
+    final messenger = tester.binding.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      return call.method == 'Clipboard.getData'
+          ? {'text': '  example.com/Login?Q=A  '}
+          : null;
+    });
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+    );
+    var requests = 0;
+    await start(tester, (request) async {
+      requests++;
+      expect(request.body, '{"url":"example.com/Login?Q=A"}');
+      return jsonResponse(predictionFixture());
+    });
+    final paste = find.byKey(const Key('paste-url'));
+    await tester.ensureVisible(paste);
+    await tester.tap(paste);
+    await tester.pumpAndSettle();
+    final field = tester.widget<TextFormField>(
+      find.byKey(const Key('url-input')),
+    );
+    expect(field.controller!.text, 'example.com/Login?Q=A');
+    expect(urlFocused(tester), isTrue);
+    expect(requests, 0);
+    await tester.testTextInput.receiveAction(TextInputAction.go);
+    await tester.pumpAndSettle();
+    final result = find.byKey(const Key('prediction-result'));
+    expect(result, findsOneWidget);
+    expect(requests, 1);
+    final clear = find.byKey(const Key('clear-url'));
+    await tester.ensureVisible(clear);
+    await tester.tap(clear);
+    await tester.pumpAndSettle();
+    expect(field.controller!.text, isEmpty);
+    expect(urlFocused(tester), isTrue);
+    expect(result, findsNothing);
+    expect(requests, 1);
+  });
+
+  testWidgets('late clipboard response cannot replace freshly typed text', (
+    tester,
+  ) async {
+    final clipboard = Completer<Map<String, String>>();
+    final messenger = tester.binding.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      return call.method == 'Clipboard.getData' ? await clipboard.future : null;
+    });
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+    );
+    await start(tester, (_) async => throw StateError('Unexpected scan'));
+    final paste = find.byKey(const Key('paste-url'));
+    await tester.ensureVisible(paste);
+    await tester.tap(paste);
+    await tester.pump();
+    final input = find.byKey(const Key('url-input'));
+    await tester.enterText(input, 'example.org');
+    clipboard.complete({'text': 'example.com'});
+    await tester.pumpAndSettle();
+    expect(tester.widget<TextFormField>(input).controller!.text, 'example.org');
+  });
+
+  testWidgets('late startup health cannot overwrite a successful prediction', (
+    tester,
+  ) async {
+    final health = Completer<http.Response>();
+    final api = PredictionApi(
+      baseUrl: 'http://localhost:8000',
+      client: MockClient(
+        (request) async => request.method == 'GET'
+            ? await health.future
+            : jsonResponse(predictionFixture()),
+      ),
+    );
+    await tester.pumpWidget(PhishGuardApp(api: api));
+    await tester.enterText(find.byKey(const Key('url-input')), 'example.com');
+    await check(tester);
+    expect(find.text('API sẵn sàng'), findsOneWidget);
+    health.complete(jsonResponse({'model_ready': false}));
+    await tester.pumpAndSettle();
+    expect(find.text('API sẵn sàng'), findsOneWidget);
+    expect(find.text('API chờ model'), findsNothing);
   });
   testWidgets(
     'missing scheme is sent unchanged and label/model/score are displayed',
@@ -129,6 +226,11 @@ void main() {
     );
     await check(tester);
     expect(find.byKey(const Key('prediction-error')), findsOneWidget);
+    final edit = find.byKey(const Key('edit-url-button'));
+    await tester.ensureVisible(edit);
+    await tester.tap(edit);
+    await tester.pumpAndSettle();
+    expect(urlFocused(tester), isTrue);
     await tester.enterText(find.byKey(const Key('url-input')), 'example.com');
     await tester.pump();
     expect(find.byKey(const Key('prediction-error')), findsNothing);
@@ -224,7 +326,7 @@ void main() {
           : (second + .05) / (first + .05);
     }
 
-    for (final bg in [navy, surface, dangerSurface, benignSurface]) {
+    for (final bg in [navy, surface, glassTop, dangerSurface, benignSurface]) {
       for (final fg in [ink, muted]) {
         expect(contrast(fg, bg), greaterThanOrEqualTo(4.5));
       }

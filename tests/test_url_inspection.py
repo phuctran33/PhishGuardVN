@@ -96,17 +96,17 @@ def test_inspect_and_predict_share_validation(value):
 
 def test_reference_failure_sanitized_and_retryable(monkeypatch):
     with TestClient(api.create_app()) as client:
-        original = api.inspect_url
+        original = api.inspect_with_catalog
 
         def broken(_):
             raise RuntimeError("/secret/path token")
 
-        monkeypatch.setattr(api, "inspect_url", broken)
+        monkeypatch.setattr(api, "inspect_with_catalog", broken)
         r = client.post("/inspect", json={"url": "example.com"})
         assert (
             r.status_code == 503
             and r.json()["error"]["code"] == "INSPECTION_UNAVAILABLE"
         )
         assert "secret" not in r.text
-        monkeypatch.setattr(api, "inspect_url", original)
+        monkeypatch.setattr(api, "inspect_with_catalog", original)
         assert client.post("/inspect", json={"url": "example.com"}).status_code == 200

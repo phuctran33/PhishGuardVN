@@ -1,0 +1,71 @@
+:root {
+  color-scheme: dark;
+  --navy: #081321;
+  --surface: #132536;
+  --ink: #edf5fc;
+  --muted: #adc0d0;
+  --teal: #65decf;
+  --line: #385266;
+  --control: #668598;
+  --danger: #ff9ba3;
+  --danger-surface: #34232f;
+  --benign-surface: #133534;
+  font: 100%/1.55 Roboto, system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at top right, #153346, var(--navy) 65%);
+  color: var(--ink);
+  min-height: 100vh;
+}
+main { width: min(100%, 34rem); margin: auto; padding: 1.5rem; }
+header { margin-bottom: 1.25rem; }
+h1, h2, p { margin: 0; }
+h1 { font-size: 1.5625rem; line-height: 1.25; }
+h2 { font-size: 1.125rem; line-height: 1.4; }
+p, dd { overflow-wrap: anywhere; }
+.wordmark { color: var(--teal); font-weight: 700; margin-bottom: .375rem; }
+.muted { color: var(--muted); font-size: .875rem; margin-top: .5rem; }
+.card {
+  padding: 1.125rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.card[data-tone="phishing"], .card[data-tone="error"] { background: var(--danger-surface); }
+.card[data-tone="phishing"] h2, .card[data-tone="error"] h2 { color: var(--danger); }
+.card[data-tone="benign"] { background: var(--benign-surface); }
+.card[data-tone="benign"] h2 { color: var(--teal); }
+dl { margin: 1rem 0; }
+dt { color: var(--muted); font-size: .875rem; margin-top: .5rem; }
+dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+footer { margin-top: .625rem; }
+label { display: block; font-weight: 600; }
+input {
+  width: 100%;
+  padding: .625rem .75rem;
+  margin-top: .375rem;
+  background: var(--navy);
+  color: var(--ink);
+  border: 1px solid var(--control);
+  border-radius: .625rem;
+  min-height: 44px;
+  font: inherit;
+}
+button {
+  padding: .5rem .875rem;
+  min-height: 44px;
+  border-radius: .625rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.primary { margin-top: .75rem; border: 0; background: var(--teal); color: var(--navy); }
+.primary:disabled { opacity: .65; cursor: wait; }
+.secondary { border: 1px solid var(--control); background: transparent; color: var(--teal); margin-top: .5rem; }
+input:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+#feedback:empty { display: none; }
+#feedback { margin-top: .5rem; }
+@media (max-width: 360px) { main { padding: 1rem; } }

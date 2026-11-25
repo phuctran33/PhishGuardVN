@@ -1,0 +1,26 @@
+{
+  "revision": "b2a82c2b61d6173d953fc24b05d3d85d2dde0e9e",
+  "runtime": "macOS 14.6.1 arm64",
+  "browser": "Google Chrome for Testing 159.0.8154.6",
+  "artifact_sha256": "63199c925b28492765019de84c178bd3f8b935a0031f6c960b5db6c31a57c4f1",
+  "threshold": 0.6945740700635259,
+  "checks": [
+    {
+      "check": "Chrome installed unpacked MV3 and configured backend through the options UI",
+      "status": "pass"
+    },
+    {
+      "check": "Chrome native right-click · benign · direct API label/score/threshold and exact selected URL",
+      "status": "pass"
+    },
+    {
+      "check": "Chrome native right-click · phishing · direct API label/score/threshold and exact selected URL",
+      "status": "pass"
+    }
+  ],
+  "screenshots": {
+    "extension-native-benign.png": "1bc23164ec5639f882fcca54cb7c3dc65c64d5d115eb12a1b50eb1e4355bc503",
+    "extension-native-phishing.png": "f2fe398def16941b8535a3f022bb9c421e20d29fd253a8b8f097b5d5d7276a70"
+  },
+  "desktop_partial_run_reason": "Native window focus failed on a subsequent boundary case. Kept evidence from completed native checks."
+}

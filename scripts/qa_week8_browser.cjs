@@ -1,0 +1,665 @@
+/* Real Teacher smoke from a release build. See reports/week8_9_hung_verification.md. */
+const assert = require('node:assert/strict');
+const { execFileSync, spawn } = require('node:child_process');
+const { once } = require('node:events');
+const fs = require('node:fs');
+const path = require('node:path');
+const { chromium } = require('playwright');
+
+const root = path.resolve(__dirname, '..');
+const out = process.env.PGVN_EVIDENCE_DIR || path.join(root, 'reports/figures/week8_9');
+const python = process.env.PGVN_PYTHON || 'python3.11';
+const api = 'http://127.0.0.1:18380';
+const web = 'http://127.0.0.1:3308';
+const good = 'https://www.vietcombank.com.vn/';
+const demoBrand = 'https://napas.com.vn/';
+const flagged = 'https://vietcombank-verify.example.net/login/secure?mode=demo';
+const release = JSON.parse(fs.readFileSync(path.join(root, 'configs/teacher_lock.json')));
+const temp = fs.mkdtempSync('/tmp/pgvn-w89-browser-');
+const results = [];
+const unexpectedNetwork = new Set();
+const children = new Set();
+
+function server(args, env = {}) {
+  const child = spawn(python, args, {
+    cwd: root,
+    stdio: ['ignore', 'ignore', 'inherit'],
+    env: { ...process.env, ...env },
+  });
+  children.add(child);
+  child.once('exit', () => children.delete(child));
+  return child;
+}
+
+async function stop(child) {
+  if (child.exitCode !== null || child.signalCode !== null) return;
+  const exited = once(child, 'exit');
+  child.kill('SIGTERM');
+  await exited;
+}
+
+async function poll(url, accepted) {
+  for (let i = 0; i < 80; i++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok && await accepted(response)) return;
+    } catch {
+      // Startup may be waiting to bind the port.
+    }
+    await new Promise(resolve => setTimeout(resolve, 250));
+  }
+  throw new Error('Service did not reach expected state: ' + url);
+}
+
+async function startBackend(ready = true) {
+  const child = server(['-m', 'uvicorn', 'phishguard_vn.api:app', '--host', '127.0.0.1',
+    '--port', '18380', '--no-access-log'], {
+    PHISHGUARD_BUNDLE_FORMAT: 'teacher',
+    PHISHGUARD_TEACHER_ROOT: ready ? root : temp,
+    PHISHGUARD_CORS_ORIGINS: web,
+    PHISHGUARD_MODEL_BUNDLE: '',
+    PHISHGUARD_MODEL_NAME: '',
+    PHISHGUARD_MODEL_SHA256: '',
+    OMP_NUM_THREADS: '1',
+  });
+  await poll(api + '/health', async r => {
+    const h = await r.json();
+    if (h.model_ready !== ready) return false;
+    if (ready) {
+      assert.equal(h.model, release.model_version);
+      assert.equal(h.artifact_sha256, release.bundle.sha256);
+    }
+    return true;
+  });
+  return child;
+}
+
+function record(name, detail = {}) {
+  results.push({ check: name, result: 'pass', ...detail });
+  console.log('PASS', name);
+}
+
+async function snapshot(page, basename) {
+  const location = path.join(out, basename + '.png');
+  await page.screenshot({ path: location });
+}
+
+async function restrict(context) {
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url());
+    if (!['http:', 'https:'].includes(url.protocol) || [api, web].includes(url.origin)) {
+      return route.continue();
+    }
+    unexpectedNetwork.add(url.origin);
+    return route.abort();
+  });
+}
+
+function button(page, name) {
+  return page.getByRole('button', { name, exact: true }).first();
+}
+
+async function enterUrl(page, value) {
+  const field = page.getByRole('textbox', { name: /URL cần kiểm tra/ }).first();
+  await scrollToControl(page, field);
+  await field.click();
+  await page.waitForTimeout(180);
+  const editor = page.locator('input:focus, textarea:focus').first();
+  if (!(await editor.inputValue({ timeout: 3500 })) && value) {
+    await page.keyboard.insertText(value);
+  } else {
+    await editor.fill(value);
+  }
+  if (value) await visible(page, value);
+}
+
+async function post(endpoint, url) {
+  const response = await fetch(api + endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url }),
+  });
+  return { status: response.status, body: await response.json() };
+}
+
+async function visible(page, text, present = true) {
+  // CanvasKit can combine adjacent Text widgets in a single accessible name.
+  // Inspect the live accessibility tree rather than assume DOM text nodes.
+  const deadline = Date.now() + 13000;
+  let snapshot;
+  do {
+    snapshot = await page.locator('body').ariaSnapshot();
+    const found = text instanceof RegExp ? text.test(snapshot) : snapshot.includes(text);
+    if (found === present) return;
+    await page.waitForTimeout(100);
+  } while (Date.now() < deadline);
+  throw new Error('Unexpected accessibility state for ' + text + '\n' + snapshot);
+}
+
+async function inViewport(locator, height) {
+  const deadline = Date.now() + 1800;
+  let box;
+  do {
+    box = await locator.boundingBox({ timeout: 700 });
+    if (box && box.y >= 0 && box.y + box.height <= height) return;
+    await new Promise(resolve => setTimeout(resolve, 60));
+  } while (Date.now() < deadline);
+  assert.fail('App did not reveal its result in the viewport: ' + JSON.stringify(box));
+}
+
+async function scrollToControl(page, control) {
+  const { width, height } = page.viewportSize();
+  const box = await control.boundingBox({ timeout: 3000 });
+  if (box && (box.y < 0 || box.y + box.height > height)) {
+    // Flutter scrolls its own canvas rather than the HTML document.
+    await page.mouse.move(width / 2, height / 2);
+    await page.mouse.wheel(0, box.y - height / 3);
+    await inViewport(control, height);
+  }
+}
+
+async function touchLandscape(browser) {
+  const context = await browser.newContext({
+    viewport: { width: 844, height: 390 },
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+    reducedMotion: 'reduce',
+  });
+  await restrict(context);
+  try {
+    const page = await context.newPage();
+    const desktopArtRequests = [];
+    page.on('request', req => {
+      if (req.url().endsWith('/scan-shield.webp')) desktopArtRequests.push(req.url());
+    });
+    await page.goto(web);
+    await visible(page, 'API sẵn sàng');
+    await enterUrl(page, good);
+    await scrollToControl(page, button(page, 'Kiểm tra URL'));
+    await button(page, 'Kiểm tra URL').tap();
+    await visible(page, 'Nhãn mô hình: benign');
+    const layout = await page.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth]);
+    assert.deepEqual(layout, [844, 844]);
+    assert.deepEqual(desktopArtRequests, []);
+    record('Web landscape touch viewport 844×390 uses the real Teacher');
+  } finally {
+    await context.close();
+  }
+}
+
+async function captureSmoke(browser) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
+  await restrict(context);
+  const page = await context.newPage();
+  const writes = [];
+  const ocrAssets = new Set();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.name));
+  context.on('request', request => {
+    const url = new URL(request.url());
+    if (url.origin === api && request.method() === 'POST') {
+      writes.push({ path: url.pathname, body: request.postDataJSON() });
+    }
+    if (url.origin === web && url.pathname.startsWith('/ocr/')) ocrAssets.add(url.pathname);
+  });
+  const fixture = path.join(root, 'apps/web/test/fixtures/message_image_compare.png');
+  const qrUrl = 'https://example.com/Login?Q=A';
+  try {
+    await page.goto(web);
+    await visible(page, 'API sẵn sàng');
+    await button(page, 'Tin nhắn').click();
+    const message = page.getByRole('textbox', { name: /Nội dung tin nhắn/ });
+    await message.click();
+    await page.keyboard.insertText('Thông báo minh họa. Địa chỉ https://napas.com.vn/ hoặc example.org.');
+    await visible(page, 'Địa chỉ tìm được (2)');
+    assert.deepEqual(writes, []);
+    assert.deepEqual([...ocrAssets], []);
+    await snapshot(page, 'capture-message');
+    await page.getByRole('button', { name: /napas\.com\.vn/ }).click();
+    await visible(page, demoBrand);
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    assert.deepEqual(writes, []);
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Nhãn mô hình: benign');
+    assert.deepEqual(writes, [{ path: '/predict', body: { url: demoBrand } }]);
+    record('Web message highlights candidate links and submits only the selected URL');
+
+    await button(page, 'Đối chiếu ảnh & QR').click();
+    const drop = page.getByText('Chọn hoặc thả ảnh chụp', { exact: true });
+    const box = await drop.boundingBox();
+    assert.ok(box);
+    const input = await context.newCDPSession(page);
+    const position = { x: Math.round(box.x + box.width / 2), y: Math.round(box.y + box.height / 2) };
+    const data = { items: [], files: [fixture], dragOperationsMask: 1 };
+    const started = Date.now();
+    for (const type of ['dragEnter', 'dragOver', 'drop']) {
+      await input.send('Input.dispatchDragEvent', { type, ...position, data });
+    }
+    await input.detach();
+    await visible(page, 'Hai địa chỉ máy chủ khác nhau');
+    await visible(page, 'Vùng chữ trên ảnh');
+    await visible(page, 'Vùng mã QR trên ảnh');
+    await visible(page, 'example.org');
+    await visible(page, 'example.com');
+    assert.equal(writes.length, 1);
+    assert.ok(ocrAssets.has('/ocr/tesseract.min.js'));
+    await snapshot(page, 'capture-image-desktop');
+    record('Web reads a dropped image locally and compares real OCR and QR regions', {
+      printed_host: 'example.org', qr_host: 'example.com', initial_read_ms: Date.now() - started,
+    });
+
+    await button(page, 'Sửa URL đọc được').click();
+    await page.getByRole('textbox', { name: /Địa chỉ đọc từ ảnh/ }).click();
+    const editor = page.locator('input:focus, textarea:focus').first();
+    await page.waitForFunction(expected => {
+      let field = document.activeElement;
+      while (field?.shadowRoot?.activeElement) field = field.shadowRoot.activeElement;
+      return field?.value === expected;
+    }, 'example.org', { timeout: 3500 });
+    await editor.fill('EXAMPLE.com');
+    await visible(page, 'Cùng địa chỉ máy chủ');
+    assert.equal(writes.length, 1);
+    record('Web updates the comparison when the printed URL is corrected');
+
+    await button(page, 'Dùng URL từ QR').click();
+    await visible(page, qrUrl);
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    assert.equal(writes.length, 1);
+    const expected = await post('/predict', qrUrl);
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Nhãn mô hình: ' + expected.body.label);
+    await button(page, 'Brand Detector & URL X-Ray').click();
+    await visible(page, 'Domain đăng ký thực tế: example.com');
+    assert.deepEqual(writes.slice(1), [
+      { path: '/predict', body: { url: qrUrl } },
+      { path: '/inspect', body: { url: qrUrl } },
+    ]);
+    record('Web confirmed QR selection reaches Teacher and X-Ray with the original URL');
+
+    await page.setViewportSize({ width: 375, height: 820 });
+    await page.reload();
+    await visible(page, 'API sẵn sàng');
+    await scrollToControl(page, button(page, 'Đối chiếu ảnh & QR'));
+    await button(page, 'Đối chiếu ảnh & QR').click();
+    const chooser = page.waitForEvent('filechooser');
+    await button(page, 'Chọn ảnh').click();
+    await (await chooser).setFiles(fixture);
+    await visible(page, 'Hai địa chỉ máy chủ khác nhau');
+    await inViewport(page.getByText(/Ảnh · example\.org/).first(), 820);
+    await inViewport(page.getByText(/QR · example\.com/).first(), 820);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 375);
+    assert.equal(writes.length, 3);
+    await snapshot(page, 'capture-image-mobile');
+    assert.deepEqual(errors, []);
+    record('Web image comparison works with the file picker at 375px', { width: 375 });
+  } finally {
+    await context.close();
+  }
+}
+
+async function webSmoke(backend) {
+  const browser = await chromium.launch({ channel: 'chromium', headless: true });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
+  // Exercise the UI's clipboard boundary without reading/writing the host clipboard.
+  await context.addInitScript(value => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        readText: async () => {
+          if (window.qaDenyClipboard) throw new DOMException('Denied for QA', 'NotAllowedError');
+          return value;
+        },
+      },
+    });
+  }, demoBrand);
+  const errors = [];
+  const page = await context.newPage();
+  page.on('pageerror', error => errors.push(error.name));
+  await restrict(context);
+  try {
+    const hero = page.waitForResponse(r => r.url().endsWith('/scan-shield.webp') && r.ok());
+    await page.goto(web);
+    await visible(page, 'API sẵn sàng');
+    await hero;
+    await snapshot(page, 'web-input');
+    const initialAction = await button(page, 'Kiểm tra URL').boundingBox();
+
+    const submitted = [];
+    page.on('request', req => {
+      if (req.method() === 'POST' && req.url() === api + '/predict') submitted.push(req.postDataJSON());
+    });
+    await button(page, 'Dán URL').click();
+    await visible(page, demoBrand);
+    assert.deepEqual(submitted, []);
+    await page.keyboard.press('Enter');
+    await visible(page, 'Nhãn mô hình: benign');
+    assert.deepEqual(submitted, [{ url: demoBrand }]);
+    const actionAfterScan = await button(page, 'Kiểm tra URL').boundingBox();
+    assert.ok(initialAction && actionAfterScan && Math.abs(initialAction.y - actionAfterScan.y) <= 1);
+    await button(page, 'Xóa URL').click();
+    await visible(page, 'Nhãn mô hình: benign', false);
+    assert.equal(await page.locator('input:focus, textarea:focus').first().inputValue(), '');
+    record('Web paste fills URL, Enter submits once and clear removes prior result', { clipboard: 'browser test stub' });
+
+    await page.evaluate(() => { window.qaDenyClipboard = true; });
+    await button(page, 'Dán URL').click();
+    await visible(page, 'Hãy dán trực tiếp vào ô URL.');
+    assert.deepEqual(submitted, [{ url: demoBrand }]);
+    record('Web clipboard permission denied leaves direct entry available', { clipboard: 'browser test stub' });
+
+    await enterUrl(page, demoBrand);
+    await visible(page, 'Hãy dán trực tiếp vào ô URL.', false);
+    await button(page, 'Kiểm tra URL').click();
+    const prediction = await post('/predict', demoBrand);
+    await visible(page, 'Nhãn mô hình: benign');
+    assert.equal(prediction.body.threshold, release.threshold);
+    await visible(page, 'Quy tắc backend: score ≥ ' + release.threshold);
+    await button(page, 'Brand Detector & URL X-Ray').click();
+    const inspection = await post('/inspect', demoBrand);
+    assert.equal(inspection.body.catalog_status, 'expanded');
+    assert.deepEqual(inspection.body.official_brand_ids, ['napas']);
+    await visible(page, inspection.body.catalog_version + ' · ' + inspection.body.reference_brands + ' thương hiệu');
+    await visible(page, /Khớp domain chính thức · NAPAS/);
+    await visible(page, /Domain đăng ký thực tế: napas\.com\.vn/);
+    await page.mouse.move(1020, 780);
+    await page.mouse.wheel(0, 560);
+    await page.waitForTimeout(280);
+    await snapshot(page, 'web-brand-xray');
+    record('Web real released Teacher + expanded Brand Detector and X-Ray');
+
+    await button(page, 'Tìm ca phishing tương tự').click();
+    await visible(page, 'Tra cứu lịch sử chưa sẵn sàng. Vui lòng thử lại.');
+    await button(page, 'Thử lại tra cứu').click();
+    await visible(page, 'Tra cứu lịch sử chưa sẵn sàng. Vui lòng thử lại.');
+    await visible(page, 'Nhãn mô hình: benign');
+    await visible(page, 'BRAND DETECTOR · QUY TẮC');
+    record('Web #36 missing endpoint, retry preserves Teacher and inspection', { upstream: 'HTTP 404' });
+
+    await enterUrl(page, flagged);
+    await visible(page, 'BRAND DETECTOR · QUY TẮC', false);
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Nhãn mô hình: phishing');
+    await snapshot(page, 'web-phishing');
+    record('Web valid phishing response with changed input');
+
+    for (const [file, text] of [
+      ['broken.png', 'Không đọc được ảnh.'],
+      ['no_qr.png', 'Không tìm thấy QR đọc được.'],
+      ['qr_text.png', 'QR không chứa URL web hợp lệ.'],
+      ['qr_bad_scheme.png', 'QR không chứa URL web hợp lệ.'],
+    ]) {
+      const choose = page.waitForEvent('filechooser');
+      await button(page, 'Chọn ảnh QR').click();
+      await (await choose).setFiles(path.join(root, 'apps/web/test/fixtures', file));
+      await visible(page, text);
+      await button(page, 'Chọn ảnh khác').waitFor();
+      record('Web QR error · ' + file);
+    }
+    const requests = [];
+    page.on('request', req => { if (req.method() === 'POST' && req.url() === api + '/predict') requests.push(req); });
+    const choose = page.waitForEvent('filechooser');
+    await button(page, 'Chọn ảnh QR').click();
+    await (await choose).setFiles(path.join(root, 'apps/web/test/fixtures/qr_url.png'));
+    await visible(page, 'URL đọc từ QR — chưa gửi phân tích');
+    assert.equal(requests.length, 0);
+    await snapshot(page, 'web-qr-preview');
+    await Promise.all([
+      page.waitForResponse(r => r.url() === api + '/predict' && r.status() === 200),
+      button(page, 'Xác nhận và phân tích').click(),
+    ]);
+    assert.equal(requests.length, 1);
+    record('Web QR file decodes locally and submits only after confirmation');
+
+    for (const width of [768, 375, 320]) {
+      const height = width === 768 ? 880 : 720;
+      await page.setViewportSize({ width, height });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.reload();
+      await visible(page, 'API sẵn sàng');
+      const action = await button(page, 'Kiểm tra URL').boundingBox();
+      assert.ok(action && action.y >= 0 && action.height >= 44 && action.y + action.height <= height);
+      if (width === 375) await snapshot(page, 'web-mobile-start');
+      await enterUrl(page, demoBrand);
+      await button(page, 'Kiểm tra URL').click();
+      await visible(page, 'Nhãn mô hình: benign');
+      const heading = page.getByRole('heading', { name: 'Chưa phát hiện dấu hiệu phishing' });
+      await inViewport(heading, height);
+      await inViewport(page.getByText(/Quy tắc backend: score ≥/).first(), height);
+      const overflow = await page.evaluate(() =>
+        document.documentElement.scrollWidth > window.innerWidth);
+      assert.equal(overflow, false);
+      if (width === 375) await snapshot(page, 'web-mobile');
+      const inspect = button(page, 'Brand Detector & URL X-Ray');
+      await scrollToControl(page, inspect);
+      await inspect.click();
+      await visible(page, 'BRAND DETECTOR · QUY TẮC');
+      await visible(page, 'Nhãn mô hình: benign');
+      record('Web viewport ' + width + 'px responds without horizontal overflow');
+    }
+
+    await page.setViewportSize({ width: 960, height: 960 });
+    await page.reload();
+    await visible(page, 'API sẵn sàng');
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Vui lòng nhập một URL.');
+    await page.reload();
+    await visible(page, 'API sẵn sàng');
+    await enterUrl(page, 'https://example.com:bad/path');
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, /URL không hợp lệ/);
+    await button(page, 'Chỉnh URL').click();
+    assert.equal(await page.locator('input:focus, textarea:focus').first().inputValue({ timeout: 3500 }), 'https://example.com:bad/path');
+    record('Web empty and invalid-port errors');
+
+    await page.route(api + '/predict', async route => {
+      if (route.request().method() !== 'POST') return route.continue();
+      return route.fulfill({ response: await route.fetch(), body: 'test-only invalid JSON' });
+    });
+    await enterUrl(page, good);
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Phản hồi máy chủ chưa đúng API contract.');
+    await page.unroute(api + '/predict');
+    record('Web malformed response (HTTP fault injection)');
+
+    await stop(backend);
+    await button(page, 'Thử lại').click();
+    await visible(page, 'Không kết nối được máy chủ. Kiểm tra kết nối rồi thử lại.');
+    await snapshot(page, 'web-offline');
+    backend = await startBackend(false);
+    await button(page, 'Thử lại').click();
+    await visible(page, 'Máy chủ chưa sẵn sàng để phân tích. Vui lòng thử lại sau.');
+    await button(page, 'Brand Detector & URL X-Ray').click();
+    await visible(page, 'BRAND DETECTOR · QUY TẮC');
+    record('Web degraded Teacher 503 with inspection available');
+    await stop(backend);
+    backend = await startBackend();
+    await button(page, 'Thử lại').click();
+    await visible(page, 'Nhãn mô hình: benign');
+    record('Web real shutdown, restart and retry in the same tab');
+    assert.deepEqual(errors, []);
+    record('Web release without JavaScript errors');
+    await touchLandscape(browser);
+    await captureSmoke(browser);
+    return backend;
+  } finally {
+    await browser.close();
+  }
+}
+
+// Use a test-only worker entry point to feed selected hyperlinks to the
+// installed extension without desktop input. The production worker, UI and
+// backend requests run as-is, including Chrome's actual popup window API.
+async function extensionSmoke(backend) {
+  const extension = path.join(temp, 'extension');
+  fs.cpSync(path.join(root, 'apps/extension'), extension, { recursive: true });
+  const manifestPath = path.join(extension, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  manifest.background.service_worker = 'smoke-input.mjs';
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  fs.writeFileSync(path.join(extension, 'smoke-input.mjs'),
+    "import './smoke-capture.mjs';\nimport './background.mjs';\n");
+  fs.writeFileSync(path.join(extension, 'smoke-capture.mjs'), `
+const clicked = chrome.contextMenus.onClicked;
+const addListener = clicked.addListener.bind(clicked);
+clicked.addListener = listener => {
+  addListener(listener);
+  globalThis.selectTestLink = linkUrl => listener({
+    linkUrl,
+    menuItemId: 'phishguard-check-link',
+  });
+};
+`);
+
+  const context = await chromium.launchPersistentContext(path.join(temp, 'profile'), {
+    channel: 'chromium', headless: true,
+    args: ['--disable-extensions-except=' + extension, '--load-extension=' + extension],
+  });
+  try {
+    await restrict(context);
+    const worker = context.serviceWorkers()[0] || await context.waitForEvent('serviceworker');
+    const origin = worker.url().split('/').slice(0, 3).join('/');
+    const { manifest, origins } = await worker.evaluate(async () => ({
+      manifest: chrome.runtime.getManifest(), origins: (await chrome.permissions.getAll()).origins,
+    }));
+    assert.equal(manifest.manifest_version, 3);
+    assert.deepEqual(origins, ['http://127.0.0.1/*']);
+    const page = context.pages()[0];
+    await page.goto(origin + '/options.html');
+    await page.locator('#backend').fill(api);
+    await page.locator('#save').click();
+    await visible(page, 'Đã lưu địa chỉ backend.');
+    await snapshot(page, 'extension-settings');
+    record('Chromium headless loaded unpacked MV3 and saved backend in options');
+
+    await context.route(web + '/extension-link', route => route.fulfill({
+      contentType: 'text/html',
+      body: '<title>PhishGuardVN local link fixture</title><body style="margin:60px">' +
+        '<a id="fixture" style="display:block;width:380px;font:24px system-ui">Liên kết kiểm thử</a>',
+    }));
+    await page.goto(web + '/extension-link');
+    async function selectLink(url) {
+      await page.locator('#fixture').evaluate((a, href) => { a.href = href; }, url);
+      const selected = await page.locator('#fixture').evaluate(a => a.href);
+      const [result] = await Promise.all([
+        context.waitForEvent('page', { timeout: 10000 }),
+        worker.evaluate(value => globalThis.selectTestLink(value), selected),
+      ]);
+      await result.waitForURL(origin + '/result.html', { timeout: 6000 });
+      assert.equal(page.url(), web + '/extension-link');
+      return { result, selected };
+    }
+
+    const requests = [];
+    context.on('request', req => {
+      if (req.method() === 'POST' && req.url() === api + '/predict') requests.push(req.postDataJSON());
+    });
+    for (const [url, label] of [[good, 'benign'], [flagged, 'phishing']]) {
+      const before = requests.length;
+      const { result, selected } = await selectLink(url);
+      await result.locator('#label').waitFor({ state: 'visible' });
+      const expected = await post('/predict', selected);
+      assert.equal(expected.body.label, label);
+      assert.equal(expected.body.threshold, release.threshold);
+      assert.equal(await result.locator('#label').textContent(), expected.body.label);
+      assert.equal(await result.locator('#model').textContent(), expected.body.model);
+      assert.equal(Number(await result.locator('#score').textContent()), expected.body.score);
+      assert.equal(Number(await result.locator('#threshold').textContent()), expected.body.threshold);
+      assert.equal(await result.locator('#hostname').textContent(), 'Hostname: ' + new URL(selected).hostname);
+      assert.deepEqual(requests.slice(before), [{ url: selected }]);
+      assert.equal((await result.locator('body').textContent()).includes('?mode=demo'), false);
+      const stored = await worker.evaluate(() => chrome.storage.local.get(null));
+      assert.deepEqual(stored, { backend: api });
+      await snapshot(result, 'extension-' + label);
+      record('Chromium headless · ' + label + ' · exact selected URL, API label, score and threshold',
+        { label, score: expected.body.score, threshold: expected.body.threshold });
+      await result.close();
+    }
+
+    const rejects = [
+      ['ftp://example.com/archive', 'Chỉ kiểm tra liên kết HTTP hoặc HTTPS.', false],
+      ['https://no-domain.invalid/', 'Máy chủ từ chối URL. Kiểm tra tên miền và cổng.', true],
+    ];
+    for (const [url, message, sends] of rejects) {
+      const before = requests.length;
+      const { result, selected } = await selectLink(url);
+      await visible(result, message);
+      assert.deepEqual(requests.slice(before), sends ? [{ url: selected }] : []);
+      await result.close();
+      record(sends ? 'Chrome real API 422' : 'Chrome unsupported scheme does not call backend');
+    }
+
+    await stop(backend);
+    const { result } = await selectLink(good);
+    await visible(result, 'Không kết nối được backend. Kiểm tra cấu hình hoặc thử lại.');
+    await snapshot(result, 'extension-offline');
+    backend = await startBackend(false);
+    await result.locator('#retry').click();
+    await visible(result, 'Teacher chưa sẵn sàng. Hãy thử lại sau.');
+    await stop(backend);
+    backend = await startBackend();
+    for (const [status, message] of [
+      [500, 'Máy chủ gặp lỗi khi phân tích. Hãy thử lại.'],
+      [200, 'Phản hồi không đúng API contract.'],
+    ]) {
+      await context.route(api + '/predict', route => route.fulfill({
+        status, body: 'test-only invalid prediction response',
+      }));
+      await result.locator('#retry').click();
+      await visible(result, message);
+      assert.equal(await result.locator('#label').isVisible(), false);
+      await context.unroute(api + '/predict');
+      record('Chrome HTTP fault injection · ' + status);
+    }
+
+    await context.route(api + '/predict', async route => {
+      await new Promise(resolve => setTimeout(resolve, 8500));
+      await route.abort().catch(() => {});
+    });
+    await result.locator('#retry').click();
+    await visible(result, 'Máy chủ phản hồi quá chậm. Hãy thử lại.');
+    assert.equal(await result.locator('#label').isVisible(), false);
+    await context.unroute(api + '/predict');
+    record('Chrome timeout (delayed transport)');
+    await result.locator('#retry').click();
+    await result.locator('#label').waitFor({ state: 'visible' });
+    assert.equal(await result.locator('#label').textContent(), 'benign');
+    record('Chrome real backend offline, degraded Teacher 503, restart and retry');
+    return backend;
+  } finally {
+    await context.close();
+  }
+}
+
+async function main() {
+  fs.mkdirSync(out, { recursive: true });
+  const backend = await startBackend();
+  server(['-m', 'http.server', '3308', '--bind', '127.0.0.1', '--directory', 'apps/web/build/web']);
+  await poll(web, r => r.ok);
+  let live = await webSmoke(backend);
+  live = await extensionSmoke(live);
+  assert.equal(unexpectedNetwork.size, 0, [...unexpectedNetwork].join(', '));
+  record('No browser requests to inspected links or external origins');
+  const version = execFileSync(chromium.executablePath(), ['--version'], { encoding: 'utf8' }).trim();
+  const report = {
+    revision: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
+    browser: version,
+    execution: 'headless Chromium; extension input provided to production handler by test-only worker',
+    platform: process.platform + ' ' + process.arch,
+    model: release.model_version,
+    artifact_sha256: release.bundle.sha256,
+    threshold: release.threshold,
+    checks: results,
+    live_similar_results: false,
+  };
+  fs.writeFileSync(path.join(out, 'browser_smoke.json'), JSON.stringify(report, null, 2) + '\n');
+  await stop(live);
+}
+
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+}).finally(async () => {
+  await Promise.all([...children].map(stop));
+  fs.rmSync(temp, { recursive: true, force: true });
+});

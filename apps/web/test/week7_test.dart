@@ -294,6 +294,18 @@ void main() {
     await tap(t, 'qr-confirm');
     await t.pumpAndSettle();
     expect(posts, 1);
+    expect(find.byKey(const Key('qr-preview')), findsNothing);
+    await tap(t, 'qr-upload');
+    await t.runAsync(
+      () async => Future<void>.delayed(const Duration(milliseconds: 200)),
+    );
+    await t.pumpAndSettle();
+    expect(find.byKey(const Key('qr-preview')), findsOneWidget);
+    expect(posts, 1);
+    await tap(t, 'qr-confirm');
+    await t.pumpAndSettle();
+    expect(posts, 2);
+    expect(find.byKey(const Key('qr-preview')), findsNothing);
   });
   testWidgets('QR corrupt retry cancel', (t) async {
     var count = 0, posts = 0;
@@ -359,34 +371,46 @@ void main() {
     },
   );
   for (final kind in ['predict', 'inspect']) {
-    testWidgets('$kind stale response discarded and duplicate prevented', (
-      t,
-    ) async {
-      final response = Completer<http.Response>();
-      var calls = 0;
-      await start(t, (_) {
-        calls++;
-        return response.future;
-      });
-      await t.enterText(find.byKey(const Key('url-input')), 'example.com');
-      final key = kind == 'predict' ? 'check-button' : 'inspect-button';
-      await tap(t, key);
-      await tap(t, key);
-      expect(calls, 1);
-      await t.enterText(find.byKey(const Key('url-input')), 'example.org');
-      response.complete(
-        jsonResponse(
-          kind == 'predict' ? predictionFixture() : inspectionFixture(),
-        ),
-      );
-      await t.pumpAndSettle();
-      expect(
-        find.byKey(
+    testWidgets(
+      '$kind allows a changed URL and discards stale or duplicate requests',
+      (t) async {
+        t.view.physicalSize = const Size(1440, 1050);
+        t.view.devicePixelRatio = 1;
+        addTearDown(t.view.resetPhysicalSize);
+        addTearDown(t.view.resetDevicePixelRatio);
+        final response = Completer<http.Response>();
+        final nextResponse = Completer<http.Response>();
+        var calls = 0;
+        await start(t, (_) {
+          calls++;
+          return calls == 1 ? response.future : nextResponse.future;
+        });
+        await t.enterText(find.byKey(const Key('url-input')), 'example.com');
+        final key = kind == 'predict' ? 'check-button' : 'inspect-button';
+        final action = find.byKey(Key(key));
+        await tap(t, key);
+        expect(t.widget<ButtonStyleButton>(action).onPressed, isNull);
+        expect(calls, 1);
+        await t.enterText(find.byKey(const Key('url-input')), 'example.org');
+        await t.pump();
+        await tap(t, key);
+        expect(calls, 2);
+        final fixture = kind == 'predict'
+            ? predictionFixture()
+            : inspectionFixture();
+        final result = find.byKey(
           Key(kind == 'predict' ? 'prediction-result' : 'inspection-result'),
-        ),
-        findsNothing,
-      );
-    });
+        );
+        response.complete(jsonResponse(fixture));
+        await t.pump();
+        expect(result, findsNothing);
+        expect(t.widget<ButtonStyleButton>(action).onPressed, isNull);
+        expect(calls, 2);
+        nextResponse.complete(jsonResponse(fixture));
+        await t.pumpAndSettle();
+        expect(result, findsOneWidget);
+      },
+    );
   }
   testWidgets('stale QR upload discarded after editing', (t) async {
     final picker = Completer<Uint8List?>();

@@ -31,7 +31,7 @@ teacher-qa = ["scikit-learn==1.9.1", "numpy==2.4.6", "scipy==1.17.1", "pandas==3
 where = ["src"]
 
 [tool.setuptools.package-data]
-phishguard_vn = ["resources/*.csv"]
+phishguard_vn = ["resources/*.csv", "resources/brand_catalog_v2.manifest.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

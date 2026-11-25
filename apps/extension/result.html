@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiểm tra link · PhishGuardVN</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="result.mjs"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="wordmark">PhishGuardVN</p>
+      <h1>Kiểm tra đường dẫn</h1>
+      <p class="muted" id="hostname" hidden></p>
+    </header>
+    <section class="card" id="card" aria-busy="true">
+      <h2 id="status" role="status">Đang kiểm tra…</h2>
+      <dl id="details" hidden>
+        <dt>Nhãn mô hình</dt><dd id="label"></dd>
+        <dt>Phiên bản engine</dt><dd id="model"></dd>
+        <dt id="score-label">Điểm Teacher</dt><dd id="score"></dd>
+        <dt id="threshold-label">Ngưỡng quyết định</dt><dd id="threshold"></dd>
+      </dl>
+      <p class="muted" id="note" hidden></p>
+      <button type="button" class="primary" id="retry" hidden>Thử lại</button>
+    </section>
+    <footer>
+      <p class="muted" id="endpoint" hidden></p>
+      <button class="secondary" type="button" id="options">Cấu hình backend</button>
+    </footer>
+  </main>
+</body>
+</html>

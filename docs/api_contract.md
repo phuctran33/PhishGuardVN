@@ -178,35 +178,63 @@ Tests có thể dùng `from phishguard_vn.api import create_app`, rồi `with Te
 
 Kiểm tra cả health degraded/503 và model ready; body-invalid phải 422 trước readiness; không echo URL lỗi; CORS đúng allowlist. #17 tiếp tục phụ trách QA/security/CI đầy đủ và clean clone; #15 chỉ bổ sung smoke tests implementation. Sau #19 có hướng dẫn môi trường Web → API → model thật để Khiêm hậu kiểm. Nếu đổi contract, phải cập nhật tài liệu/OpenAPI/tests và ghi rõ thay đổi khi bàn giao; không âm thầm đổi score semantics hoặc error schema.
 
-## POST /inspect — Week 7 Brand Detector / URL X-Ray (#30)
+## POST /inspect — Brand Detector và URL X-Ray
 
-Request/schema/trim, HTTP(S)-only validation và giới hạn 4096 ký tự giống `/predict`.
-Endpoint độc lập với model readiness: model degraded vẫn có thể trả inspection 200.
-Không có label, score, threshold hoặc intrinsic model attribution trong response này.
+Request dùng `{"url":"…"}` với schema, trim, giới hạn 4.096 ký tự và validation
+HTTP(S) như `/predict`. Inspection chạy độc lập với readiness của Teacher.
+X-Ray giữ các trường `hostname`, `registrable_domain` (có thể vắng khi là IP),
+`subdomain`, `path`, `is_ip` và `scheme_was_added`.
 
-Response 200: `scope="rule_based_url_inspection"`, `hostname`, `registrable_domain`
-(string hoặc bỏ khi không có), `subdomain`, `path`, `is_ip`, `scheme_was_added`,
-`reference_sha256`, `reference_brands`, `official_brand_ids`, `features`, `matches`,
-`limitations`. OpenAPI `/openapi.json` là schema thực thi. `features` là tám brand
-features của extractor đóng băng; mỗi match có `rule`, `brand_id`, `brand_name`,
-`key`, `text`, `value`, optional `distance`. `text` là chuỗi engine đã chuẩn hóa,
-không phải trích nguyên văn URL. Vùng path evidence gồm path + query decoded.
+| Trường | Ý nghĩa |
+|---|---|
+| `scope` | `rule_based_url_inspection`. |
+| `catalog_version`, `catalog_status` | `brand-catalog-v2` với `expanded`, hoặc `e2-brand-v1` với `fallback_v1` khi bộ dữ liệu mở rộng thiếu hoặc không qua validation. |
+| `reference_sha256`, `reference_brands` | SHA-256 của CSV mở rộng đang dùng và tổng số thương hiệu gồm v1. Ở trạng thái fallback, là SHA-256 và số thương hiệu của v1. |
+| `official_brand_ids`, `official_brands` | ID như trước và chi tiết tên/domain đã đối chiếu theo **registrable domain**. |
+| `features`, `matches` | Tám tín hiệu inspection và danh sách bằng chứng. Mỗi match có `rule`, `brand_id`, `brand_name`, `key`, `text`, `value`, `official_domains`, tùy chọn `zone` và `distance`. |
+| `limitations` | Giới hạn diễn giải thuộc Brand Detector. |
 
-`official_brand_ids` chỉ là đối chiếu registrable domain với danh sách domain
-tham chiếu; không xác nhận chủ sở hữu hiện tại hoặc chứng nhận website an toàn.
-Mismatch, typo và homoglyph chỉ là heuristic trong phạm vi reference 45 brands;
-IDNA tự nó không độc hại. Không tìm thấy match không có nghĩa an toàn. Parser,
-matching engine và reference dùng trực tiếp `parse_url`/`explain_brand_matches`;
-không thêm DNS/HTTP/crawl, không đổi feature extraction của Teacher.
+Danh mục mới có bằng chứng phạm vi người dùng Việt Nam cho từng bổ sung.
+Nó nhận diện domain chính thức và alias đã tuyển chọn theo ranh giới
+token. Một domain tham chiếu có thể vẫn chứa tên thương hiệu khác ở subdomain,
+path hoặc query. Trong các trường hợp đó mismatch của brand kia vẫn có thể
+xuất hiện. Typo/homoglyph dùng phạm vi v1. `text` của tín hiệu path hoặc mismatch
+trả key đã chuẩn hóa để hạn chế lộ giá trị query. Domain khớp danh mục chỉ xác
+định root tham chiếu. Nhãn benign/phishing do `/predict` trả về.
 
-Lỗi 422 dùng envelope v1 `INVALID_REQUEST`/`INVALID_URL`. Reference/adapter lỗi:
-503 `INSPECTION_UNAVAILABLE`, reason `reference_unavailable`; không trả exception
-hoặc đường dẫn local. Có thể retry. CORS như API hiện tại. Ví dụ kiểm tra offline:
+Lỗi 422 dùng `INVALID_REQUEST`/`INVALID_URL`. Khi cả reference gốc không đọc
+được, trả 503 `INSPECTION_UNAVAILABLE`; không echo đường dẫn local hay exception.
+OpenAPI tại `/openapi.json` là schema thực thi.
 
 ```sh
 curl -s http://127.0.0.1:8000/inspect -H 'Content-Type: application/json' \
-  --data '{"url":"https://vietcombank.com.vn.example.com/login"}'
+  --data '{"url":"https://napas.com.vn/vietcombank"}'
 ```
 
-Domain thực tế là `example.com`, thương hiệu nằm trong subdomain. Kết quả này
-không được thay thế nhãn Teacher trả từ `/predict`.
+Ví dụ trên trả NAPAS theo domain tham chiếu, đồng thời có tín hiệu từ chuỗi
+Vietcombank ở path. [Danh mục và fixture QA](../reports/week8_9_hung_verification.md)
+
+## POST /similar-cases — hợp đồng đề xuất cho #36
+
+Backend `main` hiện chưa cung cấp endpoint này. Web đã có adapter cho schema
+đề xuất dưới đây và hiển thị trạng thái tra cứu chưa sẵn sàng khi gặp 404/503.
+Schema cần đối chiếu với đầu ra chính thức của Phúc trước khi nghiệm thu.
+
+- Request JSON `{"url":"…"}`. Người dùng chọn **Tìm ca phishing tương tự** để gửi.
+- Response 200 gồm `status: "ok"` và `cases` từ 1 đến 5. Khi không có ca phù hợp,
+  trả `{"status":"empty","cases":[]}`. API quyết định tiêu chí chọn và thứ tự.
+- Mỗi ca có `case_id`, `display_url`, `source`, `cosine_similarity` trong [0, 1]
+  và `highlights`. Range `{start,end}` tính theo Unicode code point trên đúng
+  chuỗi hiển thị sau khi che dữ liệu. `start` bao gồm, `end` không bao gồm. Range
+  sắp tăng, không chồng nhau. Có thể trả highlight rỗng.
+- `display_url` dùng `hxxp://` hoặc `hxxps://`, dấu chấm hostname thành `[.]`
+  (host IDNA dạng ASCII). Có thể giữ IPv6 trong ngoặc vuông. Bỏ userinfo và
+  fragment. Query nếu giữ phải che toàn bộ giá trị bằng `[redacted]`. UI render
+  plain text, giữ đúng cosine, label nguồn và highlight trên dữ liệu đã che.
+- Trùng chuỗi hiển thị giữ ca đầu theo thứ tự API. Trùng ID khác URL hoặc sai
+  schema báo lỗi. Kết quả Teacher/Brand Detector giữ nguyên khi tra cứu lỗi.
+  Web bỏ response cũ khi nội dung URL đổi và có nút retry.
+- Cosine similarity đo độ gần chuỗi trong corpus lịch sử. Nguồn ghi nhận do
+  endpoint cung cấp. Corpus và benchmark tra cứu thuộc #36.
+
+[Issue #36](https://github.com/phuctran33/PhishGuardVN/issues/36) · [Fixture kiểm thử](../apps/web/test/fixtures/similar_cases.json)

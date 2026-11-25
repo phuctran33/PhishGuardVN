@@ -1,11 +1,21 @@
-> **Current release:** stacking Teacher v2 is now the default via `configs/teacher_lock.json`, on CPython 3.11 only. See [release guide](docs/teacher_v2_release.md). Earlier candidate/v1 status below is historical.
-
-> Current Teacher: **tfidf_linear_svm C=0.5**, raw char 3-5. See [text_teacher_handoff.md](docs/text_teacher_handoff.md). The pending/MLP notes below describe historical benchmark stages.
-
 # PhishGuard VN
 
 Đồ án CSC14005 — phát hiện nguy cơ từ URL và nghiên cứu đặc trưng thương hiệu
 trong bối cảnh Việt Nam.
+
+## Chạy demo Web và Chrome
+
+Web/API phục vụ **`teacher-stacking-v2`** qua `configs/teacher_lock.json` trên
+CPython 3.11. Khởi động [FastAPI](docs/backend.md), mở [Flutter Web](apps/web/README.md)
+hoặc cài [Chrome Extension](apps/extension/README.md) unpacked. Web có nhập URL,
+QR từ ảnh, URL X-Ray và Brand Detector dùng danh mục đã kiểm nguồn cho Việt Nam. Khối Ca phishing
+tương tự có giao diện và fixture kiểm thử, chờ bàn giao endpoint [#36](https://github.com/phuctran33/PhishGuardVN/issues/36).
+
+Android có [gói Student MLP KD int8](docs/week7_android_mlp_handoff.md) chạy
+offline theo quy trình tích hợp riêng ở [#37](https://github.com/phuctran33/PhishGuardVN/issues/37).
+Xem [release guide Teacher](docs/teacher_v2_release.md) và [bàn giao tuần 8–9](reports/week8_9_hung_verification.md).
+
+## Nghiên cứu và các mốc trước phát hành
 
 **Trạng thái tuần 4: đã có kiểm định dữ liệu, parser/features, EDA/Group CV và baseline Dummy/LR.**
 Baseline là kết quả ban đầu; chưa đánh giá official test và chưa chọn mô hình cuối kỳ.
@@ -277,7 +287,7 @@ Teacher chính thức dùng release lock trong Git; không cần cache riêng. T
 - Reading guide and next steps: [week6_phuc_handoff.md](docs/week6_phuc_handoff.md).
 - Install training libraries: .venv/Scripts/python.exe -m pip install -e ".[teacher,test]".
 - Reproduce comparison: .venv/Scripts/python.exe scripts/train_teacher.py.
-- Teacher is not finalized; predict_teacher.py blocks until the team confirms model/input contract.
+- Tài liệu tuần 6 này mô tả checkpoint nghiên cứu v1 trước khi release stacking v2.
 
 
 ## Nghiên cứu preprocessing tiếp theo
@@ -286,7 +296,7 @@ Phần nghiên cứu A–F và bốn hướng neural được thực hiện ti�
 
 ## Teacher v2 candidate (research, not promoted)
 
-Teacher v1 remains the default. New stacking results and limitations: [report](reports/teacher_v2_stacking.md).
+Tại checkpoint này v1 là mặc định. Kết quả nghiên cứu stacking: [report](reports/teacher_v2_stacking.md).
 Offline candidate inference and code flow: [handoff](docs/teacher_v2_handoff.md).
 Run `python scripts/predict_stacking_candidate.py --examples` in the recorded runtime environment.
 

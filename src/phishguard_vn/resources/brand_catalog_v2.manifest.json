@@ -1,0 +1,150 @@
+{
+  "version": "brand-catalog-v2",
+  "catalog_sha256": "84629d25f71d19a7292a1b9dcf3270ee834c9b8664bd9a3a725209b388fb6265",
+  "reference_v1_sha256": "6d434533e479f0f2e1d2602af72f54a1d15677961540684834536ae5d94fbee6",
+  "counts": {
+    "baseline": {
+      "brands": 45,
+      "domains": 55,
+      "aliases": 58,
+      "categories": {
+        "bank": 26,
+        "delivery": 5,
+        "ecommerce": 3,
+        "ewallet": 3,
+        "gov": 4,
+        "telecom": 4
+      },
+      "regions": {
+        "VN": 45
+      },
+      "vietnam_scope": {
+        "vietnamese": 42,
+        "international_operating_in_vietnam": 3,
+        "international_popular_in_vietnam": 0
+      }
+    },
+    "additions": {
+      "brands": 1931,
+      "domains": 1933,
+      "aliases": 189,
+      "categories": {
+        "automotive": 9,
+        "aviation": 45,
+        "bank": 12,
+        "construction": 1,
+        "consumer_goods": 9,
+        "cosmetics": 1,
+        "delivery": 328,
+        "education": 28,
+        "employment": 6,
+        "entertainment": 5,
+        "fashion": 6,
+        "financial_services": 23,
+        "food": 11,
+        "gov": 20,
+        "gov_local": 34,
+        "healthcare": 998,
+        "hospitality": 3,
+        "insurance": 11,
+        "investment": 1,
+        "media": 11,
+        "payments": 9,
+        "pharmacy": 3,
+        "real_estate": 8,
+        "retail": 13,
+        "securities": 12,
+        "social": 3,
+        "software": 293,
+        "technology": 10,
+        "telecom": 3,
+        "transport": 4,
+        "travel": 4,
+        "utility": 7
+      },
+      "regions": {
+        "CN": 3,
+        "DE": 1,
+        "GB": 1,
+        "HK": 1,
+        "ID": 1,
+        "IT": 1,
+        "International": 40,
+        "JP": 4,
+        "KR": 3,
+        "SG": 4,
+        "TH": 2,
+        "TW": 1,
+        "US": 13,
+        "VN": 1856
+      },
+      "vietnam_scope": {
+        "vietnamese": 1822,
+        "international_operating_in_vietnam": 104,
+        "international_popular_in_vietnam": 5
+      }
+    },
+    "combined": {
+      "brands": 1976,
+      "domains": 1988,
+      "aliases": 247,
+      "categories": {
+        "automotive": 9,
+        "aviation": 45,
+        "bank": 38,
+        "construction": 1,
+        "consumer_goods": 9,
+        "cosmetics": 1,
+        "delivery": 333,
+        "ecommerce": 3,
+        "education": 28,
+        "employment": 6,
+        "entertainment": 5,
+        "ewallet": 3,
+        "fashion": 6,
+        "financial_services": 23,
+        "food": 11,
+        "gov": 24,
+        "gov_local": 34,
+        "healthcare": 998,
+        "hospitality": 3,
+        "insurance": 11,
+        "investment": 1,
+        "media": 11,
+        "payments": 9,
+        "pharmacy": 3,
+        "real_estate": 8,
+        "retail": 13,
+        "securities": 12,
+        "social": 3,
+        "software": 293,
+        "technology": 10,
+        "telecom": 7,
+        "transport": 4,
+        "travel": 4,
+        "utility": 7
+      },
+      "regions": {
+        "CN": 3,
+        "DE": 1,
+        "GB": 1,
+        "HK": 1,
+        "ID": 1,
+        "IT": 1,
+        "International": 40,
+        "JP": 4,
+        "KR": 3,
+        "SG": 4,
+        "TH": 2,
+        "TW": 1,
+        "US": 13,
+        "VN": 1901
+      },
+      "vietnam_scope": {
+        "vietnamese": 1864,
+        "international_operating_in_vietnam": 107,
+        "international_popular_in_vietnam": 5
+      }
+    }
+  }
+}
