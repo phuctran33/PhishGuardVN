@@ -188,6 +188,116 @@ async function touchLandscape(browser) {
   }
 }
 
+async function captureSmoke(browser) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
+  await restrict(context);
+  const page = await context.newPage();
+  const writes = [];
+  const ocrAssets = new Set();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.name));
+  context.on('request', request => {
+    const url = new URL(request.url());
+    if (url.origin === api && request.method() === 'POST') {
+      writes.push({ path: url.pathname, body: request.postDataJSON() });
+    }
+    if (url.origin === web && url.pathname.startsWith('/ocr/')) ocrAssets.add(url.pathname);
+  });
+  const fixture = path.join(root, 'apps/web/test/fixtures/message_image_compare.png');
+  const qrUrl = 'https://example.com/Login?Q=A';
+  try {
+    await page.goto(web);
+    await visible(page, 'API sẵn sàng');
+    await button(page, 'Tin nhắn').click();
+    const message = page.getByRole('textbox', { name: /Nội dung tin nhắn/ });
+    await message.click();
+    await page.keyboard.insertText('Thông báo minh họa. Địa chỉ https://napas.com.vn/ hoặc example.org.');
+    await visible(page, 'Địa chỉ tìm được (2)');
+    assert.deepEqual(writes, []);
+    assert.deepEqual([...ocrAssets], []);
+    await snapshot(page, 'capture-message');
+    await page.getByRole('button', { name: /napas\.com\.vn/ }).click();
+    await visible(page, demoBrand);
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    assert.deepEqual(writes, []);
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Nhãn mô hình: benign');
+    assert.deepEqual(writes, [{ path: '/predict', body: { url: demoBrand } }]);
+    record('Web message highlights candidate links and submits only the selected URL');
+
+    await button(page, 'Đối chiếu ảnh & QR').click();
+    const drop = page.getByText('Chọn hoặc thả ảnh chụp', { exact: true });
+    const box = await drop.boundingBox();
+    assert.ok(box);
+    const input = await context.newCDPSession(page);
+    const position = { x: Math.round(box.x + box.width / 2), y: Math.round(box.y + box.height / 2) };
+    const data = { items: [], files: [fixture], dragOperationsMask: 1 };
+    const started = Date.now();
+    for (const type of ['dragEnter', 'dragOver', 'drop']) {
+      await input.send('Input.dispatchDragEvent', { type, ...position, data });
+    }
+    await input.detach();
+    await visible(page, 'Hai địa chỉ máy chủ khác nhau');
+    await visible(page, 'Vùng chữ trên ảnh');
+    await visible(page, 'Vùng mã QR trên ảnh');
+    await visible(page, 'example.org');
+    await visible(page, 'example.com');
+    assert.equal(writes.length, 1);
+    assert.ok(ocrAssets.has('/ocr/tesseract.min.js'));
+    await snapshot(page, 'capture-image-desktop');
+    record('Web reads a dropped image locally and compares real OCR and QR regions', {
+      printed_host: 'example.org', qr_host: 'example.com', initial_read_ms: Date.now() - started,
+    });
+
+    await button(page, 'Sửa URL đọc được').click();
+    await page.getByRole('textbox', { name: /Địa chỉ đọc từ ảnh/ }).click();
+    const editor = page.locator('input:focus, textarea:focus').first();
+    await page.waitForFunction(expected => {
+      let field = document.activeElement;
+      while (field?.shadowRoot?.activeElement) field = field.shadowRoot.activeElement;
+      return field?.value === expected;
+    }, 'example.org', { timeout: 3500 });
+    await editor.fill('EXAMPLE.com');
+    await visible(page, 'Cùng địa chỉ máy chủ');
+    assert.equal(writes.length, 1);
+    record('Web updates the comparison when the printed URL is corrected');
+
+    await button(page, 'Dùng URL từ QR').click();
+    await visible(page, qrUrl);
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    assert.equal(writes.length, 1);
+    const expected = await post('/predict', qrUrl);
+    await button(page, 'Kiểm tra URL').click();
+    await visible(page, 'Nhãn mô hình: ' + expected.body.label);
+    await button(page, 'Brand Detector & URL X-Ray').click();
+    await visible(page, 'Domain đăng ký thực tế: example.com');
+    assert.deepEqual(writes.slice(1), [
+      { path: '/predict', body: { url: qrUrl } },
+      { path: '/inspect', body: { url: qrUrl } },
+    ]);
+    record('Web confirmed QR selection reaches Teacher and X-Ray with the original URL');
+
+    await page.setViewportSize({ width: 375, height: 820 });
+    await page.reload();
+    await visible(page, 'API sẵn sàng');
+    await scrollToControl(page, button(page, 'Đối chiếu ảnh & QR'));
+    await button(page, 'Đối chiếu ảnh & QR').click();
+    const chooser = page.waitForEvent('filechooser');
+    await button(page, 'Chọn ảnh').click();
+    await (await chooser).setFiles(fixture);
+    await visible(page, 'Hai địa chỉ máy chủ khác nhau');
+    await inViewport(page.getByText(/Ảnh · example\.org/).first(), 820);
+    await inViewport(page.getByText(/QR · example\.com/).first(), 820);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 375);
+    assert.equal(writes.length, 3);
+    await snapshot(page, 'capture-image-mobile');
+    assert.deepEqual(errors, []);
+    record('Web image comparison works with the file picker at 375px', { width: 375 });
+  } finally {
+    await context.close();
+  }
+}
+
 async function webSmoke(backend) {
   const browser = await chromium.launch({ channel: 'chromium', headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
@@ -370,6 +480,7 @@ async function webSmoke(backend) {
     assert.deepEqual(errors, []);
     record('Web release without JavaScript errors');
     await touchLandscape(browser);
+    await captureSmoke(browser);
     return backend;
   } finally {
     await browser.close();

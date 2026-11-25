@@ -121,3 +121,22 @@ HTTP fixtures chỉ dành unit/widget tests. Bằng chứng mới và bàn giao 
   kèm nguồn ghi nhận, cosine và phần giống. Fixture có nhãn dành cho kiểm thử.
 
 [Bản ghi chạy thật, ảnh và bàn giao Hy/Khiêm](../../reports/week8_9_hung_verification.md) · [API contract](../../docs/api_contract.md)
+
+## Tin nhắn, ảnh chụp và QR
+
+- Mở **Tin nhắn**, dán nội dung rồi chọn một địa chỉ trong danh sách. Web tô
+  sáng link ngay trong tin nhắn và điền URL
+  đã chọn vào ô quét để kiểm tra lại. Bấm **Kiểm tra URL** để gửi đến Teacher.
+- Mở **Đối chiếu ảnh & QR**, thả ảnh hoặc dùng **Chọn ảnh**. Chữ và một mã QR
+  được đọc tại trình duyệt. Bản xem trước đánh dấu dòng chữ chứa link và vị trí
+  gần đúng của mã QR. Dùng **Sửa URL đọc được** để hiệu chỉnh kết quả nhận chữ.
+  Có thể dùng URL từng nguồn cho luồng quét hiện tại.
+- So sánh hostname sau khi chuẩn hóa hoa/thường và dấu chấm cuối. Khi hai cách
+  viết có Unicode hoặc Punycode khác nhau, Web nhắc đối chiếu cách viết. Trạng
+  thái đối chiếu chỉ mô tả các địa chỉ đọc được từ ảnh và QR.
+
+Ảnh và tin nhắn nằm trong khung nhập trên thiết bị. OCR tiếng Việt và tiếng Anh
+tải từ cùng máy chủ Web khi đọc ảnh. Nếu bộ đọc chữ gặp lỗi, QR vẫn
+dùng được và người dùng có ô nhập tay. Demo với ảnh mẫu
+[`message_image_compare.png`](test/fixtures/message_image_compare.png).
+[Nguồn, phiên bản và hash OCR](web/ocr/README.md)

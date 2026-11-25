@@ -57,6 +57,8 @@ Local Roboto regular/bold covers Vietnamese glyphs. The page heading uses 36 on 
 
 The URL label stays visible. Enter runs the scan. The paste action requires user interaction and keeps manual entry available when clipboard access is denied. Clearing the URL returns focus to the field. Focus outlines are 2 logical pixels, the main action is at least 48×54 and the text controls are at least 48×48. QR confirmation and supplemental tools remain accessible from the same page. Invalid URL errors offer **Chỉnh URL**. Connection and server failures offer retry.
 
+The message and image controls open scrollable import dialogs with a close button. The message field highlights each recognized URL in place. Image comparison uses blue for the printed address, teal for the QR and amber for a difference that needs review. Readings appear beside the preview at desktop widths and underneath it on mobile. Each reading can fill the main URL field for review.
+
 ## Verification expectations
 
 Check desktop, tablet, 320px and 375px, 200% text scale, reduced motion, keyboard submission, loading, verdicts, validation and offline recovery. The Flutter contrast test requires normal text ≥4.5:1 and the input boundary ≥3:1. Browser smoke tests use FastAPI and the released stacking Teacher. The [Week 8–9 report](../../../../reports/week8_9_hung_verification.md) records which cases use fixtures or fault injection.

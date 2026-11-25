@@ -78,3 +78,6 @@ mobile/packages/phishguard_features/assets/*.txt text eol=lf
 /tests/fixtures/brand_catalog_eval.csv text eol=lf
 /reports/tables/week8_9/*.csv text eol=lf
 /reports/tables/week8_9/*.json text eol=lf
+
+# Preserve published OCR asset bytes for SHA256SUMS on Windows checkouts.
+/apps/web/web/ocr/*.js -text

@@ -4,6 +4,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 
 import 'api_client.dart';
+import 'capture_dialog.dart';
 import 'qr_image.dart';
 import 'similar_cases.dart';
 
@@ -251,6 +252,20 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
       if (mounted && revision == _revision) _urlFocus.requestFocus();
     });
     WidgetsBinding.instance.ensureVisualUpdate();
+  }
+
+  Future<void> _capture(CaptureKind kind) async {
+    final revision = _revision;
+    final url = await showDialog<String>(
+      context: context,
+      builder: (_) => CaptureDialog(
+        kind: kind,
+        imagePicker: widget.imagePicker ?? chooseQrImage,
+      ),
+    );
+    if (!mounted || url == null || revision != _revision) return;
+    _setUrl(url);
+    _editUrl();
   }
 
   Future<void> _pickQr() async {
@@ -820,6 +835,18 @@ class _UrlCheckPageState extends State<UrlCheckPage> {
                 icon: const Icon(Icons.qr_code_rounded, size: 19),
                 label: Text(_qrBusy ? 'Đang đọc ảnh QR…' : 'Chọn ảnh QR'),
               ),
+            ),
+            TextButton.icon(
+              key: const Key('capture-message'),
+              onPressed: () => _capture(CaptureKind.message),
+              icon: const Icon(Icons.chat_bubble_outline_rounded, size: 17),
+              label: const Text('Tin nhắn'),
+            ),
+            TextButton.icon(
+              key: const Key('capture-image'),
+              onPressed: () => _capture(CaptureKind.image),
+              icon: const Icon(Icons.document_scanner_outlined, size: 18),
+              label: const Text('Đối chiếu ảnh & QR'),
             ),
           ],
         ),
