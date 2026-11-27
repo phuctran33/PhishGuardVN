@@ -23,6 +23,7 @@ from threadpoolctl import threadpool_limits
 
 from phishguard_vn.features import CANDIDATE_FEATURES
 from phishguard_vn.prediction import predict_url
+from phishguard_vn.similar_cases import CORPUS_PATH, SimilarCasesIndex
 from phishguard_vn.url_parser import SCHEME_RE, parse_url
 from phishguard_vn.url_inspection import inspect_url
 
@@ -94,6 +95,24 @@ class InspectionResponse(BaseModel):
     features: dict[str, FiniteFloat]
     matches: list[BrandMatch]
     limitations: list[str]
+
+
+class SimilarCaseHighlight(BaseModel):
+    start: int
+    end: int
+
+
+class SimilarCaseResult(BaseModel):
+    case_id: str
+    display_url: str
+    source: str
+    cosine_similarity: FiniteFloat = Field(ge=0, le=1)
+    highlights: list[SimilarCaseHighlight]
+
+
+class SimilarCasesResponse(BaseModel):
+    status: Literal["ok", "empty"]
+    cases: list[SimilarCaseResult]
 
 
 class ErrorResponse(BaseModel):
@@ -279,7 +298,8 @@ def _load(app: FastAPI, bundle_path, bundle_format, model_name, expected_sha256,
 def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v2",
                model_name: str | None = None, expected_sha256: str | None = None,
                teacher_root: str | Path = Path(__file__).resolve().parents[2],
-               cors_origins: tuple[str, ...] | list[str] = ()) -> FastAPI:
+               cors_origins: tuple[str, ...] | list[str] = (),
+               similar_cases_path: Path = CORPUS_PATH) -> FastAPI:
     """Explicit factory for TestClient; module-level app below reads environment."""
     origins = [origin.strip().rstrip("/") for origin in cors_origins if origin.strip()]
     for origin in origins:
@@ -290,6 +310,10 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
 
     @asynccontextmanager
     async def lifespan(app):
+        try:
+            app.state.similar_cases = SimilarCasesIndex.load(similar_cases_path)
+        except (OSError, TypeError, ValueError):
+            app.state.similar_cases = None
         _load(app, bundle_path, bundle_format, model_name, expected_sha256, teacher_root)
         yield
         app.state.bundle = None
@@ -353,6 +377,19 @@ def create_app(*, bundle_path: str | Path | None = None, bundle_format: str = "v
             return InspectionResponse.model_validate(inspect_url(url))
         except Exception:
             return error(503, "INSPECTION_UNAVAILABLE", "Chưa thể phân tích quy tắc URL. Vui lòng thử lại.", "reference_unavailable")
+
+    @app.post("/similar-cases", response_model=SimilarCasesResponse,
+              responses={status: {"model": ErrorResponse} for status in (422, 503)})
+    def similar_cases(payload: PredictRequest):
+        url, failure = _validated_url(payload.url)
+        if failure is not None:
+            return failure
+        index = app.state.similar_cases
+        if index is None:
+            return error(503, "SIMILAR_CASES_UNAVAILABLE",
+                         "Danh mục ca phishing chưa sẵn sàng.", "catalogue_unavailable")
+        cases = index.search(url)
+        return {"status": "ok" if cases else "empty", "cases": cases}
 
     # Outermost middleware also attaches CORS headers to sanitized error responses.
     app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False,
